@@ -22,16 +22,16 @@ function BakeLayout({ children }: { children: ReactNode }) {
 export function Bake() {
   const { user } = useConnectedUser();
 
-  if (user.status === "LOADING") {
-    return <>loading...</>;
-  }
+  // if (user.status === "LOADING") {
+  //   return <>loading...</>;
+  // }
 
-  if (user.status === "UNSUPPORTED_CHAIN")
-    return (
-      <BakeLayout>
-        <UnsupportedNetwork />
-      </BakeLayout>
-    );
+  // if (user.status === "UNSUPPORTED_CHAIN")
+  //   return (
+  //     <BakeLayout>
+  //       <UnsupportedNetwork />
+  //     </BakeLayout>
+  //   );
 
   return (
     <BakeLayout>
