@@ -8,4 +8,8 @@
         @apply text-breadgray-charcoal dark:text-breadgray-white;
         @apply font-redhat;        
       }
+
+      .AccordionTrigger[data-state='open'] > .AccordionChevron {
+        transform: rotate(180deg);
+      }
 }

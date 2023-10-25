@@ -8,6 +8,28 @@ function AccordionHeader({ children }: { children: ReactNode }) {
     </Accordion.Header>
   );
 }
+function AccordionTrigger({ children }: { children: ReactNode }) {
+  return (
+    <Accordion.Trigger className="w-full text-left flex justify-between AccordionTrigger">
+      {children}
+      <svg
+        className="AccordionChevron"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M7 8H5V10H7V12H9V14H11V16H13V14H15V12H17V10H19V8H17V10H15V12H13V14H11V12H9V10H7V8Z"
+          fill="#F8F8F8"
+        />
+      </svg>
+    </Accordion.Trigger>
+  );
+}
 
 function AccordionContent({ children }: { children: ReactNode }) {
   return (
@@ -28,9 +50,11 @@ export default function FAQ() {
           className="flex flex-col gap-4 bg-breadgray-charcoal p-4 px-6 rounded"
         >
           <AccordionHeader>
-            <Accordion.Trigger className="w-full text-left">
-              What is <span className="font-bold">$BREAD</span>?
-            </Accordion.Trigger>
+            <AccordionTrigger>
+              <div>
+                What is <span className="font-bold">$BREAD</span>?
+              </div>
+            </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
             Chase ball of string eat plants, meow, and throw up because I ate
@@ -46,9 +70,9 @@ export default function FAQ() {
           className="flex flex-col gap-4 bg-breadgray-charcoal p-4 px-6 rounded"
         >
           <AccordionHeader>
-            <Accordion.Trigger className="w-full text-left">
+            <AccordionTrigger>
               How does <span className="font-bold">$BREAD</span> maintain 1 USD?
-            </Accordion.Trigger>
+            </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
             Hate dogs. Stinky cat curl into a furry donut. Hunt anything ask to
@@ -63,9 +87,9 @@ export default function FAQ() {
           className="flex flex-col gap-4 bg-breadgray-charcoal p-4 px-6 rounded"
         >
           <AccordionHeader>
-            <Accordion.Trigger className="w-full text-left">
+            <AccordionTrigger>
               What can I do with <span className="font-bold">$BREAD</span>?
-            </Accordion.Trigger>
+            </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
             Chase dog then run away i shall purr myself to sleep or spread kitty
@@ -80,9 +104,7 @@ export default function FAQ() {
           className="flex flex-col gap-4 bg-breadgray-charcoal p-4 px-6 rounded"
         >
           <AccordionHeader>
-            <Accordion.Trigger className="w-full text-left">
-              How do I get my DAI back?
-            </Accordion.Trigger>
+            <AccordionTrigger>How do I get my DAI back?</AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
             Catto munch salmono meowing non stop for food so i could pee on this
@@ -96,10 +118,10 @@ export default function FAQ() {
           className="flex flex-col gap-4 bg-breadgray-charcoal p-4 px-6 rounded"
         >
           <AccordionHeader>
-            <Accordion.Trigger className="w-full text-left">
+            <AccordionTrigger>
               How does <span className="font-bold">$BREAD</span> assist a
               post-capitalist future?
-            </Accordion.Trigger>
+            </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
             Throwup on your pillow annoy owner until he gives you food say meow
