@@ -8,15 +8,15 @@ import {
 } from "wagmi";
 
 import PreparingTransaction from "./PreparingTransaction";
-import type { UseTokenBalanceResult } from "@modules/bakery/hooks/useTokenBalance";
-import { BREAD_POLYGON_ABI } from "@abi";
-import type { ChainConfiguration } from "@config";
-import { useModal } from "@modules/core/hooks/useModal";
-import { useTransactionDisplay } from "@modules/core/hooks/useTransactionDisplay";
-import { useToast } from "@modules/core/hooks/useToast";
-import useDebounce from "@modules/bakery/hooks/useDebounce";
-import Button from "@modules/core/components/Button";
-import { BREAD_ADDRESS } from "@constants";
+import type { UseTokenBalanceResult } from "@/app/bakery/hooks/useTokenBalance";
+import { BREAD_POLYGON_ABI } from "@/abi";
+import type { ChainConfiguration } from "@/config";
+import { useModal } from "@/app/core/hooks/useModal";
+import { useTransactionDisplay } from "@/app/core/hooks/useTransactionDisplay";
+import { useToast } from "@/app/core/hooks/useToast";
+import useDebounce from "@/app/bakery/hooks/useDebounce";
+import Button from "@/app/core/components/Button";
+import { BREAD_ADDRESS } from "@/constants";
 
 import SafeAppsSDK, { TransactionStatus } from "@safe-global/safe-apps-sdk";
 
@@ -69,7 +69,7 @@ function BakeOrBurn({
   const { config, status: prepareStatus } = prepareResult;
 
   if (config.request && !config.request.value) {
-    config.request.value = 0n;
+    config.request.value = BigInt(0);
   }
 
   const {
@@ -111,7 +111,7 @@ function BakeOrBurn({
       });
       clearInputValue();
     }
-  }, [writeError]);
+  }, [writeError, dispatchModal, dispatchToast, clearInputValue, modalState]);
 
   //
   useEffect(() => {
@@ -154,7 +154,16 @@ function BakeOrBurn({
         clearInputValue();
       }
     })();
-  }, [writeError, isSuccess, writeData]);
+  }, [
+    writeError,
+    isSuccess,
+    writeData,
+    dispatchModal,
+    dispatchTransactionDisplay,
+    modalState,
+    clearInputValue,
+    walletClient,
+  ]);
 
   return (
     <>

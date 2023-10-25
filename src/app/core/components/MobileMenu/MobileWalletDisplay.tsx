@@ -15,15 +15,15 @@ function MobileWalletDisplay() {
         <IconContainer size="6">
           <NetworkIcon />
         </IconContainer>
-        {user === "loading" && <>loading</>}
-        {user && user !== "loading" && <>{user.chain.name}</>}
+        {user.status === "LOADING" && <>loading</>}
         {/* {!user &&
             ? "Unsupported"
             : 
           : "Not Connected"} */}
       </div>
-      {user && user !== "loading" ? (
+      {user.status === "CONNECTED" || user.status === "UNSUPPORTED_CHAIN" ? (
         <div className="flex flex-col gap-4">
+          <span>{user.chain.name}</span>
           <span className="items-right flex w-full items-center justify-end gap-4 truncate text-ellipsis pt-0.5 text-xs md:justify-end">
             <IconContainer size="5">
               <WalletIcon />

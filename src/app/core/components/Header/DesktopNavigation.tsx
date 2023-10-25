@@ -32,15 +32,6 @@ function DesktopNavigation({ currentPath }: { currentPath: string }) {
         Bake
       </DesktopNavigationLink>
       <DesktopNavigationLink
-        isCurrentPage={currentPath === "/about/"}
-        href="/about"
-      >
-        About
-      </DesktopNavigationLink>
-      <DesktopNavigationLink isCurrentPage={currentPath === "/faq"} href="/faq">
-        FAQ
-      </DesktopNavigationLink>
-      <DesktopNavigationLink
         isCurrentPage={currentPath === "/dashboard/"}
         href="/dashboard/"
         rel="prefetch"

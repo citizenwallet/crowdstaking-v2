@@ -1,3 +1,4 @@
+import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
 import type { ChangeEvent } from "react";
 
 type TProps = {
@@ -8,10 +9,11 @@ type TProps = {
 };
 
 function Input({ name, value, handleInputChange }: TProps) {
+  const { user } = useConnectedUser();
   return (
     <input
       name={name}
-      className="mr-8 w-0 flex-auto truncate text-ellipsis bg-breadgray-og-dark  text-lg placeholder-gray-200 sm:text-3xl font-medium"
+      className="mr-8 w-0 flex-auto truncate text-ellipsis text-3xl bg-breadgray-grey300 placeholder-neutral-500"
       placeholder="00.00"
       inputMode="decimal"
       autoComplete="off"
@@ -23,6 +25,7 @@ function Input({ name, value, handleInputChange }: TProps) {
       spellCheck="false"
       onChange={handleInputChange}
       value={value}
+      disabled={user.status !== "CONNECTED"}
     />
   );
 }

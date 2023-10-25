@@ -29,16 +29,10 @@ export function Container({
       }}
       transition={{ duration: 0.1 }}
     >
-      {children}
+      <section className="relative flex max-h-full flex-col items-start rounded bg-breadgray-og-dark bg-opacity-100 px-6 py-14 sm:px-8 md:p-16 md:px-12 border-2 border-breadgray-burnt">
+        {children}
+      </section>
     </motion.section>
-  );
-}
-
-export function Inner({ children }: { children: ReactNode }) {
-  return (
-    <section className="relative flex max-h-full flex-col items-start rounded bg-breadgray-og-dark bg-opacity-100 px-6 py-14 sm:px-8 md:p-16 md:px-12 border-2 border-breadgray-burnt">
-      {children}
-    </section>
   );
 }
 

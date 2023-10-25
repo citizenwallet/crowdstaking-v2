@@ -5,7 +5,7 @@ export function PanelHeader({ children }: { children: ReactNode }) {
 }
 
 export function PanelContent({ children }: { children: ReactNode }) {
-  return <div className="flex items-center">{children}</div>;
+  return <div className="flex items-center pb-6">{children}</div>;
 }
 
 type TBalanceProps = {
@@ -31,7 +31,7 @@ export function PanelBalance({ children }: { children: ReactNode }) {
 
 export function FromPanelContainer({ children }: { children: ReactNode }) {
   return (
-    <div className="w-full px-6 py-4 text-gray-300 sm:px-8 sm:py-6 border-breadgray-burnt border-b-2">
+    <div className="w-full p-4 md:px-6  text-gray-300 sm:px-8 sm:py-6 bg-breadgray-grey300 rounded">
       {children}
     </div>
   );
@@ -39,8 +39,16 @@ export function FromPanelContainer({ children }: { children: ReactNode }) {
 
 export function ToPanelContainer({ children }: { children: ReactNode }) {
   return (
-    <div className="w-full px-6 py-4 text-gray-300 sm:px-8 sm:py-6 border-breadgray-burnt border-t-2">
+    <div className="w-full p-4 md:px-6  text-gray-300 sm:px-8 sm:py-6 bg-breadgray-grey300 rounded">
       {children}
     </div>
+  );
+}
+
+export function PanelLabel({ children }: { children: ReactNode }) {
+  return (
+    <span className="text-sm text-neutral-600 inline-block pb-2">
+      {children}
+    </span>
   );
 }

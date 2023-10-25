@@ -1,4 +1,4 @@
-import { ERC20_ABI } from "@abi";
+import { ERC20_ABI } from "@/abi";
 import { formatUnits } from "viem";
 import { useContractRead } from "wagmi";
 
@@ -10,7 +10,8 @@ export interface UseTokenBalanceResult {
 
 export function useTokenBalance(
   tokenAddress: `0x${string}`,
-  holderAddress: string
+  holderAddress: string,
+  enabled: boolean
 ): UseTokenBalanceResult {
   const { data, status, error } = useContractRead({
     address: tokenAddress,
@@ -18,6 +19,7 @@ export function useTokenBalance(
     functionName: "balanceOf",
     args: [holderAddress],
     watch: true,
+    enabled,
   });
 
   const value = data ? formatUnits(BigInt(data as string), 18).toString() : "0";

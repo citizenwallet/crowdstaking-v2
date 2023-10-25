@@ -34,7 +34,7 @@ export default function Connectors() {
         type: "SET_TOAST",
         payload: { type: "ERROR", message: error.message },
       });
-  }, [error]);
+  }, [error, toastDispatch]);
 
   useEffect(() => {
     if (!modalState) return;
@@ -42,7 +42,7 @@ export default function Connectors() {
       modalDispatch({
         type: "CLEAR_MODAL",
       });
-  }, [status]);
+  }, [status, modalDispatch, modalState]);
 
   return (
     <div>
@@ -58,7 +58,6 @@ export default function Connectors() {
                   disabled={!connector.ready}
                   key={connector.id}
                   onClick={() => connect({ connector })}
-                  data-test={`connect-wallet-${connector.name.toLowerCase()}`}
                   className="flex items-center gap-4 text-base font-bold opacity-60 hover:opacity-100"
                 >
                   <div className="rounded overflow-clip">

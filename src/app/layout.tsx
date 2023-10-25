@@ -1,7 +1,7 @@
 "use client";
 import "./app.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Press_Start_2P, Red_Hat_Text } from "next/font/google";
 import Header from "./core/components/Header";
 import WagmiProvider from "./core/hooks/WagmiProvider";
 import { ConnectedUserProvider } from "./core/hooks/useConnectedUser";
@@ -13,13 +13,22 @@ import Modal from "./core/components/Modal";
 import Toast from "./core/components/Toast";
 import Footer from "./core/components/Footer";
 import { ReactNode } from "react";
+import clsx from "clsx";
 
-const inter = Inter({ subsets: ["latin"] });
+const redhat = Red_Hat_Text({
+  subsets: ["latin"],
+  variable: "--font-redhat",
+});
+const pressStart = Press_Start_2P({
+  subsets: ["cyrillic"],
+  weight: "400",
+  variable: "--font-pressstart",
+});
 
 export default function App({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={clsx(redhat.variable, pressStart.variable)}>
         <WagmiProvider>
           <ConnectedUserProvider>
             <TransactionDisplayProvider>

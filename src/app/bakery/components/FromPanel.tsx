@@ -6,13 +6,13 @@ import {
   PanelBalanceButton,
   PanelContent,
   PanelHeader,
+  PanelLabel,
 } from "./TokenDisplay";
 import type { UseTokenBalanceResult } from "../hooks/useTokenBalance";
 import TokenBalance from "./TokenBalance";
 
 interface IProps {
   inputValue: string;
-  balanceReadings: UseTokenBalanceResult;
   tokenType: "DAI" | "BREAD";
   handleInputChange: ChangeEventHandler<HTMLInputElement>;
   /* eslint-disable-next-line */
@@ -20,20 +20,20 @@ interface IProps {
 }
 function FromPanel({
   inputValue,
-  balanceReadings,
   tokenType,
   handleBalanceClick,
   handleInputChange,
 }: IProps) {
   return (
     <FromPanelContainer>
-      <PanelHeader>
+      {/* <PanelHeader>
         <PanelBalanceButton
           onClick={() => handleBalanceClick(balanceReadings.value || "")}
         >
           <TokenBalance readings={balanceReadings} />
         </PanelBalanceButton>
-      </PanelHeader>
+      </PanelHeader> */}
+      <PanelLabel>You pay</PanelLabel>
       <PanelContent>
         <Input
           name="from"

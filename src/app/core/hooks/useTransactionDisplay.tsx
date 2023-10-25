@@ -91,7 +91,7 @@ function TransactionDisplayProvider({
       queryCLient.refetchQueries({ queryKey: ["getClaimedYield"] });
       dispatch({ type: "SET_COMPLETE" });
     }
-  }, [data]);
+  }, [data, queryCLient]);
 
   return (
     <TransactionDisplayContext.Provider value={value}>

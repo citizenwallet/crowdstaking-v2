@@ -1,4 +1,4 @@
-import Elipsis from "@modules/core/components/Elipsis";
+import Elipsis from "@/app/core/components/Elipsis";
 
 function PreparingTransaction() {
   return (

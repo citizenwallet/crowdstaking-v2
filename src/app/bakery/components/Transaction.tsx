@@ -1,27 +1,26 @@
-import config from "@config";
-import Elipsis from "@modules/core/components/Elipsis";
-import { useToast } from "@modules/core/hooks/useToast";
+import config from "@/config";
+import Elipsis from "@/app/core/components/Elipsis";
+import { useToast } from "@/app/core/hooks/useToast";
 import {
   useTransactionDisplay,
   type TTransactionStatus,
-} from "@modules/core/hooks/useTransactionDisplay";
+} from "@/app/core/hooks/useTransactionDisplay";
 import { useEffect } from "react";
-import { useNetwork, useWaitForTransaction } from "wagmi";
+import { useWaitForTransaction } from "wagmi";
+import { TUserConnected } from "@/app/core/hooks/useConnectedUser";
 
 interface IProps {
   hash: `0x${string}`;
   status: TTransactionStatus;
+  user: TUserConnected;
 }
 
-function Transaction({ hash, status }: IProps) {
+function Transaction({ hash, status, user }: IProps) {
   const { dispatch: dispatchTransactionDisplay } = useTransactionDisplay();
   const { dispatch: dispatchToast } = useToast();
-  const { chain: activeChain } = useNetwork();
-
-  if (!activeChain) return null;
 
   const { data: transactionData, isError: transactionIsError } =
-    useWaitForTransaction({ chainId: activeChain.id, hash });
+    useWaitForTransaction({ chainId: user.config.ID, hash });
 
   useEffect(() => {
     if (transactionIsError) {
@@ -36,11 +35,12 @@ function Transaction({ hash, status }: IProps) {
     if (transactionData?.status === "success") {
       dispatchTransactionDisplay({ type: "SET_COMPLETE" });
     }
-  }, [transactionData, transactionIsError]);
-
-  const endpoint = config[activeChain.id];
-
-  if (!endpoint) throw new Error("no explorer endpoint set!");
+  }, [
+    transactionData,
+    transactionIsError,
+    dispatchTransactionDisplay,
+    dispatchToast,
+  ]);
 
   return (
     <div className="mt-8 w-full text-xs">
@@ -49,7 +49,7 @@ function Transaction({ hash, status }: IProps) {
           className="break-all text-neutral-400 underline"
           target="_blank"
           rel="noopener noreferrer"
-          href={`${endpoint}/tx/${hash}`}
+          href={`${user.config.EXPLORER}/tx/${hash}`}
         >
           {hash}
         </a>

@@ -27,7 +27,7 @@ function WalletMenu({
     return () => {
       document.body.removeEventListener("mousedown", handleDocumentClick);
     };
-  }, []);
+  }, [handleCloseMenu]);
 
   return (
     <motion.div

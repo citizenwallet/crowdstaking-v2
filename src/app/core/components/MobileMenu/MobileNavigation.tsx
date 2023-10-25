@@ -12,20 +12,7 @@ function MobileNavigation({ handleNavToggle }: IProps) {
       >
         Bake
       </a>
-      <a
-        // isCurrentPage={location.pathname === "/about"}
-        href="/about"
-        onClick={() => handleNavToggle()}
-      >
-        About
-      </a>
-      <a
-        // isCurrentPage={location.pathname === "/faq"}
-        href="/faq"
-        onClick={() => handleNavToggle()}
-      >
-        FAQ
-      </a>
+
       {/* <NavLink
         isCurrentPage={location.pathname === '/dashboard'}
         to="/dashboard"

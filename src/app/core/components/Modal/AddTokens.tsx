@@ -1,6 +1,6 @@
 import { useNetwork } from "wagmi";
 
-import { watchAsset } from "@/app/core/util/watchAsset";
+import { watchAsset } from "@/app/core/util/index";
 
 import Button from "../Button";
 

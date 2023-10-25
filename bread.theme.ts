@@ -12,6 +12,9 @@ export const breadTheme = {
       charcoal: "#242424",
       darkest: "#272727",
       "cta-bg": "#2c2c2c",
+      grey300: "#222222",
+      grey200: "#1c1c1c",
+      grey100: "#181818",
     },
     breadpink: {
       pink: "#FF99E2",
@@ -29,8 +32,8 @@ export const breadTheme = {
     "button-border": "#2E2E2E",
   },
   fontFamily: {
-    pressstart: ['"Press Start 2P"', "sans-serif"],
-    redhat: ['"Red Hat Text"', "sans-serif"],
+    pressstart: ["var(--font-pressstart)"],
+    redhat: ["var(--font-redhat)"],
     poppins: ["Poppins", "sans-serif"],
   },
   screens: {

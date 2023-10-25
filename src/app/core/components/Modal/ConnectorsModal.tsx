@@ -1,5 +1,5 @@
 import Connectors from "../Connectors";
-import { CloseModalButton, Container, Inner } from "./ui";
+import { CloseModalButton, Container } from "./ui";
 
 export default function ConnectorsModal({
   handleCloseModal,
@@ -8,12 +8,10 @@ export default function ConnectorsModal({
 }) {
   return (
     <Container handleClick={handleCloseModal}>
-      <Inner>
-        <CloseModalButton handleClick={handleCloseModal} />
-        <div className="flex flex-col gap-8 md:gap-12">
-          <Connectors />
-        </div>
-      </Inner>
+      <CloseModalButton handleClick={handleCloseModal} />
+      <div className="flex flex-col gap-8 md:gap-12">
+        <Connectors />
+      </div>
     </Container>
   );
 }

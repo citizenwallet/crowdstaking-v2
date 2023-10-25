@@ -9,27 +9,36 @@ import {
 import { type Chain, useAccount, useNetwork } from "wagmi";
 import config, { type ChainConfiguration } from "@/config";
 
+export type TUserLoading = { status: "LOADING" };
+export type TUserNotConnected = { status: "NOT_CONNECTED" };
+export type TUserConnected = {
+  status: "CONNECTED";
+  address: `0x${string}`;
+  config: ChainConfiguration;
+  chain: Chain;
+};
+export type TUnsupportedChain = {
+  status: "UNSUPPORTED_CHAIN";
+  address: `0x${string}`;
+  chain: Chain;
+};
+
 export type TConnectedUserState =
-  | null
-  | {
-      address: `0x${string}`;
-      config: ChainConfiguration | null;
-      chain: Chain & {
-        unsupported?: boolean | undefined;
-      };
-    }
-  | "loading";
+  | TUserLoading
+  | TUserNotConnected
+  | TUserConnected
+  | TUnsupportedChain;
 
 const ConnectedUserContext = createContext<{
-  user: TConnectedUserState | null;
-}>({ user: "loading" });
+  user: TConnectedUserState;
+}>({ user: { status: "LOADING" } });
 
 interface IConnectedUserProviderProps {
   children: ReactNode;
 }
 
 function ConnectedUserProvider({ children }: IConnectedUserProviderProps) {
-  const [user, setUser] = useState<TConnectedUserState>("loading");
+  const [user, setUser] = useState<TConnectedUserState>({ status: "LOADING" });
   const {
     isConnected,
     connector: activeConnector,
@@ -42,14 +51,21 @@ function ConnectedUserProvider({ children }: IConnectedUserProviderProps) {
     const configuration =
       activeChain?.id && config[activeChain.id] ? config[activeChain.id] : null;
 
-    if (activeConnector && activeChain && accountAddress && isConnected) {
+    if (
+      activeConnector &&
+      activeChain &&
+      accountAddress &&
+      isConnected &&
+      configuration
+    ) {
       setUser({
+        status: "CONNECTED",
         address: accountAddress,
         config: configuration,
         chain: activeChain,
       });
     } else if (status === "disconnected") {
-      setUser(null);
+      setUser({ status: "NOT_CONNECTED" });
     }
   }, [isConnected, activeConnector, accountAddress, activeChain, status]);
 

@@ -17,22 +17,26 @@ function WalletDisplay() {
   const { user } = useConnectedUser();
   const { disconnectAsync } = useDisconnect();
 
+  console.log({ user });
   return (
     <Container>
       {(() => {
-        switch (user) {
-          case null:
-            return <ConnectWallet />;
-          case "loading":
+        switch (user.status) {
+          case "LOADING":
             return "loading";
-          default:
+          case "NOT_CONNECTED":
+            return <ConnectWallet />;
+          case "CONNECTED" || "UNSUPPORTED_CHAIN":
             return (
               <WalletInfo
                 accountAddress={user.address}
-                chainString={user.chain.name}
+                chainString={user.config.NETWORK_STRING}
                 handleDisconnect={() => disconnectAsync()}
               />
             );
+
+          default:
+            throw new Error("user.status not handled!");
         }
       })()}
     </Container>

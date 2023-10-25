@@ -6,23 +6,24 @@ import {
   ToPanelContainer,
   PanelContent,
   PanelHeader,
+  PanelLabel,
 } from "./TokenDisplay";
 
 interface IProps {
   inputValue: string;
-  balanceReadings: UseTokenBalanceResult;
   tokenType: "DAI" | "BREAD";
 }
-function ToPanel({ inputValue, balanceReadings, tokenType }: IProps) {
+function ToPanel({ inputValue, tokenType }: IProps) {
   return (
     <ToPanelContainer>
-      <PanelHeader>
+      {/* <PanelHeader>
         <PanelBalance>
           <TokenBalance readings={balanceReadings} />
         </PanelBalance>
-      </PanelHeader>
+      </PanelHeader> */}
+      <PanelLabel>You receive</PanelLabel>
       <PanelContent>
-        <span className="w-0 flex-auto truncate overflow-ellipsis bg-breadgray-og-dark text-lg sm:text-3xl font-medium">
+        <span className="w-0 flex-auto truncate overflow-ellipsistext-lg text-3xl text-neutral-500">
           {inputValue || "00.00"}
         </span>
         <Icon type={tokenType} />

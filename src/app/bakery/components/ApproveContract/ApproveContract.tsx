@@ -6,11 +6,11 @@ import type { ChainConfiguration } from "@/config";
 import {
   useTransactionDisplay,
   type TTransactionDisplayState,
-} from "@modules/core/hooks/useTransactionDisplay";
-import { useModal } from "@modules/core/hooks/useModal";
-import { useToast } from "@modules/core/hooks/useToast";
-import { ERC20_ABI } from "@abi";
-import Button from "@modules/core/components/Button";
+} from "@/app/core/hooks/useTransactionDisplay";
+import { useModal } from "@/app/core/hooks/useModal";
+import { useToast } from "@/app/core/hooks/useToast";
+import { ERC20_ABI } from "@/abi";
+import Button from "@/app/core/components/Button";
 
 const MAX_INT = BigInt(
   "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
@@ -45,7 +45,7 @@ function ApproveContract({ chainConfig }: IProps) {
   });
 
   if (config.request && !config.request.value) {
-    config.request.value = 0n;
+    config.request.value = BigInt(0);
   }
 
   const { data, error, isSuccess, write } = useContractWrite(config);
@@ -71,7 +71,15 @@ function ApproveContract({ chainConfig }: IProps) {
         },
       });
     }
-  }, [isSuccess, data, error]);
+  }, [
+    isSuccess,
+    data,
+    error,
+    dispatchModal,
+    dispatchToast,
+    dispatchTransactionDisplay,
+    modalState,
+  ]);
 
   const handleApproveContract = async () => {
     dispatchModal({
@@ -87,7 +95,6 @@ function ApproveContract({ chainConfig }: IProps) {
         onClick={handleApproveContract}
         variant="large"
         fullWidth={true}
-        dataTest="approve-contract-button"
         disabled={transactionIsPending(transactionDisplay)}
       >
         Approve Contract

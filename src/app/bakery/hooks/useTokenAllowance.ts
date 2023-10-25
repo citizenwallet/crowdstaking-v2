@@ -1,4 +1,4 @@
-import { ERC20_ABI } from "@abi";
+import { ERC20_ABI } from "@/abi";
 import { formatUnits } from "viem";
 import { useContractRead } from "wagmi";
 

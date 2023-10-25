@@ -24,10 +24,33 @@ jobs:
         env:
           DISPLAY: :0.0
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.8.0
+
       # Install NPM dependencies, cache them correctly and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
-          command: pnpm run test
+          start: pnpm run hardhat:chain, pnpm run prod
+          wait-on: "http://localhost:3000, http://localhost:8545"
+          command: pnpm run test:e2e:ci
         env:
           CYPRESS_BASE_URL: http://localhost:3000
+          HARDHAT_ALCHEMY_ID: ${{ secrets.HARDHAT_ALCHEMY_ID }}
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+
+      - uses: actions/upload-artifact@v3
+        # add the line below to store screenshots only on failures
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: tests/e2e/screenshots
+          if-no-files-found: ignore
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: cypress-videos
+          path: tests/e2e/videos
+          if-no-files-found: ignore

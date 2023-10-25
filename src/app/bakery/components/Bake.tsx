@@ -1,10 +1,10 @@
 import { type ReactNode, Suspense, lazy } from "react";
 
-import Elipsis from "@/modules/core/components/Elipsis";
-import { useConnectedUser } from "@/modules/core/hooks/useConnectedUser";
-import ConnectWallet from "@modules/core/components/ConnectWallet";
-import SiteTitle from "@modules/core/components/SiteTitle";
-import UnsupportedNetwork from "@/modules/bakery/components/UnsupportedNetwork";
+import Elipsis from "@/app/core/components/Elipsis";
+import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
+import ConnectWallet from "@/app/core/components/ConnectWallet";
+import SiteTitle from "@/app/core/components/SiteTitle";
+import UnsupportedNetwork from "@/app/bakery/components/UnsupportedNetwork";
 
 const Swap = lazy(() => import("./Swap"));
 
@@ -22,11 +22,11 @@ function BakeLayout({ children }: { children: ReactNode }) {
 export function Bake() {
   const { user } = useConnectedUser();
 
-  if (user === "loading") {
+  if (user.status === "LOADING") {
     return <>loading...</>;
   }
 
-  if (!user) {
+  if (user.status === "NOT_CONNECTED") {
     return (
       <BakeLayout>
         <ConnectWallet />
@@ -34,14 +34,12 @@ export function Bake() {
     );
   }
 
-  if (user.chain.unsupported)
+  if (user.status === "UNSUPPORTED_CHAIN")
     return (
       <BakeLayout>
         <UnsupportedNetwork />
       </BakeLayout>
     );
-
-  if (!user.config) throw new Error(`Missing chain config!`);
 
   return (
     <BakeLayout>
@@ -53,7 +51,7 @@ export function Bake() {
           </p>
         }
       >
-        <Swap chainConfig={user.config} accountAddress={user.address} />
+        <Swap user={user} />
       </Suspense>
     </BakeLayout>
   );

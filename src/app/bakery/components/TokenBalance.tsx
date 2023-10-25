@@ -1,6 +1,6 @@
-import Elipsis from "@modules/core/components/Elipsis";
+import Elipsis from "@/app/core/components/Elipsis";
 import type { UseTokenBalanceResult } from "../hooks/useTokenBalance";
-import { balanceFormatter } from "@modules/core/util";
+import { balanceFormatter } from "@/app/core/util";
 
 function Balance({ balance }: { balance: string }) {
   return <span className="font-medium text-base">Balance: {balance}</span>;

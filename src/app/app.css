@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    body {
+        @apply bg-breadgray-ultra-white dark:bg-breadgray-grey100;
+        @apply text-breadgray-charcoal dark:text-breadgray-white;
+        @apply font-redhat;        
+      }
+}

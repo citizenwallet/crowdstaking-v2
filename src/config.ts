@@ -5,6 +5,7 @@ interface IToken {
 }
 
 export interface ChainConfiguration {
+  ID: number;
   NETWORK_STRING: string;
   EXPLORER: string;
   DAI: IToken;
@@ -18,6 +19,7 @@ export interface IConfig {
 
 const config: IConfig = {
   31337: {
+    ID: 31337,
     NETWORK_STRING: "Hardhat",
     EXPLORER: "http://localhost:8545",
     DAI: {
@@ -37,6 +39,7 @@ const config: IConfig = {
     },
   },
   137: {
+    ID: 137,
     NETWORK_STRING: "polygon",
     EXPLORER: "https://polygonscan.com",
     DAI: {
@@ -56,6 +59,7 @@ const config: IConfig = {
     },
   },
   80001: {
+    ID: 80001,
     NETWORK_STRING: "mumbai",
     EXPLORER: "https://mumbai.polygonscan.com",
     DAI: {
