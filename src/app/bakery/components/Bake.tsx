@@ -6,7 +6,7 @@ import ConnectWallet from "@/app/core/components/ConnectWallet";
 import SiteTitle from "@/app/core/components/SiteTitle";
 import UnsupportedNetwork from "@/app/bakery/components/UnsupportedNetwork";
 
-const Swap = lazy(() => import("./Swap"));
+import { Swap } from "./Swap";
 
 function BakeLayout({ children }: { children: ReactNode }) {
   return (
@@ -26,14 +26,6 @@ export function Bake() {
     return <>loading...</>;
   }
 
-  if (user.status === "NOT_CONNECTED") {
-    return (
-      <BakeLayout>
-        <ConnectWallet />
-      </BakeLayout>
-    );
-  }
-
   if (user.status === "UNSUPPORTED_CHAIN")
     return (
       <BakeLayout>
@@ -51,7 +43,7 @@ export function Bake() {
           </p>
         }
       >
-        <Swap user={user} />
+        <Swap />
       </Suspense>
     </BakeLayout>
   );
