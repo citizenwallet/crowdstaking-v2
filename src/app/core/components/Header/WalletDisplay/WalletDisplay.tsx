@@ -25,7 +25,7 @@ function WalletDisplay() {
           case "LOADING":
             return "loading";
           case "NOT_CONNECTED":
-            return <ConnectWallet />;
+            return <ConnectWallet variant="regular" />;
           case "CONNECTED" || "UNSUPPORTED_CHAIN":
             return (
               <WalletInfo
