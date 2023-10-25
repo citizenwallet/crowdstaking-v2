@@ -71,7 +71,10 @@ export default function FAQ() {
         >
           <AccordionHeader>
             <AccordionTrigger>
-              How does <span className="font-bold">$BREAD</span> maintain 1 USD?
+              <div>
+                How does <span className="font-bold">$BREAD</span> maintain 1
+                USD?
+              </div>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
@@ -88,7 +91,9 @@ export default function FAQ() {
         >
           <AccordionHeader>
             <AccordionTrigger>
-              What can I do with <span className="font-bold">$BREAD</span>?
+              <div>
+                What can I do with <span className="font-bold">$BREAD</span>?
+              </div>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
@@ -119,8 +124,10 @@ export default function FAQ() {
         >
           <AccordionHeader>
             <AccordionTrigger>
-              How does <span className="font-bold">$BREAD</span> assist a
-              post-capitalist future?
+              <div>
+                How does <span className="font-bold">$BREAD</span> assist a
+                post-capitalist future?
+              </div>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>

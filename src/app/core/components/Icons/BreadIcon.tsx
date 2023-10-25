@@ -1,11 +1,30 @@
-import Image from "next/image";
-
 export default function BreadIcon() {
   return (
-    <Image
-      src="data:image.jpeg;base64, iVBORw0KGgoAAAANSUhEUgAAALkAAACMCAYAAAAgGghCAAAAAXNSR0IArs4c6QAAAjVJREFUeJzt3UFOwkAYgNFieghPwkZuw7m4DW44ibfQvR2SYlX0473lhJKmfJn0D4vZnY+XaaX3tR+EjXZfvfBw2i/WnjbdCvwDIidP5OSJnLzdlcFz1ZD5sn/+3rt5MK+Xt3vfwn+3akC1k5MncvJETp7IyZsnQ+bdrH2mBtSrRu0uhlE7OXkiJ0/k5ImcvHm0aMj8W0a/h2H0qsUwaicnT+TkiZw8kZMncvJETp7IyRM5eSInT+TkiZw8kZMncvJETp7IyRM5eSInT+TkiZw8kZMncvJETp7IyRM5eSInT+TkiZw8kZMncvJETp7IyRM5eSInT+TkDY9TGR3V4YiV+3F0yk2c48njETl5IidP5OTN0+BFfRqchWgY/X4Gys1G7S7YyckTOXkiJ0/k5A3/8ZxWDqPw1xxO+8WanZw8kZMncvJETt48elE/Hy93uBX4GXZy8kROnsjJEzl5IidP5OSJnDyRkydy8kROnsjJEzl5IidP5OSJnDyRkydy8kROnsjJEzl5IidP5OSJnDyRkydy8kROnsjJEzl5IidP5OSJnDyRkydy8kROnsjJEzl5IidP5OSJnDyRkydy8kROnsjJEzl5IidP5OSJnDyRkydy8kROnsjJEzl5IidP5OSJnDyRkydy8kROnsjJEzl5IidP5OSJnDyRkzdvufj18rZYe9k/b/nKrNGz4nfYyckTOXkiJ0/k5N0yeO4Ga++fFwxY/JBRf6vYyckTOXkiJ0/k5H0A3B8vFnEzOmUAAAAASUVORK5CYII="
-      alt="bread icon"
+    <svg
       className="h-full w-full object-contain"
-    />
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M5.56522 0.695679C2.49163 0.695679 0 3.18731 0 6.2609C0 9.33423 2.49122 11.8257 5.56445 11.8261V26.3043C5.56445 29.0657 7.80303 31.3043 10.5645 31.3043H21.434C24.1954 31.3043 26.434 29.0657 26.434 26.3043V11.8261H26.4348C29.5084 11.8261 32 9.33448 32 6.2609C32 3.18731 29.5084 0.695679 26.4348 0.695679L5.56522 0.695679Z"
+        fill="url(#paint0_linear_2511_162)"
+      />
+      <defs>
+        <linearGradient
+          id="paint0_linear_2511_162"
+          x1="4.4"
+          y1="24.7999"
+          x2="26.3531"
+          y2="5.47278"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="#D04EC5" />
+          <stop offset="1" stop-color="#ED7BC7" />
+        </linearGradient>
+      </defs>
+    </svg>
   );
 }
