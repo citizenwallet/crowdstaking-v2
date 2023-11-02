@@ -28,7 +28,7 @@ const pressStart = Press_Start_2P({
 export default function App({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={clsx(redhat.variable, pressStart.variable)}>
+      <body className={clsx("relative", redhat.variable, pressStart.variable)}>
         <WagmiProvider>
           <ConnectedUserProvider>
             <TransactionDisplayProvider>
@@ -46,7 +46,6 @@ export default function App({ children }: { children: React.ReactNode }) {
 }
 
 function Layout({ children }: { children: ReactNode }) {
-  const { state: modal } = useModal();
   const { state: toast } = useToast();
 
   return (
@@ -56,9 +55,7 @@ function Layout({ children }: { children: ReactNode }) {
         mode="wait"
         // onExitComplete={() => null}
       >
-        {modal && (
-          <Modal type={modal.type} title={modal.title} status={modal.status} />
-        )}
+        <Modal />
       </AnimatePresence>
       <AnimatePresence
         //  initial={false}

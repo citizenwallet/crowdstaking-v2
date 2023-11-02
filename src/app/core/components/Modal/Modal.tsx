@@ -1,3 +1,5 @@
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+
 import {
   type TModalStatus,
   type TModalType,
@@ -12,29 +14,53 @@ import { CloseModalButton, Container, Heading, Message } from "./ui";
 // import { html as disclaimerHtml } from "@/markdown/disclaimer.md";
 import ConnectorsModal from "./ConnectorsModal";
 import Elipsis from "@/app/core/components/Elipsis";
+import { ReactNode, Ref, forwardRef } from "react";
+import clsx from "clsx";
 
-type TProps = {
+const Modal = () => {
+  const { state: modal } = useModal();
+  return (
+    <DialogPrimitive.Portal>
+      <DialogPrimitive.Overlay className="fixed top-0  bg-neutral-900 transition-opacity opacity-70 h-screen w-screen" />
+
+      <DialogPrimitive.Content>
+        {modal && (
+          <ModalContent
+            type={modal.type}
+            title={modal.title}
+            status={modal.status}
+          />
+        )}
+      </DialogPrimitive.Content>
+    </DialogPrimitive.Portal>
+  );
+};
+
+function ModalContent({
+  type,
+  title,
+  status,
+}: {
   type: TModalType;
   title: string;
   status: TModalStatus;
-};
-
-function Modal({ type, title, status }: TProps) {
+}) {
   const { dispatch: modalDispatch, state: modalState } = useModal();
   const { state: txState } = useTransactionDisplay();
 
   const txStatus = txState?.status;
+
   const handleCloseModal = () => {
-    if (modalState && status === "UNLOCKED")
+    if (modalState && modalState.status === "UNLOCKED")
       modalDispatch({ type: "CLEAR_MODAL" });
   };
+
   switch (type) {
     case "CONNECTORS":
       return <ConnectorsModal handleCloseModal={handleCloseModal} />;
     case "DISCLAIMER":
       return (
         <Container handleClick={handleCloseModal}>
-          <CloseModalButton handleClick={handleCloseModal} />
           <Prose html="<h2>Disclaimer</h2>" />
           <div className="overflow-y-auto">
             {/* <Prose html={disclaimerHtml} /> */}
@@ -44,9 +70,6 @@ function Modal({ type, title, status }: TProps) {
     case "BAKING":
       return (
         <Container handleClick={handleCloseModal}>
-          {status === "UNLOCKED" && (
-            <CloseModalButton handleClick={handleCloseModal} />
-          )}
           <Heading>{title}</Heading>
           {status === "LOCKED" && (
             <Message>

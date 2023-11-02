@@ -5,7 +5,9 @@ export function PanelHeader({ children }: { children: ReactNode }) {
 }
 
 export function PanelContent({ children }: { children: ReactNode }) {
-  return <div className="flex items-center pb-6">{children}</div>;
+  return (
+    <div className="flex items-center pb-6 justify-between">{children}</div>
+  );
 }
 
 type TBalanceProps = {

@@ -28,7 +28,7 @@ function Button({
     <button
       type="button"
       className={clsx(
-        "hover:bg-opacity-100 disabled:bg-opacity-50 bg-opacity-85 rounded-xl inline-block bg-breadpink-shaded font-redhat font-bold text-breadgray-og-dark",
+        "bg-breadpink-shaded text-breadgray-og-dark hover:bg-opacity-100 disabled:bg-opacity-50 bg-opacity-85 rounded-xl inline-block font-bold",
         EVariants[variant],
         fullWidth && "w-full"
       )}

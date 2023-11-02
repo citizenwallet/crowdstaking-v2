@@ -1,14 +1,11 @@
-import * as DialogPrimitive from "@radix-ui/react-dialog";
 import {
-  ReactNode,
   createContext,
-  useCallback,
+  type ReactNode,
   useContext,
-  useEffect,
   useMemo,
   useReducer,
-  useState,
 } from "react";
+import { Root as DialogRoot } from "@radix-ui/react-dialog";
 
 export type TModalType =
   | "DISCLAIMER"
@@ -92,32 +89,18 @@ const modalReducer = (
   }
 };
 
-function ModalProvider({ children }: { children: ReactNode }) {
+interface IModalProviderProps {
+  children: ReactNode;
+}
+
+function ModalProvider({ children }: IModalProviderProps) {
   const [state, dispatch] = useReducer(modalReducer, null);
-  const [isOpen, setIsOpen] = useState(false);
 
   const value = useMemo(() => ({ state, dispatch }), [state, dispatch]);
 
-  const onOpenChange = useCallback(
-    (open: boolean) => {
-      setIsOpen(open);
-    },
-    [setIsOpen]
-  );
-
-  useEffect(() => {
-    if (state === null) {
-      onOpenChange(false);
-    } else {
-      onOpenChange(true);
-    }
-  }, [state, onOpenChange]);
-
   return (
     <ModalContext.Provider value={value}>
-      <DialogPrimitive.Root open={isOpen} onOpenChange={onOpenChange}>
-        {children}
-      </DialogPrimitive.Root>
+      <DialogRoot>{children}</DialogRoot>
     </ModalContext.Provider>
   );
 }

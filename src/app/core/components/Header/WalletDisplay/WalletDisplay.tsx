@@ -26,11 +26,19 @@ function WalletDisplay() {
             return "loading";
           case "NOT_CONNECTED":
             return <ConnectWallet variant="regular" />;
-          case "CONNECTED" || "UNSUPPORTED_CHAIN":
+          case "CONNECTED":
             return (
               <WalletInfo
                 accountAddress={user.address}
                 chainString={user.config.NETWORK_STRING}
+                handleDisconnect={() => disconnectAsync()}
+              />
+            );
+          case "UNSUPPORTED_CHAIN":
+            return (
+              <WalletInfo
+                accountAddress={user.address}
+                chainString={"unknown"}
                 handleDisconnect={() => disconnectAsync()}
               />
             );

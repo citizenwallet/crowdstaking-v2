@@ -1,38 +1,17 @@
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
+import { Dialog as DialogContent } from "@radix-ui/react-dialog";
 
 export function Container({
   children,
-  handleClick,
 }: {
   children: ReactNode;
   handleClick: () => void;
 }) {
   return (
-    <motion.section
-      onClick={() => {
-        handleClick();
-      }}
-      data-test="modal"
-      className="fixed z-30 flex h-full w-full items-center justify-center bg-breadgray-darkest bg-opacity-95 p-4 "
-      initial={{
-        opacity: 0,
-        y: 15,
-      }}
-      animate={{
-        opacity: 1,
-        y: 0,
-      }}
-      exit={{
-        opacity: 0,
-        y: 15,
-      }}
-      transition={{ duration: 0.1 }}
-    >
-      <section className="relative flex max-h-full flex-col items-start rounded bg-breadgray-og-dark bg-opacity-100 px-6 py-14 sm:px-8 md:p-16 md:px-12 border-2 border-breadgray-burnt">
-        {children}
-      </section>
-    </motion.section>
+    <section className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex max-h-full flex-col items-start rounded bg-breadgray-og-dark bg-opacity-100 px-6 py-14 sm:px-8 md:p-16 md:px-12 border-2 border-breadgray-burnt">
+      {children}
+    </section>
   );
 }
 

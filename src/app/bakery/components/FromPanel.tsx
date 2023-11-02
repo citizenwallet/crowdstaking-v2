@@ -26,13 +26,6 @@ function FromPanel({
 }: IProps) {
   return (
     <FromPanelContainer>
-      {/* <PanelHeader>
-        <PanelBalanceButton
-          onClick={() => handleBalanceClick(balanceReadings.value || "")}
-        >
-          <TokenBalance readings={balanceReadings} />
-        </PanelBalanceButton>
-      </PanelHeader> */}
       <PanelLabel>You pay</PanelLabel>
       <PanelContent>
         <Input
@@ -40,10 +33,10 @@ function FromPanel({
           value={inputValue}
           handleInputChange={handleInputChange}
         />
-        <Icon type={tokenType} />
-        <span className="ml-4 w-20 pt-0.5 sm:text-xl font-medium">
-          {tokenType}
-        </span>
+        <div className="rounded-full bg-[#343434] px-4 py-2 flex items-center text-xl">
+          <Icon type={tokenType} />
+          <span className="ml-4 pt-0.5 font-medium">{tokenType}</span>
+        </div>
       </PanelContent>
     </FromPanelContainer>
   );

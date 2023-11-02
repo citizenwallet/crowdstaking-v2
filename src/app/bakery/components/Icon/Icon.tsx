@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import daiIcon from "./dai_icon.png";
+import BreadIcon from "@/app/core/components/Icons/BreadIcon";
 
 export function Icon({ type }: { type: "DAI" | "BREAD" }) {
   return type === "DAI" ? (
@@ -19,7 +20,7 @@ export function Icon({ type }: { type: "DAI" | "BREAD" }) {
     </div>
   ) : (
     <div className="inline-block h-6 w-6 text-4xl">
-      <Image src={daiIcon} alt="" className="h-full w-full object-contain" />
+      <BreadIcon />
     </div>
   );
 }

@@ -38,13 +38,13 @@ function DesktopNavigation({ currentPath }: { currentPath: string }) {
       >
         Dashboard
       </DesktopNavigationLink>
-      <DesktopNavigationLink
+      {/* <DesktopNavigationLink
         target="_blank"
         rel="noopener noreferrer"
         href="https://breadchain.mirror.xyz/"
       >
         Blog
-      </DesktopNavigationLink>
+      </DesktopNavigationLink> */}
       {/* <DesktopNavigationLink
        
        //isCurrentPage={currentPath === '/dashboard'}

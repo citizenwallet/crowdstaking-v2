@@ -114,7 +114,7 @@ export function Swap() {
 
   return (
     <div className="w-full p-4">
-      <div className="w-full max-w-[24rem] m-auto relative rounded-xl bg-breadgray-grey200 border-breadgray-burnt flex flex-col items-center">
+      <div className="w-full max-w-[30rem] m-auto relative rounded-xl bg-breadgray-grey200 border-breadgray-burnt flex flex-col items-center">
         <div className="w-full">
           <div className="w-full px-4 pt-2">
             <h2 className="text-[1.8rem] font-medium">
