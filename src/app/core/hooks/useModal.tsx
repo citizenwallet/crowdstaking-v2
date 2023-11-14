@@ -92,8 +92,14 @@ const modalReducer = (
   }
 };
 
-function ModalProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(modalReducer, null);
+function ModalProvider({
+  children,
+  initialState = null,
+}: {
+  children: ReactNode;
+  initialState?: TModalState;
+}) {
+  const [state, dispatch] = useReducer(modalReducer, initialState);
   const [isOpen, setIsOpen] = useState(false);
 
   const value = useMemo(() => ({ state, dispatch }), [state, dispatch]);

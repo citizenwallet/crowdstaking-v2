@@ -43,7 +43,9 @@ export default function Connectors() {
         type: "CLEAR_MODAL",
       });
   }, [status, modalDispatch, modalState]);
-
+  console.log({ connectors });
+  console.log({ connectors });
+  console.log({ connectors });
   return (
     <div>
       <div className="max-w-72 m-auto flex flex-col gap-4">

@@ -1,4 +1,10 @@
 import type { UseTokenBalanceResult } from "../hooks/useTokenBalance";
+import {
+  TokenBalanceContainer,
+  TokenBalanceText,
+  TokenLabelContainer,
+  TokenLabelText,
+} from "./FromPanel";
 import Icon from "./Icon";
 import TokenBalance from "./TokenBalance";
 import {
@@ -18,14 +24,22 @@ function ToPanel({ inputValue, tokenType }: IProps) {
     <ToPanelContainer>
       <PanelLabel>You receive</PanelLabel>
       <PanelContent>
-        <span className="w-0 flex-auto truncate overflow-ellipsistext-lg text-3xl text-neutral-500">
+        <span className="w-0 flex-auto truncate overflow-ellipsistext-lg text-[2.3rem] text-neutral-500">
           {inputValue || "00.00"}
         </span>
-        <div className="rounded-full bg-[#343434] px-4 py-2 flex items-center">
-          <Icon type={tokenType} />
-          <span className="ml-4 w-20 pt-0.5 text-xl font-medium">
-            {tokenType}
-          </span>
+
+        <div className="flex flex-col gap-2">
+          <div className="flex justify-end pt-1">
+            <TokenLabelContainer>
+              <Icon type={tokenType} />
+              <TokenLabelText>{tokenType}</TokenLabelText>
+            </TokenLabelContainer>
+          </div>
+          <TokenBalanceContainer>
+            <div className="pr-2 md:pr-4">
+              <TokenBalanceText>Balance:</TokenBalanceText>
+            </div>
+          </TokenBalanceContainer>
         </div>
       </PanelContent>
     </ToPanelContainer>

@@ -34,7 +34,9 @@ function Header() {
       <Logo />
       <DesktopNavigation currentPath={currentPath} />
       <MobileMenu isOpen={isMobNavOpen} handleNavToggle={handleNavToggle} />
-      <ColorToggle />
+      <div className="hidden md:block">
+        <ColorToggle />
+      </div>
       <WalletDisplay />
       <MobileNavigationToggle handleClick={handleNavToggle} />
     </Container>

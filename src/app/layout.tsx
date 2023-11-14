@@ -1,7 +1,6 @@
 "use client";
 import "./app.css";
 import type { Metadata } from "next";
-import { Press_Start_2P, Red_Hat_Text } from "next/font/google";
 import Header from "./core/components/Header";
 import WagmiProvider from "./core/hooks/WagmiProvider";
 import { ConnectedUserProvider } from "./core/hooks/useConnectedUser";
@@ -14,21 +13,14 @@ import Toast from "./core/components/Toast";
 import Footer from "./core/components/Footer";
 import { ReactNode } from "react";
 import clsx from "clsx";
+import { pressStart, redhat } from "./core/components/Fonts";
 
-const redhat = Red_Hat_Text({
-  subsets: ["latin"],
-  variable: "--font-redhat",
-});
-const pressStart = Press_Start_2P({
-  subsets: ["cyrillic"],
-  weight: "400",
-  variable: "--font-pressstart",
-});
+import "@rainbow-me/rainbowkit/styles.css";
 
 export default function App({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={clsx("relative", redhat.variable, pressStart.variable)}>
+      <body className={clsx("relative", pressStart.variable, redhat.variable)}>
         <WagmiProvider>
           <ConnectedUserProvider>
             <TransactionDisplayProvider>

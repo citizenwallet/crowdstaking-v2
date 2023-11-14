@@ -6,7 +6,7 @@ export function PanelHeader({ children }: { children: ReactNode }) {
 
 export function PanelContent({ children }: { children: ReactNode }) {
   return (
-    <div className="flex items-center pb-6 justify-between">{children}</div>
+    <div className="flex items-start pb-2 justify-between">{children}</div>
   );
 }
 
@@ -49,8 +49,6 @@ export function ToPanelContainer({ children }: { children: ReactNode }) {
 
 export function PanelLabel({ children }: { children: ReactNode }) {
   return (
-    <span className="text-sm text-neutral-600 inline-block pb-2">
-      {children}
-    </span>
+    <span className="text-sm text-neutral-600 inline-block">{children}</span>
   );
 }

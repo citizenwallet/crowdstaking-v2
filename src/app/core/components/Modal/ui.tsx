@@ -9,9 +9,11 @@ export function Container({
   handleClick: () => void;
 }) {
   return (
-    <section className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex max-h-full flex-col items-start rounded bg-breadgray-og-dark bg-opacity-100 px-6 py-14 sm:px-8 md:p-16 md:px-12 border-2 border-breadgray-burnt">
-      {children}
-    </section>
+    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-h-full p-2 w-full">
+      <section className="flex flex-col items-start rounded bg-breadgray-og-dark bg-opacity-100 px-6 py-14 sm:px-8 md:p-16 md:px-12 border-2 border-breadgray-burnt">
+        {children}
+      </section>
+    </div>
   );
 }
 

@@ -15,15 +15,18 @@ import { CloseModalButton, Container, Heading, Message } from "./ui";
 import ConnectorsModal from "./ConnectorsModal";
 import Elipsis from "@/app/core/components/Elipsis";
 import { ReactNode, Ref, forwardRef } from "react";
-import clsx from "clsx";
 
 const Modal = () => {
   const { state: modal } = useModal();
   return (
     <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay className="fixed top-0  bg-neutral-900 transition-opacity opacity-70 h-screen w-screen" />
+      <DialogPrimitive.Overlay className="fixed top-0 bg-neutral-900 transition-opacity opacity-70 h-screen w-screen" />
 
-      <DialogPrimitive.Content>
+      <DialogPrimitive.Content
+        onPointerDownOutside={(event) => {
+          modal?.status === "LOCKED" && event.preventDefault();
+        }}
+      >
         {modal && (
           <ModalContent
             type={modal.type}
@@ -36,7 +39,7 @@ const Modal = () => {
   );
 };
 
-function ModalContent({
+export function ModalContent({
   type,
   title,
   status,
@@ -45,14 +48,13 @@ function ModalContent({
   title: string;
   status: TModalStatus;
 }) {
-  const { dispatch: modalDispatch, state: modalState } = useModal();
+  const { dispatch: modalDispatch } = useModal();
   const { state: txState } = useTransactionDisplay();
 
   const txStatus = txState?.status;
 
   const handleCloseModal = () => {
-    if (modalState && modalState.status === "UNLOCKED")
-      modalDispatch({ type: "CLEAR_MODAL" });
+    if (status === "UNLOCKED") modalDispatch({ type: "CLEAR_MODAL" });
   };
 
   switch (type) {

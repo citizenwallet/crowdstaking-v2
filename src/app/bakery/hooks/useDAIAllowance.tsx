@@ -1,42 +1,35 @@
-// import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
-// import { useToast } from "@/app/core/hooks/useToast";
-// import { useEffect, useState } from "react";
-// import { useTokenBalance } from "./useTokenBalance";
+import { TUserConnected } from "@/app/core/hooks/useConnectedUser";
 
-// export function useDAIAllowance() {
-//   const { dispatch: dispatchToast } = useToast();
-//   const { user } = useConnectedUser();
+import config from "@/config";
+import { useContractRead } from "wagmi";
+import { ERC20_ABI } from "@/abi";
+import { formatUnits } from "viem";
+import { useMemo } from "react";
 
-//   const { DAI, BREAD } = user.config;
+export function useDAIAllowance({ user }: { user: TUserConnected }) {
+  const { DAI, BREAD } = config[user.chain.id];
 
-//    const breadBalanceReadings = useTokenBalance(BREAD.address, user.address);
-//   const daiBalanceReadings = useTokenBalance(DAI.address, user.address);
+  const {
+    data: allowanceReadData,
+    status,
+    error,
+  } = useContractRead({
+    address: DAI.address,
+    abi: ERC20_ABI,
+    functionName: "allowance",
+    args: [user.address, BREAD.address],
+    watch: true,
+  });
 
-//   const {
-//     value: daiAllowanceValue,
-//     status: daiAllowanceStatus,
-//     error: daiAllowanceError,
-//   } = useTokenAllowance(DAI.address, user.address, BREAD.address);
+  const data = useMemo(() => {
+    if (status === "success") {
+      return formatUnits(BigInt(allowanceReadData as string), 18);
+    }
+    if (status === "error") {
+      console.log(error);
+    }
+    return null;
+  }, [allowanceReadData, status, error]);
 
-//   const [data, setData] = useState();
-
-//   useEffect(() => {
-//     if (daiAllowanceError) {
-//       dispatchToast({
-//         type: "SET_TOAST",
-//         payload: {
-//           type: "ERROR",
-//           message: "Failed to check contract approval",
-//         },
-//       });
-//       return;
-//     }
-
-//     if (daiAllowanceValue) {
-//       setSwapState((state) => ({
-//         ...state,
-//         isContractApproved: parseFloat(daiAllowanceValue) > 0,
-//       }));
-//     }
-//   }, [daiAllowanceStatus, daiAllowanceValue, daiAllowanceError, dispatchToast]);
-// }
+  return { data, status, error };
+}

@@ -5,12 +5,12 @@ import FAQ from "./bakery/components/FAQ";
 export default function Home() {
   return (
     <main className="grow">
-      <div className="py-16 ">
-        <h1 className="text-3xl text-center font-pressstart uppercase leading-tight">
-          Bread
+      <div className="py-2 md:py-8">
+        <h1 className="hidden md:flex justify-center text-[2.5rem] font-pressstart uppercase leading-tight">
+          <span>Bread</span>
         </h1>
-        <h2 className="text-center uppercase text-xl tracking-widest">
-          crowdstaking
+        <h2 className="flex justify-center uppercase md:text-2xl tracking-[0.1rem] font-bold md:font-normal">
+          <span>crowdstaking</span>
         </h2>
       </div>
       <Swap />

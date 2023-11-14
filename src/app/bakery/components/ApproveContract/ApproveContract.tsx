@@ -92,6 +92,7 @@ function ApproveContract({ chainConfig }: IProps) {
   return (
     <div className="flex flex-col gap-6 w-full">
       <Button
+        data-test="approve_contract_btn"
         onClick={handleApproveContract}
         variant="large"
         fullWidth={true}
@@ -99,7 +100,7 @@ function ApproveContract({ chainConfig }: IProps) {
       >
         Approve Contract
       </Button>
-      <div className="pb-6 text-xs text-neutral-300">
+      <div className="px-2 pb-4 text-sm font-medium text-neutral-400">
         You&apos;ll need to approve the BREAD contract to mint BREAD
       </div>
     </div>

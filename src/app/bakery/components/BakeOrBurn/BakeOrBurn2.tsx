@@ -1,6 +1,8 @@
 import NativeBalance from "../NativeBalance";
 import { TUserConnected } from "@/app/core/hooks/useConnectedUser";
 import Button from "@/app/core/components/Button";
+import { useDAIAllowance } from "../../hooks/useDAIAllowance";
+import ApproveContract from "../ApproveContract";
 
 export default function BakeOrBurn({
   user,
@@ -9,12 +11,20 @@ export default function BakeOrBurn({
   user: TUserConnected;
   mode: "BAKE" | "BURN";
 }) {
+  const { data: daiAllowance, status: daiAllowanceStatus } = useDAIAllowance({
+    user,
+  });
+
   return (
     <div className="w-full">
       <div className="p-2 w-full flex flex-col gap-2">
-        <div className="w-full p-2 text-neutral-500 rounded-md border-[0.1rem] font-medium border-neutral-800">
-          Matic Balance <NativeBalance address={user.address} />
-        </div>
+        {daiAllowance !== "0" ? (
+          <Button fullWidth={true} variant="large" onClick={() => {}}>
+            {mode === "BAKE" ? "Bake" : "Burn"}
+          </Button>
+        ) : (
+          <ApproveContract chainConfig={user.config} />
+        )}
         <Button fullWidth={true} variant="large" onClick={() => {}}>
           {mode === "BAKE" ? "Bake" : "Burn"}
         </Button>

@@ -10,8 +10,7 @@ export interface UseTokenBalanceResult {
 
 export function useTokenBalance(
   tokenAddress: `0x${string}`,
-  holderAddress: string,
-  enabled: boolean
+  holderAddress: string
 ): UseTokenBalanceResult {
   const { data, status, error } = useContractRead({
     address: tokenAddress,
@@ -19,7 +18,6 @@ export function useTokenBalance(
     functionName: "balanceOf",
     args: [holderAddress],
     watch: true,
-    enabled,
   });
 
   const value = data ? formatUnits(BigInt(data as string), 18).toString() : "0";
