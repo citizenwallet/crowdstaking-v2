@@ -1,28 +1,38 @@
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { Dialog as DialogContent } from "@radix-ui/react-dialog";
+import CloseIcon from "../Icons/CloseIcon";
 
 export function Container({
   children,
+  closeModal,
 }: {
   children: ReactNode;
-  handleClick: () => void;
+  closeModal: () => void;
 }) {
   return (
-    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-h-full p-2 w-full">
-      <section className="flex flex-col items-start rounded bg-breadgray-og-dark bg-opacity-100 px-6 py-14 sm:px-8 md:p-16 md:px-12 border-2 border-breadgray-burnt">
+    <div
+      onClick={closeModal}
+      className="fixed top-0 left-0 h-screen w-screen p-4 flex justify-center items-center"
+    >
+      <section className="flex flex-col items-start rounded bg-opacity-100 p-4 md:p-8 bg-breadgray-charcoal relative">
+        <div className="absolute top-0 right-0 pt-5 pr-3 md:p-8">
+          <button className="fill-breadgray-light-grey w-6 h-6">
+            <CloseIcon />
+          </button>
+        </div>
         {children}
       </section>
     </div>
   );
 }
 
-export function CloseModalButton({ handleClick }: { handleClick: () => void }) {
+export function CloseModalButton({ closeModal }: { closeModal: () => void }) {
   return (
     <button
       type="button"
       className=" absolute right-0 top-0 p-4 text-sm  text-neutral-400 hover:text-neutral-200 md:text-base"
-      onClick={handleClick}
+      onClick={closeModal}
     >
       X
     </button>
@@ -31,15 +41,18 @@ export function CloseModalButton({ handleClick }: { handleClick: () => void }) {
 
 export function Heading({ children }: { children: ReactNode }) {
   return (
-    <h2 className="text-2xl leading-normal text-neutral-300 md:text-center">
-      {children}
-    </h2>
+    <div className="flex flex-row border-b-[0.075rem] border-b-breadpink-shaded">
+      <h2 className="text-2xl px-2 pb-4 leading-normal text-breadgray-light-grey md:text-center font-medium">
+        {children}
+      </h2>
+      <div className="w-16 h-full"> </div>
+    </div>
   );
 }
 
 export function Message({ children }: { children: ReactNode }) {
   return (
-    <p className="mt-12 text-sm leading-normal text-neutral-300 md:text-center">
+    <p className="p-2 pt-12 leading-normal text-breadgray-light-grey md:text-center">
       {children}
     </p>
   );

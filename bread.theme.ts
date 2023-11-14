@@ -45,6 +45,9 @@ export const breadTheme = {
   borderRadius: {
     cta: "0.3125rem",
   },
+  dropShadow: {
+    swap: "0px 0px 50px 0px rgba(0, 0, 0, 0.50)",
+  },
   /* @ts-ignore  */
   typography: ({ theme }) => ({
     pink: {

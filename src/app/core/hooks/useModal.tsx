@@ -25,11 +25,23 @@ export type TModalType =
 
 export type TModalStatus = "LOCKED" | "UNLOCKED";
 
-export type TModalState = null | {
+export interface IBaseModalState {
   type: TModalType;
   status: TModalStatus;
-  title: string;
-};
+}
+export interface IBakeModalState extends IBaseModalState {
+  amount: string;
+}
+
+export interface IBurnModalState extends IBaseModalState {
+  amount: string;
+}
+
+export type TModalState =
+  | null
+  | IBaseModalState
+  | IBakeModalState
+  | IBurnModalState;
 
 export type TModalAction =
   | {
@@ -66,11 +78,10 @@ const modalReducer = (
     case "SET_MODAL":
       /* eslint-disable-next-line no-case-declarations */
       const {
-        payload: { type, title },
+        payload: { type },
       } = action;
       return {
         type,
-        title,
         status: "LOCKED",
       };
     case "UNLOCK_MODAL":

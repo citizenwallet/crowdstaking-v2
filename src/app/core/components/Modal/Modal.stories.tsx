@@ -30,6 +30,14 @@ type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 
+export const Connecting: Story = {
+  args: {
+    type: "CONNECT_WALLET",
+    title: "Connecting",
+    status: "LOCKED",
+  },
+};
+
 export const ApproveContract: Story = {
   args: {
     type: "APPROVAL",
@@ -38,19 +46,39 @@ export const ApproveContract: Story = {
   },
 };
 
-export const Baking: Story = {
+export const BakingLocked: Story = {
   args: {
     type: "BAKING",
-    title: "Baking XX Bread",
+    title: "Baking Bread",
+    amount: "300",
     status: "LOCKED",
+  },
+};
+
+export const BakingUnlocked: Story = {
+  args: {
+    type: "BAKING",
+    title: "Baking Bread",
+    amount: "300",
+    status: "UNLOCKED",
   },
 };
 
 export const Burning: Story = {
   args: {
     type: "BURNING",
-    title: "Burning XX Bread",
+    title: "Burning Bread",
+    amount: "300",
     status: "LOCKED",
+  },
+};
+
+export const BuringUnlocked: Story = {
+  args: {
+    type: "BURNING",
+    title: "Burning Bread",
+    amount: "300",
+    status: "UNLOCKED",
   },
 };
 

@@ -1,3 +1,3 @@
-import BakeOrBurn from "./BakeOrBurn2";
+import BakeOrBurn from "./BakeOrBurn";
 
 export default BakeOrBurn;

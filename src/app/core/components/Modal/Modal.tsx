@@ -19,23 +19,25 @@ import { ReactNode, Ref, forwardRef } from "react";
 const Modal = () => {
   const { state: modal } = useModal();
   return (
-    <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay className="fixed top-0 bg-neutral-900 transition-opacity opacity-70 h-screen w-screen" />
+    <DialogPrimitive.Root>
+      <DialogPrimitive.Portal>
+        <DialogPrimitive.Overlay className="fixed top-0 bg-neutral-900 transition-opacity opacity-70 h-screen w-screen" />
 
-      <DialogPrimitive.Content
-        onPointerDownOutside={(event) => {
-          modal?.status === "LOCKED" && event.preventDefault();
-        }}
-      >
-        {modal && (
-          <ModalContent
-            type={modal.type}
-            title={modal.title}
-            status={modal.status}
-          />
-        )}
-      </DialogPrimitive.Content>
-    </DialogPrimitive.Portal>
+        <DialogPrimitive.Content
+          onPointerDownOutside={(event) => {
+            modal?.status === "LOCKED" && event.preventDefault();
+          }}
+        >
+          {modal && (
+            <ModalContent
+              type={modal.type}
+              title={modal.title}
+              status={modal.status}
+            />
+          )}
+        </DialogPrimitive.Content>
+      </DialogPrimitive.Portal>
+    </DialogPrimitive.Root>
   );
 };
 
@@ -62,7 +64,7 @@ export function ModalContent({
       return <ConnectorsModal handleCloseModal={handleCloseModal} />;
     case "DISCLAIMER":
       return (
-        <Container handleClick={handleCloseModal}>
+        <Container closeModal={handleCloseModal}>
           <Prose html="<h2>Disclaimer</h2>" />
           <div className="overflow-y-auto">
             {/* <Prose html={disclaimerHtml} /> */}
@@ -71,7 +73,7 @@ export function ModalContent({
       );
     case "BAKING":
       return (
-        <Container handleClick={handleCloseModal}>
+        <Container closeModal={handleCloseModal}>
           <Heading>{title}</Heading>
           {status === "LOCKED" && (
             <Message>
@@ -97,9 +99,9 @@ export function ModalContent({
       );
     case "BURNING":
       return (
-        <Container handleClick={handleCloseModal}>
+        <Container closeModal={handleCloseModal}>
           {status === "UNLOCKED" && (
-            <CloseModalButton handleClick={handleCloseModal} />
+            <CloseModalButton closeModal={handleCloseModal} />
           )}
           <Heading>{title}</Heading>
           {status === "LOCKED" && (
@@ -126,9 +128,9 @@ export function ModalContent({
       );
     case "CLAIMING":
       return (
-        <Container handleClick={handleCloseModal}>
+        <Container closeModal={handleCloseModal}>
           {status === "UNLOCKED" && (
-            <CloseModalButton handleClick={handleCloseModal} />
+            <CloseModalButton closeModal={handleCloseModal} />
           )}
           <Heading>{title}</Heading>
           {status === "LOCKED" && (
@@ -154,7 +156,7 @@ export function ModalContent({
       );
     case "CONNECT_WALLET":
       return (
-        <Container handleClick={handleCloseModal}>
+        <Container closeModal={handleCloseModal}>
           <Heading>Connecting Wallet</Heading>
           <Message>
             Awaiting user response
@@ -164,7 +166,7 @@ export function ModalContent({
       );
     case "APPROVAL":
       return (
-        <Container handleClick={handleCloseModal}>
+        <Container closeModal={handleCloseModal}>
           <Heading>Approving Contract</Heading>
           <Message>
             Awaiting user response
@@ -174,7 +176,7 @@ export function ModalContent({
       );
     case "CHANGE_NETWORK":
       return (
-        <Container handleClick={handleCloseModal}>
+        <Container closeModal={handleCloseModal}>
           <Heading>Changing Network</Heading>
           <Message>
             Awaiting user response
@@ -184,14 +186,14 @@ export function ModalContent({
       );
     case "CHANGING_NETWORK":
       return (
-        <Container handleClick={handleCloseModal}>
+        <Container closeModal={handleCloseModal}>
           <Heading>Changing Network</Heading>
           <Message>please wait a moment!</Message>
         </Container>
       );
     case "SAFE_TRANSACTION":
       return (
-        <Container handleClick={handleCloseModal}>
+        <Container closeModal={handleCloseModal}>
           <Heading>Transaction Submitted</Heading>
         </Container>
       );
