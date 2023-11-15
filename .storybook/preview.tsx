@@ -5,25 +5,28 @@ import { WagmiProviderStorybook } from "@/app/core/hooks/WagmiProvider/WagmiProv
 import { ModalProvider } from "@/app/core/hooks/useModal";
 import { TransactionDisplayProvider } from "@/app/core/hooks/useTransactionDisplay";
 import { ToastProvider } from "@/app/core/hooks/useToast";
+import { ConnectedUserProvider } from "@/app/core/hooks/useConnectedUser";
 
 const preview: Preview = {
   decorators: [
     (Story) => (
       <WagmiProviderStorybook>
-        <ModalProvider>
-          <TransactionDisplayProvider>
-            <ToastProvider>
-              {/* Hack required to be able to apply fonts in storybook */}
-              <style>
-                {`:root {
+        <ConnectedUserProvider>
+          <ModalProvider>
+            <TransactionDisplayProvider>
+              <ToastProvider>
+                {/* Hack required to be able to apply fonts in storybook */}
+                <style>
+                  {`:root {
             --font-redhat: "Red Hat Text";
             --font-pressstart: "Press Start 2P"
           }`}
-              </style>
-              <Story />
-            </ToastProvider>
-          </TransactionDisplayProvider>
-        </ModalProvider>
+                </style>
+                <Story />
+              </ToastProvider>
+            </TransactionDisplayProvider>
+          </ModalProvider>
+        </ConnectedUserProvider>
       </WagmiProviderStorybook>
     ),
   ],
