@@ -2,7 +2,7 @@
 import "./app.css";
 import type { Metadata } from "next";
 import Header from "./core/components/Header";
-import WagmiProvider from "./core/hooks/WagmiProvider";
+import { WagmiProvider } from "./core/hooks/WagmiProvider/WagmiProvider";
 import { ConnectedUserProvider } from "./core/hooks/useConnectedUser";
 import { TransactionDisplayProvider } from "./core/hooks/useTransactionDisplay";
 import { ModalProvider, useModal } from "./core/hooks/useModal";
