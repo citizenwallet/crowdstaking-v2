@@ -2,12 +2,15 @@ import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { Dialog as DialogContent } from "@radix-ui/react-dialog";
 import CloseIcon from "../Icons/CloseIcon";
+import { TModalStatus } from "../../hooks/useModal";
 
 export function Container({
   children,
+  status,
   closeModal,
 }: {
   children: ReactNode;
+  status: TModalStatus;
   closeModal: () => void;
 }) {
   return (
@@ -16,11 +19,13 @@ export function Container({
       className="fixed top-0 left-0 h-screen w-screen p-4 flex justify-center items-center"
     >
       <section className="flex flex-col items-start rounded bg-opacity-100 p-4 md:p-8 bg-breadgray-charcoal relative">
-        <div className="absolute top-0 right-0 pt-5 pr-3 md:p-8">
-          <button className="fill-breadgray-light-grey w-6 h-6">
-            <CloseIcon />
-          </button>
-        </div>
+        {status === "UNLOCKED" && (
+          <div className="absolute top-0 right-0 pt-5 pr-3 md:p-8">
+            <button className="fill-breadgray-light-grey w-6 h-6">
+              <CloseIcon />
+            </button>
+          </div>
+        )}
         {children}
       </section>
     </div>

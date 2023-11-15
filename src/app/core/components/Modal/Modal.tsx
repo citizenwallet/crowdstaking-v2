@@ -4,8 +4,12 @@ import {
   type TModalStatus,
   type TModalType,
   useModal,
+  TModalState,
 } from "@/app/core/hooks/useModal";
-import { useTransactionDisplay } from "@/app/core/hooks/useTransactionDisplay";
+import {
+  TTransactionDisplayState,
+  useTransactionDisplay,
+} from "@/app/core/hooks/useTransactionDisplay";
 
 import Prose from "@/app/core/components/Prose";
 import AddTokens from "./AddTokens";
@@ -18,6 +22,7 @@ import { ReactNode, Ref, forwardRef } from "react";
 
 const Modal = () => {
   const { state: modal } = useModal();
+  const { state: txState } = useTransactionDisplay();
   return (
     <DialogPrimitive.Root>
       <DialogPrimitive.Portal>
@@ -28,13 +33,7 @@ const Modal = () => {
             modal?.status === "LOCKED" && event.preventDefault();
           }}
         >
-          {modal && (
-            <ModalContent
-              type={modal.type}
-              title={modal.title}
-              status={modal.status}
-            />
-          )}
+          {modal && <ModalContent modal={modal} txState={txState} />}
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>
@@ -42,16 +41,13 @@ const Modal = () => {
 };
 
 export function ModalContent({
-  type,
-  title,
-  status,
+  modal,
+  txState,
 }: {
-  type: TModalType;
-  title: string;
-  status: TModalStatus;
+  modal: Exclude<TModalState, null>;
+  txState: TTransactionDisplayState;
 }) {
   const { dispatch: modalDispatch } = useModal();
-  const { state: txState } = useTransactionDisplay();
 
   const txStatus = txState?.status;
 
@@ -59,12 +55,12 @@ export function ModalContent({
     if (status === "UNLOCKED") modalDispatch({ type: "CLEAR_MODAL" });
   };
 
-  switch (type) {
+  switch (modal.type) {
     case "CONNECTORS":
       return <ConnectorsModal handleCloseModal={handleCloseModal} />;
     case "DISCLAIMER":
       return (
-        <Container closeModal={handleCloseModal}>
+        <Container status={modal.status} closeModal={handleCloseModal}>
           <Prose html="<h2>Disclaimer</h2>" />
           <div className="overflow-y-auto">
             {/* <Prose html={disclaimerHtml} /> */}
@@ -73,16 +69,16 @@ export function ModalContent({
       );
     case "BAKING":
       return (
-        <Container closeModal={handleCloseModal}>
-          <Heading>{title}</Heading>
-          {status === "LOCKED" && (
+        <Container status={modal.status} closeModal={handleCloseModal}>
+          <Heading>Baking Bread</Heading>
+          {modal.status === "LOCKED" && (
             <Message>
               Awaiting user response
               <Elipsis />
             </Message>
           )}
 
-          {status === "UNLOCKED" && (
+          {modal.status === "UNLOCKED" && (
             <>
               {txStatus === "PENDING" && (
                 <Message>
@@ -99,19 +95,16 @@ export function ModalContent({
       );
     case "BURNING":
       return (
-        <Container closeModal={handleCloseModal}>
-          {status === "UNLOCKED" && (
-            <CloseModalButton closeModal={handleCloseModal} />
-          )}
-          <Heading>{title}</Heading>
-          {status === "LOCKED" && (
+        <Container status={modal.status} closeModal={handleCloseModal}>
+          <Heading>Burning Bread</Heading>
+          {modal.status === "LOCKED" && (
             <Message>
               Awaiting user response
               <Elipsis />
             </Message>
           )}
 
-          {status === "UNLOCKED" && (
+          {modal.status === "UNLOCKED" && (
             <>
               {txStatus === "PENDING" && (
                 <Message>
@@ -128,19 +121,15 @@ export function ModalContent({
       );
     case "CLAIMING":
       return (
-        <Container closeModal={handleCloseModal}>
-          {status === "UNLOCKED" && (
-            <CloseModalButton closeModal={handleCloseModal} />
-          )}
-          <Heading>{title}</Heading>
-          {status === "LOCKED" && (
+        <Container status={modal.status} closeModal={handleCloseModal}>
+          <Heading>Claiming Yield</Heading>
+          {modal.status === "LOCKED" && (
             <Message>
               Awaiting user response
               <Elipsis />
             </Message>
           )}
-
-          {status === "UNLOCKED" && (
+          {modal.status === "UNLOCKED" && (
             <>
               {txStatus === "PENDING" && (
                 <Message>
@@ -156,7 +145,7 @@ export function ModalContent({
       );
     case "CONNECT_WALLET":
       return (
-        <Container closeModal={handleCloseModal}>
+        <Container status={modal.status} closeModal={handleCloseModal}>
           <Heading>Connecting Wallet</Heading>
           <Message>
             Awaiting user response
@@ -166,7 +155,7 @@ export function ModalContent({
       );
     case "APPROVAL":
       return (
-        <Container closeModal={handleCloseModal}>
+        <Container status={modal.status} closeModal={handleCloseModal}>
           <Heading>Approving Contract</Heading>
           <Message>
             Awaiting user response
@@ -176,7 +165,7 @@ export function ModalContent({
       );
     case "CHANGE_NETWORK":
       return (
-        <Container closeModal={handleCloseModal}>
+        <Container status={modal.status} closeModal={handleCloseModal}>
           <Heading>Changing Network</Heading>
           <Message>
             Awaiting user response
@@ -186,14 +175,14 @@ export function ModalContent({
       );
     case "CHANGING_NETWORK":
       return (
-        <Container closeModal={handleCloseModal}>
+        <Container status={modal.status} closeModal={handleCloseModal}>
           <Heading>Changing Network</Heading>
           <Message>please wait a moment!</Message>
         </Container>
       );
     case "SAFE_TRANSACTION":
       return (
-        <Container closeModal={handleCloseModal}>
+        <Container status={modal.status} closeModal={handleCloseModal}>
           <Heading>Transaction Submitted</Heading>
         </Container>
       );
