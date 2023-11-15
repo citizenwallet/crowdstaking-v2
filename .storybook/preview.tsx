@@ -1,13 +1,11 @@
 import { type Preview } from "@storybook/react";
 
-import { Providers } from "../src/app/core/util";
-
 import "@/app/core/components/Fonts";
 
 const preview: Preview = {
   decorators: [
     (Story) => (
-      <Providers>
+      <>
         {/* Hack required to be able to apply fonts in storybook */}
         <style>
           {`:root {
@@ -16,7 +14,7 @@ const preview: Preview = {
           }`}
         </style>
         <Story />
-      </Providers>
+      </>
     ),
   ],
   parameters: {

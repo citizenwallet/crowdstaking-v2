@@ -21,23 +21,7 @@ import {
   walletConnectWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 
-const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
-
-if (!ALCHEMY_API_KEY) throw new Error("ALCHEMY_API_KEY not set!");
-
-const chainsConfig = configureChains(
-  [polygon, polygonMumbai, { ...hardhat, id: 31337 }],
-  [
-    jsonRpcProvider({
-      rpc: () => ({
-        http: "http://localhost:8545",
-        webSocket: "ws://localhost:8545",
-      }),
-    }),
-    alchemyProvider({ apiKey: ALCHEMY_API_KEY }),
-    publicProvider(),
-  ]
-);
+const chainsConfig = configureChains([polygon], [publicProvider()]);
 
 export const { chains } = chainsConfig;
 
@@ -64,27 +48,8 @@ const connectors = connectorsForWallets([
   },
 ]);
 
-// const connectors = connectorsForWallets([
-//   {
-//     groupName: "Recommended",
-//     wallets: [
-//       rainbowWallet({ projectId, chains }),
-//       metaMaskWallet({ projectId, chains }),
-//       coinbaseWallet({ chains, appName: "My RainbowKit App" }),
-//       walletConnectWallet({ projectId, chains }),
-//     ],
-//   },
-// ]);
-
 export const config = createConfig({
   autoConnect: true,
   connectors,
   publicClient,
 });
-
-// export const testConfig = createConfig({
-//   autoConnect: true,
-//   connectors: [new MetaMaskConnector({ chains })],
-//   publicClient,
-//   webSocketPublicClient,
-// });
