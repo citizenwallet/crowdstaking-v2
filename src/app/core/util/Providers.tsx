@@ -1,6 +1,6 @@
 import "../../app.css";
 import React, { type ReactNode } from "react";
-import WagmiProvider from "../hooks/WagmiProvider";
+import { WagmiProvider } from "../hooks/WagmiProvider";
 import { ConnectedUserProvider } from "../hooks/useConnectedUser";
 import { ModalProvider } from "../hooks/useModal";
 import { ToastProvider } from "../hooks/useToast";

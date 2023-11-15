@@ -1,10 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import Modal, { ModalContent } from "./Modal";
-import { ModalProvider } from "../../hooks/useModal";
-import { TransactionDisplayProvider } from "../../hooks/useTransactionDisplay";
-import { ToastProvider } from "../../hooks/useToast";
-import { WagmiProviderStorybook } from "../../hooks/WagmiProvider";
+import { ModalContent } from "./Modal";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {
@@ -12,17 +8,9 @@ const meta = {
   component: ModalContent,
   decorators: [
     (Story) => (
-      <WagmiProviderStorybook>
-        <ModalProvider>
-          <TransactionDisplayProvider>
-            <ToastProvider>
-              <div className="h-[40rem] w-full bg-breadgray-grey100">
-                <Story />
-              </div>
-            </ToastProvider>
-          </TransactionDisplayProvider>
-        </ModalProvider>
-      </WagmiProviderStorybook>
+      <div className="h-[40rem] w-full bg-breadgray-grey100">
+        <Story />
+      </div>
     ),
   ],
   parameters: {
