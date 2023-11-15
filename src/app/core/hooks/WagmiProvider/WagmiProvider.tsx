@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 import { WagmiConfig } from "wagmi";
-
 import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
+
+import { chains, config } from "./config/testConfig";
 
 const baseTheme = darkTheme({
   accentColor: "#E873D3",
@@ -22,14 +23,12 @@ const theme = {
   },
 };
 
-export default function createWagmiProvider({ config, chains }: any) {
-  return function WagmiProvider({ children }: { children: ReactNode }) {
-    return (
-      <WagmiConfig config={config}>
-        <RainbowKitProvider modalSize="compact" theme={theme} chains={chains}>
-          {children}
-        </RainbowKitProvider>
-      </WagmiConfig>
-    );
-  };
+export function WagmiProvider({ children }: { children: ReactNode }) {
+  return (
+    <WagmiConfig config={config}>
+      <RainbowKitProvider modalSize="compact" theme={theme} chains={chains}>
+        {children}
+      </RainbowKitProvider>
+    </WagmiConfig>
+  );
 }
