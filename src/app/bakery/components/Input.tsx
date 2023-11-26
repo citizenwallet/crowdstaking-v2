@@ -25,7 +25,6 @@ function Input({ name, value, handleInputChange }: TProps) {
       spellCheck="false"
       onChange={handleInputChange}
       value={value}
-      disabled={user.status !== "CONNECTED"}
     />
   );
 }

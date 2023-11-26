@@ -1,9 +1,11 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
-import { useModal } from "../hooks/useModal";
 import Button from "./Button";
 import { TButtonVariant } from "./Button/Button";
 import Image from "next/image";
+import WalletDisplay from "./Header/WalletDisplay";
+import WalletInfo from "./Header/WalletDisplay/WalletInfo";
+import { useDisconnect } from "wagmi";
 
 export default function ConnectWallet({
   variant,
@@ -12,6 +14,7 @@ export default function ConnectWallet({
   variant: TButtonVariant;
   fullWidth?: boolean;
 }) {
+  const { disconnectAsync } = useDisconnect();
   return (
     <ConnectButton.Custom>
       {({
@@ -56,54 +59,63 @@ export default function ConnectWallet({
                 );
               }
 
-              if (chain.unsupported) {
-                return (
-                  <Button
-                    onClick={openChainModal}
-                    variant={variant}
-                    fullWidth={fullWidth}
-                  >
-                    Switch Network
-                  </Button>
-                );
-              }
+              // if (chain.unsupported) {
+              //   return (
+              //     <Button
+              //       onClick={openChainModal}
+              //       variant={variant}
+              //       fullWidth={fullWidth}
+              //     >
+              //       Switch Network
+              //     </Button>
+              //   );
+              // }
 
               return (
-                <div style={{ display: "flex", gap: 12 }}>
-                  <Button
-                    onClick={openChainModal}
-                    variant={variant}
-                    fullWidth={fullWidth}
-                  >
-                    {chain.hasIcon && (
+                <div className="flex gap-12">
+                  <button onClick={openChainModal} className="flex gap-2">
+                    {chain.hasIcon ? (
                       <div
+                        className="w-6 h-6 relative rounded-full overflow-hidden"
                         style={{
                           background: chain.iconBackground,
-                          width: 12,
-                          height: 12,
-                          borderRadius: 999,
-                          overflow: "hidden",
-                          marginRight: 4,
                         }}
                       >
-                        {chain.iconUrl && (
-                          <Image
-                            alt={chain.name ?? "Chain icon"}
-                            src={chain.iconUrl}
-                            style={{ width: 12, height: 12 }}
-                          />
-                        )}
+                        <div className="w-6 h-6 relative">
+                          {chain.iconUrl && (
+                            <Image
+                              alt={chain.name ?? "Chain icon"}
+                              src={chain.iconUrl}
+                              layout="fill"
+                            />
+                          )}
+                        </div>
                       </div>
+                    ) : (
+                      <div className="w-6 h-6 relative rounded-full overflow-hidden bg-breadgray-rye" />
                     )}
-                    {chain.name}
-                  </Button>
-
-                  <button onClick={openAccountModal} type="button">
-                    {account.displayName}
-                    {account.displayBalance
-                      ? ` (${account.displayBalance})`
-                      : ""}
+                    <div className="h-full flex items-center text-breadgray-rye">
+                      <svg
+                        height="7"
+                        width="14"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M12.75 1.54001L8.51647 5.0038C7.77974 5.60658 6.72026 5.60658 5.98352 5.0038L1.75 1.54001"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2.5"
+                          xmlns="http://www.w3.org/2000/svg"
+                        ></path>
+                      </svg>
+                    </div>
                   </button>
+                  <WalletInfo
+                    account={account}
+                    chainString={"unknown"}
+                    handleDisconnect={() => disconnectAsync()}
+                  />
                 </div>
               );
             })()}

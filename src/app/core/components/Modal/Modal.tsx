@@ -19,10 +19,28 @@ import { CloseModalButton, Container, Heading, Message } from "./ui";
 import ConnectorsModal from "./ConnectorsModal";
 import Elipsis from "@/app/core/components/Elipsis";
 import { ReactNode, Ref, forwardRef } from "react";
+import { useNetwork } from "wagmi";
+import { watchAsset } from "../../util";
 
 const Modal = () => {
-  const { state: modal } = useModal();
+  const { state: modalState, dispatch: modalDispatch } = useModal();
   const { state: txState } = useTransactionDisplay();
+  const { chain: activeChain } = useNetwork();
+
+  const txStatus = txState?.status;
+
+  const handleCloseModal = () => {
+    if (modalState?.status === "UNLOCKED")
+      modalDispatch({ type: "CLEAR_MODAL" });
+  };
+
+  const handleAddToken = async (token: "DAI" | "BREAD") => {
+    if (!activeChain || activeChain.unsupported)
+      throw new Error("Active chain not valid");
+    const { id: chainId } = activeChain;
+    watchAsset(token, chainId);
+  };
+
   return (
     <DialogPrimitive.Root>
       <DialogPrimitive.Portal>
@@ -30,10 +48,17 @@ const Modal = () => {
 
         <DialogPrimitive.Content
           onPointerDownOutside={(event) => {
-            modal?.status === "LOCKED" && event.preventDefault();
+            modalState?.status === "LOCKED" && event.preventDefault();
           }}
         >
-          {modal && <ModalContent modal={modal} txState={txState} />}
+          {modalState && (
+            <ModalContent
+              modalState={modalState}
+              txState={txState}
+              handleCloseModal={handleCloseModal}
+              handleAddToken={handleAddToken}
+            />
+          )}
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>
@@ -41,26 +66,22 @@ const Modal = () => {
 };
 
 export function ModalContent({
-  modal,
+  modalState,
   txState,
+  handleCloseModal,
+  handleAddToken,
 }: {
-  modal: Exclude<TModalState, null>;
+  modalState: Exclude<TModalState, null>;
   txState: TTransactionDisplayState;
+  handleCloseModal: () => void;
+  handleAddToken: (tokenType: "BREAD" | "DAI") => void;
 }) {
-  const { dispatch: modalDispatch } = useModal();
-
-  const txStatus = txState?.status;
-
-  const handleCloseModal = () => {
-    if (status === "UNLOCKED") modalDispatch({ type: "CLEAR_MODAL" });
-  };
-
-  switch (modal.type) {
+  switch (modalState.type) {
     case "CONNECTORS":
       return <ConnectorsModal handleCloseModal={handleCloseModal} />;
     case "DISCLAIMER":
       return (
-        <Container status={modal.status} closeModal={handleCloseModal}>
+        <Container status={modalState.status} closeModal={handleCloseModal}>
           <Prose html="<h2>Disclaimer</h2>" />
           <div className="overflow-y-auto">
             {/* <Prose html={disclaimerHtml} /> */}
@@ -69,74 +90,74 @@ export function ModalContent({
       );
     case "BAKING":
       return (
-        <Container status={modal.status} closeModal={handleCloseModal}>
+        <Container status={modalState.status} closeModal={handleCloseModal}>
           <Heading>Baking Bread</Heading>
-          {modal.status === "LOCKED" && (
+          {modalState.status === "LOCKED" && (
             <Message>
               Awaiting user response
               <Elipsis />
             </Message>
           )}
 
-          {modal.status === "UNLOCKED" && (
+          {modalState.status === "UNLOCKED" && (
             <>
-              {txStatus === "PENDING" && (
+              {txState?.status === "PENDING" && (
                 <Message>
                   Transaction in progress <Elipsis />
                 </Message>
               )}
-              {txStatus === "COMPLETE" && (
+              {txState?.status === "COMPLETE" && (
                 <Message>Transaction complete!</Message>
               )}
-              <AddTokens />
+              <AddTokens handleAddToken={handleAddToken} />
             </>
           )}
         </Container>
       );
     case "BURNING":
       return (
-        <Container status={modal.status} closeModal={handleCloseModal}>
+        <Container status={modalState.status} closeModal={handleCloseModal}>
           <Heading>Burning Bread</Heading>
-          {modal.status === "LOCKED" && (
+          {modalState.status === "LOCKED" && (
             <Message>
               Awaiting user response
               <Elipsis />
             </Message>
           )}
 
-          {modal.status === "UNLOCKED" && (
+          {modalState.status === "UNLOCKED" && (
             <>
-              {txStatus === "PENDING" && (
+              {txState?.status === "PENDING" && (
                 <Message>
                   Transaction in progress <Elipsis />
                 </Message>
               )}
-              {txStatus === "COMPLETE" && (
+              {txState?.status === "COMPLETE" && (
                 <Message>Transaction complete!</Message>
               )}
-              <AddTokens />
+              <AddTokens handleAddToken={handleAddToken} />
             </>
           )}
         </Container>
       );
     case "CLAIMING":
       return (
-        <Container status={modal.status} closeModal={handleCloseModal}>
+        <Container status={modalState.status} closeModal={handleCloseModal}>
           <Heading>Claiming Yield</Heading>
-          {modal.status === "LOCKED" && (
+          {modalState.status === "LOCKED" && (
             <Message>
               Awaiting user response
               <Elipsis />
             </Message>
           )}
-          {modal.status === "UNLOCKED" && (
+          {modalState.status === "UNLOCKED" && (
             <>
-              {txStatus === "PENDING" && (
+              {txState?.status === "PENDING" && (
                 <Message>
                   Transaction in progress <Elipsis />
                 </Message>
               )}
-              {txStatus === "COMPLETE" && (
+              {txState?.status === "COMPLETE" && (
                 <Message>Transaction complete!</Message>
               )}
             </>
@@ -145,7 +166,7 @@ export function ModalContent({
       );
     case "CONNECT_WALLET":
       return (
-        <Container status={modal.status} closeModal={handleCloseModal}>
+        <Container status={modalState.status} closeModal={handleCloseModal}>
           <Heading>Connecting Wallet</Heading>
           <Message>
             Awaiting user response
@@ -155,7 +176,7 @@ export function ModalContent({
       );
     case "APPROVAL":
       return (
-        <Container status={modal.status} closeModal={handleCloseModal}>
+        <Container status={modalState.status} closeModal={handleCloseModal}>
           <Heading>Approving Contract</Heading>
           <Message>
             Awaiting user response
@@ -165,7 +186,7 @@ export function ModalContent({
       );
     case "CHANGE_NETWORK":
       return (
-        <Container status={modal.status} closeModal={handleCloseModal}>
+        <Container status={modalState.status} closeModal={handleCloseModal}>
           <Heading>Changing Network</Heading>
           <Message>
             Awaiting user response
@@ -175,14 +196,14 @@ export function ModalContent({
       );
     case "CHANGING_NETWORK":
       return (
-        <Container status={modal.status} closeModal={handleCloseModal}>
+        <Container status={modalState.status} closeModal={handleCloseModal}>
           <Heading>Changing Network</Heading>
           <Message>please wait a moment!</Message>
         </Container>
       );
     case "SAFE_TRANSACTION":
       return (
-        <Container status={modal.status} closeModal={handleCloseModal}>
+        <Container status={modalState.status} closeModal={handleCloseModal}>
           <Heading>Transaction Submitted</Heading>
         </Container>
       );

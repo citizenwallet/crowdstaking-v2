@@ -23,12 +23,12 @@ const theme = {
   },
 };
 
-// export function WagmiProvider({ children }: { children: ReactNode }) {
-//   return (
-//     <WagmiConfig config={config}>
-//       <RainbowKitProvider modalSize="compact" theme={theme} chains={chains}>
-//         {children}
-//       </RainbowKitProvider>
-//     </WagmiConfig>
-//   );
-// }
+export function WagmiProvider({ children }: { children: ReactNode }) {
+  return (
+    <WagmiConfig config={config}>
+      <RainbowKitProvider modalSize="compact" theme={theme} chains={chains}>
+        {children}
+      </RainbowKitProvider>
+    </WagmiConfig>
+  );
+}

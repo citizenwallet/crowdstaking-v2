@@ -1,4 +1,3 @@
-import NativeBalance from "../NativeBalance";
 import { TUserConnected } from "@/app/core/hooks/useConnectedUser";
 import Button from "@/app/core/components/Button";
 import { useDAIAllowance } from "../../hooks/useDAIAllowance";
@@ -16,16 +15,14 @@ export default function BakeOrBurn({
   });
 
   return (
-    <div className="w-full">
-      <div className="p-2 w-full flex flex-col gap-2">
-        {daiAllowance !== "0" ? (
-          <Button fullWidth={true} variant="large" onClick={() => {}}>
-            {mode === "BAKE" ? "Bake" : "Burn"}
-          </Button>
-        ) : (
-          <ApproveContract chainConfig={user.config} />
-        )}
-      </div>
+    <div className="p-2 w-full flex flex-col gap-2">
+      {daiAllowance !== "0" ? (
+        <Button fullWidth={true} variant="large" onClick={() => {}}>
+          {mode === "BAKE" ? "Bake" : "Burn"}
+        </Button>
+      ) : (
+        <ApproveContract chainConfig={user.config} />
+      )}
     </div>
   );
 }

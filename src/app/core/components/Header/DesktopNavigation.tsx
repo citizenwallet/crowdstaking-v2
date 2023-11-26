@@ -13,7 +13,7 @@ function DesktopNavigationLink(props: {
   return (
     <Link
       className={clsx(
-        "font-redhat dark:hover:text-breadgray-light-grey text-breadgray-burnt hover:text-breadgray-charcoal active:text-breadgray-violet flex items-center px-2 text-xl font-bold leading-none tracking-wider min-[810px]:px-4",
+        "font-redhat dark:hover:text-breadgray-light-grey text-breadgray-burnt hover:text-breadgray-charcoal active:text-breadgray-violet flex items-center p-2 text-xl font-bold leading-none tracking-wider min-[810px]:px-4",
         isCurrentPage
           ? "dark:text-breadgray-light-grey"
           : "dark:text-breadgray-grey"
@@ -38,20 +38,6 @@ function DesktopNavigation({ currentPath }: { currentPath: string }) {
       >
         Dashboard
       </DesktopNavigationLink>
-      {/* <DesktopNavigationLink
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://breadchain.mirror.xyz/"
-      >
-        Blog
-      </DesktopNavigationLink> */}
-      {/* <DesktopNavigationLink
-       
-       //isCurrentPage={currentPath === '/dashboard'}
-        href"/dashboard"
-      >
-        Dashboard
-      </DesktopNavigationLink> */}
     </nav>
   );
 }

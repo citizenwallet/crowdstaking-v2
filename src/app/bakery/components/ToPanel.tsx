@@ -1,4 +1,8 @@
-import type { UseTokenBalanceResult } from "../hooks/useTokenBalance";
+import Elipsis from "@/app/core/components/Elipsis";
+import {
+  useTokenBalance,
+  type UseTokenBalanceResult,
+} from "../hooks/useTokenBalance";
 import {
   TokenBalanceContainer,
   TokenBalanceText,
@@ -6,7 +10,6 @@ import {
   TokenLabelText,
 } from "./FromPanel";
 import Icon from "./Icon";
-import TokenBalance from "./TokenBalance";
 import {
   PanelBalance,
   ToPanelContainer,
@@ -14,12 +17,21 @@ import {
   PanelHeader,
   PanelLabel,
 } from "./TokenDisplay";
+import config from "@/config";
+import {
+  TUserConnected,
+  useConnectedUser,
+} from "@/app/core/hooks/useConnectedUser";
+import { balanceFormatter } from "@/app/core/util";
+import { TSwapMode } from "./Swap/Swap";
 
 interface IProps {
   inputValue: string;
-  tokenType: "DAI" | "BREAD";
+  swapMode: TSwapMode;
 }
-function ToPanel({ inputValue, tokenType }: IProps) {
+function ToPanel({ inputValue, swapMode }: IProps) {
+  const { user } = useConnectedUser();
+
   return (
     <ToPanelContainer>
       <PanelLabel>You receive</PanelLabel>
@@ -31,18 +43,50 @@ function ToPanel({ inputValue, tokenType }: IProps) {
         <div className="flex flex-col gap-2">
           <div className="flex justify-end pt-1">
             <TokenLabelContainer>
-              <Icon type={tokenType} />
-              <TokenLabelText>{tokenType}</TokenLabelText>
+              <Icon type={swapMode === "BURN" ? "DAI" : "BREAD"} />
+              <TokenLabelText>
+                {swapMode === "BURN" ? "DAI" : "BREAD"}
+              </TokenLabelText>
             </TokenLabelContainer>
           </div>
-          <TokenBalanceContainer>
-            <div className="pr-2 md:pr-4">
-              <TokenBalanceText>Balance:</TokenBalanceText>
-            </div>
-          </TokenBalanceContainer>
+          {user.status === "CONNECTED" ? (
+            <TokenBalance user={user} swapMode={swapMode} />
+          ) : (
+            <TokenBalanceContainer> </TokenBalanceContainer>
+          )}
         </div>
       </PanelContent>
     </ToPanelContainer>
+  );
+}
+
+function TokenBalance({
+  user,
+  swapMode,
+}: {
+  user: TUserConnected;
+  swapMode: TSwapMode;
+  /* eslint-disable-next-line */
+}) {
+  const { value, status, error } = useTokenBalance(
+    swapMode === "BURN"
+      ? config[user.chain.id].BREAD.address
+      : config[user.chain.id].DAI.address,
+    user.address
+  );
+  return (
+    <TokenBalanceContainer>
+      <TokenBalanceText>
+        Balance:{" "}
+        {status === "loading" ? (
+          <Elipsis />
+        ) : status === "success" ? (
+          value && balanceFormatter.format(parseInt(value))
+        ) : (
+          ""
+        )}
+      </TokenBalanceText>
+    </TokenBalanceContainer>
   );
 }
 

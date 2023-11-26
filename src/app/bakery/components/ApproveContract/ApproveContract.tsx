@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { hexToBigInt } from "viem";
 import { useContractWrite, usePrepareContractWrite } from "wagmi";
+import { Trigger } from "@radix-ui/react-dialog";
 
 import type { ChainConfiguration } from "@/config";
 import {
@@ -84,7 +85,7 @@ function ApproveContract({ chainConfig }: IProps) {
   const handleApproveContract = async () => {
     dispatchModal({
       type: "SET_MODAL",
-      payload: { type: "APPROVAL", title: "Approving BREAD Contract" },
+      payload: { type: "APPROVAL" },
     });
     write?.();
   };
@@ -100,6 +101,7 @@ function ApproveContract({ chainConfig }: IProps) {
       >
         Approve Contract
       </Button>
+
       <div className="px-2 pb-4 text-sm font-medium text-neutral-400">
         You&apos;ll need to approve the BREAD contract to mint BREAD
       </div>

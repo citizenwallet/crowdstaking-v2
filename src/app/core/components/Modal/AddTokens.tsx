@@ -1,19 +1,10 @@
-import { useNetwork } from "wagmi";
-
-import { watchAsset } from "@/app/core/util/index";
-
 import Button from "../Button";
 
-export function AddTokens() {
-  const { chain: activeChain } = useNetwork();
-
-  const handleAddToken = async (token: "DAI" | "BREAD") => {
-    if (!activeChain || activeChain.unsupported)
-      throw new Error("Active chain not valid");
-    const { id: chainId } = activeChain;
-    watchAsset(token, chainId);
-  };
-
+export function AddTokens({
+  handleAddToken,
+}: {
+  handleAddToken: (tokenType: "BREAD" | "DAI") => void;
+}) {
   return (
     <div className="p-2 pt-12">
       <div className="mb-8 text-breadgray-light-grey">Add tokens to wallet</div>

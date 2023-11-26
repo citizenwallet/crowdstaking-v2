@@ -1,9 +1,7 @@
-import clsx from 'clsx';
-
-function CaretIcon({ isRotated }: { isRotated: boolean }) {
+function CaretIcon() {
   return (
     <svg
-      className={clsx('fill-current', isRotated ? 'rotate-180 transform' : '')}
+      className="fill-current caret-down"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
     >

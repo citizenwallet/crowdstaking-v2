@@ -7,7 +7,7 @@ tmux rename-window -t breadchain:1 "chain"
 tmux send-keys -t breadchain:1 "pnpm hardhat:chain" Enter
 tmux split-window -dt breadchain:1
 tmux split-window -ht breadchain:1
-tmux send-keys -t breadchain:1 "pnpm dev" Enter
+tmux send-keys -t breadchain:1 "pnpm next:dev" Enter
 
 tmux select-window -t breadchain:1
 tmux attach-session -d -t breadchain

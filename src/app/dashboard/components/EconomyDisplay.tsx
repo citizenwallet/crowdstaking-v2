@@ -32,7 +32,7 @@ export default function EconomyDisplay() {
           <div className="h-[350px]">
             {weeklyData && <BreadChart chartData={weeklyData} />}
           </div>
-          {/* <Yield /> */}
+          <Yield />
           <DashboardGroup>
             <Arrakis />
             <div className="py-2">

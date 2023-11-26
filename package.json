@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "serve": "serve out",
+    "next:dev": "next dev",
+    "next:build": "next build",
+    "next:serve": "serve out",
     "prod": "pnpm run build && pnpm run serve",
     "start": "next start",
     "lint": "next lint",
@@ -21,6 +21,7 @@
   "dependencies": {
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-navigation-menu": "^1.1.4",
     "@rainbow-me/rainbowkit": "^1.2.0",
     "@safe-global/safe-apps-sdk": "^8.1.0",
     "clsx": "^2.0.0",

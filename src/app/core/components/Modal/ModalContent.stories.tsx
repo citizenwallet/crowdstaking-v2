@@ -32,21 +32,21 @@ type Story = StoryObj<typeof meta>;
 
 export const Connecting: Story = {
   args: {
-    modal: { type: "CONNECT_WALLET", status: "LOCKED" },
+    modalState: { type: "CONNECT_WALLET", status: "LOCKED" },
     txState: null,
   },
 };
 
 export const ApproveContractLocked: Story = {
   args: {
-    modal: { type: "APPROVAL", status: "LOCKED" },
+    modalState: { type: "APPROVAL", status: "LOCKED" },
     txState: null,
   },
 };
 
 export const ApproveContractPending: Story = {
   args: {
-    modal: { type: "APPROVAL", status: "LOCKED" },
+    modalState: { type: "APPROVAL", status: "LOCKED" },
     txState: {
       status: "PENDING",
       hash: "0x89n3075438n9v724890n7v298",
@@ -56,7 +56,7 @@ export const ApproveContractPending: Story = {
 
 export const ApproveContractComplete: Story = {
   args: {
-    modal: { type: "APPROVAL", status: "LOCKED" },
+    modalState: { type: "APPROVAL", status: "LOCKED" },
     txState: {
       status: "COMPLETE",
       hash: "0x89n3075438n9v724890n7v298",
@@ -66,14 +66,14 @@ export const ApproveContractComplete: Story = {
 
 export const BakingLocked: Story = {
   args: {
-    modal: { type: "BAKING", amount: "300", status: "LOCKED" },
+    modalState: { type: "BAKING", amount: "300", status: "LOCKED" },
     txState: null,
   },
 };
 
 export const BakingPending: Story = {
   args: {
-    modal: { type: "BAKING", amount: "300", status: "UNLOCKED" },
+    modalState: { type: "BAKING", amount: "300", status: "UNLOCKED" },
     txState: {
       status: "PENDING",
       hash: "0x89n3075438n9v724890n7v298",
@@ -83,7 +83,7 @@ export const BakingPending: Story = {
 
 export const BakingComplete: Story = {
   args: {
-    modal: { type: "BAKING", amount: "300", status: "UNLOCKED" },
+    modalState: { type: "BAKING", amount: "300", status: "UNLOCKED" },
     txState: {
       status: "COMPLETE",
       hash: "0x89n3075438n9v724890n7v298",
@@ -93,14 +93,14 @@ export const BakingComplete: Story = {
 
 export const BurningLocked: Story = {
   args: {
-    modal: { type: "BURNING", amount: "300", status: "LOCKED" },
+    modalState: { type: "BURNING", amount: "300", status: "LOCKED" },
     txState: null,
   },
 };
 
 export const BuringPending: Story = {
   args: {
-    modal: { type: "BURNING", amount: "300", status: "UNLOCKED" },
+    modalState: { type: "BURNING", amount: "300", status: "UNLOCKED" },
     txState: {
       status: "PENDING",
       hash: "0x89n3075438n9v724890n7v298",
@@ -110,7 +110,7 @@ export const BuringPending: Story = {
 
 export const BurningComplete: Story = {
   args: {
-    modal: { type: "BURNING", amount: "300", status: "UNLOCKED" },
+    modalState: { type: "BURNING", amount: "300", status: "UNLOCKED" },
     txState: {
       status: "COMPLETE",
       hash: "0x89n3075438n9v724890n7v298",

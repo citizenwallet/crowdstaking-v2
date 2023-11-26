@@ -1,9 +1,7 @@
-import { configureChains, createConfig } from "wagmi";
+import { configureChains, createConfig, mainnet } from "wagmi";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
 import { hardhat, polygon, polygonMumbai } from "wagmi/chains";
-import { MetaMaskConnector } from "wagmi/connectors/metaMask";
-import { InjectedConnector } from "wagmi/connectors/injected";
 import {
   connectorsForWallets,
   getDefaultWallets,
@@ -12,18 +10,19 @@ import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import {
   argentWallet,
-  coinbaseWallet,
   injectedWallet,
   ledgerWallet,
-  metaMaskWallet,
-  rainbowWallet,
   trustWallet,
-  walletConnectWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 
-const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
+const ALCHEMY_POLYGON_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_POLYGON_API_KEY;
+if (!ALCHEMY_POLYGON_API_KEY)
+  throw new Error("ALCHEMY_POLYGON_API_KEY not set!");
 
-if (!ALCHEMY_API_KEY) throw new Error("ALCHEMY_API_KEY not set!");
+const WALLET_CONNECT_PROJECT_ID =
+  process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID;
+if (!WALLET_CONNECT_PROJECT_ID)
+  throw new Error("WALLET_CONNECT_PROJECT_ID not set!");
 
 const chainsConfig = configureChains(
   [polygon, polygonMumbai, { ...hardhat, id: 31337 }],
@@ -34,7 +33,7 @@ const chainsConfig = configureChains(
         webSocket: "ws://localhost:8545",
       }),
     }),
-    alchemyProvider({ apiKey: ALCHEMY_API_KEY }),
+    alchemyProvider({ apiKey: ALCHEMY_POLYGON_API_KEY }),
     publicProvider(),
   ]
 );
@@ -43,10 +42,10 @@ export const { chains } = chainsConfig;
 
 const { publicClient } = chainsConfig;
 
-const projectId = "YOUR_PROJECT_ID";
+const projectId = WALLET_CONNECT_PROJECT_ID;
 
 const { wallets } = getDefaultWallets({
-  appName: "My RainbowKit App",
+  appName: "Breadchain Crowdstaking",
   projectId,
   chains,
 });

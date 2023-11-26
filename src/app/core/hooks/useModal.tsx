@@ -9,6 +9,7 @@ import {
   useReducer,
   useState,
 } from "react";
+import { TTransactionDisplayState } from "./useTransactionDisplay";
 
 export type TModalType =
   | "DISCLAIMER"
@@ -48,7 +49,6 @@ export type TModalAction =
       type: "SET_MODAL";
       payload: {
         type: TModalType;
-        title: string;
       };
     }
   | {
@@ -132,7 +132,7 @@ function ModalProvider({
 
   return (
     <ModalContext.Provider value={value}>
-      <DialogPrimitive.Root open={isOpen} onOpenChange={onOpenChange}>
+      <DialogPrimitive.Root open={!!state} onOpenChange={onOpenChange}>
         {children}
       </DialogPrimitive.Root>
     </ModalContext.Provider>
