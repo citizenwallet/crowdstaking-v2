@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Address, GetEnsNameReturnType, createPublicClient, http } from "viem";
+import { Address, createPublicClient, http } from "viem";
 import { mainnet } from "viem/chains";
 
 const ALCHEMY_MAINNET_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_MAINNET_API_KEY;
