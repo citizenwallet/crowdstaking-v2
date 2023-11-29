@@ -39,7 +39,6 @@ function ClaimYieldButton({ config }: { config: ChainConfiguration }) {
       type: "SET_MODAL",
       payload: {
         type: "CLAIMING",
-        title: `claiming yield`,
       },
     });
 

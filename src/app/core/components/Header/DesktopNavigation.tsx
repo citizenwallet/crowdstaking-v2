@@ -31,13 +31,13 @@ function DesktopNavigation({ currentPath }: { currentPath: string }) {
       <DesktopNavigationLink isCurrentPage={currentPath === "/"} href="/">
         Bake
       </DesktopNavigationLink>
-      <DesktopNavigationLink
+      {/* <DesktopNavigationLink
         isCurrentPage={currentPath === "/dashboard/"}
         href="/dashboard/"
         rel="prefetch"
       >
         Dashboard
-      </DesktopNavigationLink>
+      </DesktopNavigationLink> */}
     </nav>
   );
 }

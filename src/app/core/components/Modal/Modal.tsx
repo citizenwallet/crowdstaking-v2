@@ -1,11 +1,6 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 
-import {
-  type TModalStatus,
-  type TModalType,
-  useModal,
-  TModalState,
-} from "@/app/core/hooks/useModal";
+import { useModal, TModalState } from "@/app/core/hooks/useModal";
 import {
   TTransactionDisplayState,
   useTransactionDisplay,
@@ -13,10 +8,9 @@ import {
 
 import Prose from "@/app/core/components/Prose";
 import AddTokens from "./AddTokens";
-import { CloseModalButton, Container, Heading, Message } from "./ui";
+import { Container, Heading, Message } from "./ui";
 
 // import { html as disclaimerHtml } from "@/markdown/disclaimer.md";
-import ConnectorsModal from "./ConnectorsModal";
 import Elipsis from "@/app/core/components/Elipsis";
 import { ReactNode, Ref, forwardRef } from "react";
 import { useNetwork } from "wagmi";
@@ -77,8 +71,6 @@ export function ModalContent({
   handleAddToken: (tokenType: "BREAD" | "DAI") => void;
 }) {
   switch (modalState.type) {
-    case "CONNECTORS":
-      return <ConnectorsModal handleCloseModal={handleCloseModal} />;
     case "DISCLAIMER":
       return (
         <Container status={modalState.status} closeModal={handleCloseModal}>

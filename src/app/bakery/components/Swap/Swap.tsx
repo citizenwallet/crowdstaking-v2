@@ -1,12 +1,6 @@
-import type { ChangeEvent, MouseEvent } from "react";
-import { useEffect, useState } from "react";
+import type { ChangeEvent } from "react";
+import { useState } from "react";
 
-import type { ChainConfiguration } from "@/config";
-
-// import Button from '../Button';
-import ApproveContract from "../ApproveContract";
-// import BakeOrBurn from "../BakeOrBurn/BakeOrBurn";
-import CheckingApproval from "../CheckingApproval";
 import FromPanel from "../FromPanel";
 import SwapReverse from "../SwapReverse";
 import ToPanel from "../ToPanel";
@@ -14,17 +8,10 @@ import Transaction from "../Transaction";
 import { sanitizeInputValue } from "../swapUtils";
 import { useToast } from "@/app/core/hooks/useToast";
 import { useTransactionDisplay } from "@/app/core/hooks/useTransactionDisplay";
-
 import NativeBalance from "../NativeBalance";
-import {
-  TConnectedUserState,
-  TUserConnected,
-  useConnectedUser,
-} from "@/app/core/hooks/useConnectedUser";
+import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
 import Button from "@/app/core/components/Button";
 import ConnectWallet from "@/app/core/components/ConnectWallet";
-import { useDAIAllowance } from "../../hooks/useDAIAllowance";
-import Elipsis from "@/app/core/components/Elipsis";
 import BakeOrBurn from "../BakeOrBurn";
 import { useChainModal } from "@rainbow-me/rainbowkit";
 
@@ -107,18 +94,18 @@ export function Swap() {
             <ToPanel inputValue={swapState.value} swapMode={swapState.mode} />
           </div>
         </div>
-        <div className="w-full">
-          <div className="p-2 w-full flex flex-col gap-2">
-            {user.status === "CONNECTED" && (
+        {user.status === "CONNECTED" && (
+          <div className="w-full">
+            <div className="p-2 w-full flex flex-col gap-2">
               <div className="w-full p-2 text-neutral-500 rounded-md border-[0.1rem] font-medium border-neutral-800">
                 Matic Balance{" "}
                 <>
                   <NativeBalance address={user.address} />
                 </>
               </div>
-            )}
+            </div>
           </div>
-        </div>
+        )}
         {user.status === "LOADING" && (
           <div className="p-3 w-full">
             <div className="h-16 bg-neutral-800 rounded-xl" />

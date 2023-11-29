@@ -1,13 +1,9 @@
-import clsx from "clsx";
-import { type ReactNode, useState } from "react";
+import { type ReactNode } from "react";
 import Image from "next/image";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { formatAddress } from "../../../util";
-import { IconContainer, WalletIcon } from "../../Icons";
+import { IconContainer } from "../../Icons";
 import CaretIcon from "../../Icons/CaretIcon";
-import WalletMenu from "./WalletMenu";
-import { AnimatePresence } from "framer-motion";
-import { Address } from "viem";
 import Button from "../../Button";
 import { useEnsName } from "@/app/core/hooks/useEnsName";
 
@@ -21,7 +17,7 @@ export function Row({ children }: { children: ReactNode }) {
 
 interface IProps {
   account: {
-    address: Address;
+    address: string;
     displayName: string;
     ensAvatar?: string;
     ensName?: string;
@@ -32,8 +28,6 @@ interface IProps {
 
 function WalletInfo({ account, handleDisconnect, chainString }: IProps) {
   const ensNameResult = useEnsName(account.address);
-  // const ensAvatar = useEnsAvatar(account.address);
-  console.log({ ensNameResult });
   return (
     <NavigationMenu.Root>
       <NavigationMenu.List>

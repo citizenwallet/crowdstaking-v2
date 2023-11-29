@@ -6,7 +6,7 @@ function SwapReverse({ onClick }: TProps) {
   return (
     <button
       type="button"
-      className="absolute top-1/2 left-1/2 transform  -translate-y-1/2 -translate-x-1/2  inline-block  bg-breadgray-grey300 px-3 py-1.5 text-neutral-600 hover:text-neutral-500 border-2 rounded-lg border-breadgray-grey200"
+      className="absolute top-1/2 left-1/2 transform  -translate-y-1/2 -translate-x-1/2  inline-block  bg-breadgray-grey300 px-3 py-1.5 text-neutral-500 hover:text-neutral-300 border-2 rounded-lg border-breadgray-grey200 hover:border-breadpink-shaded transition-colors"
       onClick={onClick}
     >
       <DownIcon />
