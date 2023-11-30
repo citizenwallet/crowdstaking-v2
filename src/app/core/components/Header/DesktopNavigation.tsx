@@ -27,7 +27,10 @@ function DesktopNavigationLink(props: {
 
 function DesktopNavigation({ currentPath }: { currentPath: string }) {
   return (
-    <nav className="hidden flex-grow items-center gap-2 pl-6 md:flex lg:gap-4 lg:pl-12">
+    <nav
+      aria-label="site navigation"
+      className="hidden flex-grow items-center gap-2 pl-6 md:flex lg:gap-4 lg:pl-12"
+    >
       <DesktopNavigationLink isCurrentPage={currentPath === "/"} href="/">
         Bake
       </DesktopNavigationLink>

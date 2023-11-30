@@ -97,7 +97,7 @@ export function Swap() {
         {user.status === "CONNECTED" && (
           <div className="w-full">
             <div className="p-2 w-full flex flex-col gap-2">
-              <div className="w-full p-2 text-neutral-500 rounded-md border-[0.1rem] font-medium border-neutral-800">
+              <div className="w-full flex justify-end gap-2 px-6 py-2 text-neutral-400 rounded-md border-[0.1rem] font-medium border-neutral-800 text-sm">
                 Matic Balance{" "}
                 <>
                   <NativeBalance address={user.address} />

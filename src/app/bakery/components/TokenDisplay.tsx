@@ -49,6 +49,6 @@ export function ToPanelContainer({ children }: { children: ReactNode }) {
 
 export function PanelLabel({ children }: { children: ReactNode }) {
   return (
-    <span className="text-sm text-neutral-600 inline-block">{children}</span>
+    <span className="text-sm text-neutral-400 inline-block">{children}</span>
   );
 }

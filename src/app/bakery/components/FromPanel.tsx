@@ -87,7 +87,7 @@ export function TokenBalanceContainer({ children }: { children: ReactNode }) {
 
 export function TokenBalanceText({ children }: { children: ReactNode }) {
   return (
-    <div className="font-medium text-neutral-500 text-xs sm:text-[0.85rem] text-right">
+    <div className="font-medium text-neutral-400 text-xs sm:text-[0.85rem] text-right">
       {children}
     </div>
   );

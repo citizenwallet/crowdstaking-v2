@@ -1,32 +1,32 @@
 export default function BreadIcon() {
   return (
-    <div className="w-full h-full p-1 rounded-full bg-breadgray-rye">
-      <svg
-        className="h-full w-full object-contain"
-        viewBox="0 0 32 32"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M5.56522 0.695679C2.49163 0.695679 0 3.18731 0 6.2609C0 9.33423 2.49122 11.8257 5.56445 11.8261V26.3043C5.56445 29.0657 7.80303 31.3043 10.5645 31.3043H21.434C24.1954 31.3043 26.434 29.0657 26.434 26.3043V11.8261H26.4348C29.5084 11.8261 32 9.33448 32 6.2609C32 3.18731 29.5084 0.695679 26.4348 0.695679L5.56522 0.695679Z"
-          fill="url(#paint0_linear_2511_162)"
-        />
-        <defs>
-          <linearGradient
-            id="paint0_linear_2511_162"
-            x1="4.4"
-            y1="24.7999"
-            x2="26.3531"
-            y2="5.47278"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stopColor="#D04EC5" />
-            <stop offset="1" stopColor="#ED7BC7" />
-          </linearGradient>
-        </defs>
-      </svg>
-    </div>
+    <svg
+      width="25"
+      height="25"
+      viewBox="0 0 25 25"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle cx="12.5" cy="12.5" r="12" fill="#525252" />
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M7.4091 5.5C5.80245 5.5 4.5 6.80245 4.5 8.4091C4.5 9.97327 5.73447 11.2491 7.28229 11.3155V19C7.28229 20.3807 8.40158 21.5 9.78229 21.5H15.2171C16.5978 21.5 17.7171 20.3807 17.7171 19V11.3155C19.2652 11.2495 20.5 9.97348 20.5 8.4091C20.5 6.80245 19.1975 5.5 17.5909 5.5H7.4091Z"
+        fill="url(#paint0_linear_2140_904)"
+      />
+      <defs>
+        <linearGradient
+          id="paint0_linear_2140_904"
+          x1="6.7"
+          y1="18.1"
+          x2="18.1"
+          y2="8.5"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="#D04EC5" />
+          <stop offset="1" stop-color="#ED7BC7" />
+        </linearGradient>
+      </defs>
+    </svg>
   );
 }
