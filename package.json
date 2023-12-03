@@ -37,7 +37,7 @@
     "wagmi": "^1.4.3"
   },
   "devDependencies": {
-    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "@nomicfoundation/hardhat-toolbox-viem": "^2.0.0",
     "@storybook/addon-essentials": "^7.5.0",
     "@storybook/addon-interactions": "^7.5.0",
     "@storybook/addon-links": "^7.5.0",
@@ -61,7 +61,7 @@
     "eslint": "^8",
     "eslint-config-next": "13.5.4",
     "eslint-plugin-storybook": "^0.6.15",
-    "hardhat": "^2.18.0",
+    "hardhat": "^2.19.1",
     "postcss": "^8",
     "serve": "^14.2.1",
     "storybook": "^7.5.0",
