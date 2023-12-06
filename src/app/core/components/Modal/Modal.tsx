@@ -14,7 +14,7 @@ import { Container, Heading, Message } from "./ui";
 import Elipsis from "@/app/core/components/Elipsis";
 import { ReactNode, Ref, forwardRef } from "react";
 import { useNetwork } from "wagmi";
-import { watchAsset } from "../../util";
+import { watchAsset } from "../../util/formatter";
 
 const Modal = () => {
   const { state: modalState, dispatch: modalDispatch } = useModal();

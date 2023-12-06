@@ -5,7 +5,7 @@ import MobileMenu from "../MobileMenu";
 import DesktopNavigation from "./DesktopNavigation";
 import Logo from "./Logo";
 import MobileNavigationToggle from "./MobileNavigationToggle";
-import { WRAPPER_CLASSES } from "@/app/core/util";
+import { WRAPPER_CLASSES } from "@/app/core/util/classes";
 import { usePathname } from "next/navigation";
 import ConnectWallet from "../ConnectWallet";
 

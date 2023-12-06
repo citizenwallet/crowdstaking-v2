@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
 import Image from "next/image";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
-import { formatAddress } from "../../../util";
+import { formatAddress } from "../../../util/formatter";
 import { IconContainer } from "../../Icons";
 import CaretIcon from "../../Icons/CaretIcon";
 import Button from "../../Button";
