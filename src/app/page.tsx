@@ -1,6 +1,14 @@
 "use client";
-import Swap from "./bakery/components";
-import FAQ from "./bakery/components/FAQ";
+import dynamic from "next/dynamic";
+import { Suspense } from "react";
+
+const Swap = dynamic(() => import("./bakery/components/Swap/Swap"), {
+  ssr: false,
+});
+
+const FAQ = dynamic(() => import("./bakery/components/FAQ"), {
+  ssr: false,
+});
 
 export default function Home() {
   return (
@@ -13,8 +21,10 @@ export default function Home() {
           <span>crowdstaking</span>
         </h2>
       </div>
-      <Swap />
-      <FAQ />
+      <Suspense>
+        <Swap />
+        <FAQ />
+      </Suspense>
     </main>
   );
 }
