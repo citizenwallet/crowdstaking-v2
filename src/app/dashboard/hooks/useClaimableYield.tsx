@@ -1,4 +1,4 @@
-import { BREAD_POLYGON_ABI } from "@/abi";
+import { BREAD_GNOSIS_ABI } from "@/abi";
 import { BREAD_ADDRESS } from "@/constants";
 import { useEffect, useMemo, useState } from "react";
 import { formatUnits } from "viem";
@@ -7,7 +7,7 @@ import { useContractRead } from "wagmi";
 export default function useClaimableYield() {
   const { data: yieldData, status } = useContractRead({
     address: BREAD_ADDRESS,
-    abi: BREAD_POLYGON_ABI.abi,
+    abi: BREAD_GNOSIS_ABI,
     functionName: "yieldAccrued",
     watch: true,
     cacheTime: 1_000,
