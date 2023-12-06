@@ -43,3 +43,6 @@ cache/
 
 # storybook
 storybook-static/
+
+# bundle analyzer
+analyze/
