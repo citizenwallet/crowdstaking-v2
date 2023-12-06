@@ -13,7 +13,13 @@ export function PanelContent({ children }: { children: ReactNode }) {
 }
 
 export function PanelTokenRow({ children }: { children: ReactNode }) {
-  return <div className="flex w-full items-center">{children}</div>;
+  return (
+    <div className="flex w-full items-center gap-2 sm:gap-4">{children}</div>
+  );
+}
+
+export function PanelBalanceRow({ children }: { children: ReactNode }) {
+  return <div className="w-full flex justify-end">{children}</div>;
 }
 
 type TBalanceProps = {
@@ -60,7 +66,7 @@ export function TokenLabelContainer({ children }: { children: ReactNode }) {
 }
 
 export function TokenLabelText({ children }: { children: ReactNode }) {
-  return <span className="ml-4 pt-0.5 font-medium">{children}</span>;
+  return <span className="ml-4 pt-0.5 font-medium text-xl">{children}</span>;
 }
 
 export function TokenBalanceContainer({ children }: { children: ReactNode }) {
@@ -69,7 +75,7 @@ export function TokenBalanceContainer({ children }: { children: ReactNode }) {
 
 export function TokenBalanceText({ children }: { children: ReactNode }) {
   return (
-    <div className="font-medium text-neutral-400 text-xs sm:text-[0.85rem] text-right">
+    <div className="p-2 font-medium text-neutral-400 text-xs sm:text-[0.85rem] text-right">
       {children}
     </div>
   );

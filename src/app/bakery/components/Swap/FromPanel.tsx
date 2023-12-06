@@ -1,13 +1,13 @@
 import type { ChangeEventHandler, ReactNode } from "react";
 import Input from "../Input";
 
-import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
 import { balanceFormatter } from "@/app/core/util/formatter";
 import Elipsis from "@/app/core/components/Elipsis";
 import type { TSwapMode } from "./Swap";
 import { TTokenBalanceState } from "@/app/core/context/TokenBalanceContext";
 import { XDAIIcon, BreadIcon } from "@/app/core/components/Icons/TokenIcons";
 import {
+  PanelBalanceRow,
   PanelContainer,
   PanelContent,
   PanelLabel,
@@ -16,7 +16,7 @@ import {
   TokenBalanceText,
   TokenLabelContainer,
   TokenLabelText,
-} from "./ui";
+} from "./SwapUI";
 
 interface IProps {
   inputValue: string;
@@ -34,8 +34,6 @@ export function FromPanel({
   handleBalanceClick,
   handleInputChange,
 }: IProps) {
-  const { user } = useConnectedUser();
-
   return (
     <PanelContainer>
       <PanelLabel>You pay</PanelLabel>
@@ -53,14 +51,16 @@ export function FromPanel({
             </TokenLabelText>
           </TokenLabelContainer>
         </PanelTokenRow>
-        {tokenBalance ? (
-          <TokenBalance
-            tokenBalance={tokenBalance}
-            handleBalanceClick={handleBalanceClick}
-          />
-        ) : (
-          <TokenBalanceContainer> </TokenBalanceContainer>
-        )}
+        <PanelBalanceRow>
+          {tokenBalance ? (
+            <TokenBalance
+              tokenBalance={tokenBalance}
+              handleBalanceClick={handleBalanceClick}
+            />
+          ) : (
+            <TokenBalanceContainer> </TokenBalanceContainer>
+          )}
+        </PanelBalanceRow>
       </PanelContent>
     </PanelContainer>
   );
@@ -95,13 +95,13 @@ function TokenBalance({
       {tokenBalance.status === "SUCCESS" && (
         <button
           type="button"
-          className="px-4 py-2 font-bold text-breadpink-shaded text-sm"
+          className="px-2 font-bold text-breadpink-shaded text-sm"
           onClick={() => {
             const maxValue =
               parseFloat(tokenBalance.value) - 0.01 > 0
-                ? parseFloat(tokenBalance.value) - 0.01
-                : 0;
-            handleBalanceClick(maxValue.toString());
+                ? (parseFloat(tokenBalance.value) - 0.01).toString()
+                : "00.00";
+            handleBalanceClick(maxValue);
           }}
         >
           max

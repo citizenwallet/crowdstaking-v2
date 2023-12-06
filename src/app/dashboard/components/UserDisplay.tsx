@@ -6,8 +6,6 @@ import ConnectWallet from "@/app/core/components/ConnectWallet";
 import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
 
 export default function UserDisplay() {
-  const { user } = useConnectedUser();
-
   return (
     <div className={clsx(WRAPPER_CLASSES)}>
       <section

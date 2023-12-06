@@ -9,8 +9,8 @@ import {
   TokenBalanceText,
   TokenLabelContainer,
   TokenLabelText,
-} from "./ui";
-
+  PanelBalanceRow,
+} from "./SwapUI";
 import { balanceFormatter } from "@/app/core/util/formatter";
 import { TSwapMode } from "./Swap";
 import { TTokenBalanceState } from "@/app/core/context/TokenBalanceContext";
@@ -27,7 +27,7 @@ function ToPanel({ inputValue, swapMode, tokenBalance }: IProps) {
       <PanelLabel>You receive</PanelLabel>
       <PanelContent>
         <PanelTokenRow>
-          <span className="w-0 flex-auto truncate text-[2.3rem] text-neutral-500">
+          <span className="w-0 flex-auto truncate text-[2.3rem] text-neutral-200">
             {inputValue || "00.00"}
           </span>
 
@@ -40,11 +40,13 @@ function ToPanel({ inputValue, swapMode, tokenBalance }: IProps) {
             </TokenLabelContainer>
           </div>
         </PanelTokenRow>
-        {tokenBalance ? (
-          <TokenBalance tokenBalance={tokenBalance} />
-        ) : (
-          <TokenBalanceContainer> </TokenBalanceContainer>
-        )}
+        <PanelBalanceRow>
+          {tokenBalance ? (
+            <TokenBalance tokenBalance={tokenBalance} />
+          ) : (
+            <TokenBalanceContainer> </TokenBalanceContainer>
+          )}
+        </PanelBalanceRow>
       </PanelContent>
     </PanelContainer>
   );
@@ -58,8 +60,14 @@ function TokenBalance({ tokenBalance }: { tokenBalance: TTokenBalanceState }) {
         {tokenBalance.status === "LOADING" ? (
           <Elipsis />
         ) : tokenBalance.status === "SUCCESS" ? (
-          tokenBalance.value &&
-          balanceFormatter.format(parseInt(tokenBalance.value))
+          <span
+            title={`${parseFloat(tokenBalance.value).toString()} ${
+              tokenBalance.tokenName
+            }`}
+          >
+            {tokenBalance.value &&
+              balanceFormatter.format(parseFloat(tokenBalance.value))}
+          </span>
         ) : (
           ""
         )}
