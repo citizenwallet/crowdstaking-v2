@@ -3,13 +3,17 @@
 @tailwind utilities;
 
 @layer base {
-    body {
-        @apply bg-breadgray-ultra-white dark:bg-breadgray-grey100;
-        @apply text-breadgray-charcoal dark:text-breadgray-white;
-        @apply font-redhat;        
-      }
+  body {
+    @apply bg-breadgray-ultra-white dark:bg-breadgray-grey100;
+    @apply text-breadgray-charcoal dark:text-breadgray-white;
+    @apply font-redhat;
+  }
 
-      .AccordionTrigger[data-state='open'] > .AccordionChevron {
-        transform: rotate(180deg);
-      }
+  .AccordionTrigger[data-state="open"] > .AccordionChevron {
+    transform: rotate(180deg);
+  }
+
+  [data-state="open"] > .caret-down {
+    transform: rotate(-180deg);
+  }
 }

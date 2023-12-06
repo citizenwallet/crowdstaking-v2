@@ -9,9 +9,7 @@ export function Title({ children }: { children: ReactNode }) {
 }
 
 export function H1({ children }: { children: ReactNode }) {
-  return (
-    <h1 className="mb-1 text-3xl sm:text-5xl md:mb-2 font-bold">{children}</h1>
-  );
+  return <h1 className="mb-1 text-[32rem]] md:mb-2 font-bold">{children}</h1>;
 }
 
 export function H2({ children }: { children: ReactNode }) {
@@ -21,6 +19,7 @@ function SiteTitle() {
   return (
     <Title>
       <H1>BREADCHAIN</H1>
+      <p>wuurrr</p>
       <H2>CROWDSTAKING</H2>
     </Title>
   );

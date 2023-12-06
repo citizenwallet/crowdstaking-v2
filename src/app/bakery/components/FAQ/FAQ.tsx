@@ -21,8 +21,8 @@ function AccordionTrigger({ children }: { children: ReactNode }) {
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M7 8H5V10H7V12H9V14H11V16H13V14H15V12H17V10H19V8H17V10H15V12H13V14H11V12H9V10H7V8Z"
           fill="#F8F8F8"
         />
@@ -43,26 +43,37 @@ function AccordionContent({ children }: { children: ReactNode }) {
 
 export default function FAQ() {
   return (
-    <section className="pt-32 px-4 max-w-xl m-auto">
-      <Accordion.Root type="single" className="flex flex-col gap-4" collapsible>
+    <section className="pt-32 px-4 max-w-2xl m-auto">
+      <Accordion.Root type="single" className="flex flex-col gap-1" collapsible>
         <Accordion.Item
           value="first"
           className="flex flex-col gap-4 bg-breadgray-charcoal p-4 px-6 rounded"
         >
           <AccordionHeader>
             <AccordionTrigger>
-              <div>
-                What is <span className="font-bold">$BREAD</span>?
-              </div>
+              <h3 className="h3">What is Breadchain and BREAD?</h3>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
-            Chase ball of string eat plants, meow, and throw up because I ate
-            plants going to catch the red dot today going to catch the red dot
-            today. I could pee on this if I had the energy. Chew iPad power cord
-            steal the warm chair right after you get up for purr for no reason
-            leave hair everywhere, decide to want nothing to do with my owner
-            today.
+            <p>
+              Breadchain is a collective federation of decentralized cooperative
+              projects looking to advance a post-capitalist vision for
+              blockchain and its effect on society. We aim to do this by
+              building and utilizing what we call{" "}
+              <a href="https://breadchain.mirror.xyz/nwQx4CqPAcwZ5zSNB2_K25N1quOF1NGcKaYcS3S33CA">
+                “solidarity primitives”
+              </a>{" "}
+              like the Bread Crowdstaking Application. You can learn more about
+              us on our <a href="https://breadchain.xyz/">home page</a>.
+            </p>
+            <p>
+              Through this application you can mint BREAD, our digital community
+              currency which helps fund the post-capitalist economy and allows
+              to take part in the Breadchain economy. All you need is an
+              Ethereum wallet connected to Polygon, the DAI you want to bake
+              into BREAD, and some MATIC to pay for the transaction fees on the
+              Polygon Network.
+            </p>
           </AccordionContent>
         </Accordion.Item>
         <Accordion.Item

@@ -5,14 +5,19 @@ import Button from "@/app/core/components/Button";
 
 interface IProps {
   chainString: string;
-  accountAddress: string;
+  account: {
+    address: string;
+    displayName: string;
+    ensAvatar?: string;
+    ensName?: string;
+  };
   handleCloseMenu: () => void;
   handleDisconnect: () => void;
 }
 
 function WalletMenu({
   chainString,
-  accountAddress,
+  account,
   handleCloseMenu,
   handleDisconnect,
 }: IProps) {
@@ -57,7 +62,7 @@ function WalletMenu({
         <a
           className="text-neutral-400 underline hover:text-neutral-300 text-base font-medium"
           target="_blank"
-          href={`https://polygonscan.com/address/${accountAddress}`}
+          href={`https://polygonscan.com/address/${account.address}`}
           rel="noreferrer"
         >
           View Account

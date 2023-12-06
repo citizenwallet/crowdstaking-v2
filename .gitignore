@@ -40,3 +40,9 @@ next-env.d.ts
 
 # hardhat
 cache/
+
+# storybook
+storybook-static/
+
+# bundle analyzer
+analyze/

@@ -9,7 +9,7 @@ function UnsupportedNetwork() {
     try {
       modalDispatch({
         type: "SET_MODAL",
-        payload: { type: "CHANGE_NETWORK", title: "Switch Network" },
+        payload: { type: "CHANGE_NETWORK" },
       });
       const { ethereum } = window as any;
       await ethereum.request({

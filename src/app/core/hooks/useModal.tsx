@@ -1,10 +1,15 @@
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 import {
+  ReactNode,
   createContext,
-  type ReactNode,
+  useCallback,
   useContext,
+  useEffect,
   useMemo,
   useReducer,
+  useState,
 } from "react";
+import { TTransactionDisplayState } from "./useTransactionDisplay";
 
 export type TModalType =
   | "DISCLAIMER"
@@ -21,18 +26,29 @@ export type TModalType =
 
 export type TModalStatus = "LOCKED" | "UNLOCKED";
 
-export type TModalState = null | {
+export interface IBaseModalState {
   type: TModalType;
   status: TModalStatus;
-  title: string;
-};
+}
+export interface IBakeModalState extends IBaseModalState {
+  amount: string;
+}
+
+export interface IBurnModalState extends IBaseModalState {
+  amount: string;
+}
+
+export type TModalState =
+  | null
+  | IBaseModalState
+  | IBakeModalState
+  | IBurnModalState;
 
 export type TModalAction =
   | {
       type: "SET_MODAL";
       payload: {
         type: TModalType;
-        title: string;
       };
     }
   | {
@@ -62,11 +78,10 @@ const modalReducer = (
     case "SET_MODAL":
       /* eslint-disable-next-line no-case-declarations */
       const {
-        payload: { type, title },
+        payload: { type },
       } = action;
       return {
         type,
-        title,
         status: "LOCKED",
       };
     case "UNLOCK_MODAL":
@@ -88,17 +103,39 @@ const modalReducer = (
   }
 };
 
-interface IModalProviderProps {
+function ModalProvider({
+  children,
+  initialState = null,
+}: {
   children: ReactNode;
-}
-
-function ModalProvider({ children }: IModalProviderProps) {
-  const [state, dispatch] = useReducer(modalReducer, null);
+  initialState?: TModalState;
+}) {
+  const [state, dispatch] = useReducer(modalReducer, initialState);
+  const [isOpen, setIsOpen] = useState(false);
 
   const value = useMemo(() => ({ state, dispatch }), [state, dispatch]);
 
+  const onOpenChange = useCallback(
+    (open: boolean) => {
+      setIsOpen(open);
+    },
+    [setIsOpen]
+  );
+
+  useEffect(() => {
+    if (state === null) {
+      onOpenChange(false);
+    } else {
+      onOpenChange(true);
+    }
+  }, [state, onOpenChange]);
+
   return (
-    <ModalContext.Provider value={value}>{children}</ModalContext.Provider>
+    <ModalContext.Provider value={value}>
+      <DialogPrimitive.Root open={!!state} onOpenChange={onOpenChange}>
+        {children}
+      </DialogPrimitive.Root>
+    </ModalContext.Provider>
   );
 }
 

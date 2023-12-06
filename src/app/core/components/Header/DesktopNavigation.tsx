@@ -13,7 +13,7 @@ function DesktopNavigationLink(props: {
   return (
     <Link
       className={clsx(
-        "font-redhat dark:hover:text-breadgray-light-grey text-breadgray-burnt hover:text-breadgray-charcoal active:text-breadgray-violet flex items-center px-2 text-xl font-bold leading-none tracking-wider min-[810px]:px-4",
+        "font-redhat dark:hover:text-breadgray-light-grey text-breadgray-burnt hover:text-breadgray-charcoal active:text-breadgray-violet flex items-center p-2 text-xl font-bold leading-none tracking-wider min-[810px]:px-4",
         isCurrentPage
           ? "dark:text-breadgray-light-grey"
           : "dark:text-breadgray-grey"
@@ -27,28 +27,17 @@ function DesktopNavigationLink(props: {
 
 function DesktopNavigation({ currentPath }: { currentPath: string }) {
   return (
-    <nav className="hidden flex-grow items-center gap-2 pl-6 md:flex lg:gap-4 lg:pl-12">
+    <nav
+      aria-label="site navigation"
+      className="hidden flex-grow items-center gap-2 pl-6 md:flex lg:gap-4 lg:pl-12"
+    >
       <DesktopNavigationLink isCurrentPage={currentPath === "/"} href="/">
         Bake
       </DesktopNavigationLink>
-      <DesktopNavigationLink
+      {/* <DesktopNavigationLink
         isCurrentPage={currentPath === "/dashboard/"}
         href="/dashboard/"
         rel="prefetch"
-      >
-        Dashboard
-      </DesktopNavigationLink>
-      <DesktopNavigationLink
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://breadchain.mirror.xyz/"
-      >
-        Blog
-      </DesktopNavigationLink>
-      {/* <DesktopNavigationLink
-       
-       //isCurrentPage={currentPath === '/dashboard'}
-        href"/dashboard"
       >
         Dashboard
       </DesktopNavigationLink> */}

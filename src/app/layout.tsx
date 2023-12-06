@@ -1,9 +1,8 @@
 "use client";
 import "./app.css";
-import type { Metadata } from "next";
-import { Press_Start_2P, Red_Hat_Text } from "next/font/google";
 import Header from "./core/components/Header";
-import WagmiProvider from "./core/hooks/WagmiProvider";
+import { WagmiProvider } from "./core/hooks/WagmiProvider/WagmiProvider";
+import { TokenBalancesProvider } from "./core/context/TokenBalanceContext";
 import { ConnectedUserProvider } from "./core/hooks/useConnectedUser";
 import { TransactionDisplayProvider } from "./core/hooks/useTransactionDisplay";
 import { ModalProvider, useModal } from "./core/hooks/useModal";
@@ -14,30 +13,25 @@ import Toast from "./core/components/Toast";
 import Footer from "./core/components/Footer";
 import { ReactNode } from "react";
 import clsx from "clsx";
+import { pressStart, redhat } from "./core/components/Fonts";
 
-const redhat = Red_Hat_Text({
-  subsets: ["latin"],
-  variable: "--font-redhat",
-});
-const pressStart = Press_Start_2P({
-  subsets: ["cyrillic"],
-  weight: "400",
-  variable: "--font-pressstart",
-});
+import "@rainbow-me/rainbowkit/styles.css";
 
 export default function App({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={clsx(redhat.variable, pressStart.variable)}>
+      <body className={clsx("relative", pressStart.variable, redhat.variable)}>
         <WagmiProvider>
           <ConnectedUserProvider>
-            <TransactionDisplayProvider>
-              <ModalProvider>
-                <ToastProvider>
-                  <Layout>{children}</Layout>
-                </ToastProvider>
-              </ModalProvider>
-            </TransactionDisplayProvider>
+            <TokenBalancesProvider>
+              <TransactionDisplayProvider>
+                <ModalProvider>
+                  <ToastProvider>
+                    <Layout>{children}</Layout>
+                  </ToastProvider>
+                </ModalProvider>
+              </TransactionDisplayProvider>
+            </TokenBalancesProvider>
           </ConnectedUserProvider>
         </WagmiProvider>
       </body>
@@ -46,7 +40,6 @@ export default function App({ children }: { children: React.ReactNode }) {
 }
 
 function Layout({ children }: { children: ReactNode }) {
-  const { state: modal } = useModal();
   const { state: toast } = useToast();
 
   return (
@@ -56,9 +49,7 @@ function Layout({ children }: { children: ReactNode }) {
         mode="wait"
         // onExitComplete={() => null}
       >
-        {modal && (
-          <Modal type={modal.type} title={modal.title} status={modal.status} />
-        )}
+        <Modal />
       </AnimatePresence>
       <AnimatePresence
         //  initial={false}

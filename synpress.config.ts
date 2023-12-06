@@ -4,7 +4,8 @@ import setupNodeEvents from "./tests/e2e/plugins";
 
 export default defineConfig({
   userAgent: "synpress",
-  videosFolder: "tests/e2e/videos",
+  videosFolder: "./tests/e2e/videos",
+  screenshotsFolder: "./tests/e2e/videos",
   e2e: {
     setupNodeEvents,
     supportFile: "./tests/e2e/support.ts",

@@ -51,19 +51,21 @@ function ConnectedUserProvider({ children }: IConnectedUserProviderProps) {
     const configuration =
       activeChain?.id && config[activeChain.id] ? config[activeChain.id] : null;
 
-    if (
-      activeConnector &&
-      activeChain &&
-      accountAddress &&
-      isConnected &&
-      configuration
-    ) {
-      setUser({
-        status: "CONNECTED",
-        address: accountAddress,
-        config: configuration,
-        chain: activeChain,
-      });
+    if (activeConnector && activeChain && accountAddress && isConnected) {
+      setUser(
+        configuration
+          ? {
+              status: "CONNECTED",
+              address: accountAddress,
+              config: configuration,
+              chain: activeChain,
+            }
+          : {
+              status: "UNSUPPORTED_CHAIN",
+              address: accountAddress,
+              chain: activeChain,
+            }
+      );
     } else if (status === "disconnected") {
       setUser({ status: "NOT_CONNECTED" });
     }
