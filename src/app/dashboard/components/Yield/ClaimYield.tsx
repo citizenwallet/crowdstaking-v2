@@ -7,7 +7,7 @@ import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
 import { useModal } from "@/app/core/hooks/useModal";
 import { useToast } from "@/app/core/hooks/useToast";
 import { useTransactionDisplay } from "@/app/core/hooks/useTransactionDisplay";
-import { BREAD_POLYGON_ABI } from "@/abi";
+import { BREAD_GNOSIS_ABI } from "@/abi";
 import Button from "@/app/core/components/Button";
 import ConnectWallet from "@/app/core/components/ConnectWallet";
 import Elipsis from "@/app/core/components/Elipsis";
@@ -29,7 +29,7 @@ function ClaimYieldButton({ config }: { config: ChainConfiguration }) {
     write,
   } = useContractWrite({
     address: config.BREAD.address,
-    abi: BREAD_POLYGON_ABI.abi,
+    abi: BREAD_GNOSIS_ABI,
     functionName: "claimYield",
     args: [parsedAmount],
   });
@@ -39,7 +39,6 @@ function ClaimYieldButton({ config }: { config: ChainConfiguration }) {
       type: "SET_MODAL",
       payload: {
         type: "CLAIMING",
-        title: `claiming yield`,
       },
     });
 

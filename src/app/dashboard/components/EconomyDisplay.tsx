@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import { WRAPPER_CLASSES } from "@/app/core/util";
+import { WRAPPER_CLASSES } from "@/app/core/util/classes";
 import useWeeklyBread from "../hooks/useWeeklyBread";
 import AAVE from "./AAVE";
 import Arrakis from "./Arrakis";

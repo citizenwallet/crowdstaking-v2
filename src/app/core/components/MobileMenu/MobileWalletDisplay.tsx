@@ -1,5 +1,5 @@
 import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
-import { formatAddress } from "../../util";
+import { formatAddress } from "../../util/formatter";
 import Button from "../Button";
 import { IconContainer, NetworkIcon, WalletIcon } from "../Icons";
 import { useDisconnect } from "wagmi";

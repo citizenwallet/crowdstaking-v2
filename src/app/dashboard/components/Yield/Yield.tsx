@@ -7,10 +7,8 @@ import { BREAD_ADDRESS } from "../../../../constants";
 import useClaimedYield from "../../hooks/useClaimedYield";
 import ClaimYield from "./ClaimYield";
 import ClaimableYield from "./ClaimableYield";
-import { BREAD_POLYGON_ABI } from "@/abi";
+import { BREAD_GNOSIS_ABI } from "@/abi";
 import useClaimableYield from "@/app/dashboard/hooks/useClaimableYield";
-
-const { abi } = BREAD_POLYGON_ABI;
 
 export const yieldFormatter = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 4,

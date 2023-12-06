@@ -9,11 +9,10 @@ type TProps = {
 };
 
 function Input({ name, value, handleInputChange }: TProps) {
-  const { user } = useConnectedUser();
   return (
     <input
       name={name}
-      className="w-0 flex-auto truncate text-ellipsis text-[2.3rem] bg-breadgray-grey300 placeholder-neutral-500"
+      className="px-2 truncate text-ellipsis text-[2.3rem] md:text-[2.5rem] text-neutral-200 bg-breadgray-grey300 placeholder-neutral-200"
       placeholder="00.00"
       inputMode="decimal"
       autoComplete="off"

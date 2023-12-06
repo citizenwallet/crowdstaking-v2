@@ -1,56 +1,47 @@
-import type { ChangeEvent, MouseEvent } from "react";
-import { useEffect, useState } from "react";
+"use client";
+import type { ChangeEvent } from "react";
+import { useState } from "react";
 
-import type { ChainConfiguration } from "@/config";
-
-// import Button from '../Button';
-import ApproveContract from "../ApproveContract";
-// import BakeOrBurn from "../BakeOrBurn/BakeOrBurn";
-import CheckingApproval from "../CheckingApproval";
-import FromPanel from "../FromPanel";
+import { FromPanel } from "./FromPanel";
 import SwapReverse from "../SwapReverse";
-import ToPanel from "../ToPanel";
+import ToPanel from "./ToPanel";
 import Transaction from "../Transaction";
 import { sanitizeInputValue } from "../swapUtils";
 import { useToast } from "@/app/core/hooks/useToast";
 import { useTransactionDisplay } from "@/app/core/hooks/useTransactionDisplay";
-
-import NativeBalance from "../NativeBalance";
-import {
-  TConnectedUserState,
-  TUserConnected,
-  useConnectedUser,
-} from "@/app/core/hooks/useConnectedUser";
+import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
 import Button from "@/app/core/components/Button";
 import ConnectWallet from "@/app/core/components/ConnectWallet";
-import { useDAIAllowance } from "../../hooks/useDAIAllowance";
-import Elipsis from "@/app/core/components/Elipsis";
-import BakeOrBurn from "../BakeOrBurn";
+import Bake from "./Bake";
 import { useChainModal } from "@rainbow-me/rainbowkit";
+import { useTokenBalances } from "@/app/core/context/TokenBalanceContext";
+import Burn from "./Burn";
+import { useFeeData } from "wagmi";
+import { formatEther } from "viem";
 
 export type TSwapMode = "BAKE" | "BURN";
 
 export type TSwapState = {
   mode: TSwapMode;
   value: string;
-  isContractApproved: null | boolean;
 };
 
 const initialSwapState: TSwapState = {
   mode: "BAKE",
   value: "",
-  isContractApproved: null,
 };
 
 export function Swap() {
   const { user } = useConnectedUser();
+  const { data: feeData, isError, isLoading } = useFeeData();
 
   const { state: transactionDisplay, dispatch: dispatchTransactionDisplay } =
     useTransactionDisplay();
   const { dispatch: dispatchToast } = useToast();
   const [swapState, setSwapState] = useState<TSwapState>(initialSwapState);
-
   const { openChainModal } = useChainModal();
+
+  const { xDAI, BREAD } = useTokenBalances();
 
   const resetSwapState = () => {
     setSwapState(initialSwapState);
@@ -88,11 +79,11 @@ export function Swap() {
   };
 
   return (
-    <div className="w-full p-4">
+    <div className="w-full p-2 sm:p-4">
       <div className="w-full max-w-[30rem] m-auto relative rounded-xl bg-breadgray-grey200 border-breadgray-burnt flex flex-col items-center">
         <div className="w-full drop-shadow-swap">
           <div className="w-full px-4 pt-2">
-            <h2 className="text-[1.6rem] md:text-[1.8rem] font-medium">
+            <h2 className="text-[1.5rem] md:text-[1.9rem] font-medium">
               {swapState.mode === "BAKE" ? "Bake" : "Burn"}
             </h2>
           </div>
@@ -102,43 +93,51 @@ export function Swap() {
               swapMode={swapState.mode}
               handleBalanceClick={handleBalanceClick}
               handleInputChange={handleInputChange}
+              tokenBalance={swapState.mode === "BAKE" ? xDAI : BREAD}
             />
             <SwapReverse onClick={handleSwapReverse} />
-            <ToPanel inputValue={swapState.value} swapMode={swapState.mode} />
+            <ToPanel
+              swapMode={swapState.mode}
+              inputValue={swapState.value}
+              tokenBalance={swapState.mode === "BURN" ? xDAI : BREAD}
+            />
           </div>
         </div>
-        <div className="w-full">
-          <div className="p-2 w-full flex flex-col gap-2">
-            {user.status === "CONNECTED" && (
-              <div className="w-full p-2 text-neutral-500 rounded-md border-[0.1rem] font-medium border-neutral-800">
-                Matic Balance{" "}
-                <>
-                  <NativeBalance address={user.address} />
-                </>
-              </div>
-            )}
-          </div>
-        </div>
-        {user.status === "LOADING" && (
-          <div className="p-3 w-full">
-            <div className="h-16 bg-neutral-800 rounded-xl" />
-          </div>
-        )}
-        {user.status === "NOT_CONNECTED" && (
-          <div className="p-3 w-full">
-            <ConnectWallet fullWidth={true} variant="large" />
-          </div>
-        )}
-        {user.status === "UNSUPPORTED_CHAIN" && openChainModal && (
-          <div className="p-3 w-full">
-            <Button fullWidth={true} variant="large" onClick={openChainModal}>
-              Switch Chain
-            </Button>
-          </div>
-        )}
-        {user.status === "CONNECTED" && (
-          <BakeOrBurn user={user} mode={swapState.mode} />
-        )}
+        {(() => {
+          switch (user.status) {
+            case "LOADING":
+              return (
+                <div className="p-3 w-full">
+                  <div className="h-16 bg-neutral-800 rounded-xl" />
+                </div>
+              );
+            case "NOT_CONNECTED":
+              return (
+                <div className="p-3 w-full">
+                  <ConnectWallet fullWidth={true} variant="large" />
+                </div>
+              );
+            case "UNSUPPORTED_CHAIN":
+              return (
+                <div className="p-3 w-full">
+                  <Button
+                    fullWidth={true}
+                    variant="large"
+                    onClick={() => openChainModal?.()}
+                  >
+                    Switch Chain
+                  </Button>
+                </div>
+              );
+            case "CONNECTED":
+              return swapState.mode === "BAKE" ? (
+                <Bake user={user} inputValue={swapState.value} />
+              ) : (
+                <Burn user={user} inputValue={swapState.value} />
+              );
+          }
+        })()}
+
         {user.status === "CONNECTED" && transactionDisplay && (
           <Transaction
             status={transactionDisplay.status}
@@ -147,6 +146,33 @@ export function Swap() {
           />
         )}
       </div>
+      <pre>
+        {JSON.stringify(
+          feeData
+            ? {
+                lastBaseFeePerGas: feeData.lastBaseFeePerGas
+                  ? formatEther(feeData.lastBaseFeePerGas)
+                  : null,
+                gasPrice: feeData.gasPrice
+                  ? formatEther(feeData.gasPrice)
+                  : null,
+
+                maxFeePerGas: feeData.maxFeePerGas
+                  ? formatEther(feeData.maxFeePerGas)
+                  : null,
+
+                maxPriorityFeePerGas: feeData.maxPriorityFeePerGas
+                  ? formatEther(feeData.maxPriorityFeePerGas)
+                  : null,
+                //  gasPrice: bigint | null;
+                //  maxFeePerGas: bigint | null;
+                //  maxPriorityFeePerGas: bigint | null;
+              }
+            : "bloop",
+          null,
+          2
+        )}
+      </pre>
     </div>
   );
 }

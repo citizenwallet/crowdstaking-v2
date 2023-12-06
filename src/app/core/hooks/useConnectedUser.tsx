@@ -51,12 +51,6 @@ function ConnectedUserProvider({ children }: IConnectedUserProviderProps) {
     const configuration =
       activeChain?.id && config[activeChain.id] ? config[activeChain.id] : null;
 
-    console.log({ activeConnector });
-    console.log({ activeChain });
-    console.log({ accountAddress });
-    console.log({ isConnected });
-    console.log({ configuration });
-
     if (activeConnector && activeChain && accountAddress && isConnected) {
       setUser(
         configuration

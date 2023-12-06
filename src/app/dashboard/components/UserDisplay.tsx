@@ -1,13 +1,11 @@
 import clsx from "clsx";
 
-import { WRAPPER_CLASSES } from "@/app/core/util";
+import { WRAPPER_CLASSES } from "@/app/core/util/classes";
 import useWeeklyBread from "../hooks/useWeeklyBread";
 import ConnectWallet from "@/app/core/components/ConnectWallet";
 import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
 
 export default function UserDisplay() {
-  const { user } = useConnectedUser();
-
   return (
     <div className={clsx(WRAPPER_CLASSES)}>
       <section

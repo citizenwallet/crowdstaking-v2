@@ -5,10 +5,8 @@ import MobileMenu from "../MobileMenu";
 import DesktopNavigation from "./DesktopNavigation";
 import Logo from "./Logo";
 import MobileNavigationToggle from "./MobileNavigationToggle";
-import WalletDisplay from "./WalletDisplay";
-import { WRAPPER_CLASSES } from "@/app/core/util";
+import { WRAPPER_CLASSES } from "@/app/core/util/classes";
 import { usePathname } from "next/navigation";
-import { ColorToggle } from "./ColorToggle";
 import ConnectWallet from "../ConnectWallet";
 
 function Container({ children }: { children: ReactNode }) {
@@ -34,9 +32,6 @@ function Header() {
       <Logo />
       <DesktopNavigation currentPath={currentPath} />
       <MobileMenu isOpen={isMobNavOpen} handleNavToggle={handleNavToggle} />
-      {/* <div className="hidden md:block">
-        <ColorToggle />
-      </div> */}
       <div className="hidden md:block">
         <ConnectWallet variant="regular" />
       </div>
