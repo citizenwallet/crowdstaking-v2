@@ -1,8 +1,8 @@
 "use client";
 import "./app.css";
-import type { Metadata } from "next";
 import Header from "./core/components/Header";
 import { WagmiProvider } from "./core/hooks/WagmiProvider/WagmiProvider";
+import { TokenBalancesProvider } from "./core/context/TokenBalanceContext";
 import { ConnectedUserProvider } from "./core/hooks/useConnectedUser";
 import { TransactionDisplayProvider } from "./core/hooks/useTransactionDisplay";
 import { ModalProvider, useModal } from "./core/hooks/useModal";
@@ -23,13 +23,15 @@ export default function App({ children }: { children: React.ReactNode }) {
       <body className={clsx("relative", pressStart.variable, redhat.variable)}>
         <WagmiProvider>
           <ConnectedUserProvider>
-            <TransactionDisplayProvider>
-              <ModalProvider>
-                <ToastProvider>
-                  <Layout>{children}</Layout>
-                </ToastProvider>
-              </ModalProvider>
-            </TransactionDisplayProvider>
+            <TokenBalancesProvider>
+              <TransactionDisplayProvider>
+                <ModalProvider>
+                  <ToastProvider>
+                    <Layout>{children}</Layout>
+                  </ToastProvider>
+                </ModalProvider>
+              </TransactionDisplayProvider>
+            </TokenBalancesProvider>
           </ConnectedUserProvider>
         </WagmiProvider>
       </body>
