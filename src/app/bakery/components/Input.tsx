@@ -1,4 +1,3 @@
-import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
 import type { ChangeEvent } from "react";
 
 type TProps = {
@@ -12,7 +11,7 @@ function Input({ name, value, handleInputChange }: TProps) {
   return (
     <input
       name={name}
-      className="px-2 truncate text-ellipsis text-[2.3rem] md:text-[2.5rem] text-neutral-200 bg-breadgray-grey300 placeholder-neutral-200"
+      className="truncate text-ellipsis text-[2.3rem] sm:text-[2.5rem] text-neutral-200 bg-breadgray-grey300 placeholder-neutral-200"
       placeholder="00.00"
       inputMode="decimal"
       autoComplete="off"

@@ -27,18 +27,15 @@ function ToPanel({ inputValue, swapMode, tokenBalance }: IProps) {
       <PanelLabel>You receive</PanelLabel>
       <PanelContent>
         <PanelTokenRow>
-          <span className="w-0 flex-auto truncate text-[2.3rem] text-neutral-200">
+          <span className="flex-auto truncate text-[2.3rem] sm:text-[2.5rem] text-neutral-200">
             {inputValue || "00.00"}
           </span>
-
-          <div className="flex justify-end pt-1">
-            <TokenLabelContainer>
-              {swapMode === "BURN" ? <XDAIIcon /> : <BreadIcon />}
-              <TokenLabelText>
-                {swapMode === "BURN" ? "DAI" : "BREAD"}
-              </TokenLabelText>
-            </TokenLabelContainer>
-          </div>
+          <TokenLabelContainer>
+            {swapMode === "BURN" ? <XDAIIcon /> : <BreadIcon />}
+            <TokenLabelText>
+              {swapMode === "BURN" ? "DAI" : "BREAD"}
+            </TokenLabelText>
+          </TokenLabelContainer>
         </PanelTokenRow>
         <PanelBalanceRow>
           {tokenBalance ? (
