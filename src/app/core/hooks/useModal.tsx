@@ -132,9 +132,9 @@ function ModalProvider({
 
   return (
     <ModalContext.Provider value={value}>
-      <DialogPrimitive.Root open={!!state} onOpenChange={onOpenChange}>
-        {children}
-      </DialogPrimitive.Root>
+      {/* <DialogPrimitive.Root open={!!state} onOpenChange={onOpenChange}> */}
+      {children}
+      {/* </DialogPrimitive.Root> */}
     </ModalContext.Provider>
   );
 }

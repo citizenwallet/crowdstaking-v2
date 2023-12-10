@@ -1,10 +1,29 @@
+import { useContractWrite, usePrepareContractWrite } from "wagmi";
+import { parseEther } from "viem";
+import {
+  Root as DialogPrimitiveRoot,
+  Portal as DialogPrimitivePortal,
+  Overlay as DialogPrimitiveOverlay,
+  Trigger as DialogPrimitiveTrigger,
+  Content as DialogPrimitiveContent,
+  Close as DialogPrimitiveClose,
+} from "@radix-ui/react-dialog";
+
 import { TUserConnected } from "@/app/core/hooks/useConnectedUser";
 import Button from "@/app/core/components/Button";
-import { useContractWrite, usePrepareContractWrite } from "wagmi";
 import config from "@/config";
 import { BREAD_GNOSIS_ABI } from "@/abi";
 import useDebounce from "../../hooks/useDebounce";
-import { parseEther } from "viem";
+import {
+  CloseModalButton,
+  ModalContainer,
+  ModalHeading,
+  ModalMessage,
+} from "@/app/core/components/Modal/ui";
+import CloseIcon from "@/app/core/components/Icons/CloseIcon";
+import Elipsis from "@/app/core/components/Elipsis";
+import AddTokens from "@/app/core/components/Modal/AddTokens";
+import { useEffect } from "react";
 
 export default function Bake({
   user,
@@ -22,9 +41,9 @@ export default function Bake({
   );
 
   const {
-    config: writeConfig,
-    status,
-    error,
+    config: prepareConfig,
+    status: prepareStatus,
+    error: prepareError,
   } = usePrepareContractWrite({
     address: BREAD.address,
     abi: BREAD_GNOSIS_ABI,
@@ -34,15 +53,81 @@ export default function Bake({
     enabled: parseFloat(debouncedValue) > 0,
   });
 
-  console.log({ writeConfig, status, error });
+  const {
+    write,
+    isLoading: writeIsLoading,
+    isError: writeIsError,
+    error: writeError,
+    isSuccess: writeIsSuccess,
+    data: writeData,
+  } = useContractWrite(prepareConfig);
 
-  const { write } = useContractWrite(writeConfig);
+  console.log({ writeData });
+
+  useEffect(() => {
+    if (!writeData?.hash) return;
+    // handle tx hash!
+    console.log({ txHash: writeData.hash });
+  }, [writeData]);
+
+  useEffect(() => {
+    if (!writeIsError && !writeError) return;
+    // handle tx hash!
+    console.log({ error: writeError });
+  }, [writeIsError, writeError]);
 
   return (
     <div className="p-2 w-full flex flex-col gap-2">
-      <Button fullWidth={true} variant="large" onClick={() => write?.()}>
-        Bake
-      </Button>
+      <DialogPrimitiveRoot>
+        <DialogPrimitiveTrigger asChild>
+          <Button fullWidth={true} variant="large" onClick={() => write?.()}>
+            Bake
+          </Button>
+        </DialogPrimitiveTrigger>
+        <DialogPrimitivePortal>
+          <DialogPrimitiveOverlay className="fixed top-0 bg-neutral-900 transition-opacity opacity-70 h-screen w-screen" />
+
+          <DialogPrimitiveContent>
+            <ModalContainer>
+              <div className="absolute top-0 right-0 pt-5 pr-3 md:p-8">
+                <DialogPrimitiveClose className=" w-6 h-6">
+                  <CloseIcon />
+                </DialogPrimitiveClose>
+              </div>
+              <ModalHeading>Baking Bread</ModalHeading>
+              {writeIsLoading && (
+                <ModalMessage>
+                  Awaiting user response
+                  <Elipsis />
+                </ModalMessage>
+              )}
+              {writeIsSuccess && (
+                <>
+                  <ModalMessage>
+                    Transaction in progress <Elipsis />
+                    <Elipsis />
+                  </ModalMessage>
+                  <AddTokens handleAddToken={() => {}} />
+                </>
+              )}
+
+              {/* {modalState.status === "UNLOCKED" && (
+            <>
+              {txState?.status === "PENDING" && (
+                <ModalMessage>
+                  Transaction in progress <Elipsis />
+                </ModalMessage>
+              )}
+              {txState?.status === "COMPLETE" && (
+                <ModalMessage>Transaction complete!</ModalMessage>
+              )}
+              <AddTokens handleAddToken={handleAddToken} />
+            </>
+          )} */}
+            </ModalContainer>
+          </DialogPrimitiveContent>
+        </DialogPrimitivePortal>
+      </DialogPrimitiveRoot>
     </div>
   );
 }

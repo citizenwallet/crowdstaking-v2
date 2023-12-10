@@ -12,9 +12,6 @@ export function AddTokens({
         <Button onClick={() => handleAddToken("BREAD")} disabled={false}>
           BREAD
         </Button>
-        <Button onClick={() => handleAddToken("DAI")} disabled={false}>
-          DAI
-        </Button>
       </div>
     </div>
   );

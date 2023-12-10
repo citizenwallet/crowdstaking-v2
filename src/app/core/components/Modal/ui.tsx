@@ -4,47 +4,28 @@ import { Dialog as DialogContent } from "@radix-ui/react-dialog";
 import CloseIcon from "../Icons/CloseIcon";
 import { TModalStatus } from "../../hooks/useModal";
 
-export function Container({
-  children,
-  status,
-  closeModal,
-}: {
-  children: ReactNode;
-  status: TModalStatus;
-  closeModal: () => void;
-}) {
+export function ModalContainer({ children }: { children: ReactNode }) {
   return (
-    <div
-      onClick={closeModal}
-      className="fixed top-0 left-0 h-screen w-screen p-4 flex justify-center items-center"
-    >
+    <div className="max-w-90vw max-h-90vh fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 flex justify-center items-center">
       <section className="flex flex-col items-start rounded bg-opacity-100 p-4 md:p-8 bg-breadgray-charcoal relative">
-        {status === "UNLOCKED" && (
-          <div className="absolute top-0 right-0 pt-5 pr-3 md:p-8">
-            <button className="fill-breadgray-light-grey w-6 h-6">
-              <CloseIcon />
-            </button>
-          </div>
-        )}
         {children}
       </section>
     </div>
   );
 }
 
-export function CloseModalButton({ closeModal }: { closeModal: () => void }) {
+export function CloseModalButton() {
   return (
     <button
       type="button"
       className=" absolute right-0 top-0 p-4 text-sm  text-neutral-400 hover:text-neutral-200 md:text-base"
-      onClick={closeModal}
     >
-      X
+      <CloseIcon />
     </button>
   );
 }
 
-export function Heading({ children }: { children: ReactNode }) {
+export function ModalHeading({ children }: { children: ReactNode }) {
   return (
     <div className="flex flex-row border-b-[0.075rem] border-b-breadpink-shaded">
       <h2 className="text-2xl px-2 pb-4 leading-normal text-breadgray-light-grey md:text-center font-medium">
@@ -55,7 +36,7 @@ export function Heading({ children }: { children: ReactNode }) {
   );
 }
 
-export function Message({ children }: { children: ReactNode }) {
+export function ModalMessage({ children }: { children: ReactNode }) {
   return (
     <p className="p-2 pt-12 leading-normal text-breadgray-light-grey md:text-center">
       {children}
