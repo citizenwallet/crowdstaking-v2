@@ -1,23 +1,23 @@
 "use client";
 import type { ChangeEvent } from "react";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useChainModal } from "@rainbow-me/rainbowkit";
 
 import { FromPanel } from "./FromPanel";
 import SwapReverse from "../SwapReverse";
 import ToPanel from "./ToPanel";
 import Transaction from "../Transaction";
 import { sanitizeInputValue } from "../swapUtils";
-import { useToast } from "@/app/core/hooks/useToast";
 import { useTransactionDisplay } from "@/app/core/hooks/useTransactionDisplay";
 import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
 import Button from "@/app/core/components/Button";
 import ConnectWallet from "@/app/core/components/ConnectWallet";
 import Bake from "./Bake";
-import { useChainModal } from "@rainbow-me/rainbowkit";
 import { useTokenBalances } from "@/app/core/context/TokenBalanceContext";
 import Burn from "./Burn";
-import { useFeeData } from "wagmi";
-import { formatEther } from "viem";
+import { Address } from "viem";
+// import { useFeeData } from "wagmi";
+// import { formatEther } from "viem";
 
 export type TSwapMode = "BAKE" | "BURN";
 
@@ -33,23 +33,29 @@ const initialSwapState: TSwapState = {
 
 export function Swap() {
   const { user } = useConnectedUser();
-  const { data: feeData, isError, isLoading } = useFeeData();
+  const [connectedAccountAddress, setConnectedAccountAddress] =
+    useState<null | Address>(null);
+  // const { data: feeData, isError, isLoading } = useFeeData();
 
-  const { state: transactionDisplay, dispatch: dispatchTransactionDisplay } =
-    useTransactionDisplay();
-  const { dispatch: dispatchToast } = useToast();
-  const [swapState, setSwapState] = useState<TSwapState>(initialSwapState);
-  const { openChainModal } = useChainModal();
-
-  const { xDAI, BREAD } = useTokenBalances();
-
-  const resetSwapState = () => {
-    setSwapState(initialSwapState);
-  };
+  useEffect(() => {
+    if (user.status === "CONNECTED") {
+      if (connectedAccountAddress !== user.address) {
+        setConnectedAccountAddress(user.address);
+        setSwapState((state) => ({ ...state, value: "" }));
+      }
+    }
+  }, [user, connectedAccountAddress]);
 
   const clearInputValue = () => {
     setSwapState((state) => ({ ...state, value: "" }));
   };
+
+  const { state: transactionDisplay, dispatch: dispatchTransactionDisplay } =
+    useTransactionDisplay();
+  const [swapState, setSwapState] = useState<TSwapState>(initialSwapState);
+  const { openChainModal } = useChainModal();
+
+  const { xDAI, BREAD } = useTokenBalances();
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (transactionDisplay && transactionDisplay.status !== "PENDING") {
@@ -66,15 +72,22 @@ export function Swap() {
 
   const handleSwapReverse = () => {
     setSwapState((state) => ({
-      ...state,
       mode: state.mode === "BAKE" ? "BURN" : "BAKE",
+      value: "",
     }));
   };
 
   const handleBalanceClick = (value: string) => {
     setSwapState((state) => ({
       ...state,
-      value,
+      value:
+        state.mode === "BAKE"
+          ? parseFloat(value) - 0.01 > 0
+            ? (parseFloat(value) - 0.01).toString()
+            : "00.00"
+          : parseFloat(value) === 0
+          ? "00.00"
+          : value,
     }));
   };
 
@@ -146,7 +159,7 @@ export function Swap() {
           />
         )}
       </div>
-      <pre>
+      {/* <pre>
         {JSON.stringify(
           feeData
             ? {
@@ -172,7 +185,7 @@ export function Swap() {
           null,
           2
         )}
-      </pre>
+      </pre> */}
     </div>
   );
 }

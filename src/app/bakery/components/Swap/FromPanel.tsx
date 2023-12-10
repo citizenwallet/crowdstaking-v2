@@ -97,11 +97,7 @@ function TokenBalance({
           type="button"
           className="px-2 font-bold text-breadpink-shaded text-sm"
           onClick={() => {
-            const maxValue =
-              parseFloat(tokenBalance.value) - 0.01 > 0
-                ? (parseFloat(tokenBalance.value) - 0.01).toString()
-                : "00.00";
-            handleBalanceClick(maxValue);
+            handleBalanceClick(tokenBalance.value);
           }}
         >
           max
