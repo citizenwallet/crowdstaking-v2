@@ -8,6 +8,7 @@ export default defineConfig({
   screenshotsFolder: "./tests/e2e/videos",
   e2e: {
     setupNodeEvents,
+    baseUrl: "http://localhost:3000",
     supportFile: "./tests/e2e/support.ts",
     specPattern: "./tests/e2e/specs/*.spec.ts",
   },
