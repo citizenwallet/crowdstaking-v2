@@ -33,7 +33,7 @@ function ToPanel({ inputValue, swapMode, tokenBalance }: IProps) {
           <TokenLabelContainer>
             {swapMode === "BURN" ? <XDAIIcon /> : <BreadIcon />}
             <TokenLabelText>
-              {swapMode === "BURN" ? "DAI" : "BREAD"}
+              {swapMode === "BURN" ? "xDAI" : "BREAD"}
             </TokenLabelText>
           </TokenLabelContainer>
         </PanelTokenRow>
