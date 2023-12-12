@@ -13,7 +13,7 @@ import { TUserConnected } from "@/app/core/hooks/useConnectedUser";
 import Button from "@/app/core/components/Button";
 import config from "@/config";
 import { BREAD_GNOSIS_ABI } from "@/abi";
-import useDebounce from "../../hooks/useDebounce";
+import useDebounce from "@/app/bakery/hooks/useDebounce";
 import {
   CloseModalButton,
   ModalContainer,
