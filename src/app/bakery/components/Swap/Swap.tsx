@@ -6,9 +6,7 @@ import { useChainModal } from "@rainbow-me/rainbowkit";
 import { FromPanel } from "./FromPanel";
 import SwapReverse from "../SwapReverse";
 import ToPanel from "./ToPanel";
-import Transaction from "../Transaction";
 import { sanitizeInputValue } from "../swapUtils";
-import { useTransactionDisplay } from "@/app/core/hooks/useTransactionDisplay";
 import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
 import Button from "@/app/core/components/Button";
 import ConnectWallet from "@/app/core/components/ConnectWallet";
@@ -50,17 +48,12 @@ export function Swap() {
     setSwapState((state) => ({ ...state, value: "" }));
   };
 
-  const { state: transactionDisplay, dispatch: dispatchTransactionDisplay } =
-    useTransactionDisplay();
   const [swapState, setSwapState] = useState<TSwapState>(initialSwapState);
   const { openChainModal } = useChainModal();
 
   const { xDAI, BREAD } = useTokenBalances();
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (transactionDisplay && transactionDisplay.status !== "PENDING") {
-      dispatchTransactionDisplay({ type: "CLEAR" });
-    }
     const { value } = event.target;
 
     const sanitizedValue = sanitizeInputValue(value);
@@ -150,14 +143,6 @@ export function Swap() {
               );
           }
         })()}
-
-        {user.status === "CONNECTED" && transactionDisplay && (
-          <Transaction
-            status={transactionDisplay.status}
-            hash={transactionDisplay.hash}
-            user={user}
-          />
-        )}
       </div>
       {/* <pre>
         {JSON.stringify(

@@ -4,18 +4,15 @@ import Header from "./core/components/Header";
 import { WagmiProvider } from "./core/hooks/WagmiProvider/WagmiProvider";
 import { TokenBalancesProvider } from "./core/context/TokenBalanceContext";
 import { ConnectedUserProvider } from "./core/hooks/useConnectedUser";
-import { TransactionDisplayProvider } from "./core/hooks/useTransactionDisplay";
-import { ModalProvider, useModal } from "./core/hooks/useModal";
-import { ToastProvider, useToast } from "./core/hooks/useToast";
 import { AnimatePresence } from "framer-motion";
-import Modal from "./core/components/Modal";
-import Toast from "./core/components/Toast";
 import Footer from "./core/components/Footer";
 import { ReactNode } from "react";
 import clsx from "clsx";
 import { pressStart, redhat } from "./core/components/Fonts";
 
 import "@rainbow-me/rainbowkit/styles.css";
+import { TransactionsProvider } from "./core/context/TransactionsContext/TransactionsContext";
+import { Toaster } from "./core/components/Toaster/Toaster";
 
 export default function App({ children }: { children: React.ReactNode }) {
   return (
@@ -24,13 +21,9 @@ export default function App({ children }: { children: React.ReactNode }) {
         <WagmiProvider>
           <ConnectedUserProvider>
             <TokenBalancesProvider>
-              <TransactionDisplayProvider>
-                <ModalProvider>
-                  <ToastProvider>
-                    <Layout>{children}</Layout>
-                  </ToastProvider>
-                </ModalProvider>
-              </TransactionDisplayProvider>
+              <TransactionsProvider>
+                <Layout>{children}</Layout>
+              </TransactionsProvider>
             </TokenBalancesProvider>
           </ConnectedUserProvider>
         </WagmiProvider>
@@ -40,26 +33,21 @@ export default function App({ children }: { children: React.ReactNode }) {
 }
 
 function Layout({ children }: { children: ReactNode }) {
-  const { state: toast } = useToast();
-
   return (
     <>
       <AnimatePresence
         //  initial={false}
         mode="wait"
         // onExitComplete={() => null}
-      >
-        <Modal />
-      </AnimatePresence>
+      ></AnimatePresence>
       <AnimatePresence
         //  initial={false}
         mode="wait"
         // onExitComplete={() => null}
-      >
-        {toast && <Toast type={toast.type} message={toast.message} />}
-      </AnimatePresence>
+      ></AnimatePresence>
       <div className="flex min-h-screen flex-col">
         <Header />
+        <Toaster />
         {children}
         <Footer />
       </div>

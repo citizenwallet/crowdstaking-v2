@@ -46,8 +46,6 @@ export default function Burn({
     enabled: parseFloat(debouncedValue) > 0,
   });
 
-  console.log({ prepareError });
-
   const {
     write,
     isLoading: writeIsLoading,
@@ -56,14 +54,6 @@ export default function Burn({
     isSuccess: writeIsSuccess,
     data: writeData,
   } = useContractWrite(prepareConfig);
-
-  const { data } = useContractRead({
-    address: BREAD.address,
-    abi: BREAD_GNOSIS_ABI,
-    functionName: "maxWithdraw",
-  });
-
-  console.log({ maxWithdraw: data });
 
   return (
     <div className="p-2 w-full flex flex-col gap-2">

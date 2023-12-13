@@ -86,7 +86,6 @@ function ProviderWithUser({
         ? formatUnits(BigInt(breadBalanceData as string), 18).toString()
         : "0";
 
-      console.log("bread balance value: ", { value });
       setBreadBalanceState({
         status: "SUCCESS",
         tokenName: "BREAD",
@@ -107,7 +106,6 @@ function ProviderWithUser({
 
   useEffect(() => {
     if (xDAIBalanceStatus === "success" && xDAIBalanceData) {
-      console.log({ xDAIBalanceData });
       setXdaiBalanceState({
         status: "SUCCESS",
         tokenName: "xDAI",

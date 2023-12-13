@@ -24,6 +24,7 @@ import CloseIcon from "@/app/core/components/Icons/CloseIcon";
 import Elipsis from "@/app/core/components/Elipsis";
 import AddTokens from "@/app/core/components/Modal/AddTokens";
 import { useEffect } from "react";
+import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 
 export default function Bake({
   user,
@@ -32,6 +33,8 @@ export default function Bake({
   user: TUserConnected;
   inputValue: string;
 }) {
+  const { dispatch: transactionsDispatch } = useTransactions();
+
   const { BREAD } = config[user.chain.id];
 
   const debouncedValue = useDebounce(inputValue, 500);
@@ -62,13 +65,10 @@ export default function Bake({
     data: writeData,
   } = useContractWrite(prepareConfig);
 
-  console.log({ writeData });
-
   useEffect(() => {
     if (!writeData?.hash) return;
-    // handle tx hash!
-    console.log({ txHash: writeData.hash });
-  }, [writeData]);
+    transactionsDispatch({ type: "WATCH", payload: { hash: writeData.hash } });
+  }, [writeData, transactionsDispatch]);
 
   useEffect(() => {
     if (!writeIsError && !writeError) return;
