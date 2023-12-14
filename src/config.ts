@@ -33,7 +33,7 @@ const config: IConfig = {
     BREAD: {
       symbol: "BREAD",
       decimals: 18,
-      address: "0xDEPLOYED_CONTRACT_ADDRESS",
+      address: "0x2993bD6dA994378Eadf1A5ba5c9017FdFc92f111",
     },
   },
 };
