@@ -1,7 +1,7 @@
 import { configureChains, createConfig } from "wagmi";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
-import { hardhat } from "wagmi/chains";
+import { gnosis, hardhat } from "wagmi/chains";
 import {
   connectorsForWallets,
   getDefaultWallets,
@@ -12,6 +12,7 @@ import {
   ledgerWallet,
   trustWallet,
 } from "@rainbow-me/rainbowkit/wallets";
+import { publicProvider } from "wagmi/providers/public";
 
 const WALLET_CONNECT_PROJECT_ID =
   process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID;
@@ -19,8 +20,9 @@ if (!WALLET_CONNECT_PROJECT_ID)
   throw new Error("WALLET_CONNECT_PROJECT_ID not set!");
 
 const chainsConfig = configureChains(
-  [{ ...hardhat, id: 31337 }],
+  [{ ...hardhat, id: 31337 }, gnosis],
   [
+    publicProvider(),
     jsonRpcProvider({
       rpc: () => ({
         http: "http://localhost:8545",
