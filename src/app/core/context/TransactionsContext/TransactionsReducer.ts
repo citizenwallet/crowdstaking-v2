@@ -2,25 +2,29 @@ import { WriteContractReturnType } from "viem";
 
 export type TTransactionHash = WriteContractReturnType;
 
+export type TTransactionPending = {
+  status: "PENDING";
+  hash: TTransactionHash;
+};
+export type TTransactionSuccess = {
+  status: "SUCCESS";
+  hash: TTransactionHash;
+};
+export type TTransactionReverted = {
+  status: "REVERTED";
+  hash: TTransactionHash;
+};
+
 export type TTransaction =
-  | {
-      status: "PENDING";
-      hash: TTransactionHash;
-    }
-  | {
-      status: "SUCCESS";
-      hash: TTransactionHash;
-    }
-  | {
-      status: "FAILED";
-      hash: TTransactionHash;
-    };
+  | TTransactionPending
+  | TTransactionSuccess
+  | TTransactionReverted;
 
 export type TTransactionsState = TTransaction[];
 
 export type TTransactionsAction =
   | {
-      type: "WATCH";
+      type: "PENDING";
       payload: { hash: TTransactionHash };
     }
   | {
@@ -28,7 +32,11 @@ export type TTransactionsAction =
       payload: { hash: TTransactionHash };
     }
   | {
-      type: "FAILED";
+      type: "REVERTED";
+      payload: { hash: TTransactionHash };
+    }
+  | {
+      type: "CLEAR";
       payload: { hash: TTransactionHash };
     };
 
@@ -42,14 +50,18 @@ export function TransactionsReducer(
     type: actionType,
     payload: { hash },
   } = action;
+  console.log(`${actionType} action received`);
+  console.log("current tx array: ", state);
   switch (actionType) {
-    case "WATCH":
+    case "PENDING":
       return [{ status: "PENDING", hash }, ...state];
     case "SUCCESS":
       return [{ status: "SUCCESS", hash }, ...state];
-    case "FAILED":
-      return [{ status: "FAILED", hash }, ...state];
+    case "REVERTED":
+      return [{ status: "REVERTED", hash }, ...state];
+    case "CLEAR":
+      return [...state.filter((transaction) => transaction.hash !== hash)];
     default:
-      throw new Error("TransactionDisplay action not recognised");
+      throw new Error(`TransactionDisplay action ${actionType} not recognised`);
   }
 }

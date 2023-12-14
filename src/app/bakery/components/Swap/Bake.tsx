@@ -15,7 +15,6 @@ import config from "@/config";
 import { BREAD_GNOSIS_ABI } from "@/abi";
 import useDebounce from "@/app/bakery/hooks/useDebounce";
 import {
-  CloseModalButton,
   ModalContainer,
   ModalHeading,
   ModalMessage,
@@ -67,12 +66,18 @@ export default function Bake({
 
   useEffect(() => {
     if (!writeData?.hash) return;
-    transactionsDispatch({ type: "WATCH", payload: { hash: writeData.hash } });
+    transactionsDispatch({
+      type: "PENDING",
+      payload: { hash: writeData.hash },
+    });
   }, [writeData, transactionsDispatch]);
 
   useEffect(() => {
     if (!writeIsError && !writeError) return;
-    // handle tx hash!
+    // TODO tx not submitted, dispatch FAILED tx
+    // !!! unless rejected by user:
+    // -> error.cause.code === 4001
+
     console.log({ error: writeError });
   }, [writeIsError, writeError]);
 
