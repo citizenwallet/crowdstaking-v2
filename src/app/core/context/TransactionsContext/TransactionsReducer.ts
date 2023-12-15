@@ -3,14 +3,17 @@ import { WriteContractReturnType } from "viem";
 export type TTransactionHash = WriteContractReturnType;
 
 export type TTransactionPending = {
+  id: string;
   status: "PENDING";
   hash: TTransactionHash;
 };
 export type TTransactionSuccess = {
+  id: string;
   status: "SUCCESS";
   hash: TTransactionHash;
 };
 export type TTransactionReverted = {
+  id: string;
   status: "REVERTED";
   hash: TTransactionHash;
 };
@@ -37,7 +40,7 @@ export type TTransactionsAction =
     }
   | {
       type: "CLEAR";
-      payload: { hash: TTransactionHash };
+      payload: { id: string };
     };
 
 export type TTransactionsDispatch = (action: TTransactionsAction) => void;
@@ -46,22 +49,43 @@ export function TransactionsReducer(
   state: TTransactionsState,
   action: TTransactionsAction
 ): TTransactionsState {
-  const {
-    type: actionType,
-    payload: { hash },
-  } = action;
-  console.log(`${actionType} action received`);
-  console.log("current tx array: ", state);
-  switch (actionType) {
+  switch (action.type) {
     case "PENDING":
-      return [{ status: "PENDING", hash }, ...state];
+      return [
+        {
+          id: generateId(action.payload.hash),
+          status: "PENDING",
+          hash: action.payload.hash,
+        },
+        ...state,
+      ];
     case "SUCCESS":
-      return [{ status: "SUCCESS", hash }, ...state];
+      return [
+        {
+          id: generateId(action.payload.hash),
+          status: "SUCCESS",
+          hash: action.payload.hash,
+        },
+        ...state,
+      ];
     case "REVERTED":
-      return [{ status: "REVERTED", hash }, ...state];
+      return [
+        {
+          id: generateId(action.payload.hash),
+          status: "REVERTED",
+          hash: action.payload.hash,
+        },
+        ...state,
+      ];
     case "CLEAR":
-      return [...state.filter((transaction) => transaction.hash !== hash)];
+      return [
+        ...state.filter((transaction) => transaction.id !== action.payload.id),
+      ];
     default:
-      throw new Error(`TransactionDisplay action ${actionType} not recognised`);
+      throw new Error(`TransactionDisplay action not recognised`);
   }
+}
+
+function generateId(hash: TTransactionHash): string {
+  return Date.now().toString() + hash;
 }

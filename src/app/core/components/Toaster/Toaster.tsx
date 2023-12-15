@@ -14,6 +14,8 @@ export function Toaster() {
   const { state: transactionsState, dispatch: transactionsDispatch } =
     useTransactions();
 
+  console.log({ transactionsState });
+
   return (
     <section className="absolute">
       {transactionsState.map((transaction) => {
@@ -42,10 +44,10 @@ function Toast({
   transaction: TTransactionSuccess | TTransactionReverted;
   transactionsDispatch: TTransactionsDispatch;
 }) {
-  const { status, hash } = transaction;
+  const { id, status, hash } = transaction;
 
   function handleOpenChange() {
-    transactionsDispatch({ type: "CLEAR", payload: { hash } });
+    transactionsDispatch({ type: "CLEAR", payload: { id } });
   }
 
   return (
@@ -54,10 +56,8 @@ function Toast({
         onOpenChange={handleOpenChange}
         className="p-6 rounded bg-white text-black"
       >
-        <ToastPrimitive.Title>{transaction.status}</ToastPrimitive.Title>
-        <ToastPrimitive.Description>
-          {transaction.hash}
-        </ToastPrimitive.Description>
+        <ToastPrimitive.Title>{status}</ToastPrimitive.Title>
+        <ToastPrimitive.Description>{hash}</ToastPrimitive.Description>
         <ToastPrimitive.Close />
       </ToastPrimitive.Root>
       <ToastPrimitive.Viewport />
@@ -72,16 +72,14 @@ function PendingTxToast({
   transaction: TTransactionPending;
   transactionsDispatch: TTransactionsDispatch;
 }) {
-  const { status, hash } = transaction;
+  const { id, status, hash } = transaction;
 
   const [haveResult, setHaveResult] = useState(false);
 
   const { data: waitData } = useWaitForTransaction({ hash });
 
-  // TODO add unique id to each tx so it can be passed with CLEAR ACTION
-
   function handleOpenChange() {
-    transactionsDispatch({ type: "CLEAR", payload: { hash } });
+    transactionsDispatch({ type: "CLEAR", payload: { id } });
   }
 
   useEffect(() => {
