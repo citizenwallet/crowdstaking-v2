@@ -20,7 +20,13 @@ if (!WALLET_CONNECT_PROJECT_ID)
   throw new Error("WALLET_CONNECT_PROJECT_ID not set!");
 
 const chainsConfig = configureChains(
-  [{ ...hardhat, id: 31337 }, gnosis],
+  [
+    { ...hardhat, id: 31337 },
+    {
+      ...gnosis,
+      iconUrl: "gnosis_icon.svg",
+    },
+  ],
   [
     publicProvider(),
     jsonRpcProvider({
