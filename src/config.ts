@@ -19,21 +19,21 @@ const config: IConfig = {
   31337: {
     ID: 31337,
     NETWORK_STRING: "Hardhat",
-    EXPLORER: "http://localhost:8545",
+    EXPLORER: "NONE",
     BREAD: {
       symbol: "BREAD",
       decimals: 18,
-      address: "0x7887978a762AaEA3C02Ddc23f323fAA128745fa1",
+      address: "0x2993bD6dA994378Eadf1A5ba5c9017FdFc92f111",
     },
   },
-  137: {
-    ID: 137,
+  100: {
+    ID: 100,
     NETWORK_STRING: "Gnosis",
-    EXPLORER: "https://polygonscan.com",
+    EXPLORER: "https://gnosisscan.io",
     BREAD: {
       symbol: "BREAD",
       decimals: 18,
-      address: "0x11d9efDf4Ab4A3bfabf5C7089F56AA4F059AA14C",
+      address: "0x2993bD6dA994378Eadf1A5ba5c9017FdFc92f111",
     },
   },
 };

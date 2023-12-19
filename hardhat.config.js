@@ -19,6 +19,10 @@ module.exports = {
         url: GNOSIS_RPC_URL,
         blockNumber: FORK_BLOCK_NUMBER,
       },
+      mining: {
+        auto: false,
+        interval: 1000,
+      },
       hardfork: "merge",
     },
   },
