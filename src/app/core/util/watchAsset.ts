@@ -1,4 +1,4 @@
-import config from "@/config";
+import config from "@/chainConfig";
 
 export const watchAsset = async (
   tokenKey: "DAI" | "BREAD",

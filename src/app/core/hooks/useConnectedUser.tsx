@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import { type Chain, useAccount, useNetwork } from "wagmi";
-import config, { type ChainConfiguration } from "@/config";
+import config, { type ChainConfiguration } from "@/chainConfig";
 
 export type TUserLoading = { status: "LOADING" };
 export type TUserNotConnected = { status: "NOT_CONNECTED" };

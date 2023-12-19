@@ -8,7 +8,7 @@ import {
 
 import { TUserConnected } from "@/app/core/hooks/useConnectedUser";
 import Button from "@/app/core/components/Button";
-import config from "@/config";
+import config from "@/chainConfig";
 import { BREAD_GNOSIS_ABI } from "@/abi";
 import useDebounce from "@/app/bakery/hooks/useDebounce";
 

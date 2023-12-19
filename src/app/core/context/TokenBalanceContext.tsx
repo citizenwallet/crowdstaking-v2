@@ -6,7 +6,7 @@ import {
   useState,
   useMemo,
 } from "react";
-import config from "@/config";
+import config from "@/chainConfig";
 import { TUserConnected, useConnectedUser } from "../hooks/useConnectedUser";
 import { useBalance, useContractRead } from "wagmi";
 import { ERC20_ABI } from "@/abi";
