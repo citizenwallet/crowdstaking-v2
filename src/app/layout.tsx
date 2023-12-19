@@ -12,7 +12,7 @@ import { pressStart, redhat } from "./core/components/Fonts";
 
 import "@rainbow-me/rainbowkit/styles.css";
 import { TransactionsProvider } from "./core/context/TransactionsContext/TransactionsContext";
-import { Toaster } from "./core/components/Toaster/Toaster";
+// import { Toaster } from "./core/components/Toaster/Toaster";
 
 export default function App({ children }: { children: React.ReactNode }) {
   return (
@@ -47,7 +47,7 @@ function Layout({ children }: { children: ReactNode }) {
       ></AnimatePresence>
       <div className="flex min-h-screen flex-col">
         <Header />
-        <Toaster />
+        {/* <Toaster /> */}
         {children}
         <Footer />
       </div>
