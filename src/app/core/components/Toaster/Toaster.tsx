@@ -18,7 +18,7 @@ export function Toaster() {
 
   return (
     <section className="absolute">
-      {transactionsState.map((transaction) => {
+      {/* {transactionsState.map((transaction) => {
         return transaction.status === "PENDING" ? (
           <PendingTxToast
             key={`${transaction.hash}_${transaction.status}`}
@@ -32,7 +32,7 @@ export function Toaster() {
             transactionsDispatch={transactionsDispatch}
           />
         );
-      })}
+      })} */}
     </section>
   );
 }
@@ -65,48 +65,48 @@ function Toast({
   );
 }
 
-function PendingTxToast({
-  transaction,
-  transactionsDispatch,
-}: {
-  transaction: TTransactionPending;
-  transactionsDispatch: TTransactionsDispatch;
-}) {
-  const { id, status, hash } = transaction;
+// function PendingTxToast({
+//   transaction,
+//   transactionsDispatch,
+// }: {
+//   transaction: TTransactionPending;
+//   transactionsDispatch: TTransactionsDispatch;
+// }) {
+//   const { id, status, hash } = transaction;
 
-  const [haveResult, setHaveResult] = useState(false);
+//   const [haveResult, setHaveResult] = useState(false);
 
-  const { data: waitData } = useWaitForTransaction({ hash });
+//   const { data: waitData } = useWaitForTransaction({ hash });
 
-  function handleOpenChange() {
-    transactionsDispatch({ type: "CLEAR", payload: { id } });
-  }
+//   function handleOpenChange() {
+//     transactionsDispatch({ type: "CLEAR", payload: { id } });
+//   }
 
-  useEffect(() => {
-    if (!waitData || haveResult) return;
-    console.log("we have waitdata: ", waitData);
-    if (waitData.status === "success") {
-      transactionsDispatch({ type: "SUCCESS", payload: { hash } });
-    }
-    if (waitData.status === "reverted") {
-      transactionsDispatch({ type: "REVERTED", payload: { hash } });
-    }
-    setHaveResult(true);
-  }, [status, hash, waitData, transactionsDispatch, haveResult, setHaveResult]);
+//   useEffect(() => {
+//     if (!waitData || haveResult) return;
+//     console.log("we have waitdata: ", waitData);
+//     if (waitData.status === "success") {
+//       transactionsDispatch({ type: "SUCCESS", payload: { hash } });
+//     }
+//     if (waitData.status === "reverted") {
+//       transactionsDispatch({ type: "REVERTED", payload: { hash } });
+//     }
+//     setHaveResult(true);
+//   }, [status, hash, waitData, transactionsDispatch, haveResult, setHaveResult]);
 
-  return (
-    <ToastPrimitive.Provider>
-      <ToastPrimitive.Root
-        onOpenChange={handleOpenChange}
-        className="p-6 rounded bg-white text-green-900 font-bold"
-      >
-        <ToastPrimitive.Title>{transaction.status}</ToastPrimitive.Title>
-        <ToastPrimitive.Description>
-          {transaction.hash}
-        </ToastPrimitive.Description>
-        <ToastPrimitive.Close />
-      </ToastPrimitive.Root>
-      <ToastPrimitive.Viewport />
-    </ToastPrimitive.Provider>
-  );
-}
+//   return (
+//     <ToastPrimitive.Provider>
+//       <ToastPrimitive.Root
+//         onOpenChange={handleOpenChange}
+//         className="p-6 rounded bg-white text-green-900 font-bold"
+//       >
+//         <ToastPrimitive.Title>{transaction.status}</ToastPrimitive.Title>
+//         <ToastPrimitive.Description>
+//           {transaction.hash}
+//         </ToastPrimitive.Description>
+//         <ToastPrimitive.Close />
+//       </ToastPrimitive.Root>
+//       <ToastPrimitive.Viewport />
+//     </ToastPrimitive.Provider>
+//   );
+// }

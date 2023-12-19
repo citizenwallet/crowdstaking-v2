@@ -18,12 +18,14 @@ import {
   ModalContainer,
   ModalHeading,
   ModalMessage,
-} from "@/app/core/components/Modal/ui";
+} from "@/app/core/components/Modal/ModalUI";
 import CloseIcon from "@/app/core/components/Icons/CloseIcon";
 import Elipsis from "@/app/core/components/Elipsis";
 import AddTokens from "@/app/core/components/Modal/AddTokens";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
+import { nanoid } from "nanoid";
+import { BakeModal } from "@/app/core/components/Modal/BakeModal";
 
 export default function Bake({
   user,
@@ -32,7 +34,8 @@ export default function Bake({
   user: TUserConnected;
   inputValue: string;
 }) {
-  const { dispatch: transactionsDispatch } = useTransactions();
+  const { transactionsState, transactionsDispatch } = useTransactions();
+  const [txId, setTxId] = useState<string | null>(null);
 
   const { BREAD } = config[user.chain.id];
 
@@ -65,12 +68,12 @@ export default function Bake({
   } = useContractWrite(prepareConfig);
 
   useEffect(() => {
-    if (!writeData?.hash) return;
+    if (!writeData?.hash || !txId) return;
     transactionsDispatch({
-      type: "PENDING",
-      payload: { hash: writeData.hash },
+      type: "SET_PENDING",
+      payload: { id: txId, hash: writeData.hash },
     });
-  }, [writeData, transactionsDispatch]);
+  }, [txId, writeData, transactionsDispatch]);
 
   useEffect(() => {
     if (!writeIsError && !writeError) return;
@@ -81,56 +84,33 @@ export default function Bake({
     console.log({ error: writeError });
   }, [writeIsError, writeError]);
 
+  const transaction = transactionsState.find(
+    (transaction) => transaction.id === txId
+  );
+
   return (
     <div className="p-2 w-full flex flex-col gap-2">
       <DialogPrimitiveRoot>
         <DialogPrimitiveTrigger asChild>
-          <Button fullWidth={true} variant="large" onClick={() => write?.()}>
+          <Button
+            fullWidth={true}
+            variant="large"
+            onClick={() => {
+              if (!write) return;
+              const newId = nanoid();
+              setTxId(newId);
+              transactionsDispatch({
+                type: "NEW",
+                payload: { id: newId, value: debouncedValue },
+              });
+              write();
+            }}
+          >
             Bake
           </Button>
         </DialogPrimitiveTrigger>
         <DialogPrimitivePortal>
-          <DialogPrimitiveOverlay className="fixed top-0 bg-neutral-900 transition-opacity opacity-70 h-screen w-screen" />
-
-          <DialogPrimitiveContent>
-            <ModalContainer>
-              <div className="absolute top-0 right-0 pt-5 pr-3 md:p-8">
-                <DialogPrimitiveClose className=" w-6 h-6">
-                  <CloseIcon />
-                </DialogPrimitiveClose>
-              </div>
-              <ModalHeading>Baking Bread</ModalHeading>
-              {writeIsLoading && (
-                <ModalMessage>
-                  Awaiting user response
-                  <Elipsis />
-                </ModalMessage>
-              )}
-              {writeIsSuccess && (
-                <>
-                  <ModalMessage>
-                    Transaction in progress <Elipsis />
-                    <Elipsis />
-                  </ModalMessage>
-                  <AddTokens handleAddToken={() => {}} />
-                </>
-              )}
-
-              {/* {modalState.status === "UNLOCKED" && (
-            <>
-              {txState?.status === "PENDING" && (
-                <ModalMessage>
-                  Transaction in progress <Elipsis />
-                </ModalMessage>
-              )}
-              {txState?.status === "COMPLETE" && (
-                <ModalMessage>Transaction complete!</ModalMessage>
-              )}
-              <AddTokens handleAddToken={handleAddToken} />
-            </>
-          )} */}
-            </ModalContainer>
-          </DialogPrimitiveContent>
+          {transaction && <BakeModal transaction={transaction} />}
         </DialogPrimitivePortal>
       </DialogPrimitiveRoot>
     </div>

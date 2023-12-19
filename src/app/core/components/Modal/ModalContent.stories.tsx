@@ -1,119 +1,71 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import {
+  Root as DialogPrimitiveRoot,
+  Portal as DialogPrimitivePortal,
+  Overlay as DialogPrimitiveOverlay,
+  Trigger as DialogPrimitiveTrigger,
+  Content as DialogPrimitiveContent,
+  Close as DialogPrimitiveClose,
+} from "@radix-ui/react-dialog";
 
-import { ModalContent } from "./Modal";
+import { BakeModal } from "./BakeModal";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {
   title: "Example/Modal",
-  component: ModalContent,
+  component: BakeModal,
   decorators: [
     (Story) => (
-      <div className="h-[40rem] w-full bg-breadgray-grey100">
-        <Story />
-      </div>
+      <DialogPrimitiveRoot defaultOpen={true}>
+        <DialogPrimitivePortal>
+          <Story />
+        </DialogPrimitivePortal>
+      </DialogPrimitiveRoot>
     ),
   ],
-  parameters: {
-    // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/react/configure/story-layout
-    layout: "fullscreen",
-  },
-  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
-  // tags: ["autodocs"],
-  // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-  //   argTypes: {
-  //     backgroundColor: { control: "color" },
-  //   },
-} satisfies Meta<typeof ModalContent>;
+} satisfies Meta<typeof BakeModal>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
+const MOCK_HASH =
+  "0x63b423c9935d33158a54a13dc6e3e0c877adf6255815bf0fe586cf6487ad0ffe";
 
-export const Connecting: Story = {
+export const BakingWalletOpen: Story = {
   args: {
-    modalState: { type: "CONNECT_WALLET", status: "LOCKED" },
-    txState: null,
+    transaction: { id: "1234567", status: "PREPARED", value: "20000.345635" },
   },
 };
 
-export const ApproveContractLocked: Story = {
+export const BakingTransactionPending: Story = {
   args: {
-    modalState: { type: "APPROVAL", status: "LOCKED" },
-    txState: null,
-  },
-};
-
-export const ApproveContractPending: Story = {
-  args: {
-    modalState: { type: "APPROVAL", status: "LOCKED" },
-    txState: {
+    transaction: {
+      id: "1234567",
       status: "PENDING",
-      hash: "0x89n3075438n9v724890n7v298",
+      value: "20000.345635",
+      hash: MOCK_HASH,
     },
   },
 };
 
-export const ApproveContractComplete: Story = {
+export const BakingTransactionSuccess: Story = {
   args: {
-    modalState: { type: "APPROVAL", status: "LOCKED" },
-    txState: {
-      status: "COMPLETE",
-      hash: "0x89n3075438n9v724890n7v298",
+    transaction: {
+      id: "1234567",
+      status: "SUCCESS",
+      value: "20000.345635",
+      hash: MOCK_HASH,
     },
   },
 };
 
-export const BakingLocked: Story = {
+export const BakingTransactionReverted: Story = {
   args: {
-    modalState: { type: "BAKING", amount: "300", status: "LOCKED" },
-    txState: null,
-  },
-};
-
-export const BakingPending: Story = {
-  args: {
-    modalState: { type: "BAKING", amount: "300", status: "UNLOCKED" },
-    txState: {
-      status: "PENDING",
-      hash: "0x89n3075438n9v724890n7v298",
-    },
-  },
-};
-
-export const BakingComplete: Story = {
-  args: {
-    modalState: { type: "BAKING", amount: "300", status: "UNLOCKED" },
-    txState: {
-      status: "COMPLETE",
-      hash: "0x89n3075438n9v724890n7v298",
-    },
-  },
-};
-
-export const BurningLocked: Story = {
-  args: {
-    modalState: { type: "BURNING", amount: "300", status: "LOCKED" },
-    txState: null,
-  },
-};
-
-export const BuringPending: Story = {
-  args: {
-    modalState: { type: "BURNING", amount: "300", status: "UNLOCKED" },
-    txState: {
-      status: "PENDING",
-      hash: "0x89n3075438n9v724890n7v298",
-    },
-  },
-};
-
-export const BurningComplete: Story = {
-  args: {
-    modalState: { type: "BURNING", amount: "300", status: "UNLOCKED" },
-    txState: {
-      status: "COMPLETE",
-      hash: "0x89n3075438n9v724890n7v298",
+    transaction: {
+      id: "1234567",
+      status: "REVERTED",
+      value: "20000.345635",
+      hash: MOCK_HASH,
     },
   },
 };

@@ -26,6 +26,7 @@
     "framer-motion": "^10.16.4",
     "graphql-request": "^6.1.0",
     "lokijs": "^1.5.12",
+    "nanoid": "^5.0.4",
     "next": "14.0.3",
     "pino-pretty": "^10.2.3",
     "react": "^18",

@@ -1,6 +1,7 @@
 import { type Preview } from "@storybook/react";
 
 import "@/app/core/components/Fonts";
+import "@/app/app.css";
 
 const preview: Preview = {
   decorators: [

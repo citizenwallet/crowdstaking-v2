@@ -10,11 +10,12 @@ import {
   TTransactionsState,
   TransactionsReducer,
 } from "./TransactionsReducer";
+import { TransactionWatcher } from "./TransactionsWatcher";
 
 const TransactionsContext = createContext<
   | {
-      state: TTransactionsState;
-      dispatch: TTransactionsDispatch;
+      transactionsState: TTransactionsState;
+      transactionsDispatch: TTransactionsDispatch;
     }
   | undefined
 >(undefined);
@@ -22,10 +23,22 @@ const TransactionsContext = createContext<
 function TransactionsProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(TransactionsReducer, []);
 
-  const value = useMemo(() => ({ state, dispatch }), [state, dispatch]);
+  const value = useMemo(
+    () => ({ transactionsState: state, transactionsDispatch: dispatch }),
+    [state, dispatch]
+  );
 
   return (
     <TransactionsContext.Provider value={value}>
+      {value.transactionsState.map((transaction) =>
+        transaction.status === "PENDING" ? (
+          <TransactionWatcher
+            key={`watching_transaction_${transaction.id}`}
+            transaction={transaction}
+            transactionsDispatch={value.transactionsDispatch}
+          />
+        ) : null
+      )}
       {children}
     </TransactionsContext.Provider>
   );
