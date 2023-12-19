@@ -1,38 +1,72 @@
-// import type { ReactNode } from "react";
-// import { WagmiConfig, configureChains, createConfig } from "wagmi";
-// import { polygon, polygonMumbai } from "wagmi/chains";
-// import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
-// import { InjectedConnector } from "wagmi/connectors/injected";
-// import { MetaMaskConnector } from "wagmi/connectors/metaMask";
-// import { SafeConnector } from "wagmi/connectors/safe";
-// import { alchemyProvider } from "wagmi/providers/alchemy";
-// import { publicProvider } from "wagmi/providers/public";
+import { configureChains, createConfig } from "wagmi";
+import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
-// const apiKey = import.meta.env.PUBLIC_ALCHEMY_ID as string;
+import { gnosis, hardhat } from "wagmi/chains";
+import {
+  connectorsForWallets,
+  getDefaultWallets,
+} from "@rainbow-me/rainbowkit";
+import {
+  argentWallet,
+  injectedWallet,
+  ledgerWallet,
+  trustWallet,
+} from "@rainbow-me/rainbowkit/wallets";
+import { publicProvider } from "wagmi/providers/public";
 
-// const { chains, publicClient, webSocketPublicClient } = configureChains(
-//   [polygon, polygonMumbai],
-//   [alchemyProvider({ apiKey }), publicProvider()]
-// );
+const WALLET_CONNECT_PROJECT_ID =
+  process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID;
+if (!WALLET_CONNECT_PROJECT_ID)
+  throw new Error("WALLET_CONNECT_PROJECT_ID not set!");
 
-// export const devConfig = createConfig({
-//   autoConnect: true,
-//   connectors: [
-//     new MetaMaskConnector({ chains }),
-//     new CoinbaseWalletConnector({
-//       chains,
-//       options: {
-//         appName: "wagmi",
-//       },
-//     }),
-//     new InjectedConnector({
-//       chains,
-//       options: {
-//         name: "Injected",
-//         shimDisconnect: true,
-//       },
-//     }),
-//   ],
-//   publicClient,
-//   webSocketPublicClient,
-// });
+const chainsConfig = configureChains(
+  [
+    { ...hardhat, id: 31337 },
+    {
+      ...gnosis,
+      iconUrl: "gnosis_icon.svg",
+    },
+  ],
+  [
+    publicProvider(),
+    jsonRpcProvider({
+      rpc: () => ({
+        http: "http://localhost:8545",
+        webSocket: "ws://localhost:8545",
+      }),
+    }),
+  ]
+);
+
+export const { chains } = chainsConfig;
+
+const { publicClient } = chainsConfig;
+
+const projectId = WALLET_CONNECT_PROJECT_ID;
+
+const { wallets } = getDefaultWallets({
+  appName: "Breadchain Crowdstaking",
+  projectId,
+  chains,
+});
+
+const connectors = connectorsForWallets([
+  ...wallets,
+  {
+    groupName: "Other",
+    wallets: [
+      injectedWallet({ chains }),
+      argentWallet({ projectId, chains }),
+      trustWallet({ projectId, chains }),
+      ledgerWallet({ projectId, chains }),
+    ],
+  },
+]);
+
+const config = createConfig({
+  autoConnect: true,
+  connectors,
+  publicClient,
+});
+
+export { chains as devChains, config as devConfig };

@@ -2,7 +2,9 @@ import type { ReactNode } from "react";
 import { WagmiConfig } from "wagmi";
 import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
 
-import { chains, config } from "./config/testConfig";
+import { getConfig } from "./config/getConfig";
+
+const { chains, config } = getConfig();
 
 const baseTheme = darkTheme({
   accentColor: "#E873D3",

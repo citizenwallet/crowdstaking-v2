@@ -18,10 +18,11 @@ const WALLET_CONNECT_PROJECT_ID =
   process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID;
 if (!WALLET_CONNECT_PROJECT_ID)
   throw new Error("WALLET_CONNECT_PROJECT_ID not set!");
+const QUIKNODE_API_KEY = process.env.NEXT_PUBLIC_QUIKNODE_API_KEY;
+if (!QUIKNODE_API_KEY) throw new Error("WALLET_CONNECT_PROJECT_ID not set!");
 
 const chainsConfig = configureChains(
   [
-    { ...hardhat, id: 31337 },
     {
       ...gnosis,
       iconUrl: "gnosis_icon.svg",
@@ -31,14 +32,13 @@ const chainsConfig = configureChains(
     publicProvider(),
     jsonRpcProvider({
       rpc: () => ({
-        http: "http://localhost:8545",
-        webSocket: "ws://localhost:8545",
+        http: `https://bitter-radial-dust.xdai.quiknode.pro/${QUIKNODE_API_KEY}`, // 👈 Replace this with your HTTP URL
       }),
     }),
   ]
 );
 
-export const { chains } = chainsConfig;
+const { chains } = chainsConfig;
 
 const { publicClient } = chainsConfig;
 
@@ -63,8 +63,10 @@ const connectors = connectorsForWallets([
   },
 ]);
 
-export const config = createConfig({
+const config = createConfig({
   autoConnect: true,
   connectors,
   publicClient,
 });
+
+export { chains as prodChains, config as prodConfig };
