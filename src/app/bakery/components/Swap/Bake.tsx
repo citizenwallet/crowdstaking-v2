@@ -3,10 +3,7 @@ import { parseEther } from "viem";
 import {
   Root as DialogPrimitiveRoot,
   Portal as DialogPrimitivePortal,
-  Overlay as DialogPrimitiveOverlay,
   Trigger as DialogPrimitiveTrigger,
-  Content as DialogPrimitiveContent,
-  Close as DialogPrimitiveClose,
 } from "@radix-ui/react-dialog";
 
 import { TUserConnected } from "@/app/core/hooks/useConnectedUser";
@@ -14,18 +11,11 @@ import Button from "@/app/core/components/Button";
 import config from "@/config";
 import { BREAD_GNOSIS_ABI } from "@/abi";
 import useDebounce from "@/app/bakery/hooks/useDebounce";
-import {
-  ModalContainer,
-  ModalHeading,
-  ModalMessage,
-} from "@/app/core/components/Modal/ModalUI";
-import CloseIcon from "@/app/core/components/Icons/CloseIcon";
-import Elipsis from "@/app/core/components/Elipsis";
-import AddTokens from "@/app/core/components/Modal/AddTokens";
+
 import { useEffect, useState } from "react";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { nanoid } from "nanoid";
-import { BakeModal } from "@/app/core/components/Modal/BakeModal";
+import { BakeModal } from "@/app/core/components/Modal/BakeModal/BakeModal";
 
 export default function Bake({
   user,

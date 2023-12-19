@@ -49,6 +49,7 @@ export function TransactionLink({ hash }: { hash: TTransactionHash }) {
       href={`https://gnosisscan.io/tx/${hash}`}
       target="_blank"
       rel="noopener noreferer"
+      className="underline"
     >
       view on explorer {"->"}
     </a>
@@ -63,5 +64,11 @@ export function TransactionValue({ value }: { value: string }) {
     >
       {balanceFormatter.format(parseFloat(value))}
     </div>
+  );
+}
+
+export function ModalOverlay() {
+  return (
+    <div className="fixed top-0 bg-neutral-900 transition-opacity opacity-70 h-screen w-screen" />
   );
 }

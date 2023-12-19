@@ -1,8 +1,5 @@
 import {
-  Root as DialogPrimitiveRoot,
-  Portal as DialogPrimitivePortal,
   Overlay as DialogPrimitiveOverlay,
-  Trigger as DialogPrimitiveTrigger,
   Content as DialogPrimitiveContent,
   Close as DialogPrimitiveClose,
 } from "@radix-ui/react-dialog";
@@ -10,16 +7,19 @@ import {
   ModalContainer,
   ModalHeading,
   ModalMessage,
+  ModalOverlay,
   TransactionLink,
   TransactionValue,
-} from "./ModalUI";
-import CloseIcon from "../Icons/CloseIcon";
-import { TTransaction } from "../../context/TransactionsContext/TransactionsReducer";
+} from "../ModalUI";
+import CloseIcon from "../../Icons/CloseIcon";
+import { TTransaction } from "../../../context/TransactionsContext/TransactionsReducer";
 
 export function BakeModal({ transaction }: { transaction: TTransaction }) {
   return (
     <>
-      <DialogPrimitiveOverlay className="fixed top-0 bg-neutral-900 transition-opacity opacity-70 h-screen w-screen" />
+      <DialogPrimitiveOverlay asChild>
+        <ModalOverlay />
+      </DialogPrimitiveOverlay>
 
       <DialogPrimitiveContent>
         <ModalContainer>
