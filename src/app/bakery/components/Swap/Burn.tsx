@@ -18,6 +18,10 @@ import { BREAD_GNOSIS_ABI } from "@/abi";
 import Button from "@/app/core/components/Button";
 import config from "@/chainConfig";
 import useDebounce from "@/app/bakery/hooks/useDebounce";
+import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
+import { useEffect, useState } from "react";
+import { nanoid } from "nanoid";
+import { BurnModal } from "@/app/core/components/Modal/BurnModal/BurnModal";
 
 export default function Burn({
   user,
@@ -26,6 +30,10 @@ export default function Burn({
   user: TUserConnected;
   inputValue: string;
 }) {
+  const { transactionsState, transactionsDispatch } = useTransactions();
+  const [txId, setTxId] = useState<string | null>(null);
+  const [buttonIsEnabled, setButtonIsEnabled] = useState(false);
+
   const { BREAD } = config[user.chain.id];
 
   const debouncedValue = useDebounce(inputValue, 500);
@@ -46,6 +54,15 @@ export default function Burn({
     enabled: parseFloat(debouncedValue) > 0,
   });
 
+  useEffect(() => {
+    setButtonIsEnabled(false);
+  }, [inputValue, setButtonIsEnabled]);
+
+  useEffect(() => {
+    console.log({ prepareStatus });
+    if (prepareStatus === "success") setButtonIsEnabled(true);
+  }, [debouncedValue, prepareStatus, setButtonIsEnabled]);
+
   const {
     write,
     isLoading: writeIsLoading,
@@ -55,17 +72,53 @@ export default function Burn({
     data: writeData,
   } = useContractWrite(prepareConfig);
 
+  useEffect(() => {
+    if (!writeData?.hash || !txId) return;
+    transactionsDispatch({
+      type: "SET_PENDING",
+      payload: { id: txId, hash: writeData.hash },
+    });
+  }, [txId, writeData, transactionsDispatch]);
+
+  useEffect(() => {
+    if (!writeIsError && !writeError) return;
+    // TODO tx not submitted, dispatch FAILED tx
+    // !!! unless rejected by user:
+    // -> error.cause.code === 4001
+
+    console.log({ error: writeError });
+  }, [writeIsError, writeError]);
+
+  const transaction = transactionsState.find(
+    (transaction) => transaction.id === txId
+  );
+
   return (
     <div className="p-2 w-full flex flex-col gap-2">
-      <Button
-        fullWidth={true}
-        variant="large"
-        onClick={() => {
-          write?.();
-        }}
-      >
-        Burn
-      </Button>
+      <DialogPrimitiveRoot>
+        <DialogPrimitiveTrigger asChild>
+          <Button
+            fullWidth={true}
+            variant="large"
+            disabled={!buttonIsEnabled}
+            onClick={() => {
+              if (!write) return;
+              const newId = nanoid();
+              setTxId(newId);
+              transactionsDispatch({
+                type: "NEW",
+                payload: { id: newId, value: debouncedValue },
+              });
+              write();
+            }}
+          >
+            Burn
+          </Button>
+        </DialogPrimitiveTrigger>
+        <DialogPrimitivePortal>
+          {transaction && <BurnModal transaction={transaction} />}
+        </DialogPrimitivePortal>
+      </DialogPrimitiveRoot>
     </div>
   );
 }

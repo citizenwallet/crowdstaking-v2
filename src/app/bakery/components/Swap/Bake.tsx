@@ -54,7 +54,6 @@ export default function Bake({
   }, [inputValue, setButtonIsEnabled]);
 
   useEffect(() => {
-    console.log({ prepareStatus });
     if (prepareStatus === "success") setButtonIsEnabled(true);
   }, [debouncedValue, prepareStatus, setButtonIsEnabled]);
 
@@ -88,7 +87,6 @@ export default function Bake({
     (transaction) => transaction.id === txId
   );
 
-  console.log(buttonIsEnabled);
   return (
     <div className="p-2 w-full flex flex-col gap-2">
       <DialogPrimitiveRoot>
