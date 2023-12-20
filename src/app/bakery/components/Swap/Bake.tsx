@@ -26,6 +26,7 @@ export default function Bake({
 }) {
   const { transactionsState, transactionsDispatch } = useTransactions();
   const [txId, setTxId] = useState<string | null>(null);
+  const [buttonIsEnabled, setButtonIsEnabled] = useState(false);
 
   const { BREAD } = config[user.chain.id];
 
@@ -47,6 +48,15 @@ export default function Bake({
     value: parsedValue,
     enabled: parseFloat(debouncedValue) > 0,
   });
+
+  useEffect(() => {
+    setButtonIsEnabled(false);
+  }, [inputValue, setButtonIsEnabled]);
+
+  useEffect(() => {
+    console.log({ prepareStatus });
+    if (prepareStatus === "success") setButtonIsEnabled(true);
+  }, [debouncedValue, prepareStatus, setButtonIsEnabled]);
 
   const {
     write,
@@ -78,6 +88,7 @@ export default function Bake({
     (transaction) => transaction.id === txId
   );
 
+  console.log(buttonIsEnabled);
   return (
     <div className="p-2 w-full flex flex-col gap-2">
       <DialogPrimitiveRoot>
@@ -85,6 +96,7 @@ export default function Bake({
           <Button
             fullWidth={true}
             variant="large"
+            disabled={!buttonIsEnabled}
             onClick={() => {
               if (!write) return;
               const newId = nanoid();
