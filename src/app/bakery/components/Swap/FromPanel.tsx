@@ -4,7 +4,7 @@ import Input from "../Input";
 import { balanceFormatter } from "@/app/core/util/formatter";
 import Elipsis from "@/app/core/components/Elipsis";
 import type { TSwapMode } from "./Swap";
-import { TTokenBalanceState } from "@/app/core/context/TokenBalanceContext";
+import { TTokenBalanceState } from "@/app/core/context/TokenBalanceContext/TokenBalanceContext";
 import { XDAIIcon, BreadIcon } from "@/app/core/components/Icons/TokenIcons";
 import {
   PanelBalanceRow,

@@ -13,7 +13,7 @@ import {
 } from "./SwapUI";
 import { balanceFormatter } from "@/app/core/util/formatter";
 import { TSwapMode } from "./Swap";
-import { TTokenBalanceState } from "@/app/core/context/TokenBalanceContext";
+import { TTokenBalanceState } from "@/app/core/context/TokenBalanceContext/TokenBalanceContext";
 import { BreadIcon, XDAIIcon } from "@/app/core/components/Icons/TokenIcons";
 
 interface IProps {

@@ -7,7 +7,7 @@ import {
   useMemo,
 } from "react";
 import config from "@/chainConfig";
-import { TUserConnected, useConnectedUser } from "../hooks/useConnectedUser";
+import { TUserConnected, useConnectedUser } from "../../hooks/useConnectedUser";
 import { useBalance, useContractRead } from "wagmi";
 import { ERC20_ABI } from "@/abi";
 import { formatUnits } from "viem";

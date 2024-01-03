@@ -11,7 +11,7 @@ import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
 import Button from "@/app/core/components/Button";
 import ConnectWallet from "@/app/core/components/ConnectWallet";
 import Bake from "./Bake";
-import { useTokenBalances } from "@/app/core/context/TokenBalanceContext";
+import { useTokenBalances } from "@/app/core/context/TokenBalanceContext/TokenBalanceContext";
 import Burn from "./Burn";
 import { Address } from "viem";
 // import { useFeeData } from "wagmi";

@@ -79,8 +79,6 @@ export default function Bake({
     // TODO tx not submitted, dispatch FAILED tx
     // !!! unless rejected by user:
     // -> error.cause.code === 4001
-
-    console.log({ error: writeError });
   }, [writeIsError, writeError]);
 
   const transaction = transactionsState.find(

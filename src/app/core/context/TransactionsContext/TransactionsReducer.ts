@@ -1,5 +1,4 @@
 import { WriteContractReturnType } from "viem";
-import { nanoid } from "nanoid";
 
 export type TTransactionHash = WriteContractReturnType;
 
@@ -58,19 +57,6 @@ export type TTransactionsAction =
     };
 
 export type TTransactionsDispatch = (action: TTransactionsAction) => void;
-
-/*
-
-User clicks BAKE/BURN etc
-
-  Creates potential transaction
-  
-  if user rejects
-    --> tx is discarded
-  
-    if user confirms we have a hash 
-
-*/
 
 export function TransactionsReducer(
   state: TTransactionsState,
