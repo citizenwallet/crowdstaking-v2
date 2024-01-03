@@ -25,6 +25,11 @@ export const breadTheme = {
       400: "#A416AD",
       500: "#D04EC5",
     },
+    status: {
+      danger: "#D8745C",
+      warning: "#F2D54E",
+      success: "#9EC958",
+    },
     breadviolet: {
       shaded: "#D04EC5",
       violet: "#A416AD",
