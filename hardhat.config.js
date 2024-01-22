@@ -21,7 +21,7 @@ module.exports = {
       },
       mining: {
         auto: false,
-        interval: 1000,
+        interval: 3000,
       },
       hardfork: "merge",
     },
