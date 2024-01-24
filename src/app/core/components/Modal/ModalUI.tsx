@@ -1,68 +1,69 @@
 import type { ReactNode } from "react";
-import CloseIcon from "../Icons/CloseIcon";
-import { TTransactionHash } from "../../context/TransactionsContext/TransactionsReducer";
-import { balanceFormatter, formatAddress } from "../../util/formatter";
+import { Close as DialogPrimitiveClose } from "@radix-ui/react-dialog";
 
-export function ModalContainer({ children }: { children: ReactNode }) {
+import CloseIcon from "../Icons/CloseIcon";
+import { TTransactionStatus } from "../../context/TransactionsContext/TransactionsReducer";
+import { formatBalance } from "../../util/formatter";
+
+const modalHeadingText: {
+  [key in TTransactionStatus]: string;
+} = {
+  PREPARED: "Confirm Transaction",
+  SUBMITTED: "Transaction Submitted",
+  CONFIRMED: "Transaction Confirmed",
+  REVERTED: "Transaction Reverted",
+};
+
+export function ModalContainer({
+  txStatus,
+  children,
+}: {
+  txStatus: TTransactionStatus;
+  children: ReactNode;
+}) {
   return (
-    <div className="max-w-90vw max-h-90vh fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 flex justify-center items-center">
+    <div className="w-full max-w-90vw max-h-90vh fixed top-1/2 left-0 md:left-1/2 md:-translate-x-1/2 -translate-y-1/2 p-2 flex justify-center items-center">
       <section className="flex flex-col items-start rounded bg-opacity-100 p-4 md:p-8 bg-breadgray-charcoal relative">
+        <DialogPrimitiveClose className="absolute top-0 right-0 w-8 h-8 p-2">
+          <CloseIcon />
+        </DialogPrimitiveClose>
         {children}
       </section>
     </div>
   );
 }
 
-export function CloseModalButton() {
-  return (
-    <button
-      type="button"
-      className=" absolute right-0 top-0 p-4 text-sm  text-neutral-400 hover:text-neutral-200 md:text-base"
-    >
-      <CloseIcon />
-    </button>
-  );
-}
-
 export function ModalHeading({ children }: { children: ReactNode }) {
   return (
-    <div className="w-full flex flex-row border-b-[0.075rem] border-b-breadpink-shaded">
-      <h2 className="text-2xl px-2 pb-4 leading-normal text-breadgray-light-grey md:text-center font-medium">
+    <div className="w-full flex flex-row items-center justify-center border-b-[0.075rem] border-b-breadpink-shaded">
+      <h2 className="text-2xl px-2 pb-3 leading-normal text-breadgray-light-grey font-medium">
         {children}
       </h2>
-      <div className="w-16 h-full"> </div>
     </div>
   );
 }
 
-export function ModalMessage({ children }: { children: ReactNode }) {
+export function ModalContent({ children }: { children: ReactNode }) {
   return (
-    <p className="py-6 leading-normal text-breadgray-light-grey md:text-center">
-      {children}
-    </p>
+    <div className="px-2 pt-4 flex flex-col gap-2 items-center">{children}</div>
   );
 }
 
-export function TransactionLink({ hash }: { hash: TTransactionHash }) {
+export function ModalAdviceText({ children }: { children: ReactNode }) {
   return (
-    <a
-      href={`https://gnosisscan.io/tx/${hash}`}
-      target="_blank"
-      rel="noopener noreferer"
-      className="underline"
-    >
-      view on explorer {"->"}
-    </a>
+    <p className="max-w-xs text-lg leading-normal text-breadgray-light-grey text-center pt-4 pb-2">
+      {children}
+    </p>
   );
 }
 
 export function TransactionValue({ value }: { value: string }) {
   return (
     <div
-      className="w-full text-center text-3xl font-medium pt-6"
+      className="w-full text-center text-3xl font-medium"
       title={parseFloat(value).toString()}
     >
-      {balanceFormatter.format(parseFloat(value))}
+      {formatBalance(parseFloat(value), 2)}
     </div>
   );
 }

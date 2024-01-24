@@ -16,28 +16,16 @@ export function TransactionWatcher({
   const { id, status, hash } = transaction;
   const { toastDispatch } = useToast();
 
-  const [submittedToastDispatched, setSubmittedToastDispatched] =
-    useState(false);
   const [haveResult, setHaveResult] = useState(false);
 
   const { data: waitData } = useWaitForTransaction({ hash });
 
   useEffect(() => {
-    console.log("Submitted toast effect....");
-    console.log("toast dispatched? ", submittedToastDispatched);
-    if (submittedToastDispatched) return;
     toastDispatch({
       type: "NEW",
       payload: { toastType: "SUBMITTED", txHash: hash },
     });
-    setSubmittedToastDispatched(true);
-  }, [
-    submittedToastDispatched,
-    setSubmittedToastDispatched,
-    status,
-    hash,
-    toastDispatch,
-  ]);
+  }, [hash, toastDispatch]);
 
   useEffect(() => {
     if (!waitData || haveResult) return;

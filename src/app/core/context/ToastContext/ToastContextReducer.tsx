@@ -44,6 +44,15 @@ export function ToastReducer(
 ): TToastState {
   switch (action.type) {
     case "NEW": {
+      if (
+        action.payload.toastType === "SUBMITTED" &&
+        state.filter(
+          (toast) =>
+            toast.toastType === "SUBMITTED" &&
+            toast.txHash === action.payload.txHash
+        ).length > 0
+      )
+        return state;
       return [
         {
           id: nanoid(),

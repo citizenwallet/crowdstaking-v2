@@ -31,7 +31,7 @@ function TransactionsProvider({ children }: { children: ReactNode }) {
   return (
     <TransactionsContext.Provider value={value}>
       {value.transactionsState.map((transaction) =>
-        transaction.status === "PENDING" ? (
+        transaction.status === "SUBMITTED" ? (
           <TransactionWatcher
             key={`watching_transaction_${transaction.id}`}
             transaction={transaction}

@@ -4,12 +4,12 @@ import {
   Portal as DialogPrimitivePortal,
 } from "@radix-ui/react-dialog";
 
-import { BakeModal } from "./BakeModal";
+import { TransactionModal } from "./TransactionModal";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {
-  title: "Modal/Baking",
-  component: BakeModal,
+  title: "TransactionModal/Baking",
+  component: TransactionModal,
   decorators: [
     (Story) => (
       <DialogPrimitiveRoot defaultOpen={true}>
@@ -19,7 +19,7 @@ const meta = {
       </DialogPrimitiveRoot>
     ),
   ],
-} satisfies Meta<typeof BakeModal>;
+} satisfies Meta<typeof TransactionModal>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -29,26 +29,33 @@ const MOCK_HASH =
 
 export const WalletOpen: Story = {
   args: {
-    transaction: { id: "1234567", status: "PREPARED", value: "20000.345635" },
+    transactionType: "BAKE",
+    transaction: {
+      id: "1234567",
+      status: "PREPARED",
+      value: "20000.345635",
+    },
   },
 };
 
-export const TransactionPending: Story = {
+export const TransactionSubmitted: Story = {
   args: {
+    transactionType: "BAKE",
     transaction: {
       id: "1234567",
-      status: "PENDING",
+      status: "SUBMITTED",
       value: "20000.345635",
       hash: MOCK_HASH,
     },
   },
 };
 
-export const TransactionSuccess: Story = {
+export const TransactionConfirmed: Story = {
   args: {
+    transactionType: "BAKE",
     transaction: {
       id: "1234567",
-      status: "SUCCESS",
+      status: "CONFIRMED",
       value: "20000.345635",
       hash: MOCK_HASH,
     },
@@ -57,6 +64,7 @@ export const TransactionSuccess: Story = {
 
 export const TransactionReverted: Story = {
   args: {
+    transactionType: "BAKE",
     transaction: {
       id: "1234567",
       status: "REVERTED",
