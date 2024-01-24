@@ -13,7 +13,6 @@ import { pressStart, redhat } from "@/app/core/components/Fonts";
 import "@rainbow-me/rainbowkit/styles.css";
 import { TransactionsProvider } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { ToastProvider } from "@/app/core/context/ToastContext/ToastContext";
-import { Toaster } from "@/app/core/components/Toaster/Toaster";
 
 export default function App({ children }: { children: React.ReactNode }) {
   return (

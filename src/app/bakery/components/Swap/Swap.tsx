@@ -1,6 +1,6 @@
 "use client";
 import type { ChangeEvent } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useChainModal } from "@rainbow-me/rainbowkit";
 
 import { FromPanel } from "./FromPanel";
@@ -14,8 +14,6 @@ import Bake from "./Bake";
 import { useTokenBalances } from "@/app/core/context/TokenBalanceContext/TokenBalanceContext";
 import Burn from "./Burn";
 import { Address } from "viem";
-// import { useFeeData } from "wagmi";
-// import { formatEther } from "viem";
 
 export type TSwapMode = "BAKE" | "BURN";
 
@@ -33,7 +31,6 @@ export function Swap() {
   const { user } = useConnectedUser();
   const [connectedAccountAddress, setConnectedAccountAddress] =
     useState<null | Address>(null);
-  // const { data: feeData, isError, isLoading } = useFeeData();
 
   useEffect(() => {
     if (user.status === "CONNECTED") {
@@ -144,33 +141,6 @@ export function Swap() {
           }
         })()}
       </div>
-      {/* <pre>
-        {JSON.stringify(
-          feeData
-            ? {
-                lastBaseFeePerGas: feeData.lastBaseFeePerGas
-                  ? formatEther(feeData.lastBaseFeePerGas)
-                  : null,
-                gasPrice: feeData.gasPrice
-                  ? formatEther(feeData.gasPrice)
-                  : null,
-
-                maxFeePerGas: feeData.maxFeePerGas
-                  ? formatEther(feeData.maxFeePerGas)
-                  : null,
-
-                maxPriorityFeePerGas: feeData.maxPriorityFeePerGas
-                  ? formatEther(feeData.maxPriorityFeePerGas)
-                  : null,
-                //  gasPrice: bigint | null;
-                //  maxFeePerGas: bigint | null;
-                //  maxPriorityFeePerGas: bigint | null;
-              }
-            : "bloop",
-          null,
-          2
-        )}
-      </pre> */}
     </div>
   );
 }
