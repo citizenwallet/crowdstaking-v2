@@ -1,7 +1,7 @@
 import { configureChains, createConfig } from "wagmi";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
-import { gnosis } from "wagmi/chains";
+import { hardhat } from "wagmi/chains";
 import {
   connectorsForWallets,
   getDefaultWallets,
@@ -18,21 +18,15 @@ const WALLET_CONNECT_PROJECT_ID =
   process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID;
 if (!WALLET_CONNECT_PROJECT_ID)
   throw new Error("WALLET_CONNECT_PROJECT_ID not set!");
-const QUIKNODE_API_KEY = process.env.NEXT_PUBLIC_QUIKNODE_API_KEY;
-if (!QUIKNODE_API_KEY) throw new Error("WALLET_CONNECT_PROJECT_ID not set!");
 
 const chainsConfig = configureChains(
-  [
-    {
-      ...gnosis,
-      iconUrl: "gnosis_icon.svg",
-    },
-  ],
+  [{ ...hardhat, id: 31337 }],
   [
     publicProvider(),
     jsonRpcProvider({
       rpc: () => ({
-        http: `https://bitter-radial-dust.xdai.quiknode.pro/${QUIKNODE_API_KEY}`, // 👈 Replace this with your HTTP URL
+        http: "http://localhost:8545",
+        webSocket: "ws://localhost:8545",
       }),
     }),
   ]
@@ -69,4 +63,4 @@ const config = createConfig({
   publicClient,
 });
 
-export { chains as prodChains, config as prodConfig };
+export { chains, config };

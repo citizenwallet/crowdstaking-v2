@@ -1,5 +1,4 @@
 import { WriteContractReturnType } from "viem";
-import { nanoid } from "nanoid";
 
 export type TTransactionHash = WriteContractReturnType;
 
@@ -10,13 +9,13 @@ export type TTransactionNew = {
 };
 export type TTransactionPending = {
   id: string;
-  status: "PENDING";
+  status: "SUBMITTED";
   value: string;
   hash: TTransactionHash;
 };
 export type TTransactionSuccess = {
   id: string;
-  status: "SUCCESS";
+  status: "CONFIRMED";
   value: string;
   hash: TTransactionHash;
 };
@@ -32,6 +31,8 @@ export type TTransaction =
   | TTransactionPending
   | TTransactionSuccess
   | TTransactionReverted;
+
+export type TTransactionStatus = TTransaction["status"];
 
 export type TTransactionsState = TTransaction[];
 
@@ -59,19 +60,6 @@ export type TTransactionsAction =
 
 export type TTransactionsDispatch = (action: TTransactionsAction) => void;
 
-/*
-
-User clicks BAKE/BURN etc
-
-  Creates potential transaction
-  
-  if user rejects
-    --> tx is discarded
-  
-    if user confirms we have a hash 
-
-*/
-
 export function TransactionsReducer(
   state: TTransactionsState,
   action: TTransactionsAction
@@ -91,11 +79,11 @@ export function TransactionsReducer(
       return state.map((tx) => {
         if (tx.id === action.payload.id) {
           if (tx.status !== "PREPARED") {
-            throw new Error("can only set PENDING status on NEW tx!");
+            throw new Error("can only set SUBMITTED status on NEW tx!");
           }
           return {
             ...tx,
-            status: "PENDING",
+            status: "SUBMITTED",
             hash: action.payload.hash,
           };
         }
@@ -105,12 +93,12 @@ export function TransactionsReducer(
     case "SET_SUCCESS": {
       return state.map((tx) => {
         if (tx.id === action.payload.id) {
-          if (tx.status !== "PENDING") {
-            throw new Error("can only set SUCCESS status on PENDING tx!");
+          if (tx.status !== "SUBMITTED") {
+            throw new Error("can only set CONFIRMED status on SUBMITTED tx!");
           }
           return {
             ...tx,
-            status: "SUCCESS",
+            status: "CONFIRMED",
           };
         }
         return tx;
@@ -119,8 +107,8 @@ export function TransactionsReducer(
     case "SET_REVERTED":
       return state.map((tx) => {
         if (tx.id === action.payload.id) {
-          if (tx.status !== "PENDING") {
-            throw new Error("can only set REVERTED status on PENDING tx!");
+          if (tx.status !== "SUBMITTED") {
+            throw new Error("can only set REVERTED status on SUBMITTED tx!");
           }
           return {
             ...tx,

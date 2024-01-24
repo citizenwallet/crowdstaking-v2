@@ -1,18 +1,18 @@
 "use client";
 import "./app.css";
-import Header from "./core/components/Header";
-import { WagmiProvider } from "./core/hooks/WagmiProvider/WagmiProvider";
-import { TokenBalancesProvider } from "./core/context/TokenBalanceContext";
-import { ConnectedUserProvider } from "./core/hooks/useConnectedUser";
+import Header from "@/app/core/components/Header";
+import { WagmiProvider } from "@/app/core/hooks/WagmiProvider/WagmiProvider";
+import { TokenBalancesProvider } from "@/app/core/context/TokenBalanceContext/TokenBalanceContext";
+import { ConnectedUserProvider } from "@/app/core/hooks/useConnectedUser";
 import { AnimatePresence } from "framer-motion";
-import Footer from "./core/components/Footer";
+import Footer from "@/app/core/components/Footer";
 import { ReactNode } from "react";
 import clsx from "clsx";
-import { pressStart, redhat } from "./core/components/Fonts";
+import { pressStart, redhat } from "@/app/core/components/Fonts";
 
 import "@rainbow-me/rainbowkit/styles.css";
-import { TransactionsProvider } from "./core/context/TransactionsContext/TransactionsContext";
-// import { Toaster } from "./core/components/Toaster/Toaster";
+import { TransactionsProvider } from "@/app/core/context/TransactionsContext/TransactionsContext";
+import { ToastProvider } from "@/app/core/context/ToastContext/ToastContext";
 
 export default function App({ children }: { children: React.ReactNode }) {
   return (
@@ -21,9 +21,11 @@ export default function App({ children }: { children: React.ReactNode }) {
         <WagmiProvider>
           <ConnectedUserProvider>
             <TokenBalancesProvider>
-              <TransactionsProvider>
-                <Layout>{children}</Layout>
-              </TransactionsProvider>
+              <ToastProvider>
+                <TransactionsProvider>
+                  <Layout>{children}</Layout>
+                </TransactionsProvider>
+              </ToastProvider>
             </TokenBalancesProvider>
           </ConnectedUserProvider>
         </WagmiProvider>
@@ -47,7 +49,6 @@ function Layout({ children }: { children: ReactNode }) {
       ></AnimatePresence>
       <div className="flex min-h-screen flex-col">
         <Header />
-        {/* <Toaster /> */}
         {children}
         <Footer />
       </div>

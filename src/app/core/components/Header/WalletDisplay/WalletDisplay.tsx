@@ -1,8 +1,6 @@
 import type { ReactNode } from "react";
 
-import WalletInfo from "./WalletInfo";
 import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
-import { useDisconnect } from "wagmi";
 import ConnectWallet from "../../ConnectWallet";
 
 export function Container({ children }: { children: ReactNode }) {
@@ -15,9 +13,7 @@ export function Container({ children }: { children: ReactNode }) {
 
 function WalletDisplay() {
   const { user } = useConnectedUser();
-  const { disconnectAsync } = useDisconnect();
 
-  console.log({ user });
   return (
     <Container>
       {(() => {

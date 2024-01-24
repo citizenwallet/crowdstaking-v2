@@ -2,18 +2,13 @@ import type { Meta, StoryObj } from "@storybook/react";
 import {
   Root as DialogPrimitiveRoot,
   Portal as DialogPrimitivePortal,
-  Overlay as DialogPrimitiveOverlay,
-  Trigger as DialogPrimitiveTrigger,
-  Content as DialogPrimitiveContent,
-  Close as DialogPrimitiveClose,
 } from "@radix-ui/react-dialog";
 
-import { BurnModal } from "./BurnModal";
+import { TransactionModal } from "./TransactionModal";
 
-// More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {
-  title: "Modal/Burning",
-  component: BurnModal,
+  title: "TransactionModal/Burning",
+  component: TransactionModal,
   decorators: [
     (Story) => (
       <DialogPrimitiveRoot defaultOpen={true}>
@@ -23,7 +18,7 @@ const meta = {
       </DialogPrimitiveRoot>
     ),
   ],
-} satisfies Meta<typeof BurnModal>;
+} satisfies Meta<typeof TransactionModal>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -33,26 +28,29 @@ const MOCK_HASH =
 
 export const WalletOpen: Story = {
   args: {
+    transactionType: "BURN",
     transaction: { id: "1234567", status: "PREPARED", value: "20000.345635" },
   },
 };
 
-export const TransactionPending: Story = {
+export const TransactionSubmitted: Story = {
   args: {
+    transactionType: "BURN",
     transaction: {
       id: "1234567",
-      status: "PENDING",
+      status: "SUBMITTED",
       value: "20000.345635",
       hash: MOCK_HASH,
     },
   },
 };
 
-export const TransactionSuccess: Story = {
+export const TransactionConfirmed: Story = {
   args: {
+    transactionType: "BURN",
     transaction: {
       id: "1234567",
-      status: "SUCCESS",
+      status: "CONFIRMED",
       value: "20000.345635",
       hash: MOCK_HASH,
     },
@@ -61,6 +59,7 @@ export const TransactionSuccess: Story = {
 
 export const TransactionReverted: Story = {
   args: {
+    transactionType: "BURN",
     transaction: {
       id: "1234567",
       status: "REVERTED",

@@ -15,7 +15,7 @@ import useDebounce from "@/app/bakery/hooks/useDebounce";
 import { useEffect, useState } from "react";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { nanoid } from "nanoid";
-import { BakeModal } from "@/app/core/components/Modal/BakeModal/BakeModal";
+import { TransactionModal } from "@/app/core/components/Modal/TransactionModal/TransactionModal";
 
 export default function Bake({
   user,
@@ -79,8 +79,6 @@ export default function Bake({
     // TODO tx not submitted, dispatch FAILED tx
     // !!! unless rejected by user:
     // -> error.cause.code === 4001
-
-    console.log({ error: writeError });
   }, [writeIsError, writeError]);
 
   const transaction = transactionsState.find(
@@ -110,7 +108,12 @@ export default function Bake({
           </Button>
         </DialogPrimitiveTrigger>
         <DialogPrimitivePortal>
-          {transaction && <BakeModal transaction={transaction} />}
+          {transaction && (
+            <TransactionModal
+              transactionType="BAKE"
+              transaction={transaction}
+            />
+          )}
         </DialogPrimitivePortal>
       </DialogPrimitiveRoot>
     </div>

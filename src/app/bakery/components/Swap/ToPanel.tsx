@@ -11,9 +11,9 @@ import {
   TokenLabelText,
   PanelBalanceRow,
 } from "./SwapUI";
-import { balanceFormatter } from "@/app/core/util/formatter";
+import { formatBalance } from "@/app/core/util/formatter";
 import { TSwapMode } from "./Swap";
-import { TTokenBalanceState } from "@/app/core/context/TokenBalanceContext";
+import { TTokenBalanceState } from "@/app/core/context/TokenBalanceContext/TokenBalanceContext";
 import { BreadIcon, XDAIIcon } from "@/app/core/components/Icons/TokenIcons";
 
 interface IProps {
@@ -63,7 +63,7 @@ function TokenBalance({ tokenBalance }: { tokenBalance: TTokenBalanceState }) {
             }`}
           >
             {tokenBalance.value &&
-              balanceFormatter.format(parseFloat(tokenBalance.value))}
+              formatBalance(parseFloat(tokenBalance.value), 2)}
           </span>
         ) : (
           ""

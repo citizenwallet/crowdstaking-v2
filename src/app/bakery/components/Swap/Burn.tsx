@@ -7,10 +7,7 @@ import { parseEther } from "viem";
 import {
   Root as DialogPrimitiveRoot,
   Portal as DialogPrimitivePortal,
-  Overlay as DialogPrimitiveOverlay,
   Trigger as DialogPrimitiveTrigger,
-  Content as DialogPrimitiveContent,
-  Close as DialogPrimitiveClose,
 } from "@radix-ui/react-dialog";
 
 import { TUserConnected } from "@/app/core/hooks/useConnectedUser";
@@ -21,7 +18,7 @@ import useDebounce from "@/app/bakery/hooks/useDebounce";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
-import { BurnModal } from "@/app/core/components/Modal/BurnModal/BurnModal";
+import { TransactionModal } from "@/app/core/components/Modal/TransactionModal/TransactionModal";
 
 export default function Burn({
   user,
@@ -59,7 +56,6 @@ export default function Burn({
   }, [inputValue, setButtonIsEnabled]);
 
   useEffect(() => {
-    console.log({ prepareStatus });
     if (prepareStatus === "success") setButtonIsEnabled(true);
   }, [debouncedValue, prepareStatus, setButtonIsEnabled]);
 
@@ -85,8 +81,6 @@ export default function Burn({
     // TODO tx not submitted, dispatch FAILED tx
     // !!! unless rejected by user:
     // -> error.cause.code === 4001
-
-    console.log({ error: writeError });
   }, [writeIsError, writeError]);
 
   const transaction = transactionsState.find(
@@ -116,7 +110,12 @@ export default function Burn({
           </Button>
         </DialogPrimitiveTrigger>
         <DialogPrimitivePortal>
-          {transaction && <BurnModal transaction={transaction} />}
+          {transaction && (
+            <TransactionModal
+              transactionType="BURN"
+              transaction={transaction}
+            />
+          )}
         </DialogPrimitivePortal>
       </DialogPrimitiveRoot>
     </div>

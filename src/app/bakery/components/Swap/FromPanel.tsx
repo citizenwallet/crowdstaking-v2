@@ -1,10 +1,10 @@
 import type { ChangeEventHandler, ReactNode } from "react";
 import Input from "../Input";
 
-import { balanceFormatter } from "@/app/core/util/formatter";
+import { formatBalance } from "@/app/core/util/formatter";
 import Elipsis from "@/app/core/components/Elipsis";
 import type { TSwapMode } from "./Swap";
-import { TTokenBalanceState } from "@/app/core/context/TokenBalanceContext";
+import { TTokenBalanceState } from "@/app/core/context/TokenBalanceContext/TokenBalanceContext";
 import { XDAIIcon, BreadIcon } from "@/app/core/components/Icons/TokenIcons";
 import {
   PanelBalanceRow,
@@ -86,7 +86,7 @@ function TokenBalance({
               tokenBalance.tokenName
             }`}
           >
-            {balanceFormatter.format(parseFloat(tokenBalance.value))}
+            {formatBalance(parseFloat(tokenBalance.value), 2)}
           </span>
         ) : (
           ""
