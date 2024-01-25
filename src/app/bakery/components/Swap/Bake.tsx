@@ -27,6 +27,7 @@ export default function Bake({
   const { transactionsState, transactionsDispatch } = useTransactions();
   const [txId, setTxId] = useState<string | null>(null);
   const [buttonIsEnabled, setButtonIsEnabled] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const { BREAD } = config[user.chain.id];
 
@@ -77,7 +78,7 @@ export default function Bake({
   useEffect(() => {
     if (!writeIsError && !writeError) return;
     if (!txId) return;
-    // closing modal on error including if user rejects the request
+    // clear transaction closing modal on error including if user rejects the request
     transactionsDispatch({ type: "CLEAR", payload: { id: txId } });
     setTxId(null);
   }, [writeIsError, writeError, txId, transactionsDispatch]);
@@ -86,11 +87,13 @@ export default function Bake({
     (transaction) => transaction.id === txId
   );
 
-  console.log("found transaction? ", !!transaction);
+  useEffect(() => {
+    if (transaction?.status === "PREPARED") setModalOpen(true);
+  }, [transaction, setModalOpen]);
 
   return (
     <div className="p-2 w-full flex flex-col gap-2">
-      <DialogPrimitiveRoot open={!!transaction}>
+      <DialogPrimitiveRoot open={modalOpen} onOpenChange={setModalOpen}>
         <DialogPrimitiveTrigger asChild>
           <Button
             fullWidth={true}
@@ -111,12 +114,12 @@ export default function Bake({
           </Button>
         </DialogPrimitiveTrigger>
         <DialogPrimitivePortal>
-          {transaction ? (
+          {transaction && (
             <TransactionModal
               transactionType="BAKE"
               transaction={transaction}
             />
-          ) : null}
+          )}
         </DialogPrimitivePortal>
       </DialogPrimitiveRoot>
     </div>

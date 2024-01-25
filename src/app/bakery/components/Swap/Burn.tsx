@@ -30,6 +30,7 @@ export default function Burn({
   const { transactionsState, transactionsDispatch } = useTransactions();
   const [txId, setTxId] = useState<string | null>(null);
   const [buttonIsEnabled, setButtonIsEnabled] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const { BREAD } = config[user.chain.id];
 
@@ -78,18 +79,22 @@ export default function Burn({
 
   useEffect(() => {
     if (!writeIsError && !writeError) return;
-    // TODO tx not submitted, dispatch FAILED tx
-    // !!! unless rejected by user:
-    // -> error.cause.code === 4001
-  }, [writeIsError, writeError]);
+    if (!txId) return;
+    transactionsDispatch({ type: "CLEAR", payload: { id: txId } });
+    setTxId(null);
+  }, [writeIsError, writeError, txId, transactionsDispatch]);
 
   const transaction = transactionsState.find(
     (transaction) => transaction.id === txId
   );
 
+  useEffect(() => {
+    if (transaction?.status === "PREPARED") setModalOpen(true);
+  }, [transaction, setModalOpen]);
+
   return (
     <div className="p-2 w-full flex flex-col gap-2">
-      <DialogPrimitiveRoot>
+      <DialogPrimitiveRoot open={modalOpen} onOpenChange={setModalOpen}>
         <DialogPrimitiveTrigger asChild>
           <Button
             fullWidth={true}
