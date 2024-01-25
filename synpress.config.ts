@@ -5,7 +5,7 @@ import setupNodeEvents from "./tests/e2e/plugins";
 export default defineConfig({
   userAgent: "synpress",
   videosFolder: "./tests/e2e/videos",
-  screenshotsFolder: "./tests/e2e/videos",
+  screenshotsFolder: "./tests/e2e/screenshots",
   e2e: {
     setupNodeEvents,
     baseUrl: "http://localhost:3000",
