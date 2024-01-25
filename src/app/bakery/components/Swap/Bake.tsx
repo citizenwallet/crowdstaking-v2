@@ -76,18 +76,21 @@ export default function Bake({
 
   useEffect(() => {
     if (!writeIsError && !writeError) return;
-    // TODO tx not submitted, dispatch FAILED tx
-    // !!! unless rejected by user:
-    // -> error.cause.code === 4001
-  }, [writeIsError, writeError]);
+    if (!txId) return;
+    // closing modal on error including if user rejects the request
+    transactionsDispatch({ type: "CLEAR", payload: { id: txId } });
+    setTxId(null);
+  }, [writeIsError, writeError, txId, transactionsDispatch]);
 
   const transaction = transactionsState.find(
     (transaction) => transaction.id === txId
   );
 
+  console.log("found transaction? ", !!transaction);
+
   return (
     <div className="p-2 w-full flex flex-col gap-2">
-      <DialogPrimitiveRoot>
+      <DialogPrimitiveRoot open={!!transaction}>
         <DialogPrimitiveTrigger asChild>
           <Button
             fullWidth={true}
@@ -108,12 +111,12 @@ export default function Bake({
           </Button>
         </DialogPrimitiveTrigger>
         <DialogPrimitivePortal>
-          {transaction && (
+          {transaction ? (
             <TransactionModal
               transactionType="BAKE"
               transaction={transaction}
             />
-          )}
+          ) : null}
         </DialogPrimitivePortal>
       </DialogPrimitiveRoot>
     </div>
