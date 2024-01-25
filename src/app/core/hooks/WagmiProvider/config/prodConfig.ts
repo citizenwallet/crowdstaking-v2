@@ -14,12 +14,14 @@ import {
 } from "@rainbow-me/rainbowkit/wallets";
 import { publicProvider } from "wagmi/providers/public";
 
-const WALLET_CONNECT_PROJECT_ID =
+const NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID =
   process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID;
-if (!WALLET_CONNECT_PROJECT_ID)
-  throw new Error("WALLET_CONNECT_PROJECT_ID not set!");
-const QUIKNODE_API_KEY = process.env.NEXT_PUBLIC_QUIKNODE_API_KEY;
-if (!QUIKNODE_API_KEY) throw new Error("WALLET_CONNECT_PROJECT_ID not set!");
+if (!NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID)
+  throw new Error("NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID not set!");
+
+const NEXT_PUBLIC_QUIKNODE_URL = process.env.NEXT_PUBLIC_QUIKNODE_URL;
+if (!NEXT_PUBLIC_QUIKNODE_URL)
+  throw new Error("NEXT_PUBLIC_QUIKNODE_URL not set!");
 
 const chainsConfig = configureChains(
   [
@@ -32,7 +34,7 @@ const chainsConfig = configureChains(
     publicProvider(),
     jsonRpcProvider({
       rpc: () => ({
-        http: `https://bitter-radial-dust.xdai.quiknode.pro/${QUIKNODE_API_KEY}`, // 👈 Replace this with your HTTP URL
+        http: NEXT_PUBLIC_QUIKNODE_URL,
       }),
     }),
   ]
@@ -42,7 +44,7 @@ const { chains } = chainsConfig;
 
 const { publicClient } = chainsConfig;
 
-const projectId = WALLET_CONNECT_PROJECT_ID;
+const projectId = NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID;
 
 const { wallets } = getDefaultWallets({
   appName: "Breadchain Crowdstaking",

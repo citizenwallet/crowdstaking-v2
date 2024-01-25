@@ -1,10 +1,11 @@
 name: E2E tests
 
 on:
+  workflow_dispatch:
   pull_request:
-    branches: [development]
+    branches: [development, main]
   push:
-    branches: [development]
+    branches: [development, main]
 
 jobs:
   cypress-run:
@@ -33,13 +34,18 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
-          start: pnpm run hardhat:chain, pnpm run prod
+          start: pnpm run hardhat:node, pnpm run prod:serve
           wait-on: "http://localhost:3000, http://localhost:8545"
-          command: pnpm run test:e2e:ci
+          command: pnpm run test:e2e
         env:
+          GNOSIS_RPC_URL: ${{ secrets.HARDHAT_ALCHEMY_ID }}
+          FORK_BLOCK_NUMBER: 31453220
+          NEXT_PUBLIC_QUICKNODE_API_KEY: ${{ secrets.NEXT_PUBLIC_QUICKNODE_API_KEY }}
+          NEXT_PUBLIC_ALCHEMY_MAINNET_API_KEY: ${{ secrets.NEXT_PUBLIC_ALCHEMY_MAINNET_API_KEY }}
+          NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID }}
           CYPRESS_BASE_URL: http://localhost:3000
-          HARDHAT_ALCHEMY_ID: ${{ secrets.HARDHAT_ALCHEMY_ID }}
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          NEXT_PUBLIC_TEST_CONNECTOR: true
 
       - uses: actions/upload-artifact@v3
         # add the line below to store screenshots only on failures
