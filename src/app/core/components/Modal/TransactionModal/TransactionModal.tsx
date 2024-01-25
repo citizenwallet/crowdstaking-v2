@@ -54,7 +54,7 @@ export function TransactionModal({
         <ModalContainer>
           <ModalHeading>{modalHeaderText[transactionType]}</ModalHeading>
           <ModalContent>
-            {transaction.status === "PREPARED" && <TransactionStatusSpinner />}
+            {transaction.status === "PREPARED" && <div className="h-4" />}
             {transaction.status === "SUBMITTED" && <TransactionStatusSpinner />}
             {transaction.status === "CONFIRMED" && <TransactionStatusCheck />}
             {transaction.status === "REVERTED" && <TransactionStatusCross />}
