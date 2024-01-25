@@ -34,7 +34,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
-          start: pnpm run hardhat:chain, pnpm run prod
+          start: pnpm run hardhat:node, pnpm run prod:serve
           wait-on: "http://localhost:3000, http://localhost:8545"
           command: pnpm run test:e2e:ci
         env:
