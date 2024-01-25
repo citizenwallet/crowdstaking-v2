@@ -1,4 +1,4 @@
-import { type MouseEvent, type ReactNode } from "react";
+import { forwardRef, type MouseEvent, type ReactNode } from "react";
 import clsx from "clsx";
 
 export type TButtonVariant = "small" | "regular" | "large";
@@ -17,27 +17,58 @@ const EVariants = {
   large: "px-7 py-4 text-xl sm:text-2xl",
 };
 
-function Button({
-  children,
-  onClick,
-  variant = "regular",
-  fullWidth = false,
-  disabled = false,
-}: IProps) {
-  return (
-    <button
-      type="button"
-      className={clsx(
-        "bg-breadpink-shaded text-breadgray-og-dark hover:bg-opacity-100 disabled:bg-opacity-50 bg-opacity-85 rounded-xl inline-block font-bold",
-        EVariants[variant],
-        fullWidth && "w-full"
-      )}
-      onClick={onClick}
-      disabled={disabled}
-    >
-      {children}
-    </button>
-  );
-}
+const Button = forwardRef(
+  (
+    {
+      children,
+      onClick,
+      variant = "regular",
+      fullWidth = false,
+      disabled = false,
+    }: IProps,
+    ref: any
+  ) => {
+    return (
+      <button
+        ref={ref}
+        type="button"
+        className={clsx(
+          "bg-breadpink-shaded text-breadgray-og-dark hover:bg-opacity-100 disabled:bg-opacity-50 bg-opacity-85 rounded-xl inline-block font-bold",
+          EVariants[variant],
+          fullWidth && "w-full"
+        )}
+        onClick={onClick}
+        disabled={disabled}
+      >
+        {children}
+      </button>
+    );
+  }
+);
+
+Button.displayName = "Button";
+
+// function Button({
+//   children,
+//   onClick,
+//   variant = "regular",
+//   fullWidth = false,
+//   disabled = false,
+// }: IProps) {
+//   return (
+//     <button
+//       type="button"
+//       className={clsx(
+//         "bg-breadpink-shaded text-breadgray-og-dark hover:bg-opacity-100 disabled:bg-opacity-50 bg-opacity-85 rounded-xl inline-block font-bold",
+//         EVariants[variant],
+//         fullWidth && "w-full"
+//       )}
+//       onClick={onClick}
+//       disabled={disabled}
+//     >
+//       {children}
+//     </button>
+//   );
+// }
 
 export default Button;
