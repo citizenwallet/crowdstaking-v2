@@ -10,8 +10,6 @@ import { Toast as ToastUI, ToastContainer } from "./Toast";
 export function Toaster() {
   const { toastState, toastDispatch } = useToast();
 
-  console.log({ toastState });
-
   return (
     <ToastContainer>
       {toastState.map((toast) => (

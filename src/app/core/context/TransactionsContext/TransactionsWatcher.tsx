@@ -29,7 +29,6 @@ export function TransactionWatcher({
 
   useEffect(() => {
     if (!waitData || haveResult) return;
-    console.log("we have waitdata: ", waitData);
     if (waitData.status === "success") {
       transactionsDispatch({ type: "SET_SUCCESS", payload: { id } });
       toastDispatch({
