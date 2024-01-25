@@ -1,10 +1,11 @@
 name: E2E tests
 
 on:
+  workflow_dispatch:
   pull_request:
-    branches: [development]
+    branches: [development, main]
   push:
-    branches: [development]
+    branches: [development, main]
 
 jobs:
   cypress-run:
