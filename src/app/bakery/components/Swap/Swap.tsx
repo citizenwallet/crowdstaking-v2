@@ -34,14 +34,10 @@ export function Swap() {
     useState<null | Address>(null);
   const [swapState, setSwapState] = useState<TSwapState>(initialSwapState);
 
-  useEffect(() => {
-    if (user.status === "CONNECTED") {
-      if (connectedAccountAddress !== user.address) {
-        setConnectedAccountAddress(user.address);
-        setSwapState((state) => ({ ...state, value: "" }));
-      }
-    }
-  }, [user, connectedAccountAddress]);
+  if (user.status === "CONNECTED" && user.address !== connectedAccountAddress) {
+    setConnectedAccountAddress(user.address);
+    setSwapState((state) => ({ ...state, value: "" }));
+  }
 
   const clearInputValue = useCallback(() => {
     setSwapState((state) => ({ ...state, value: "" }));
