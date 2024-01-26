@@ -1,6 +1,7 @@
 import {
   Overlay as DialogPrimitiveOverlay,
   Content as DialogPrimitiveContent,
+  Portal as DialogPrimitivePortal,
 } from "@radix-ui/react-dialog";
 import {
   ModalAdviceText,
@@ -46,7 +47,7 @@ export function TransactionModal({
   transactionType: "BAKE" | "BURN";
 }) {
   return (
-    <>
+    <DialogPrimitivePortal>
       <DialogPrimitiveOverlay asChild>
         <ModalOverlay />
       </DialogPrimitiveOverlay>
@@ -82,6 +83,6 @@ export function TransactionModal({
           </ModalContent>
         </ModalContainer>
       </DialogPrimitiveContent>
-    </>
+    </DialogPrimitivePortal>
   );
 }

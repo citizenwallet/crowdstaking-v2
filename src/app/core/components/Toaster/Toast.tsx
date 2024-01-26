@@ -4,6 +4,7 @@ import * as ToastPrimitive from "@radix-ui/react-toast";
 
 import { LinkIcon } from "@/app/core/components/Icons/LinkIcon";
 import { TToastType } from "@/app/core/context/ToastContext/ToastContextReducer";
+import { WRAPPER_CLASSES } from "../../util/classes";
 
 const toastMessages: {
   [K in TToastType]: string;
@@ -50,8 +51,10 @@ export function Toast({
 
 export function ToastContainer({ children }: { children: ReactNode }) {
   return (
-    <ol className="absolute top-0 right-4 md:right-8 max-w-64 flex flex-col items-end gap-2">
-      {children}
+    <ol className="w-full absolute top-0 right-0 z-10">
+      <div className="w-full max-w-6xl m-auto px-4 md:px-8 flex flex-col items-end gap-2">
+        {children}
+      </div>
     </ol>
   );
 }
