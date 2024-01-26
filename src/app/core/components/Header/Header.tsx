@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { type ReactNode, useState } from "react";
 
-import MobileMenu from "../MobileMenu";
+import MobileMenu from "../MobileMenu/MobileMenu";
 import DesktopNavigation from "./DesktopNavigation";
 import Logo from "./Logo";
 import MobileNavigationToggle from "./MobileNavigationToggle";
