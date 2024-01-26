@@ -6,7 +6,7 @@ import { formatBalance } from "../../util/formatter";
 
 export function ModalContainer({ children }: { children: ReactNode }) {
   return (
-    <div className="max-h-90vh fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2 flex justify-center items-center">
+    <div className="max-h-90vh fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2 flex justify-center items-center z-30">
       <section className="sm:w-[26rem] flex flex-col items-center rounded bg-opacity-100 p-4 bg-breadgray-charcoal relative">
         <DialogPrimitiveClose className="absolute top-0 right-0 w-10 h-10 p-3">
           <CloseIcon />
@@ -54,7 +54,7 @@ export function TransactionValue({ value }: { value: string }) {
 
 export function ModalOverlay() {
   return (
-    <div className="fixed top-0 bg-neutral-900 transition-opacity opacity-70 h-screen w-screen" />
+    <div className="z-20 fixed top-0 bg-neutral-900 transition-opacity opacity-70 h-screen w-screen" />
   );
 }
 
