@@ -1,6 +1,6 @@
 "use client";
 import type { ChangeEvent } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useChainModal } from "@rainbow-me/rainbowkit";
 
 import { FromPanel } from "./FromPanel";
