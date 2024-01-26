@@ -1,4 +1,4 @@
-export const formatAddress = (address: string): string =>
+export const truncateAddress = (address: string): string =>
   `${address.slice(0, 5)}...${address.slice(address.length - 4)}`;
 
 export function formatBalance(value: number, decimals: number) {

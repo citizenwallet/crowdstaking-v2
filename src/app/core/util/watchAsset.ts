@@ -1,11 +1,8 @@
 import config from "@/chainConfig";
 
-export const watchAsset = async (
-  tokenKey: "DAI" | "BREAD",
-  chainId: number
-): Promise<void> => {
+export const watchAsset = async (): Promise<void> => {
   const { ethereum } = window as any;
-  const { address, symbol, decimals } = config[chainId]["BREAD"];
+  const { address, symbol, decimals } = config[100]["BREAD"];
 
   ethereum.request({
     method: "wallet_watchAsset",
