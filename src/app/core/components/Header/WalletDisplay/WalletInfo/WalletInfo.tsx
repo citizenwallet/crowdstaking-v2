@@ -2,8 +2,6 @@ import { type ReactNode } from "react";
 import Image from "next/image";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { truncateAddress } from "../../../../util/formatter";
-import { IconContainer } from "../../../Icons";
-import CaretIcon from "../../../Icons/CaretIcon";
 import { TEnsNameState, useEnsName } from "@/app/core/hooks/useEnsName";
 import { WalletMenuContent } from "./WalletMenuContent";
 

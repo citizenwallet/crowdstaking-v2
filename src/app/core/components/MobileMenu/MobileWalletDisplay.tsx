@@ -42,9 +42,9 @@ function MobileWalletDisplay() {
             </a>
           </div>
           <div className="flex justify-end pt-6">
-            <Button variant="small" onClick={() => disconnectAsync()}>
+            <button className="" onClick={() => disconnectAsync()}>
               Disconnect
-            </Button>
+            </button>
           </div>
         </div>
       ) : (
