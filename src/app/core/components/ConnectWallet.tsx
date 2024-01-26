@@ -3,7 +3,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Button from "./Button";
 import { TButtonVariant } from "./Button/Button";
 import Image from "next/image";
-import WalletInfo from "./Header/WalletDisplay/WalletInfo";
+import WalletInfo from "./Header/WalletDisplay/WalletInfo/WalletInfo";
 import { useDisconnect } from "wagmi";
 
 export default function ConnectWallet({

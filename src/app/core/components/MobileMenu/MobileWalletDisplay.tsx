@@ -1,5 +1,5 @@
 import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
-import { formatAddress } from "../../util/formatter";
+import { truncateAddress } from "../../util/formatter";
 import Button from "../Button";
 import { IconContainer, NetworkIcon, WalletIcon } from "../Icons";
 import { useDisconnect } from "wagmi";
@@ -28,7 +28,7 @@ function MobileWalletDisplay() {
             <IconContainer size="5">
               <WalletIcon />
             </IconContainer>
-            {formatAddress(user.address)}
+            {truncateAddress(user.address)}
           </span>
 
           <div className="flex justify-end">
