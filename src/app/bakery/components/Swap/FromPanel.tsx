@@ -1,4 +1,4 @@
-import type { ChangeEventHandler, ReactNode } from "react";
+import type { ChangeEventHandler } from "react";
 import Input from "../Input";
 
 import { formatBalance } from "@/app/core/util/formatter";

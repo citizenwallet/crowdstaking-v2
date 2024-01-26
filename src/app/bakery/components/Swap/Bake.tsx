@@ -20,9 +20,11 @@ import { TransactionModal } from "@/app/core/components/Modal/TransactionModal/T
 export default function Bake({
   user,
   inputValue,
+  clearInputValue,
 }: {
   user: TUserConnected;
   inputValue: string;
+  clearInputValue: () => void;
 }) {
   const { transactionsState, transactionsDispatch } = useTransactions();
   const [txId, setTxId] = useState<string | null>(null);
@@ -73,7 +75,8 @@ export default function Bake({
       type: "SET_PENDING",
       payload: { id: txId, hash: writeData.hash },
     });
-  }, [txId, writeData, transactionsDispatch]);
+    clearInputValue();
+  }, [txId, writeData, transactionsDispatch, clearInputValue]);
 
   useEffect(() => {
     if (!writeIsError && !writeError) return;
@@ -92,36 +95,31 @@ export default function Bake({
   }, [transaction, setModalOpen]);
 
   return (
-    <div className="p-2 w-full flex flex-col gap-2">
-      <DialogPrimitiveRoot open={modalOpen} onOpenChange={setModalOpen}>
-        <DialogPrimitiveTrigger asChild>
-          <Button
-            fullWidth={true}
-            variant="large"
-            disabled={!buttonIsEnabled}
-            onClick={() => {
-              if (!write) return;
-              const newId = nanoid();
-              setTxId(newId);
-              transactionsDispatch({
-                type: "NEW",
-                payload: { id: newId, value: debouncedValue },
-              });
-              write();
-            }}
-          >
-            Bake
-          </Button>
-        </DialogPrimitiveTrigger>
-        <DialogPrimitivePortal>
-          {transaction && (
-            <TransactionModal
-              transactionType="BAKE"
-              transaction={transaction}
-            />
-          )}
-        </DialogPrimitivePortal>
-      </DialogPrimitiveRoot>
-    </div>
+    <DialogPrimitiveRoot open={modalOpen} onOpenChange={setModalOpen}>
+      <DialogPrimitiveTrigger asChild>
+        <Button
+          fullWidth={true}
+          variant="large"
+          disabled={!buttonIsEnabled}
+          onClick={() => {
+            if (!write) return;
+            const newId = nanoid();
+            setTxId(newId);
+            transactionsDispatch({
+              type: "NEW",
+              payload: { id: newId, value: debouncedValue },
+            });
+            write();
+          }}
+        >
+          Bake
+        </Button>
+      </DialogPrimitiveTrigger>
+      <DialogPrimitivePortal>
+        {transaction && (
+          <TransactionModal transactionType="BAKE" transaction={transaction} />
+        )}
+      </DialogPrimitivePortal>
+    </DialogPrimitiveRoot>
   );
 }

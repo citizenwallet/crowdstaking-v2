@@ -1,6 +1,6 @@
 "use client";
 import type { ChangeEvent } from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useChainModal } from "@rainbow-me/rainbowkit";
 
 import { FromPanel } from "./FromPanel";
@@ -14,6 +14,7 @@ import Bake from "./Bake";
 import { useTokenBalances } from "@/app/core/context/TokenBalanceContext/TokenBalanceContext";
 import Burn from "./Burn";
 import { Address } from "viem";
+import { InsufficentBalance } from "./InsufficentBalance";
 
 export type TSwapMode = "BAKE" | "BURN";
 
@@ -31,6 +32,7 @@ export function Swap() {
   const { user } = useConnectedUser();
   const [connectedAccountAddress, setConnectedAccountAddress] =
     useState<null | Address>(null);
+  const [swapState, setSwapState] = useState<TSwapState>(initialSwapState);
 
   useEffect(() => {
     if (user.status === "CONNECTED") {
@@ -41,11 +43,10 @@ export function Swap() {
     }
   }, [user, connectedAccountAddress]);
 
-  const clearInputValue = () => {
+  const clearInputValue = useCallback(() => {
     setSwapState((state) => ({ ...state, value: "" }));
-  };
+  }, [setSwapState]);
 
-  const [swapState, setSwapState] = useState<TSwapState>(initialSwapState);
   const { openChainModal } = useChainModal();
 
   const { xDAI, BREAD } = useTokenBalances();
@@ -106,23 +107,15 @@ export function Swap() {
             />
           </div>
         </div>
-        {(() => {
-          switch (user.status) {
-            case "LOADING":
-              return (
-                <div className="p-3 w-full">
-                  <div className="h-16 bg-neutral-800 rounded-xl" />
-                </div>
-              );
-            case "NOT_CONNECTED":
-              return (
-                <div className="p-3 w-full">
-                  <ConnectWallet fullWidth={true} variant="large" />
-                </div>
-              );
-            case "UNSUPPORTED_CHAIN":
-              return (
-                <div className="p-3 w-full">
+        <div className="p-2 pt-0 w-full">
+          {(() => {
+            switch (user.status) {
+              case "LOADING":
+                return <ButtonShell />;
+              case "NOT_CONNECTED":
+                return <ConnectWallet fullWidth={true} variant="large" />;
+              case "UNSUPPORTED_CHAIN":
+                return (
                   <Button
                     fullWidth={true}
                     variant="large"
@@ -130,19 +123,42 @@ export function Swap() {
                   >
                     Switch Chain
                   </Button>
-                </div>
-              );
-            case "CONNECTED":
-              return swapState.mode === "BAKE" ? (
-                <Bake user={user} inputValue={swapState.value} />
-              ) : (
-                <Burn user={user} inputValue={swapState.value} />
-              );
-          }
-        })()}
+                );
+              case "CONNECTED":
+                const sourceToken = swapState.mode === "BAKE" ? xDAI : BREAD;
+
+                if (!sourceToken) return <ButtonShell />;
+                if (sourceToken.status !== "SUCCESS") return <ButtonShell />;
+
+                const balanceIsSufficent =
+                  parseFloat(swapState.value || "0") <=
+                  parseFloat(sourceToken.value);
+
+                if (balanceIsSufficent)
+                  return swapState.mode === "BAKE" ? (
+                    <Bake
+                      user={user}
+                      clearInputValue={clearInputValue}
+                      inputValue={swapState.value}
+                    />
+                  ) : (
+                    <Burn
+                      user={user}
+                      clearInputValue={clearInputValue}
+                      inputValue={swapState.value}
+                    />
+                  );
+
+                return <InsufficentBalance />;
+            }
+          })()}
+        </div>
       </div>
     </div>
   );
 }
 
+function ButtonShell() {
+  return <div className="h-16 bg-neutral-800 rounded-xl" />;
+}
 export default Swap;
