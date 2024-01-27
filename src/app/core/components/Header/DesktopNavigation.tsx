@@ -2,7 +2,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-function DesktopNavigationLink(props: {
+export function DesktopNavigationLink(props: {
   children: ReactNode;
   href: string;
   rel?: string;

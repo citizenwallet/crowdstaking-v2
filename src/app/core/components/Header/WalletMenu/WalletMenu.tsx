@@ -1,9 +1,12 @@
 import { type ReactNode } from "react";
 import Image from "next/image";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
-import { truncateAddress } from "../../../../util/formatter";
+
+import { truncateAddress } from "@/app/core/util/formatter";
 import { TEnsNameState, useEnsName } from "@/app/core/hooks/useEnsName";
-import { WalletMenuContent } from "./WalletMenuContent";
+import { WalletDisconnectButton } from "./WalletDisconnectButton";
+import { watchAsset } from "@/app/core/util/watchAsset";
+import { BreadIcon } from "../../Icons/TokenIcons";
 
 export function Row({ children }: { children: ReactNode }) {
   return (
@@ -22,10 +25,10 @@ interface IProps {
   handleDisconnect: () => void;
 }
 
-function WalletInfo({ account, handleDisconnect, chainString }: IProps) {
+export function WalletMenu({ account, handleDisconnect, chainString }: IProps) {
   const ensNameResult = useEnsName(account.address);
   return (
-    <WalletMenu
+    <WalletMenuContent
       account={account}
       chainString={chainString}
       handleDisconnect={handleDisconnect}
@@ -34,7 +37,7 @@ function WalletInfo({ account, handleDisconnect, chainString }: IProps) {
   );
 }
 
-export function WalletMenu({
+export function WalletMenuContent({
   account,
   handleDisconnect,
   ensNameResult,
@@ -85,10 +88,40 @@ export function WalletMenu({
             onPointerEnter={preventHover}
             onPointerLeave={preventHover}
           >
-            <WalletMenuContent
-              accountAddress={account.address}
-              handleDisconnect={handleDisconnect}
-            />
+            <div className="bg-breadgray-charcoal border-breadgray-burnt rounded p-4 text-xs flex flex-col items-end gap-4">
+              <button
+                onClick={() => {
+                  navigator.clipboard
+                    .writeText(account.address)
+                    .catch((err): void => {
+                      console.log(err);
+                    });
+                }}
+                title="copy address"
+                className="text-neutral-400 hover:text-neutral-300 text-base font-bold tracking-wider flex gap-4 items-center active:underline"
+              >
+                <span>{truncateAddress(account.address)}</span>
+                <svg
+                  className="fill-current w-4 h-4"
+                  viewBox="0 0 16 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M0 0H11V2H2V15H0V0ZM4 4H16V20H4V4ZM6 6V18H14V6H6Z"
+                  />
+                </svg>
+              </button>
+              <button
+                className="flex items-center gap-2 whitespace-nowrap rounded-full full px-3 py-2  bg-breadgray-og-dark text-base"
+                onClick={watchAsset}
+              >
+                <BreadIcon />
+                <span>Add token to wallet</span>
+              </button>
+              <WalletDisconnectButton handleDisconnect={handleDisconnect} />
+            </div>
           </NavigationMenu.Content>
         </NavigationMenu.Item>
       </NavigationMenu.List>
@@ -97,5 +130,3 @@ export function WalletMenu({
     </NavigationMenu.Root>
   );
 }
-
-export default WalletInfo;
