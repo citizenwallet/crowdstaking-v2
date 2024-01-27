@@ -2,7 +2,6 @@ import { useDisconnect } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 
-import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
 import { truncateAddress } from "@/app/core/util/formatter";
 import Button from "../Button";
 import { useEnsName } from "@/app/core/hooks/useEnsName";
@@ -12,9 +11,7 @@ function MobileWalletDisplay({
 }: {
   handleNavToggle: () => void;
 }) {
-  const { user } = useConnectedUser();
   const { disconnectAsync } = useDisconnect();
-
   return (
     <ConnectButton.Custom>
       {({

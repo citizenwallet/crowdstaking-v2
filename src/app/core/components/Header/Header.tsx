@@ -31,8 +31,9 @@ function Header() {
     <Container>
       <Logo />
       <DesktopNavigation currentPath={currentPath} />
-      <AccountMenu variant="regular" fullWidth={false} />
-
+      <div className="hidden md:block">
+        <AccountMenu variant="regular" fullWidth={false} />
+      </div>
       <MobileNavigationToggle handleClick={handleNavToggle} />
       <MobileMenu isOpen={isMobNavOpen} handleNavToggle={handleNavToggle} />
     </Container>
