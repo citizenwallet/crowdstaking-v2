@@ -8,7 +8,7 @@
     "prod:serve": "pnpm run prod:build && serve out",
     "test:build": "NODE_ENV=test next build",
     "test:serve": "pnpm run test:build && serve out",
-    "test:e2e": "env-cmd -f .env.test pnpm synpress run --configFile=synpress.config.ts",
+    "test:e2e": "env-cmd -f .env.test.local pnpm synpress run --configFile=synpress.config.ts",
     "hardhat:node": "env-cmd -f .env.hardhat.local hardhat node",
     "storybook:dev": "storybook dev -p 6006",
     "storybook:build": "storybook build",
