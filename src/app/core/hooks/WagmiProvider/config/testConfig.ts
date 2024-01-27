@@ -10,6 +10,8 @@ import {
   argentWallet,
   injectedWallet,
   ledgerWallet,
+  metaMaskWallet,
+  rainbowWallet,
   trustWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { publicProvider } from "wagmi/providers/public";
@@ -38,21 +40,16 @@ const { publicClient } = chainsConfig;
 
 const projectId = WALLET_CONNECT_PROJECT_ID;
 
-const { wallets } = getDefaultWallets({
-  appName: "Breadchain Crowdstaking",
-  projectId,
-  chains,
-});
-
 const connectors = connectorsForWallets([
-  ...wallets,
   {
     groupName: "Other",
     wallets: [
-      injectedWallet({ chains }),
-      argentWallet({ projectId, chains }),
-      trustWallet({ projectId, chains }),
-      ledgerWallet({ projectId, chains }),
+      metaMaskWallet({ chains, projectId }),
+      rainbowWallet({ chains, projectId }),
+      injectedWallet({ chains, projectId }),
+      argentWallet({ chains, projectId }),
+      trustWallet({ chains, projectId }),
+      ledgerWallet({ chains, projectId }),
     ],
   },
 ]);
