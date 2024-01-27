@@ -19,7 +19,7 @@ export function MobileNavigation({ handleNavToggle }: IProps) {
         Bake
       </MobileNavigationLink>
       <MobileNavigationLink
-        isCurrentPage={location.pathname === "/dashboard"}
+        isCurrentPage={pathname === "/dashboard"}
         href="/dashboard"
         onClick={() => handleNavToggle()}
       >
