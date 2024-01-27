@@ -1,13 +1,13 @@
 import clsx from "clsx";
 import { type ReactNode, useState } from "react";
 
-import MobileMenu from "../MobileMenu";
+import MobileMenu from "../MobileMenu/MobileMenu";
 import DesktopNavigation from "./DesktopNavigation";
 import Logo from "./Logo";
 import MobileNavigationToggle from "./MobileNavigationToggle";
 import { WRAPPER_CLASSES } from "@/app/core/util/classes";
 import { usePathname } from "next/navigation";
-import ConnectWallet from "../ConnectWallet";
+import { AccountMenu } from "./AccountMenu";
 
 function Container({ children }: { children: ReactNode }) {
   return (
@@ -31,11 +31,10 @@ function Header() {
     <Container>
       <Logo />
       <DesktopNavigation currentPath={currentPath} />
-      <MobileMenu isOpen={isMobNavOpen} handleNavToggle={handleNavToggle} />
-      <div className="hidden md:block">
-        <ConnectWallet variant="regular" />
-      </div>
+      <AccountMenu variant="regular" fullWidth={false} />
+
       <MobileNavigationToggle handleClick={handleNavToggle} />
+      <MobileMenu isOpen={isMobNavOpen} handleNavToggle={handleNavToggle} />
     </Container>
   );
 }

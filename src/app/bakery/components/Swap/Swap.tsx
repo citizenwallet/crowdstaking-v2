@@ -9,7 +9,7 @@ import ToPanel from "./ToPanel";
 import { sanitizeInputValue } from "../swapUtils";
 import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
 import Button from "@/app/core/components/Button";
-import ConnectWallet from "@/app/core/components/ConnectWallet";
+import { AccountMenu } from "@/app/core/components/Header/AccountMenu";
 import Bake from "./Bake";
 import { useTokenBalances } from "@/app/core/context/TokenBalanceContext/TokenBalanceContext";
 import Burn from "./Burn";
@@ -109,7 +109,7 @@ export function Swap() {
               case "LOADING":
                 return <ButtonShell />;
               case "NOT_CONNECTED":
-                return <ConnectWallet fullWidth={true} variant="large" />;
+                return <AccountMenu fullWidth={true} variant="large" />;
               case "UNSUPPORTED_CHAIN":
                 return (
                   <Button
