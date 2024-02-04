@@ -46,3 +46,5 @@ storybook-static/
 
 # bundle analyzer
 analyze/
+# Sentry Config File
+.sentryclirc
