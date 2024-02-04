@@ -29,12 +29,16 @@ export function TransactionWatcher({
 
   useEffect(() => {
     if (!waitData || haveResult) return;
+    console.log("\n\n");
+    console.log("waitData", waitData);
+    console.log("\n\n");
     if (waitData.status === "success") {
       transactionsDispatch({ type: "SET_SUCCESS", payload: { id } });
       toastDispatch({
         type: "NEW",
         payload: { toastType: "CONFIRMED", txHash: hash },
       });
+      setHaveResult(true);
     }
     if (waitData.status === "reverted") {
       transactionsDispatch({ type: "SET_REVERTED", payload: { id } });
@@ -42,8 +46,8 @@ export function TransactionWatcher({
         type: "NEW",
         payload: { toastType: "REVERTED", txHash: hash },
       });
+      setHaveResult(true);
     }
-    setHaveResult(true);
   }, [
     id,
     status,
