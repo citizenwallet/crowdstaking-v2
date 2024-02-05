@@ -5,7 +5,15 @@
 
 export default function Dashboard() {
   return (
-    <div>woof</div>
+    <div>
+      <button
+        onClick={() => {
+          throw new Error("clicky error");
+        }}
+      >
+        clicky
+      </button>
+    </div>
     // <SubgraphProvider>
     //   <main className="grow">
     //     <EconomyDisplay />
