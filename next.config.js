@@ -26,7 +26,7 @@ module.exports = withSentryConfig(
     // Suppresses source map uploading logs during build
     silent: true,
     org: "lewis-862aa675",
-    project: "crowdstasking-v2",
+    project: "crowdstaking-v2",
   },
   {
     // For all available options, see:
