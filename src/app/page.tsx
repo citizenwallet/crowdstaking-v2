@@ -8,7 +8,7 @@ const Swap = dynamic(() => import("./bakery/components/Swap/Swap"), {
   ssr: false,
 });
 
-const FAQ = dynamic(() => import("./bakery/components/FAQ"), {
+const FAQ = dynamic(() => import("./bakery/components/FAQ/FAQ"), {
   ssr: false,
 });
 
@@ -17,7 +17,7 @@ export default function Home() {
     <main className="grow relative">
       <Toaster />
       <AppTitle />
-      <div className="h-[28rem] md:h-[34rem]">
+      <div className="h-[28rem] sm:h-[34rem]">
         <Suspense>
           <Swap />
         </Suspense>

@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+
 import { breadTheme } from "./bread.theme";
 
 const config: Config = {
@@ -10,6 +11,9 @@ const config: Config = {
   theme: {
     extend: { ...breadTheme },
   },
-  plugins: [],
+  plugins: [
+    require("@tailwindcss/typography"),
+    // ...
+  ],
 };
 export default config;
