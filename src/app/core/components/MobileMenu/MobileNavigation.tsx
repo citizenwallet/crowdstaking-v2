@@ -46,10 +46,8 @@ export function MobileNavigationLink(props: {
   return (
     <Link
       className={clsx(
-        "font-redhat dark:hover:text-breadgray-light-grey text-breadgray-burnt hover:text-breadgray-charcoal active:text-breadgray-violet flex items-center justify-end p-2 text-xl font-bold leading-none tracking-wider min-[810px]:px-4",
-        isCurrentPage
-          ? "dark:text-breadgray-light-grey"
-          : "dark:text-breadgray-grey"
+        "font-redhat hover:text-breadgray-light-grey text-breadgray-grey active:text-breadgray-violet flex items-center justify-end p-2 text-xl font-bold leading-none tracking-wider min-[810px]:px-4",
+        isCurrentPage ? "text-breadgray-ultra-white" : "text-breadgray-grey"
       )}
       {...remainingProps}
     >
@@ -62,16 +60,12 @@ export function MobileExternalNavigationLink(props: {
   children: ReactNode;
   href: string;
   onClick: () => void;
-  isCurrentPage?: boolean;
 }) {
-  const { children, isCurrentPage, ...remainingProps } = props;
+  const { children, ...remainingProps } = props;
   return (
     <Link
       className={clsx(
-        "font-redhat dark:hover:text-breadgray-light-grey text-breadgray-burnt hover:text-breadgray-charcoal active:text-breadgray-violet flex items-center justify-end p-2 text-xl font-bold leading-none tracking-wider min-[810px]:px-4",
-        isCurrentPage
-          ? "dark:text-breadgray-light-grey"
-          : "dark:text-breadgray-grey"
+        "font-redhat hover:text-breadgray-light-grey text-breadgray-grey active:text-breadgray-violet flex items-center justify-end p-2 text-xl font-bold leading-none tracking-wider min-[810px]:px-4"
       )}
       rel="noopener noreferrer"
       target="_blank"

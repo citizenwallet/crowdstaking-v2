@@ -13,10 +13,8 @@ export function DesktopNavigationLink(props: {
   return (
     <Link
       className={clsx(
-        "font-redhat dark:hover:text-breadgray-light-grey text-breadgray-burnt hover:text-breadgray-charcoal active:text-breadgray-violet flex items-center p-2 text-xl font-bold leading-none tracking-wider min-[810px]:px-4",
-        isCurrentPage
-          ? "dark:text-breadgray-light-grey"
-          : "dark:text-breadgray-grey"
+        "font-redhat text-breadgray-burnt hover:text-breadgray-charcoal active:text-breadgray-violet flex items-center p-2 text-xl font-bold leading-none tracking-wider min-[810px]:px-4",
+        isCurrentPage ? "text-breadgray-light-grey" : "text-breadgray-grey"
       )}
       {...remainingProps}
     >
