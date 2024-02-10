@@ -1,3 +1,7 @@
+// TODO: use this type!!
+
+// import { Chain } from "@rainbow-me/rainbowkit";
+
 interface IToken {
   address: `0x${string}`;
   symbol: string;
