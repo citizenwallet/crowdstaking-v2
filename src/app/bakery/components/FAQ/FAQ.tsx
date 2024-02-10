@@ -1,6 +1,7 @@
 import * as Accordion from "@radix-ui/react-accordion";
 import { ReactNode } from "react";
 import { ExternalLink } from "./ExternalLink";
+import Image from "next/image";
 
 function AccordionHeader({ children }: { children: ReactNode }) {
   return (
@@ -12,23 +13,15 @@ function AccordionHeader({ children }: { children: ReactNode }) {
 
 function AccordionTrigger({ children }: { children: ReactNode }) {
   return (
-    <Accordion.Trigger className="w-full text-left flex justify-between AccordionTrigger">
+    <Accordion.Trigger className="w-full text-left flex gap-4 justify-between group AccordionTrigger">
       {children}
-      <svg
-        className="AccordionChevron"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M7 8H5V10H7V12H9V14H11V16H13V14H15V12H17V10H19V8H17V10H15V12H13V14H11V12H9V10H7V8Z"
-          fill="#F8F8F8"
-        />
-      </svg>
+      <Image
+        src="/chevron_icon.svg"
+        width={24}
+        height={24}
+        alt="chevron icon"
+        className="group-data-[state=open]:rotate-180"
+      />
     </Accordion.Trigger>
   );
 }
@@ -69,8 +62,11 @@ export default async function FAQ() {
                   solidarity primitives
                 </ExternalLink>{" "}
                 like the Bread Crowdstaking Application. You can learn more
-                about us on our [home page](https://breadchain.xyz/) or public
-                Notion.
+                about us on our{" "}
+                <ExternalLink href="https://breadchain.xyz">
+                  home page
+                </ExternalLink>{" "}
+                or public Notion.
               </p>
               <p>
                 All you need is an Ethereum wallet with xDAI on{" "}
