@@ -17,7 +17,7 @@ export default function Home() {
     <main className="grow relative">
       <Toaster />
       <AppTitle />
-      <div className="h-[28rem] sm:h-[34rem]">
+      <div className="h-[30rem] sm:h-[38rem]">
         <Suspense>
           <Swap />
         </Suspense>
