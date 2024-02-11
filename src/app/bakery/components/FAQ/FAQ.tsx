@@ -38,7 +38,7 @@ function AccordionContent({ children }: { children: ReactNode }) {
 
 export default async function FAQ() {
   return (
-    <section className="pb-20">
+    <section className="pb-16 sm:pb-28">
       <Accordion.Root
         type="single"
         className="flex flex-col gap-1 max-w-2xl m-auto px-2"
