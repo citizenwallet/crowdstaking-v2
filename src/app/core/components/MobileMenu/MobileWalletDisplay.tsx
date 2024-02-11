@@ -5,6 +5,7 @@ import Image from "next/image";
 import { truncateAddress } from "@/app/core/util/formatter";
 import Button from "../Button";
 import { useEnsName } from "@/app/core/hooks/useEnsName";
+import { blo } from "blo";
 
 function MobileWalletDisplay({
   handleNavToggle,
@@ -84,6 +85,15 @@ function AccountPanel({ accountAddress }: { accountAddress: string }) {
         title="copy address"
         className="text-neutral-400 hover:text-neutral-300 text-base font-bold tracking-wider flex gap-2 items-center justify-end active:underline"
       >
+        <div className="rounded-full overflow-clip">
+          <Image
+            src={blo(accountAddress as `0x${string}`)}
+            alt="ens avatar"
+            width="24"
+            height="24"
+            className="transform scale-110"
+          />
+        </div>
         {ensNameState.status === "LOADING" ? null : ensNameState.status ===
           "SUCCESS" ? (
           // either the name or the address

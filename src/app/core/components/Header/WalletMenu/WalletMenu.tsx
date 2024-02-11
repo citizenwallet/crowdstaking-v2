@@ -1,6 +1,7 @@
 import { type ReactNode } from "react";
 import Image from "next/image";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
+import { blo } from "blo";
 
 import { truncateAddress } from "@/app/core/util/formatter";
 import { TEnsNameState, useEnsName } from "@/app/core/hooks/useEnsName";
@@ -60,16 +61,9 @@ export function WalletMenuContent({
             onPointerLeave={preventHover}
             className="px-4 py-2 flex items-center gap-2 rounded-full bg-breadgray-charcoal text-breadgray-grey hover:bg-breadgray-og-dark hover:text-neutral-300"
           >
-            <Image
-              src={"/ens_fallback.png"}
-              alt="ens avatar"
-              width="24"
-              height="24"
-            />
-
             <span
               className={
-                "flex w-full items-center justify-center truncate text-ellipsis pt-0.5 font-bold md:justify-end"
+                "flex w-full gap-4 items-center justify-center truncate text-ellipsis font-bold md:justify-end"
               }
             >
               {(() => {
@@ -78,7 +72,19 @@ export function WalletMenuContent({
                     return null;
                   case "SUCCESS":
                     return (
-                      ensNameResult.ensName || truncateAddress(account.address)
+                      <>
+                        <div className="rounded-full overflow-clip">
+                          <Image
+                            src={blo(account.address as `0x${string}`)}
+                            alt="ens avatar"
+                            width="24"
+                            height="24"
+                            className="transform scale-110"
+                          />
+                        </div>
+                        {ensNameResult.ensName ||
+                          truncateAddress(account.address)}
+                      </>
                     );
                 }
               })()}

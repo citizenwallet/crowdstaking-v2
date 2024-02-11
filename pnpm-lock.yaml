@@ -26,6 +26,9 @@ dependencies:
   '@sentry/nextjs':
     specifier: ^7.99.0
     version: 7.99.0(next@14.0.3)(react@18.2.0)(webpack@5.88.2)
+  blo:
+    specifier: ^1.1.1
+    version: 1.1.1
   clsx:
     specifier: ^2.0.0
     version: 2.0.0
@@ -8379,6 +8382,11 @@ packages:
   /blakejs@1.2.1:
     resolution: {integrity: sha512-QXUSXI3QVc/gJME0dBpXrag1kbzOqCjCX8/b54ntNyW6sjtoqxqRk3LTmXzaJoh71zMsDCjM+47jS7XiwN/+fQ==}
     dev: true
+
+  /blo@1.1.1:
+    resolution: {integrity: sha512-1uGZInlRD4X1WQP2G1QjDGwGZ8HdGgFKqnzyRdA2TYYc0MOQCmCi37RTQ8oJuI0UF6DYFKXHwV/t1kZkO/fTaA==}
+    engines: {node: '>=16'}
+    dev: false
 
   /blob-util@2.0.2:
     resolution: {integrity: sha512-T7JQa+zsXXEa6/8ZhHcQEW1UFfVM49Ts65uBkFL6fz2QmrElqmbajIDJvuA0tEhRe5eIjpV9ZF+0RfZR9voJFQ==}
