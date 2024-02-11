@@ -95,31 +95,41 @@ export default function Bake({
   }, [transaction, setModalOpen]);
 
   return (
-    <DialogPrimitiveRoot open={modalOpen} onOpenChange={setModalOpen}>
-      <DialogPrimitiveTrigger asChild>
-        <Button
-          fullWidth={true}
-          variant="large"
-          disabled={!buttonIsEnabled}
-          onClick={() => {
-            if (!write) return;
-            const newId = nanoid();
-            setTxId(newId);
-            transactionsDispatch({
-              type: "NEW",
-              payload: { id: newId, value: debouncedValue },
-            });
-            write();
-          }}
-        >
-          Bake
-        </Button>
-      </DialogPrimitiveTrigger>
-      <DialogPrimitivePortal>
-        {transaction && (
-          <TransactionModal transactionType="BAKE" transaction={transaction} />
-        )}
-      </DialogPrimitivePortal>
-    </DialogPrimitiveRoot>
+    <div className="relative">
+      <DialogPrimitiveRoot open={modalOpen} onOpenChange={setModalOpen}>
+        <DialogPrimitiveTrigger asChild>
+          <Button
+            fullWidth={true}
+            variant="large"
+            disabled={!buttonIsEnabled}
+            onClick={() => {
+              if (!write) return;
+              const newId = nanoid();
+              setTxId(newId);
+              transactionsDispatch({
+                type: "NEW",
+                payload: { id: newId, value: debouncedValue },
+              });
+              write();
+            }}
+          >
+            Bake
+          </Button>
+        </DialogPrimitiveTrigger>
+        <DialogPrimitivePortal>
+          {transaction && (
+            <TransactionModal
+              transactionType="BAKE"
+              transaction={transaction}
+            />
+          )}
+        </DialogPrimitivePortal>
+      </DialogPrimitiveRoot>
+      {prepareStatus === "loading" && (
+        <span className="absolute bottom-0 left-0 right-0 transform translate-y-full pt-4">
+          Preparing transaction...
+        </span>
+      )}
+    </div>
   );
 }
