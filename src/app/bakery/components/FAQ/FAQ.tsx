@@ -170,7 +170,7 @@ export default async function FAQ() {
           <AccordionContent>
             <div className="prose prose-neutral prose-invert">
               <p>
-                To find applications that are actively accepting BREAD, [check
+                To find applications that are actively accepting BREAD, check
                 out this page in our{" "}
                 <ExternalLink href="https://breadchain.notion.site/Marketplace-ba2abef706464b8298401b1289d52662">
                   Notion
