@@ -5,19 +5,31 @@ import type { ReactNode } from "react";
 export function DesktopNavigationLink(props: {
   children: ReactNode;
   href: string;
-  rel?: string;
-  target?: string;
   isCurrentPage?: boolean;
+  isExternal?: boolean;
 }) {
-  const { children, isCurrentPage, ...remainingProps } = props;
+  const { children, href, isCurrentPage, isExternal } = props;
+
+  const classList = clsx(
+    "font-redhat text-breadgray-burnt hover:text-breadgray-light-grey active:text-breadgray-violet flex items-center p-2 text-xl font-bold leading-none tracking-wider min-[810px]:px-4",
+    isCurrentPage ? "text-breadgray-light-grey" : "text-breadgray-grey"
+  );
+
+  if (isExternal) {
+    return (
+      <a
+        href={href}
+        className={classList}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {children}
+      </a>
+    );
+  }
+
   return (
-    <Link
-      className={clsx(
-        "font-redhat text-breadgray-burnt hover:text-breadgray-charcoal active:text-breadgray-violet flex items-center p-2 text-xl font-bold leading-none tracking-wider min-[810px]:px-4",
-        isCurrentPage ? "text-breadgray-light-grey" : "text-breadgray-grey"
-      )}
-      {...remainingProps}
-    >
+    <Link href={href} className={classList}>
       {children}
     </Link>
   );
@@ -32,13 +44,9 @@ function DesktopNavigation({ currentPath }: { currentPath: string }) {
       <DesktopNavigationLink isCurrentPage={currentPath === "/"} href="/">
         Bake
       </DesktopNavigationLink>
-      {/* <DesktopNavigationLink
-        isCurrentPage={currentPath === "/dashboard/"}
-        href="/dashboard/"
-        rel="prefetch"
-      >
-        Dashboard
-      </DesktopNavigationLink> */}
+      <DesktopNavigationLink href="https://breadchain.mirror.xyz/" isExternal>
+        Blog
+      </DesktopNavigationLink>
     </nav>
   );
 }

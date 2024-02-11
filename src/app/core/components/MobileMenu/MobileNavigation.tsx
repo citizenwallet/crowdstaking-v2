@@ -2,6 +2,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
+import { isExternal } from "util/types";
 
 interface IProps {
   handleNavToggle: () => void;
@@ -18,13 +19,6 @@ export function MobileNavigation({ handleNavToggle }: IProps) {
       >
         Bake
       </MobileNavigationLink>
-      <MobileNavigationLink
-        isCurrentPage={pathname === "/dashboard"}
-        href="/dashboard"
-        onClick={() => handleNavToggle()}
-      >
-        Dashboard
-      </MobileNavigationLink>
       <MobileExternalNavigationLink
         href="https://breadchain.mirror.xyz/"
         onClick={handleNavToggle}
@@ -38,19 +32,32 @@ export function MobileNavigationLink(props: {
   children: ReactNode;
   href: string;
   onClick: () => void;
-  rel?: string;
-  target?: string;
   isCurrentPage?: boolean;
+  isExternal?: boolean;
 }) {
-  const { children, isCurrentPage, ...remainingProps } = props;
+  const { href, children, isCurrentPage, isExternal, onClick } = props;
+
+  const classList = clsx(
+    "font-redhat hover:text-breadgray-light-grey text-breadgray-grey active:text-breadgray-violet flex items-center justify-end p-2 text-xl font-bold leading-none tracking-wider min-[810px]:px-4",
+    isCurrentPage ? "text-breadgray-ultra-white" : "text-breadgray-grey"
+  );
+
+  if (isExternal) {
+    return (
+      <a
+        href={href}
+        className={classList}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={onClick}
+      >
+        {children}
+      </a>
+    );
+  }
+
   return (
-    <Link
-      className={clsx(
-        "font-redhat hover:text-breadgray-light-grey text-breadgray-grey active:text-breadgray-violet flex items-center justify-end p-2 text-xl font-bold leading-none tracking-wider min-[810px]:px-4",
-        isCurrentPage ? "text-breadgray-ultra-white" : "text-breadgray-grey"
-      )}
-      {...remainingProps}
-    >
+    <Link href={href} onClick={onClick} className={classList}>
       {children}
     </Link>
   );
