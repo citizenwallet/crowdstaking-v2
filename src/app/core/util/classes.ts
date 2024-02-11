@@ -1,2 +1,1 @@
-export const WRAPPER_CLASSES =
-  "max-w-6xl m-auto justify-between p-4 md:py-6 md:px-8";
+export const WRAPPER_CLASSES = "max-w-6xl m-auto justify-between px-4 md:px-8";

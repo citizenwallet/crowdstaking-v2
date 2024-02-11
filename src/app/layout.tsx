@@ -5,7 +5,7 @@ import { WagmiProvider } from "@/app/core/hooks/WagmiProvider/WagmiProvider";
 import { TokenBalancesProvider } from "@/app/core/context/TokenBalanceContext/TokenBalanceContext";
 import { ConnectedUserProvider } from "@/app/core/hooks/useConnectedUser";
 import { AnimatePresence } from "framer-motion";
-import Footer from "@/app/core/components/Footer";
+import { Footer } from "@/app/core/components/Footer/Footer";
 import { ReactNode } from "react";
 import clsx from "clsx";
 import { pressStart, redhat } from "@/app/core/components/Fonts";

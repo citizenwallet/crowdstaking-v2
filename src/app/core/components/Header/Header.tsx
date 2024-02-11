@@ -12,7 +12,9 @@ import { AccountMenu } from "./AccountMenu";
 function Container({ children }: { children: ReactNode }) {
   return (
     <header>
-      <div className={clsx(WRAPPER_CLASSES, "flex justify-between")}>
+      <div
+        className={clsx(WRAPPER_CLASSES, "p-4 md:py-6 flex justify-between")}
+      >
         {children}
       </div>
     </header>

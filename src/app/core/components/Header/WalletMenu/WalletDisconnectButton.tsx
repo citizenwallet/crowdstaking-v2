@@ -5,7 +5,7 @@ export function WalletDisconnectButton({
 }) {
   return (
     <button
-      className="py-2 px-6 rounded-lg border border-status-danger text-status-danger font-bold text-lg tracking-wider flex items-center gap-4 transition-all duration-200 hover:bg-status-danger hover:text-breadgray-charcoal"
+      className="py-1.5 px-5 rounded-lg border border-status-danger text-status-danger font-bold text-base tracking-wider flex items-center gap-4 transition-all duration-200 hover:bg-status-danger hover:text-breadgray-charcoal"
       onClick={handleDisconnect}
     >
       <svg
