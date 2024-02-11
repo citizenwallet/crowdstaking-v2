@@ -73,7 +73,7 @@ export default async function FAQ() {
                 <ExternalLink href="https://chainlist.org/chain/100">
                   Gnosis Chain
                 </ExternalLink>{" "}
-                and through this application you can mint BREAD, our digital
+                and through this application you can bake BREAD, our digital
                 community currency which helps fund the project to build
                 post-capitalist tools and organizations.
               </p>
@@ -87,7 +87,7 @@ export default async function FAQ() {
           <AccordionHeader>
             <AccordionTrigger>
               How do I help the post-capitalist economy on the blockchain by
-              minting BREAD?
+              baking BREAD?
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
