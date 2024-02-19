@@ -15,6 +15,7 @@ import { useTransactions } from "@/app/core/context/TransactionsContext/Transact
 import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 import { TransactionModal } from "@/app/core/components/Modal/TransactionModal/TransactionModal";
+import { AnimatePresence } from "framer-motion";
 
 export default function Burn({
   user,
@@ -113,13 +114,15 @@ export default function Burn({
             Burn
           </Button>
         </DialogPrimitiveTrigger>
-        <DialogPrimitivePortal>
-          {transaction && (
-            <TransactionModal
-              transactionType="BURN"
-              transaction={transaction}
-            />
-          )}
+        <DialogPrimitivePortal forceMount>
+          <AnimatePresence>
+            {transaction && (
+              <TransactionModal
+                transactionType="BURN"
+                transaction={transaction}
+              />
+            )}
+          </AnimatePresence>
         </DialogPrimitivePortal>
       </DialogPrimitiveRoot>
       {prepareStatus === "loading" && (

@@ -51,7 +51,7 @@ export function TransactionModal({
       <DialogPrimitiveOverlay asChild>
         <ModalOverlay />
       </DialogPrimitiveOverlay>
-      <DialogPrimitiveContent>
+      <DialogPrimitiveContent asChild>
         <ModalContainer>
           <ModalHeading>{modalHeaderText[transactionType]}</ModalHeading>
           <ModalContent>

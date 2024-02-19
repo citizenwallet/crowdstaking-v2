@@ -4,7 +4,6 @@ import * as ToastPrimitive from "@radix-ui/react-toast";
 
 import { LinkIcon } from "@/app/core/components/Icons/LinkIcon";
 import { TToastType } from "@/app/core/context/ToastContext/ToastContextReducer";
-import { WRAPPER_CLASSES } from "../../util/classes";
 
 const toastMessages: {
   [K in TToastType]: string;

@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { nanoid } from "nanoid";
 import { TransactionModal } from "@/app/core/components/Modal/TransactionModal/TransactionModal";
+import { AnimatePresence } from "framer-motion";
 
 export default function Bake({
   user,
@@ -116,13 +117,15 @@ export default function Bake({
             Bake
           </Button>
         </DialogPrimitiveTrigger>
-        <DialogPrimitivePortal>
-          {transaction && (
-            <TransactionModal
-              transactionType="BAKE"
-              transaction={transaction}
-            />
-          )}
+        <DialogPrimitivePortal forceMount>
+          <AnimatePresence>
+            {transaction && modalOpen && (
+              <TransactionModal
+                transactionType="BAKE"
+                transaction={transaction}
+              />
+            )}
+          </AnimatePresence>
         </DialogPrimitivePortal>
       </DialogPrimitiveRoot>
       {prepareStatus === "loading" && (

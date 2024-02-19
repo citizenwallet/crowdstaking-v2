@@ -1,21 +1,39 @@
-import type { ReactNode } from "react";
+import { forwardRef, Ref, type ReactNode } from "react";
 import { Close as DialogPrimitiveClose } from "@radix-ui/react-dialog";
 
 import CloseIcon from "../Icons/CloseIcon";
 import { formatBalance } from "../../util/formatter";
+import { motion } from "framer-motion";
 
-export function ModalContainer({ children }: { children: ReactNode }) {
-  return (
-    <div className="max-h-90vh fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2 flex justify-center items-center z-30">
-      <section className="sm:w-[26rem] flex flex-col items-center rounded bg-opacity-100 p-4 bg-breadgray-charcoal relative">
-        <DialogPrimitiveClose className="absolute top-0 right-0 w-10 h-10 p-3">
-          <CloseIcon />
-        </DialogPrimitiveClose>
-        {children}
-      </section>
-    </div>
-  );
-}
+export const ModalContainer = forwardRef(
+  (
+    { children, ...props }: { children: ReactNode },
+    ref: Ref<HTMLDivElement>
+  ) => {
+    return (
+      <div
+        ref={ref}
+        className="max-h-90vh fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2 flex justify-center items-center z-30"
+        {...props}
+      >
+        <motion.section
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 20, opacity: 0 }}
+          transition={{ duration: 0.1 }}
+          className="sm:w-[26rem] flex flex-col items-center rounded bg-opacity-100 p-4 bg-breadgray-charcoal relative"
+        >
+          <DialogPrimitiveClose className="absolute top-0 right-0 w-10 h-10 p-3">
+            <CloseIcon />
+          </DialogPrimitiveClose>
+          {children}
+        </motion.section>
+      </div>
+    );
+  }
+);
+
+ModalContainer.displayName = "ModalContainer";
 
 export function ModalHeading({ children }: { children: ReactNode }) {
   return (
@@ -52,11 +70,21 @@ export function TransactionValue({ value }: { value: string }) {
   );
 }
 
-export function ModalOverlay() {
+export const ModalOverlay = forwardRef((props, ref: Ref<HTMLDivElement>) => {
   return (
-    <div className="z-20 fixed top-0 bg-neutral-900 transition-opacity opacity-70 h-screen w-screen" />
+    <div ref={ref} {...props}>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.7 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.1 }}
+        className="z-20 fixed top-0 bg-neutral-900 transition-opacity opacity-70 h-screen w-screen"
+      />
+    </div>
   );
-}
+});
+
+ModalOverlay.displayName = "ModalOverlay";
 
 export function TransactionStatusSpinner() {
   return (

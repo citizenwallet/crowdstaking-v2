@@ -1,4 +1,4 @@
-import { forwardRef, type MouseEvent, type ReactNode } from "react";
+import { forwardRef, Ref, type MouseEvent, type ReactNode } from "react";
 import clsx from "clsx";
 
 export type TButtonVariant = "small" | "regular" | "large";
@@ -26,7 +26,7 @@ const Button = forwardRef(
       fullWidth = false,
       disabled = false,
     }: IProps,
-    ref: any
+    ref: Ref<HTMLButtonElement>
   ) => {
     return (
       <button
