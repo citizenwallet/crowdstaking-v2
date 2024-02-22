@@ -15,7 +15,7 @@
     "storybook:serve": "serve storybook-static",
     "find-deadcode": "ts-prune | grep -v '(used in module)'",
     "lint": "next lint",
-    "prod:deploy": "npm install -g pnpm@8.12.1 && pnpm run prod:build"
+    "prod:deploy": "npm install -g pnpm@8.12.1 && pnpm install && pnpm run prod:build"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.1.2",
