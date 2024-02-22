@@ -50,8 +50,8 @@ const connectors = connectorsForWallets([
     groupName: "Wallets",
     wallets: [
       metaMaskWallet({ chains, projectId }),
-      rainbowWallet({ chains, projectId }),
-      injectedWallet({ chains, projectId }),
+      rainbowWallet({ chains, projectId, appName: "Breadchain Crowdstaking" }),
+      injectedWallet({ chains, projectId, appName: "Breadchain Crowdstaking" }),
       argentWallet({ chains, projectId }),
       trustWallet({ chains, projectId }),
       ledgerWallet({ chains, projectId }),
