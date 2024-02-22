@@ -1,0 +1,10 @@
+{
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "name": "Breadchain Crowdstaking",
+  "short_name": "app.breadchain.xyz",
+  "description": "The currency for solidarity"
+}
