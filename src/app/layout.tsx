@@ -1,17 +1,18 @@
 "use client";
-import "./app.css";
-import Header from "@/app/core/components/Header/Header";
+import { ReactNode } from "react";
+import clsx from "clsx";
+
+import { pressStart, redhat } from "@/app/core/components/Fonts";
 import { WagmiProvider } from "@/app/core/hooks/WagmiProvider/WagmiProvider";
 import { TokenBalancesProvider } from "@/app/core/context/TokenBalanceContext/TokenBalanceContext";
 import { ConnectedUserProvider } from "@/app/core/hooks/useConnectedUser";
-import { Footer } from "@/app/core/components/Footer/Footer";
-import { ReactNode } from "react";
-import clsx from "clsx";
-import { pressStart, redhat } from "@/app/core/components/Fonts";
-
-import "@rainbow-me/rainbowkit/styles.css";
 import { TransactionsProvider } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { ToastProvider } from "@/app/core/context/ToastContext/ToastContext";
+import Header from "@/app/core/components/Header/Header";
+import { Footer } from "@/app/core/components/Footer/Footer";
+
+import "./app.css";
+import "@rainbow-me/rainbowkit/styles.css";
 
 export default function App({ children }: { children: React.ReactNode }) {
   return (
