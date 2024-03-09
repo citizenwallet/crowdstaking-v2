@@ -15,6 +15,8 @@ export interface IConfig {
   [chainId: number]: ChainConfiguration;
 }
 
+// test contract address: 0x2993bD6dA994378Eadf1A5ba5c9017FdFc92f111
+
 function getConfig(): IConfig {
   if (process.env.NODE_ENV === "development") {
     return {
@@ -25,7 +27,7 @@ function getConfig(): IConfig {
         BREAD: {
           symbol: "BREAD",
           decimals: 18,
-          address: "0x2993bD6dA994378Eadf1A5ba5c9017FdFc92f111",
+          address: "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3",
         },
       },
       100: {
@@ -35,7 +37,7 @@ function getConfig(): IConfig {
         BREAD: {
           symbol: "BREAD",
           decimals: 18,
-          address: "0x2993bD6dA994378Eadf1A5ba5c9017FdFc92f111",
+          address: "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3",
         },
       },
     };
@@ -50,7 +52,7 @@ function getConfig(): IConfig {
         BREAD: {
           symbol: "BREAD",
           decimals: 18,
-          address: "0x2993bD6dA994378Eadf1A5ba5c9017FdFc92f111",
+          address: "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3",
         },
       },
     };
