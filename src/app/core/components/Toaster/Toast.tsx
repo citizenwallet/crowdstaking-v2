@@ -4,6 +4,7 @@ import * as ToastPrimitive from "@radix-ui/react-toast";
 
 import { LinkIcon } from "@/app/core/components/Icons/LinkIcon";
 import { TToastType } from "@/app/core/context/ToastContext/ToastContextReducer";
+import CloseIcon from "../Icons/CloseIcon";
 
 const toastMessages: {
   [K in TToastType]: string;
@@ -23,22 +24,23 @@ export function Toast({
   return (
     <li
       className={clsx(
-        "rounded-xl border-2 px-6 py-4 flex flex-col gap-4 align-self bg-breadgray-burnt",
-        toastType === "SUBMITTED" && "border-breadgray-rye",
+        "w-[270px] rounded-xl border-2 px-4 py-3 flex flex-col gap-2 align-self bg-breadgray-ultra-white dark:bg-breadgray-burnt relative",
+        toastType === "SUBMITTED" && "border-breadgray-grey",
         toastType === "CONFIRMED" && "border-status-success",
         toastType === "REVERTED" && "border-status-danger"
       )}
     >
-      {/* <ToastPrimitive.Close /> */}
-
-      <ToastPrimitive.Title className="text-xl font-medium">
+      <ToastPrimitive.ToastClose className="absolute top-0 right-0 w-8 h-8 p-2">
+        <CloseIcon />
+      </ToastPrimitive.ToastClose>
+      <ToastPrimitive.Title className="text-lg font-medium text-breadgray-charcoal">
         {toastMessages[toastType]}
       </ToastPrimitive.Title>
       <ToastPrimitive.Description>
         <a
           href={explorerUrl}
           target="_blank"
-          className="flex flex-row gap-2 items-center text-breadpink-300 font-medium"
+          className="flex flex-row gap-2 items-center text-breadviolet-violet dark:text-breadpink-300 font-medium"
         >
           View on explorer
           <LinkIcon />

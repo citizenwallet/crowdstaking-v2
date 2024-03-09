@@ -1,65 +1,50 @@
-import clsx from "clsx";
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-type TColorMode = "LIGHT" | "DARK";
+type TColorMode = "LIGHT" | "DARK" | null;
 
 export function ColorToggle() {
-  const [colorMode, setColorMode] = useState<null | TColorMode>(null);
   useEffect(() => {
-    const colorMode = localStorage.getItem("colorMode");
+    const colorMode = localStorage.getItem("colorMode") as TColorMode;
     if (colorMode === "DARK") {
       document.documentElement.classList.add("dark");
-      setColorMode("DARK");
-    } else {
-      setColorMode("LIGHT");
+      return;
+    }
+    if (colorMode === "LIGHT") return;
+    if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+      document.documentElement.classList.add("dark");
     }
   }, []);
 
   function handleColorToggle() {
     if (document.documentElement.classList.contains("dark")) {
-      localStorage.setItem("colorMode", "LIGHT");
       document.documentElement.classList.remove("dark");
-      setColorMode("LIGHT");
+      localStorage.setItem("colorMode", "LIGHT");
     } else {
       localStorage.setItem("colorMode", "DARK");
       document.documentElement.classList.add("dark");
-      setColorMode("DARK");
     }
   }
 
   return (
     <section>
-      {colorMode && (
-        <button
-          className="flex items-center gap-2 px-4 py-2"
-          onClick={handleColorToggle}
-          aria-hidden="true"
-        >
-          <div
-            className={clsx(
-              "h-6 w-6",
-              colorMode === "LIGHT"
-                ? "text-breadgray-grey"
-                : "text-breadpink-shaded"
-            )}
-          >
-            <MoonIcon />
-          </div>
-          <div className="text-breadgray-light-grey w-[1px] opacity-60">
-            <Divider />
-          </div>
-          <div
-            className={clsx(
-              "h-6 w-6",
-              colorMode === "LIGHT"
-                ? "text-breadpink-shaded"
-                : "text-breadgray-grey"
-            )}
-          >
-            <SunIcon />
-          </div>
-        </button>
-      )}
+      <button
+        aria-label="toggle light and dark mode"
+        className="flex items-center gap-2 px-4 py-2"
+        onClick={handleColorToggle}
+      >
+        <div className="h-6 w-6 text-breadgray-grey dark:text-breadpink-shaded">
+          <MoonIcon />
+        </div>
+        <div className="text-breadgray-light-grey w-[1px] opacity-60">
+          <Divider />
+        </div>
+        <div className="h-6 w-6 text-breadpink-shaded dark:text-breadgray-grey">
+          <SunIcon />
+        </div>
+      </button>
     </section>
   );
 }

@@ -33,7 +33,7 @@ const Button = forwardRef(
         ref={ref}
         type="button"
         className={clsx(
-          "bg-breadpink-shaded text-breadgray-og-dark hover:bg-opacity-100 disabled:bg-opacity-50 bg-opacity-85 rounded-xl inline-block font-bold transition-all duration-200",
+          " bg-breadviolet-shaded dark:bg-breadpink-shaded text-breadgray-ultra-white dark:text-breadgray-og-dark disabled:bg-opacity-60 rounded-xl inline-block font-bold",
           ButtonVariants[variant],
           fullWidth && "w-full"
         )}

@@ -1,6 +1,6 @@
 "use client";
 import "./app.css";
-import Header from "@/app/core/components/Header";
+import Header from "@/app/core/components/Header/Header";
 import { WagmiProvider } from "@/app/core/hooks/WagmiProvider/WagmiProvider";
 import { TokenBalancesProvider } from "@/app/core/context/TokenBalanceContext/TokenBalanceContext";
 import { ConnectedUserProvider } from "@/app/core/hooks/useConnectedUser";
@@ -17,7 +17,13 @@ import { ToastProvider } from "@/app/core/context/ToastContext/ToastContext";
 export default function App({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={clsx("relative", pressStart.variable, redhat.variable)}>
+      <body
+        className={clsx(
+          "relative bg-[#F0F0F0] dark:bg-breadgray-grey100 dark:text-breadgray-white",
+          pressStart.variable,
+          redhat.variable
+        )}
+      >
         <WagmiProvider>
           <ConnectedUserProvider>
             <TokenBalancesProvider>

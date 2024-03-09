@@ -95,7 +95,7 @@ function TokenBalance({
       {tokenBalance.status === "SUCCESS" && (
         <button
           type="button"
-          className="px-2 font-bold text-breadpink-shaded text-sm"
+          className="px-2 font-bold text-breadviolet-violet dark:text-breadpink-shaded text-sm"
           onClick={() => {
             handleBalanceClick(tokenBalance.value);
           }}

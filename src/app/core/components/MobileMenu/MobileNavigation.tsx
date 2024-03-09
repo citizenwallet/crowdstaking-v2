@@ -19,12 +19,13 @@ export function MobileNavigation({ handleNavToggle }: IProps) {
       >
         Bake
       </MobileNavigationLink>
-      <MobileExternalNavigationLink
+      <MobileNavigationLink
+        isExternal
         href="https://breadchain.mirror.xyz/"
         onClick={handleNavToggle}
       >
         Blog
-      </MobileExternalNavigationLink>
+      </MobileNavigationLink>
     </nav>
   );
 }
@@ -38,8 +39,10 @@ export function MobileNavigationLink(props: {
   const { href, children, isCurrentPage, isExternal, onClick } = props;
 
   const classList = clsx(
-    "font-redhat hover:text-breadgray-light-grey text-breadgray-grey active:text-breadgray-violet flex items-center justify-end p-2 text-xl font-bold leading-none tracking-wider min-[810px]:px-4",
-    isCurrentPage ? "text-breadgray-ultra-white" : "text-breadgray-grey"
+    "font-redhat text-breadgray-grey100 hover:text-breadgray-grey100 dark:hover:text-breadgray-ultra-white active:text-breadgray-violet flex items-center justify-end p-2 text-xl font-bold leading-none tracking-wider min-[810px]:px-4",
+    isCurrentPage
+      ? "text-breadgray-grey100 dark:text-breadgray-ultra-white"
+      : "text-breadgray-rye"
   );
 
   if (isExternal) {
@@ -58,26 +61,6 @@ export function MobileNavigationLink(props: {
 
   return (
     <Link href={href} onClick={onClick} className={classList}>
-      {children}
-    </Link>
-  );
-}
-
-export function MobileExternalNavigationLink(props: {
-  children: ReactNode;
-  href: string;
-  onClick: () => void;
-}) {
-  const { children, ...remainingProps } = props;
-  return (
-    <Link
-      className={clsx(
-        "font-redhat hover:text-breadgray-light-grey text-breadgray-grey active:text-breadgray-violet flex items-center justify-end p-2 text-xl font-bold leading-none tracking-wider min-[810px]:px-4"
-      )}
-      rel="noopener noreferrer"
-      target="_blank"
-      {...remainingProps}
-    >
       {children}
     </Link>
   );

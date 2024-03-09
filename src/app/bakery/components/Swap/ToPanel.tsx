@@ -27,7 +27,7 @@ function ToPanel({ inputValue, swapMode, tokenBalance }: IProps) {
       <PanelLabel>You receive</PanelLabel>
       <PanelContent>
         <PanelTokenRow>
-          <span className="flex-auto truncate text-[2.3rem] sm:text-[2.5rem] text-neutral-200">
+          <span className="flex-auto px-3 truncate text-[2.3rem] sm:text-[2.5rem] text-breadgray-grey100 dark:text-neutral-200">
             {inputValue || "00.00"}
           </span>
           <TokenLabelContainer>

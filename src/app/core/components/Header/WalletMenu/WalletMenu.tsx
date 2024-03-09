@@ -59,11 +59,11 @@ export function WalletMenuContent({
           <NavigationMenu.Trigger
             onPointerMove={preventHover}
             onPointerLeave={preventHover}
-            className="px-4 py-2 flex items-center gap-2 rounded-full bg-breadgray-charcoal text-breadgray-grey hover:bg-breadgray-og-dark hover:text-neutral-300"
+            className="px-4 py-2 flex items-center gap-2 rounded-full bg-breadgray-ultra-white dark:bg-breadgray-charcoal text-breadgray-grey100 dark:text-breadgray-grey dark:hover:bg-breadgray-og-dark dark:hover:text-neutral-300"
           >
             <span
               className={
-                "flex w-full gap-4 items-center justify-center truncate text-ellipsis font-bold md:justify-end"
+                "flex w-full gap-4 items-center justify-center truncate text-ellipsis md:justify-end"
               }
             >
               {(() => {
@@ -94,7 +94,7 @@ export function WalletMenuContent({
             onPointerEnter={preventHover}
             onPointerLeave={preventHover}
           >
-            <div className="bg-breadgray-charcoal border-breadgray-burnt rounded p-4 text-xs flex flex-col items-end gap-4">
+            <div className="bg-breadgray-ultra-white dark:bg-breadgray-charcoal border border-breadgray-grey dark:border-none rounded p-4 text-xs flex flex-col items-end gap-4">
               <button
                 onClick={() => {
                   navigator.clipboard
@@ -120,7 +120,7 @@ export function WalletMenuContent({
                 </svg>
               </button>
               <button
-                className="flex items-center gap-2 whitespace-nowrap rounded-full full px-3 py-2  bg-breadgray-og-dark text-base"
+                className="flex items-center gap-2 whitespace-nowrap rounded-full full px-3 py-2  dark:bg-breadgray-og-dark text-base add-token-shadow"
                 onClick={watchAsset}
               >
                 <BreadIcon />

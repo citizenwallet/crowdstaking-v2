@@ -8,6 +8,7 @@ import MobileNavigationToggle from "./MobileNavigationToggle";
 import { WRAPPER_CLASSES } from "@/app/core/util/classes";
 import { usePathname } from "next/navigation";
 import { AccountMenu } from "./AccountMenu";
+import { ColorToggle } from "./ColorToggle";
 
 function Container({ children }: { children: ReactNode }) {
   return (
@@ -33,7 +34,8 @@ function Header() {
     <Container>
       <Logo />
       <DesktopNavigation currentPath={currentPath} />
-      <div className="hidden md:block">
+      <div className="hidden md:flex gap-4">
+        <ColorToggle />
         <AccountMenu variant="regular" fullWidth={false} />
       </div>
       <MobileNavigationToggle handleClick={handleNavToggle} />

@@ -7,7 +7,7 @@ function SwapReverse({ onClick }: TProps) {
     <button
       type="button"
       aria-label="switch between bake and burn"
-      className="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2  inline-block  bg-breadgray-grey300 px-5 py-2 text-breadgray-ultra-white border-2 rounded-lg border-breadgray-grey200 hover:border-breadpink-shaded transition-colors"
+      className="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2  inline-block bg-breadgray-ultra-white  dark:bg-breadgray-grey300 px-5 py-2 dark:text-breadgray-ultra-white border-2 rounded-lg border-breadgray-rye dark:border-breadgray-grey200 hover:border-breadviolet-shaded dark:hover:border-breadpink-shaded transition-border"
       onClick={onClick}
     >
       <DownIcon />

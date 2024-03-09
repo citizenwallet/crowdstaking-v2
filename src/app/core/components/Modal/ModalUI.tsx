@@ -17,11 +17,11 @@ export const ModalContainer = forwardRef(
         {...props}
       >
         <motion.section
-          initial={{ y: 20, opacity: 0 }}
+          initial={{ y: 8, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 20, opacity: 0 }}
-          transition={{ duration: 0.1 }}
-          className="sm:w-[26rem] flex flex-col items-center rounded bg-opacity-100 p-4 bg-breadgray-charcoal relative"
+          exit={{ y: 8, opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="sm:w-[26rem] flex flex-col items-center rounded dark:bg-opacity-100 p-4 bg-breadgray-ultra-white border border-breadgray-light-grey dark:border-none dark:bg-breadgray-charcoal relative"
         >
           <DialogPrimitiveClose className="absolute top-0 right-0 w-10 h-10 p-3">
             <CloseIcon />
@@ -37,8 +37,8 @@ ModalContainer.displayName = "ModalContainer";
 
 export function ModalHeading({ children }: { children: ReactNode }) {
   return (
-    <div className="w-full flex flex-row items-center justify-center border-b-[0.075rem] border-b-breadpink-shaded">
-      <h2 className="text-2xl px-2 pb-3 leading-normal text-breadgray-light-grey font-medium">
+    <div className="w-full flex flex-row items-center justify-center border-b-[0.075rem] border-b-breadviolet-shaded dark:border-b-breadpink-shaded">
+      <h2 className="text-2xl px-2 pb-3 leading-normal text-breadgray-burnt dark:text-breadgray-light-grey font-medium">
         {children}
       </h2>
     </div>
@@ -53,7 +53,7 @@ export function ModalContent({ children }: { children: ReactNode }) {
 
 export function ModalAdviceText({ children }: { children: ReactNode }) {
   return (
-    <p className="max-w-xs text-lg leading-normal text-breadgray-light-grey text-center pt-4 pb-2">
+    <p className="max-w-xs text-lg leading-normal text-breadgray-burnt dark:text-breadgray-light-grey text-center pt-4 pb-2">
       {children}
     </p>
   );
@@ -62,7 +62,7 @@ export function ModalAdviceText({ children }: { children: ReactNode }) {
 export function TransactionValue({ value }: { value: string }) {
   return (
     <div
-      className="w-full text-center text-3xl font-medium"
+      className="w-full text-center text-3xl font-medium text-breadgray-grey100 dark:text-breadgray-light-grey"
       title={parseFloat(value).toString()}
     >
       {formatBalance(parseFloat(value), 2)}
@@ -75,10 +75,10 @@ export const ModalOverlay = forwardRef((props, ref: Ref<HTMLDivElement>) => {
     <div ref={ref} {...props}>
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.7 }}
+        animate={{ opacity: 0.9 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.1 }}
-        className="z-20 fixed top-0 bg-neutral-900 transition-opacity opacity-70 h-screen w-screen"
+        transition={{ duration: 0.2 }}
+        className="z-20 fixed top-0 bg-[#F0F0F0] dark:bg-neutral-900 transition-opacity opacity-90 dark:opacity-70 h-screen w-screen"
       />
     </div>
   );

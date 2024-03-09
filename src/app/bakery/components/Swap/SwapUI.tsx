@@ -45,7 +45,7 @@ export function PanelBalance({ children }: { children: ReactNode }) {
 
 export function PanelContainer({ children }: { children: ReactNode }) {
   return (
-    <div className="w-full p-2 sm:px-8 sm:py-6 md:px-6  text-gray-300 bg-breadgray-grey300 rounded ">
+    <div className="w-full p-2 sm:px-8 sm:py-6 md:px-6  text-gray-300 bg-breadgray-ultra-white border border-1 border-breadgray-light-grey dark:border-none dark:bg-breadgray-grey300 rounded ">
       {children}
     </div>
   );
@@ -53,20 +53,26 @@ export function PanelContainer({ children }: { children: ReactNode }) {
 
 export function PanelLabel({ children }: { children: ReactNode }) {
   return (
-    <span className="text-sm text-neutral-400 inline-block">{children}</span>
+    <span className="text-sm inline-block text-breadgray-rye dark:text-neutral-400 pl-3 pb-2">
+      {children}
+    </span>
   );
 }
 
 export function TokenLabelContainer({ children }: { children: ReactNode }) {
   return (
-    <div className="rounded-full bg-[#343434] px-1.5 py-0.5 pr-3 flex items-center sm:text-xl w-auto">
+    <div className="rounded-full token-label-shadow dark:bg-[#343434] px-1.5 py-0.5 pr-3 flex items-center sm:text-xl w-auto">
       {children}
     </div>
   );
 }
 
 export function TokenLabelText({ children }: { children: ReactNode }) {
-  return <span className="ml-4 font-medium text-xl">{children}</span>;
+  return (
+    <span className="ml-4 font-medium text-xl text-breadgray-grey100 dark:text-gray-300">
+      {children}
+    </span>
+  );
 }
 
 export function TokenBalanceContainer({ children }: { children: ReactNode }) {
@@ -75,7 +81,7 @@ export function TokenBalanceContainer({ children }: { children: ReactNode }) {
 
 export function TokenBalanceText({ children }: { children: ReactNode }) {
   return (
-    <div className="p-2 font-medium text-neutral-400 text-xs sm:text-[0.85rem] text-right">
+    <div className="p-2 font-medium text-breadgray-rye dark:text-neutral-400 text-xs sm:text-[0.85rem] text-right">
       {children}
     </div>
   );

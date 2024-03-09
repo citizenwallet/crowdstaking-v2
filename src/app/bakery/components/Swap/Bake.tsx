@@ -92,12 +92,16 @@ export default function Bake({
   );
 
   useEffect(() => {
-    if (transaction?.status === "PREPARED") setModalOpen(true);
+    if (transaction?.status === "PREPARED") {
+      setModalOpen(true);
+    } else {
+      setModalOpen(false);
+    }
   }, [transaction, setModalOpen]);
 
   return (
     <div className="relative">
-      <DialogPrimitiveRoot open={modalOpen} onOpenChange={setModalOpen}>
+      <DialogPrimitiveRoot onOpenChange={setModalOpen}>
         <DialogPrimitiveTrigger asChild>
           <Button
             fullWidth={true}

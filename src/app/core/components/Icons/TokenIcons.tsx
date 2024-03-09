@@ -10,7 +10,7 @@ export function XDAIIcon() {
 
 export function BreadIcon() {
   return (
-    <div className="rounded-full w-6 h-6">
+    <div className="rounded-full w-6 h-6 dark:bg-breadgray-rye">
       <svg
         className="w-full h-full"
         viewBox="0 0 25 25"
@@ -19,7 +19,7 @@ export function BreadIcon() {
         width="30"
         height="30"
       >
-        <circle cx="12.5" cy="12.5" r="12" fill="#525252" />
+        <circle cx="12.5" cy="12.5" r="12" />
         <path
           fillRule="evenodd"
           clipRule="evenodd"

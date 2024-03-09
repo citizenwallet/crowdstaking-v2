@@ -80,7 +80,7 @@ export function Swap() {
 
   return (
     <div className="w-full p-2 sm:p-4">
-      <div className="w-full max-w-[30rem] m-auto relative rounded-xl bg-breadgray-grey200 border-breadgray-burnt flex flex-col items-center">
+      <div className="w-full max-w-[30rem] m-auto relative rounded-xl swap-drop-shadow bg-breadgray-ultra-white dark:bg-breadgray-grey200 border-breadgray-burnt flex flex-col items-center">
         <div className="w-full drop-shadow-swap">
           <div className="w-full px-4 pt-2">
             <h2 className="text-[1.5rem] md:text-[1.9rem] font-medium">

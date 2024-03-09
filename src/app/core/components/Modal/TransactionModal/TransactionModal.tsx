@@ -48,10 +48,10 @@ export function TransactionModal({
 }) {
   return (
     <DialogPrimitivePortal>
-      <DialogPrimitiveOverlay asChild>
+      <DialogPrimitiveOverlay forceMount asChild>
         <ModalOverlay />
       </DialogPrimitiveOverlay>
-      <DialogPrimitiveContent asChild>
+      <DialogPrimitiveContent forceMount asChild>
         <ModalContainer>
           <ModalHeading>{modalHeaderText[transactionType]}</ModalHeading>
           <ModalContent>

@@ -11,8 +11,10 @@ export function DesktopNavigationLink(props: {
   const { children, href, isCurrentPage, isExternal } = props;
 
   const classList = clsx(
-    "font-redhat text-breadgray-burnt hover:text-breadgray-light-grey active:text-breadgray-violet flex items-center p-2 text-xl font-bold leading-none tracking-wider min-[810px]:px-4",
-    isCurrentPage ? "text-breadgray-light-grey" : "text-breadgray-grey"
+    "font-redhat text-breadgray-grey100 hover:text-breadgray-grey100 dark:hover:text-breadgray-ultra-white active:text-breadgray-violet flex items-center p-2 text-xl font-bold leading-none tracking-wider min-[810px]:px-4",
+    isCurrentPage
+      ? "text-breadgray-grey100 dark:text-breadgray-ultra-white"
+      : "text-breadgray-rye"
   );
 
   if (isExternal) {
