@@ -13,51 +13,6 @@ export function Toaster() {
   return (
     <ToastContainer>
       <AnimatePresence>
-        <motion.div
-          initial={{ x: 500, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: 500, opacity: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <Toast
-            toast={{
-              id: "54gg6456g45",
-              toastType: "SUBMITTED",
-              txHash: "0xh",
-            }}
-            toastDispatch={toastDispatch}
-          />
-        </motion.div>
-        <motion.div
-          initial={{ x: 500, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: 500, opacity: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <Toast
-            toast={{
-              id: "54gg644g564543356g45",
-              toastType: "CONFIRMED",
-              txHash: "0xh",
-            }}
-            toastDispatch={toastDispatch}
-          />
-        </motion.div>
-        <motion.div
-          initial={{ x: 500, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: 500, opacity: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <Toast
-            toast={{
-              id: "54gg644g56456h45543356g45",
-              toastType: "REVERTED",
-              txHash: "0xh",
-            }}
-            toastDispatch={toastDispatch}
-          />
-        </motion.div>
         {toastState.map((toast, i) => (
           <motion.div
             key={`toast_${toast.id}`}
