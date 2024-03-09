@@ -155,6 +155,8 @@ export function Swap() {
 }
 
 function ButtonShell() {
-  return <div className="h-16 bg-neutral-800 rounded-xl" />;
+  return (
+    <div className="h-16 bg-breadgray-ultra-white dark:bg-neutral-800 rounded-xl" />
+  );
 }
 export default Swap;
