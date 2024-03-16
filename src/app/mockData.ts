@@ -1,5 +1,3 @@
-Slice;
-
 type Project = {
   address: string;
   description: string;
