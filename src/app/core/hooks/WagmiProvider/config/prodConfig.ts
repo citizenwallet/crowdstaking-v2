@@ -12,6 +12,7 @@ import {
   trustWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { publicProvider } from "wagmi/providers/public";
+import { getWallets } from "./wallets";
 
 const NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID =
   process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID;
@@ -48,14 +49,7 @@ const projectId = NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID;
 const connectors = connectorsForWallets([
   {
     groupName: "Wallets",
-    wallets: [
-      metaMaskWallet({ chains, projectId }),
-      rainbowWallet({ chains, projectId, appName: "Breadchain Crowdstaking" }),
-      injectedWallet({ chains, projectId, appName: "Breadchain Crowdstaking" }),
-      argentWallet({ chains, projectId }),
-      trustWallet({ chains, projectId }),
-      ledgerWallet({ chains, projectId }),
-    ],
+    wallets: getWallets(chains, projectId),
   },
 ]);
 

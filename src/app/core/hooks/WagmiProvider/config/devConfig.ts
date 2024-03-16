@@ -10,6 +10,7 @@ import {
   argentWallet,
   injectedWallet,
   ledgerWallet,
+  metaMaskWallet,
   trustWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { publicProvider } from "wagmi/providers/public";
@@ -56,9 +57,7 @@ const connectors = connectorsForWallets([
     groupName: "Other",
     wallets: [
       injectedWallet({ chains }),
-      argentWallet({ projectId, chains }),
-      trustWallet({ projectId, chains }),
-      ledgerWallet({ projectId, chains }),
+      metaMaskWallet({ chains, projectId }),
     ],
   },
 ]);

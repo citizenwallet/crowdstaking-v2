@@ -2,19 +2,10 @@ import { configureChains, createConfig } from "wagmi";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
 import { hardhat } from "wagmi/chains";
-import {
-  connectorsForWallets,
-  getDefaultWallets,
-} from "@rainbow-me/rainbowkit";
-import {
-  argentWallet,
-  injectedWallet,
-  ledgerWallet,
-  metaMaskWallet,
-  rainbowWallet,
-  trustWallet,
-} from "@rainbow-me/rainbowkit/wallets";
+import { connectorsForWallets } from "@rainbow-me/rainbowkit";
+
 import { publicProvider } from "wagmi/providers/public";
+import { getWallets } from "./wallets";
 
 const WALLET_CONNECT_PROJECT_ID =
   process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID;
@@ -43,14 +34,7 @@ const projectId = WALLET_CONNECT_PROJECT_ID;
 const connectors = connectorsForWallets([
   {
     groupName: "Other",
-    wallets: [
-      metaMaskWallet({ chains, projectId }),
-      rainbowWallet({ chains, projectId }),
-      injectedWallet({ chains, projectId }),
-      argentWallet({ chains, projectId }),
-      trustWallet({ chains, projectId }),
-      ledgerWallet({ chains, projectId }),
-    ],
+    wallets: getWallets(chains, projectId),
   },
 ]);
 
