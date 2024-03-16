@@ -24,7 +24,7 @@ export function Toast({
   return (
     <li
       className={clsx(
-        "w-[270px] rounded-xl border-2 px-4 py-3 flex flex-col gap-2 align-self bg-breadgray-ultra-white dark:bg-breadgray-burnt relative",
+        "relative w-[270px] rounded-xl border-2 px-4 py-3 flex flex-col gap-2 align-self bg-breadgray-ultra-white dark:bg-breadgray-burnt",
         toastType === "SUBMITTED" && "border-breadgray-grey",
         toastType === "CONFIRMED" && "border-status-success",
         toastType === "REVERTED" && "border-status-danger"
@@ -33,7 +33,7 @@ export function Toast({
       <ToastPrimitive.ToastClose className="absolute top-0 right-0 w-8 h-8 p-2">
         <CloseIcon />
       </ToastPrimitive.ToastClose>
-      <ToastPrimitive.Title className="text-lg font-medium text-breadgray-charcoal">
+      <ToastPrimitive.Title className="text-lg font-medium text-breadgray-charcoal dark:text-breadgray-light-grey">
         {toastMessages[toastType]}
       </ToastPrimitive.Title>
       <ToastPrimitive.Description>
