@@ -15,6 +15,7 @@ import { useTokenBalances } from "@/app/core/context/TokenBalanceContext/TokenBa
 import Burn from "./Burn";
 import { Address } from "viem";
 import { InsufficentBalance } from "./InsufficentBalance";
+import { LiquidityBanner } from "../LiquidityBanner/LiquidityBanner";
 
 export type TSwapMode = "BAKE" | "BURN";
 
@@ -79,78 +80,81 @@ export function Swap() {
   };
 
   return (
-    <div className="w-full p-2 sm:p-4">
-      <div className="w-full max-w-[30rem] m-auto relative rounded-xl swap-drop-shadow bg-breadgray-ultra-white dark:bg-breadgray-grey200 border-breadgray-burnt flex flex-col items-center">
-        <div className="w-full drop-shadow-swap">
-          <div className="w-full px-4 pt-2">
-            <h2 className="text-[1.5rem] md:text-[1.9rem] font-medium">
-              {swapState.mode === "BAKE" ? "Bake" : "Burn"}
-            </h2>
+    <>
+      <div className="w-full p-2 sm:p-4">
+        <div className="w-full max-w-[30rem] m-auto relative rounded-xl swap-drop-shadow bg-breadgray-ultra-white dark:bg-breadgray-grey200 border-breadgray-burnt flex flex-col items-center">
+          <div className="w-full drop-shadow-swap">
+            <div className="w-full px-4 pt-2">
+              <h2 className="text-[1.5rem] md:text-[1.9rem] font-medium">
+                {swapState.mode === "BAKE" ? "Bake" : "Burn"}
+              </h2>
+            </div>
+            <div className="relative w-full p-2 flex flex-col gap-1">
+              <FromPanel
+                inputValue={swapState.value}
+                swapMode={swapState.mode}
+                handleBalanceClick={handleBalanceClick}
+                handleInputChange={handleInputChange}
+                tokenBalance={swapState.mode === "BAKE" ? xDAI : BREAD}
+              />
+              <SwapReverse onClick={handleSwapReverse} />
+              <ToPanel
+                swapMode={swapState.mode}
+                inputValue={swapState.value}
+                tokenBalance={swapState.mode === "BURN" ? xDAI : BREAD}
+              />
+            </div>
           </div>
-          <div className="relative w-full p-2 flex flex-col gap-1">
-            <FromPanel
-              inputValue={swapState.value}
-              swapMode={swapState.mode}
-              handleBalanceClick={handleBalanceClick}
-              handleInputChange={handleInputChange}
-              tokenBalance={swapState.mode === "BAKE" ? xDAI : BREAD}
-            />
-            <SwapReverse onClick={handleSwapReverse} />
-            <ToPanel
-              swapMode={swapState.mode}
-              inputValue={swapState.value}
-              tokenBalance={swapState.mode === "BURN" ? xDAI : BREAD}
-            />
-          </div>
-        </div>
-        <div className="p-2 pt-0 w-full">
-          {(() => {
-            switch (user.status) {
-              case "LOADING":
-                return <ButtonShell />;
-              case "NOT_CONNECTED":
-                return <AccountMenu fullWidth={true} variant="large" />;
-              case "UNSUPPORTED_CHAIN":
-                return (
-                  <Button
-                    fullWidth={true}
-                    variant="large"
-                    onClick={() => openChainModal?.()}
-                  >
-                    Switch Chain
-                  </Button>
-                );
-              case "CONNECTED":
-                const sourceToken = swapState.mode === "BAKE" ? xDAI : BREAD;
-
-                if (!sourceToken) return <ButtonShell />;
-                if (sourceToken.status !== "SUCCESS") return <ButtonShell />;
-
-                const balanceIsSufficent =
-                  parseFloat(swapState.value || "0") <=
-                  parseFloat(sourceToken.value);
-
-                if (balanceIsSufficent)
-                  return swapState.mode === "BAKE" ? (
-                    <Bake
-                      user={user}
-                      clearInputValue={clearInputValue}
-                      inputValue={swapState.value}
-                    />
-                  ) : (
-                    <Burn
-                      user={user}
-                      clearInputValue={clearInputValue}
-                      inputValue={swapState.value}
-                    />
+          <div className="p-2 pt-0 w-full">
+            {(() => {
+              switch (user.status) {
+                case "LOADING":
+                  return <ButtonShell />;
+                case "NOT_CONNECTED":
+                  return <AccountMenu fullWidth={true} variant="large" />;
+                case "UNSUPPORTED_CHAIN":
+                  return (
+                    <Button
+                      fullWidth={true}
+                      variant="large"
+                      onClick={() => openChainModal?.()}
+                    >
+                      Switch Chain
+                    </Button>
                   );
+                case "CONNECTED":
+                  const sourceToken = swapState.mode === "BAKE" ? xDAI : BREAD;
 
-                return <InsufficentBalance />;
-            }
-          })()}
+                  if (!sourceToken) return <ButtonShell />;
+                  if (sourceToken.status !== "SUCCESS") return <ButtonShell />;
+
+                  const balanceIsSufficent =
+                    parseFloat(swapState.value || "0") <=
+                    parseFloat(sourceToken.value);
+
+                  if (balanceIsSufficent)
+                    return swapState.mode === "BAKE" ? (
+                      <Bake
+                        user={user}
+                        clearInputValue={clearInputValue}
+                        inputValue={swapState.value}
+                      />
+                    ) : (
+                      <Burn
+                        user={user}
+                        clearInputValue={clearInputValue}
+                        inputValue={swapState.value}
+                      />
+                    );
+
+                  return <InsufficentBalance />;
+              }
+            })()}
+          </div>
         </div>
       </div>
-    </div>
+      <LiquidityBanner />
+    </>
   );
 }
 

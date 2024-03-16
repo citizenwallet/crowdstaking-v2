@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import { Toaster } from "./core/components/Toaster/Toaster";
 import { AppTitle } from "./bakery/components/AppTitle";
+import { LiquidityBanner } from "./bakery/components/LiquidityBanner/LiquidityBanner";
 
 const Swap = dynamic(() => import("./bakery/components/Swap/Swap"), {
   ssr: false,
@@ -17,7 +18,7 @@ export default function Home() {
     <main className="grow relative">
       <Toaster />
       <AppTitle />
-      <div className="h-[30rem] sm:h-[38rem]">
+      <div className="h-[30rem] sm:h-[42rem]">
         <Suspense>
           <Swap />
         </Suspense>
