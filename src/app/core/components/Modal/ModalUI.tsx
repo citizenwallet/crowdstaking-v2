@@ -13,7 +13,7 @@ export const ModalContainer = forwardRef(
     return (
       <div
         ref={ref}
-        className="max-h-90vh fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2 flex justify-center items-center z-30"
+        className="max-h-90vh fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2 flex justify-center items-center z-40"
         {...props}
       >
         <motion.section
@@ -78,7 +78,7 @@ export const ModalOverlay = forwardRef((props, ref: Ref<HTMLDivElement>) => {
         animate={{ opacity: 0.9 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2 }}
-        className="z-20 fixed top-0 bg-[#F0F0F0] dark:bg-neutral-900 transition-opacity opacity-90 dark:opacity-70 h-screen w-screen"
+        className="z-40 fixed top-0 bg-[#F0F0F0] dark:bg-neutral-900 transition-opacity opacity-90 dark:opacity-70 h-screen w-screen"
       />
     </div>
   );
@@ -88,10 +88,10 @@ ModalOverlay.displayName = "ModalOverlay";
 
 export function TransactionStatusSpinner() {
   return (
-    <div className="py-5">
+    <StatusIconWrapper>
       <svg
-        width="32"
-        height="32"
+        width="33"
+        height="33"
         className="stroke-current text-breadpink-shaded"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
@@ -100,13 +100,13 @@ export function TransactionStatusSpinner() {
           <circle cx="12" cy="12" r="9.5" fill="none" strokeWidth="2"></circle>
         </g>
       </svg>
-    </div>
+    </StatusIconWrapper>
   );
 }
 
 export function TransactionStatusCheck() {
   return (
-    <div className="pt-3 pb-4">
+    <StatusIconWrapper>
       <svg
         width="44"
         height="33"
@@ -115,19 +115,19 @@ export function TransactionStatusCheck() {
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M38 0.5H43.3334V5.83333H38V0.5ZM32.6667 11.1667V5.83333H38L38 11.1667H32.6667ZM27.3334 16.5V11.1667H32.6667V16.5H27.3334ZM22 21.8333H27.3334V16.5L22 16.5V21.8333ZM16.6667 27.1667H22V21.8333H16.6667L16.6667 27.1667ZM11.3334 27.1667V32.5H16.6667V27.1667H11.3334ZM6.00002 21.8333H11.3334V27.1667H6.00002V21.8333ZM6.00002 21.8333H0.666687V16.5H6.00002V21.8333Z"
           fill="#9EC958"
         />
       </svg>
-    </div>
+    </StatusIconWrapper>
   );
 }
 
 export function TransactionStatusCross() {
   return (
-    <div className="pt-3 pb-4">
+    <StatusIconWrapper>
       <svg
         width="32"
         height="33"
@@ -142,6 +142,10 @@ export function TransactionStatusCross() {
           fill="#D8745C"
         />
       </svg>
-    </div>
+    </StatusIconWrapper>
   );
+}
+
+function StatusIconWrapper({ children }: { children: ReactNode }) {
+  return <div className="pt-3 pb-4">{children}</div>;
 }

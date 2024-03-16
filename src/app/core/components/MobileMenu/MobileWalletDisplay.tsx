@@ -83,7 +83,7 @@ function AccountPanel({ accountAddress }: { accountAddress: string }) {
           });
         }}
         title="copy address"
-        className="text-neutral-400 hover:text-neutral-300 text-base font-bold tracking-wider flex gap-2 items-center justify-end active:underline"
+        className="text-neutral-600 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-300 text-base font-bold tracking-wider flex gap-2 items-center justify-end active:underline"
       >
         <div className="rounded-full overflow-clip">
           <Image

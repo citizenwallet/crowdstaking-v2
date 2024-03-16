@@ -8,14 +8,14 @@ export function MirrorIcon() {
     >
       <mask id="path-1-inside-1_2879_10056" fill="white">
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M17 6.66688C17 6.66676 17 6.66664 17 6.66652C17 2.9847 13.1944 0 8.5 0C3.80558 0 0 2.9847 0 6.66652C0 6.66664 0 6.66676 0 6.66688V19.4666C0 19.7611 0.238781 19.9999 0.533333 19.9999H16.4667C16.7612 19.9999 17 19.7611 17 19.4666V6.66688Z"
         />
       </mask>
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M17 6.66688C17 6.66676 17 6.66664 17 6.66652C17 2.9847 13.1944 0 8.5 0C3.80558 0 0 2.9847 0 6.66652C0 6.66664 0 6.66676 0 6.66688V19.4666C0 19.7611 0.238781 19.9999 0.533333 19.9999H16.4667C16.7612 19.9999 17 19.7611 17 19.4666V6.66688Z"
         fill="url(#paint0_linear_2879_10056)"
       />
@@ -33,8 +33,8 @@ export function MirrorIcon() {
           y2="-0.680398"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.480734" stop-color="#161616" />
-          <stop offset="1" stop-color="white" />
+          <stop offset="0.480734" stopColor="#161616" />
+          <stop offset="1" stopColor="white" />
         </linearGradient>
       </defs>
     </svg>

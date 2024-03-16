@@ -4,6 +4,7 @@ import MobileWalletDisplay from "./MobileWalletDisplay";
 
 import Overlay from "../Overlay";
 import { MobileNavigation } from "./MobileNavigation";
+import { ColorToggle } from "../Header/ColorToggle";
 
 interface IProps {
   isOpen: boolean;
@@ -22,6 +23,9 @@ export function MobileMenu({ isOpen, handleNavToggle }: IProps) {
       >
         <MobileWalletDisplay handleNavToggle={handleNavToggle} />
         <MobileNavigation handleNavToggle={handleNavToggle} />
+        <div className="flex justify-end">
+          <ColorToggle />
+        </div>
       </section>
     </>
   );

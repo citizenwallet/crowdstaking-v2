@@ -29,23 +29,21 @@ export function ColorToggle() {
   }
 
   return (
-    <section>
-      <button
-        aria-label="toggle light and dark mode"
-        className="flex items-center gap-2 px-4 py-2"
-        onClick={handleColorToggle}
-      >
-        <div className="h-6 w-6 text-breadgray-grey dark:text-breadpink-shaded">
-          <MoonIcon />
-        </div>
-        <div className="text-breadgray-light-grey w-[1px] opacity-60">
-          <Divider />
-        </div>
-        <div className="h-6 w-6 text-breadpink-shaded dark:text-breadgray-grey">
-          <SunIcon />
-        </div>
-      </button>
-    </section>
+    <button
+      aria-label="toggle light and dark mode"
+      className="flex items-center gap-2 px-4 py-2"
+      onClick={handleColorToggle}
+    >
+      <div className="h-6 w-6 text-breadgray-grey dark:text-breadpink-shaded">
+        <MoonIcon />
+      </div>
+      <div className="text-breadgray-light-grey w-[1px] opacity-60">
+        <Divider />
+      </div>
+      <div className="h-6 w-6 text-breadpink-shaded dark:text-breadgray-grey">
+        <SunIcon />
+      </div>
+    </button>
   );
 }
 

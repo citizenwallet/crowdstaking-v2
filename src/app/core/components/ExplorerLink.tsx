@@ -6,7 +6,7 @@ export function ExplorerLink({ to }: { to: string }) {
       target="_blank"
       rel="noopener noreferer"
       href={to}
-      className="flex items-center justify-center gap-1 text-breadviolet-violet dark:text-breadpink-shaded"
+      className="flex items-center justify-center gap-1 text-breadpink-shaded"
     >
       <span className="font-medium">View on Explorer</span>
       <span className="w-5 h-5">

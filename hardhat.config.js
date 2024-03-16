@@ -23,6 +23,7 @@ module.exports = {
         auto: false,
         interval: 3000,
       },
+      hardfork: "merge",
     },
   },
 };

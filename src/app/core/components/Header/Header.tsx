@@ -38,7 +38,10 @@ function Header() {
         <ColorToggle />
         <AccountMenu variant="regular" fullWidth={false} />
       </div>
-      <MobileNavigationToggle handleClick={handleNavToggle} />
+      <MobileNavigationToggle
+        isOpen={isMobNavOpen}
+        handleClick={handleNavToggle}
+      />
       <MobileMenu isOpen={isMobNavOpen} handleNavToggle={handleNavToggle} />
     </Container>
   );
