@@ -1,3 +1,5 @@
+"use client";
+
 import * as Accordion from "@radix-ui/react-accordion";
 import { ReactNode } from "react";
 import { ExternalLink } from "./ExternalLink";
@@ -61,7 +63,7 @@ function AccordionContent({ children }: { children: ReactNode }) {
   );
 }
 
-export default async function FAQ() {
+export default function FAQ() {
   return (
     <section className="pb-16 sm:pb-28">
       <Accordion.Root

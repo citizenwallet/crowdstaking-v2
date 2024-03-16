@@ -1,3 +1,4 @@
+"use client";
 import * as ToastPrimitive from "@radix-ui/react-toast";
 
 import { useToast } from "@/app/core/context/ToastContext/ToastContext";
