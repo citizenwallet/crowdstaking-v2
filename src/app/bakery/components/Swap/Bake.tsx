@@ -92,11 +92,7 @@ export default function Bake({
   );
 
   useEffect(() => {
-    if (transaction?.status === "PREPARED") {
-      setModalOpen(true);
-    } else {
-      setModalOpen(false);
-    }
+    if (transaction?.status === "PREPARED") setModalOpen(true);
   }, [transaction, setModalOpen]);
 
   return (
@@ -123,7 +119,7 @@ export default function Bake({
         </DialogPrimitiveTrigger>
         <DialogPrimitivePortal forceMount>
           <AnimatePresence>
-            {transaction && modalOpen && (
+            {transaction && (
               <TransactionModal
                 transactionType="BAKE"
                 transaction={transaction}
