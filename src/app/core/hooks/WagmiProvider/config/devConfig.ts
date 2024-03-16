@@ -6,14 +6,9 @@ import {
   connectorsForWallets,
   getDefaultWallets,
 } from "@rainbow-me/rainbowkit";
-import {
-  argentWallet,
-  injectedWallet,
-  ledgerWallet,
-  metaMaskWallet,
-  trustWallet,
-} from "@rainbow-me/rainbowkit/wallets";
+
 import { publicProvider } from "wagmi/providers/public";
+import { getWallets } from "./wallets";
 
 const WALLET_CONNECT_PROJECT_ID =
   process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID;
@@ -55,10 +50,7 @@ const connectors = connectorsForWallets([
   ...wallets,
   {
     groupName: "Other",
-    wallets: [
-      injectedWallet({ chains }),
-      metaMaskWallet({ chains, projectId }),
-    ],
+    wallets: getWallets(chains, projectId),
   },
 ]);
 
