@@ -1,10 +1,16 @@
 {
-  "theme_color": "#000000",
-  "background_color": "#000000",
+  "name": "Bread Crowdstaking",
+  "description": "Bake and Burn BREAD",
+  "short_name": "Bread Crowdstaking",
+  "icons": [
+    {
+      "src": "breadlogo_square.png",
+      "sizes": "any",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
   "display": "standalone",
-  "scope": "/",
-  "start_url": "/",
-  "name": "Breadchain Crowdstaking",
-  "short_name": "app.breadchain.xyz",
-  "description": "The currency for solidarity"
+  "theme_color": "#bc52c2",
+  "background_color": "#181818"
 }
