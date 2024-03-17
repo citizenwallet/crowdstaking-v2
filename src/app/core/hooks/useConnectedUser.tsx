@@ -8,6 +8,7 @@ import {
 } from "react";
 import { type Chain, useAccount, useNetwork } from "wagmi";
 import config, { type ChainConfiguration } from "@/chainConfig";
+import { useAutoConnect } from "./useAutoConnect";
 
 export type TUserLoading = { status: "LOADING" };
 export type TUserNotConnected = { status: "NOT_CONNECTED" };
@@ -72,6 +73,8 @@ function ConnectedUserProvider({ children }: IConnectedUserProviderProps) {
   }, [isConnected, activeConnector, accountAddress, activeChain, status]);
 
   const value = useMemo(() => ({ user }), [user]);
+
+  useAutoConnect();
 
   return (
     <ConnectedUserContext.Provider value={value}>
