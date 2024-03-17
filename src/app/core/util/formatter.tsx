@@ -10,3 +10,13 @@ export function formatBalance(value: number, decimals: number) {
   });
   return balanceFormatter.format(value);
 }
+
+export function formatSupply(value: number) {
+  const balanceFormatter = new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+    minimumIntegerDigits: 1,
+    useGrouping: true,
+  });
+  return balanceFormatter.format(value);
+}
