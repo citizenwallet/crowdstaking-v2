@@ -1,10 +1,11 @@
-import { useConnect } from "wagmi";
+import { useConnect, useDisconnect } from "wagmi";
 import { useEffect } from "react";
 
 const AUTOCONNECTED_CONNECTOR_IDS = ["safe"];
 
 export function useAutoConnect() {
   const { connect, connectors } = useConnect();
+  const { disconnect } = useDisconnect();
 
   useEffect(() => {
     AUTOCONNECTED_CONNECTOR_IDS.forEach((connector) => {
@@ -13,8 +14,9 @@ export function useAutoConnect() {
       );
 
       if (connectorInstance) {
+        disconnect();
         connect({ connector: connectorInstance });
       }
     });
-  }, [connect, connectors]);
+  }, [connect, connectors, disconnect]);
 }
