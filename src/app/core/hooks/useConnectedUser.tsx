@@ -74,7 +74,7 @@ function ConnectedUserProvider({ children }: IConnectedUserProviderProps) {
 
   const value = useMemo(() => ({ user }), [user]);
 
-  useAutoConnect();
+  useAutoConnect(activeConnector);
 
   return (
     <ConnectedUserContext.Provider value={value}>
