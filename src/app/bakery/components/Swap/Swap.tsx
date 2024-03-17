@@ -16,6 +16,7 @@ import Burn from "./Burn";
 import { Address } from "viem";
 import { InsufficentBalance } from "./InsufficentBalance";
 import { LiquidityBanner } from "../LiquidityBanner/LiquidityBanner";
+import { TotalSupply } from "../TotalSupply";
 
 export type TSwapMode = "BAKE" | "BURN";
 
@@ -81,6 +82,7 @@ export function Swap() {
 
   return (
     <>
+      {/* <TotalSupply /> */}
       <div className="w-full p-2 sm:p-4">
         <div className="w-full max-w-[30rem] m-auto relative rounded-xl swap-drop-shadow bg-breadgray-ultra-white dark:bg-breadgray-grey200 border-breadgray-burnt flex flex-col items-center">
           <div className="w-full drop-shadow-swap">
@@ -153,7 +155,9 @@ export function Swap() {
           </div>
         </div>
       </div>
-      <LiquidityBanner />
+      <div className="px-4">
+        <LiquidityBanner />
+      </div>
     </>
   );
 }
