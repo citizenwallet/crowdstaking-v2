@@ -19,6 +19,7 @@ export function useAutoConnect(activeConnector: Connector | undefined) {
 
       if (connectorInstance && !activeConnector) {
         connect({ connector: connectorInstance });
+        setSafeConnectorConnected(true);
       }
     });
   }, [connect, connectors, disconnect, activeConnector]);
