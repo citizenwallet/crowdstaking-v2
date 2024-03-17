@@ -4,6 +4,22 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  async headers() {
+    return [
+      {
+        key: "Access-Control-Allow-Origin",
+        value: "*",
+      },
+      {
+        key: "Access-Control-Allow-Methods",
+        value: "GET",
+      },
+      {
+        key: "Access-Control-Allow-Headers",
+        value: "X-Requested-With, content-type, Authorization",
+      },
+    ];
+  },
 };
 
 // const withBundleAnalyzer = require("@next/bundle-analyzer")({
