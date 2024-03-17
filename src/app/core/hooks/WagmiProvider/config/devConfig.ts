@@ -2,10 +2,7 @@ import { configureChains, createConfig } from "wagmi";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
 import { gnosis, hardhat } from "wagmi/chains";
-import {
-  connectorsForWallets,
-  getDefaultWallets,
-} from "@rainbow-me/rainbowkit";
+import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 
 import { publicProvider } from "wagmi/providers/public";
 import { getWallets } from "./wallets";
@@ -40,16 +37,9 @@ const { publicClient } = chainsConfig;
 
 const projectId = WALLET_CONNECT_PROJECT_ID;
 
-const { wallets } = getDefaultWallets({
-  appName: "Breadchain Crowdstaking",
-  projectId,
-  chains,
-});
-
 const connectors = connectorsForWallets([
-  ...wallets,
   {
-    groupName: "Other",
+    groupName: "Wallets",
     wallets: getWallets(chains, projectId),
   },
 ]);
