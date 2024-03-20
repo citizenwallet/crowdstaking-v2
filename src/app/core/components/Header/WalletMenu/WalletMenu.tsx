@@ -6,7 +6,7 @@ import { blo } from "blo";
 import { truncateAddress } from "@/app/core/util/formatter";
 import { TEnsNameState, useEnsName } from "@/app/core/hooks/useEnsName";
 import { WalletDisconnectButton } from "./WalletDisconnectButton";
-import { watchAsset } from "@/app/core/util/watchAsset";
+import { useWatchAsset } from "@/app/core/hooks/useWatchAsset";
 import { BreadIcon } from "../../Icons/TokenIcons";
 
 export function Row({ children }: { children: ReactNode }) {
@@ -51,6 +51,8 @@ export function WalletMenuContent({
   function preventHover(event: any) {
     event.preventDefault();
   }
+
+  const { watchAsset } = useWatchAsset();
 
   return (
     <NavigationMenu.Root className="relative">
