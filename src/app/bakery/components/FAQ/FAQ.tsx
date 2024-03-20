@@ -105,8 +105,7 @@ export default function FAQ() {
         <AccordionItem value="second">
           <AccordionHeader>
             <AccordionTrigger>
-              How do I help the post-capitalist economy on the blockchain by
-              baking BREAD?
+              How does baking BREAD help build post-capitalism?
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
