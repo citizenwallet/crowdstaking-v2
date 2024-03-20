@@ -39,7 +39,7 @@ export type TTransactionsState = TTransaction[];
 export type TTransactionsAction =
   | {
       type: "NEW";
-      payload: { id: string; value: string };
+      payload: { id: string; value: string; isSafe?: boolean };
     }
   | {
       type: "SET_PENDING";
