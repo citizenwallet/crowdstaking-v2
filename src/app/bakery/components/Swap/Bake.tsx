@@ -79,7 +79,7 @@ export default function Bake({
       if (!writeData?.hash || !txId) return;
       const safeSdk = new SafeAppsSDK();
       const tx = await safeSdk.txs.getBySafeTxHash(writeData.hash);
-      if (tx.txStatus !== TransactionStatus.SUCCESS) {
+      if (tx.txStatus === TransactionStatus.AWAITING_CONFIRMATIONS) {
         transactionsDispatch({
           type: "SET_SAFE_SUBMITTED",
           payload: { id: txId, hash: writeData.hash },

@@ -77,7 +77,7 @@ export default function Burn({
       if (!writeData?.hash || !txId) return;
       const safeSdk = new SafeAppsSDK();
       const tx = await safeSdk.txs.getBySafeTxHash(writeData.hash);
-      if (tx.txStatus !== TransactionStatus.SUCCESS) {
+      if (tx.txStatus === TransactionStatus.AWAITING_CONFIRMATIONS) {
         // Update Modal
         console.log("-------------------");
         console.log("awaited safe tx: ", tx);
