@@ -33,4 +33,6 @@ export function useAutoConnect(activeConnector: Connector | undefined) {
     activeConnector,
     disconnect,
   ]);
+
+  return { isSafe: safeConnectorPresent, isConnected: safeConnectorConnected };
 }

@@ -17,15 +17,19 @@ import { useTransactions } from "@/app/core/context/TransactionsContext/Transact
 import { nanoid } from "nanoid";
 import { TransactionModal } from "@/app/core/components/Modal/TransactionModal/TransactionModal";
 import { AnimatePresence } from "framer-motion";
+import SafeAppsSDK from "@safe-global/safe-apps-sdk/dist/src/sdk";
+import { TransactionStatus } from "@safe-global/safe-apps-sdk/dist/src/types";
 
 export default function Bake({
   user,
   inputValue,
   clearInputValue,
+  isSafe,
 }: {
   user: TUserConnected;
   inputValue: string;
   clearInputValue: () => void;
+  isSafe: boolean;
 }) {
   const { transactionsState, transactionsDispatch } = useTransactions();
   const [txId, setTxId] = useState<string | null>(null);
@@ -71,12 +75,28 @@ export default function Bake({
   } = useContractWrite(prepareConfig);
 
   useEffect(() => {
-    if (!writeData?.hash || !txId) return;
-    transactionsDispatch({
-      type: "SET_PENDING",
-      payload: { id: txId, hash: writeData.hash },
-    });
-    clearInputValue();
+    (async () => {
+      if (!writeData?.hash || !txId) return;
+      const safeSdk = new SafeAppsSDK();
+      const tx = await safeSdk.txs.getBySafeTxHash(writeData.hash);
+      if (tx.txStatus !== TransactionStatus.SUCCESS) {
+        // Update Modal
+        console.log("-------------------");
+        console.log("awaited safe tx: ", tx);
+        console.log("writeData: ", writeData);
+        console.log("-------------------");
+        transactionsDispatch({
+          type: "SET_SAFE_SUBMITTED",
+          payload: { id: txId, hash: writeData.hash },
+        });
+        return;
+      }
+      transactionsDispatch({
+        type: "SET_PENDING",
+        payload: { id: txId, hash: writeData.hash },
+      });
+      clearInputValue();
+    })();
   }, [txId, writeData, transactionsDispatch, clearInputValue]);
 
   useEffect(() => {
