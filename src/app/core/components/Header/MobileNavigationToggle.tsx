@@ -9,9 +9,12 @@ function MobileNavigationToggle({
 }) {
   return (
     <button
-      onClick={handleClick}
+      onClick={() => {
+        console.log("hmmm");
+        handleClick();
+      }}
       type="button"
-      className="fill z-30 h-10 w-10 p-1 text-neutral-600 md:hidden"
+      className="z-[60] h-8 w-8 text-neutral-600 md:hidden"
     >
       {isOpen ? (
         <CloseIcon />
