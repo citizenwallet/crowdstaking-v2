@@ -79,9 +79,11 @@ export function TransactionModal({
                 <ModalAdviceText>
                   {modalAdviceText[transaction.status]}
                 </ModalAdviceText>
-                <ExplorerLink
-                  to={`https://gnosisscan.io/tx/${transaction.hash}`}
-                />
+                {transaction.status !== "SAFE_SUBMITTED" && (
+                  <ExplorerLink
+                    to={`https://gnosisscan.io/tx/${transaction.hash}`}
+                  />
+                )}
               </>
             )}
           </ModalContent>

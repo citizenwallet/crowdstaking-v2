@@ -16,6 +16,8 @@ import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 import { TransactionModal } from "@/app/core/components/Modal/TransactionModal/TransactionModal";
 import { AnimatePresence } from "framer-motion";
+import SafeAppsSDK from "@safe-global/safe-apps-sdk/dist/src/sdk";
+import { TransactionStatus } from "@safe-global/safe-apps-sdk";
 
 export default function Burn({
   user,
@@ -71,12 +73,28 @@ export default function Burn({
   } = useContractWrite(prepareConfig);
 
   useEffect(() => {
-    if (!writeData?.hash || !txId) return;
-    transactionsDispatch({
-      type: "SET_PENDING",
-      payload: { id: txId, hash: writeData.hash },
-    });
-    clearInputValue();
+    (async () => {
+      if (!writeData?.hash || !txId) return;
+      const safeSdk = new SafeAppsSDK();
+      const tx = await safeSdk.txs.getBySafeTxHash(writeData.hash);
+      if (tx.txStatus !== TransactionStatus.SUCCESS) {
+        // Update Modal
+        console.log("-------------------");
+        console.log("awaited safe tx: ", tx);
+        console.log("writeData: ", writeData);
+        console.log("-------------------");
+        transactionsDispatch({
+          type: "SET_SAFE_SUBMITTED",
+          payload: { id: txId, hash: writeData.hash },
+        });
+        return;
+      }
+      transactionsDispatch({
+        type: "SET_PENDING",
+        payload: { id: txId, hash: writeData.hash },
+      });
+      clearInputValue();
+    })();
   }, [txId, writeData, transactionsDispatch, clearInputValue]);
 
   useEffect(() => {

@@ -80,11 +80,6 @@ export default function Bake({
       const safeSdk = new SafeAppsSDK();
       const tx = await safeSdk.txs.getBySafeTxHash(writeData.hash);
       if (tx.txStatus !== TransactionStatus.SUCCESS) {
-        // Update Modal
-        console.log("-------------------");
-        console.log("awaited safe tx: ", tx);
-        console.log("writeData: ", writeData);
-        console.log("-------------------");
         transactionsDispatch({
           type: "SET_SAFE_SUBMITTED",
           payload: { id: txId, hash: writeData.hash },
