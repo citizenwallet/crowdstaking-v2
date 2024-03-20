@@ -27,6 +27,7 @@ function Header() {
   const [isMobNavOpen, setIsMobNavOpen] = useState(false);
 
   const handleNavToggle = () => {
+    document.body.style.overflow = isMobNavOpen ? "auto" : "hidden";
     setIsMobNavOpen(!isMobNavOpen);
   };
 
