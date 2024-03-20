@@ -31,7 +31,7 @@ const initialSwapState: TSwapState = {
 };
 
 export function Swap() {
-  const { user } = useConnectedUser();
+  const { user, isSafe } = useConnectedUser();
   const [connectedAccountAddress, setConnectedAccountAddress] =
     useState<null | Address>(null);
   const [swapState, setSwapState] = useState<TSwapState>(initialSwapState);
@@ -140,12 +140,14 @@ export function Swap() {
                         user={user}
                         clearInputValue={clearInputValue}
                         inputValue={swapState.value}
+                        isSafe={isSafe}
                       />
                     ) : (
                       <Burn
                         user={user}
                         clearInputValue={clearInputValue}
                         inputValue={swapState.value}
+                        isSafe={isSafe}
                       />
                     );
 

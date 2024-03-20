@@ -25,12 +25,19 @@ export type TTransactionReverted = {
   value: string;
   hash: TTransactionHash;
 };
+export type TSafeTransactionSubmitted = {
+  id: string;
+  status: "SAFE_SUBMITTED";
+  value: string;
+  hash: TTransactionHash;
+};
 
 export type TTransaction =
   | TTransactionNew
   | TTransactionPending
   | TTransactionSuccess
-  | TTransactionReverted;
+  | TTransactionReverted
+  | TSafeTransactionSubmitted;
 
 export type TTransactionStatus = TTransaction["status"];
 
@@ -56,6 +63,10 @@ export type TTransactionsAction =
   | {
       type: "CLEAR";
       payload: { id: string };
+    }
+  | {
+      type: "SET_SAFE_SUBMITTED";
+      payload: { id: string; hash: TTransactionHash };
     };
 
 export type TTransactionsDispatch = (action: TTransactionsAction) => void;
@@ -113,6 +124,20 @@ export function TransactionsReducer(
           return {
             ...tx,
             status: "REVERTED",
+          };
+        }
+        return tx;
+      });
+    case "SET_SAFE_SUBMITTED":
+      return state.map((tx) => {
+        if (tx.id === action.payload.id) {
+          if (tx.status !== "PREPARED") {
+            throw new Error("can only set SAFE_SUBMITTED status on NEW tx!");
+          }
+          return {
+            ...tx,
+            status: "SAFE_SUBMITTED",
+            hash: action.payload.hash,
           };
         }
         return tx;

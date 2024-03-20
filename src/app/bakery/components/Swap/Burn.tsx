@@ -21,10 +21,12 @@ export default function Burn({
   user,
   inputValue,
   clearInputValue,
+  isSafe,
 }: {
   user: TUserConnected;
   inputValue: string;
   clearInputValue: () => void;
+  isSafe: boolean;
 }) {
   const { transactionsState, transactionsDispatch } = useTransactions();
   const [txId, setTxId] = useState<string | null>(null);

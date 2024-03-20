@@ -35,6 +35,7 @@ const modalAdviceText: {
 } = {
   PREPARED: "Please confirm transaction in your wallet",
   SUBMITTED: "Waiting for on-chain confimation",
+  SAFE_SUBMITTED: "Safe Transaction Submitted",
   CONFIRMED: "Transaction Confirmed",
   REVERTED: "Transaction Reverted",
 };
@@ -58,6 +59,9 @@ export function TransactionModal({
             {transaction.status === "PREPARED" && <div className="h-4" />}
             {transaction.status === "SUBMITTED" && <TransactionStatusSpinner />}
             {transaction.status === "CONFIRMED" && <TransactionStatusCheck />}
+            {transaction.status === "SAFE_SUBMITTED" && (
+              <TransactionStatusCheck />
+            )}
             {transaction.status === "REVERTED" && <TransactionStatusCross />}
             <div className="flex gap-2 items-center justify-center">
               <TransactionValue value={transaction.value} />

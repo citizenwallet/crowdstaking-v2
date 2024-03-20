@@ -24,10 +24,12 @@ export default function Bake({
   user,
   inputValue,
   clearInputValue,
+  isSafe,
 }: {
   user: TUserConnected;
   inputValue: string;
   clearInputValue: () => void;
+  isSafe: boolean;
 }) {
   const { transactionsState, transactionsDispatch } = useTransactions();
   const [txId, setTxId] = useState<string | null>(null);
@@ -84,7 +86,7 @@ export default function Bake({
         console.log("writeData: ", writeData);
         console.log("-------------------");
         transactionsDispatch({
-          type: "SET_SUBMITTED",
+          type: "SET_SAFE_SUBMITTED",
           payload: { id: txId, hash: writeData.hash },
         });
         return;

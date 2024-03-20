@@ -32,7 +32,8 @@ export type TConnectedUserState =
 
 const ConnectedUserContext = createContext<{
   user: TConnectedUserState;
-}>({ user: { status: "LOADING" } });
+  isSafe: boolean;
+}>({ user: { status: "LOADING" }, isSafe: false });
 
 interface IConnectedUserProviderProps {
   children: ReactNode;
@@ -72,9 +73,9 @@ function ConnectedUserProvider({ children }: IConnectedUserProviderProps) {
     }
   }, [isConnected, activeConnector, accountAddress, activeChain, status]);
 
-  const value = useMemo(() => ({ user }), [user]);
+  const { isSafe } = useAutoConnect(activeConnector);
 
-  useAutoConnect(activeConnector);
+  const value = useMemo(() => ({ user, isSafe }), [user, isSafe]);
 
   return (
     <ConnectedUserContext.Provider value={value}>
