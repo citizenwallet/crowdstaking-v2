@@ -75,27 +75,25 @@ export default function Burn({
   useEffect(() => {
     (async () => {
       if (!writeData?.hash || !txId) return;
-      const safeSdk = new SafeAppsSDK();
-      const tx = await safeSdk.txs.getBySafeTxHash(writeData.hash);
-      if (tx.txStatus === TransactionStatus.AWAITING_CONFIRMATIONS) {
-        // Update Modal
-        console.log("-------------------");
-        console.log("awaited safe tx: ", tx);
-        console.log("writeData: ", writeData);
-        console.log("-------------------");
-        transactionsDispatch({
-          type: "SET_SAFE_SUBMITTED",
-          payload: { id: txId, hash: writeData.hash },
-        });
-        return;
+      if (isSafe) {
+        const safeSdk = new SafeAppsSDK();
+        const tx = await safeSdk.txs.getBySafeTxHash(writeData.hash);
+        if (tx.txStatus === TransactionStatus.AWAITING_CONFIRMATIONS) {
+          transactionsDispatch({
+            type: "SET_SAFE_SUBMITTED",
+            payload: { id: txId, hash: writeData.hash },
+          });
+          return;
+        }
       }
+      // not safe
       transactionsDispatch({
         type: "SET_PENDING",
         payload: { id: txId, hash: writeData.hash },
       });
       clearInputValue();
     })();
-  }, [txId, writeData, transactionsDispatch, clearInputValue]);
+  }, [txId, writeData, transactionsDispatch, clearInputValue, isSafe]);
 
   useEffect(() => {
     if (!writeIsError && !writeError) return;
