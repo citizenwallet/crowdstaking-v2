@@ -11,7 +11,7 @@ function parseFeatureVar(feature: string | undefined): boolean {
 }
 
 const features = {
-  governancePage: parseFeatureVar(process.env.NEXT_PUBLIC_FEATURE_GOVERNANCE),
+  governancePage: parseFeatureVar(process.env.FEATURE_GOVERNANCE),
 };
 
 export type Features = {
