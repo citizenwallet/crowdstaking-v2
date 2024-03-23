@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { useConnectedUser } from "../../hooks/useConnectedUser";
 
 export function DesktopNavigationLink(props: {
   children: ReactNode;
@@ -38,6 +39,9 @@ export function DesktopNavigationLink(props: {
 }
 
 function DesktopNavigation({ currentPath }: { currentPath: string }) {
+  const {
+    user: { features },
+  } = useConnectedUser();
   return (
     <nav
       aria-label="site navigation"
@@ -49,6 +53,14 @@ function DesktopNavigation({ currentPath }: { currentPath: string }) {
       <DesktopNavigationLink href="https://breadchain.mirror.xyz/" isExternal>
         Blog
       </DesktopNavigationLink>
+      {features.governancePage === true && (
+        <DesktopNavigationLink
+          isCurrentPage={currentPath === "/governance"}
+          href="/governance"
+        >
+          Governance
+        </DesktopNavigationLink>
+      )}
     </nav>
   );
 }

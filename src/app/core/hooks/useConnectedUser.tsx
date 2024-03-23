@@ -1,3 +1,4 @@
+"use client";
 import {
   type ReactNode,
   createContext,
@@ -9,19 +10,22 @@ import {
 import { type Chain, useAccount, useNetwork } from "wagmi";
 import config, { type ChainConfiguration } from "@/chainConfig";
 import { useAutoConnect } from "./useAutoConnect";
+import { Features } from "@/app/layout";
 
-export type TUserLoading = { status: "LOADING" };
-export type TUserNotConnected = { status: "NOT_CONNECTED" };
+export type TUserLoading = { status: "LOADING"; features: Features };
+export type TUserNotConnected = { status: "NOT_CONNECTED"; features: Features };
 export type TUserConnected = {
   status: "CONNECTED";
   address: `0x${string}`;
   config: ChainConfiguration;
   chain: Chain;
+  features: Features;
 };
 export type TUnsupportedChain = {
   status: "UNSUPPORTED_CHAIN";
   address: `0x${string}`;
   chain: Chain;
+  features: Features;
 };
 
 export type TConnectedUserState =
@@ -33,14 +37,24 @@ export type TConnectedUserState =
 const ConnectedUserContext = createContext<{
   user: TConnectedUserState;
   isSafe: boolean;
-}>({ user: { status: "LOADING" }, isSafe: false });
+}>({
+  user: { status: "LOADING", features: { governancePage: false } },
+  isSafe: false,
+});
 
 interface IConnectedUserProviderProps {
   children: ReactNode;
+  features: Features;
 }
 
-function ConnectedUserProvider({ children }: IConnectedUserProviderProps) {
-  const [user, setUser] = useState<TConnectedUserState>({ status: "LOADING" });
+function ConnectedUserProvider({
+  children,
+  features,
+}: IConnectedUserProviderProps) {
+  const [user, setUser] = useState<TConnectedUserState>({
+    status: "LOADING",
+    features,
+  });
   const {
     isConnected,
     connector: activeConnector,
@@ -61,17 +75,26 @@ function ConnectedUserProvider({ children }: IConnectedUserProviderProps) {
               address: accountAddress,
               config: configuration,
               chain: activeChain,
+              features,
             }
           : {
               status: "UNSUPPORTED_CHAIN",
               address: accountAddress,
               chain: activeChain,
+              features,
             }
       );
     } else if (status === "disconnected") {
-      setUser({ status: "NOT_CONNECTED" });
+      setUser({ status: "NOT_CONNECTED", features });
     }
-  }, [isConnected, activeConnector, accountAddress, activeChain, status]);
+  }, [
+    isConnected,
+    activeConnector,
+    accountAddress,
+    activeChain,
+    status,
+    features,
+  ]);
 
   const { isSafe } = useAutoConnect(activeConnector);
 
