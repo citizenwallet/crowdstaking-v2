@@ -23,7 +23,9 @@ export function ProjectPanel() {
     "memberProjects",
 
     async () => {
-      const res = await fetch("http://localhost:8000/v1/projects");
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BREAD_API_URL}/projects`
+      );
       return res.json();
     },
     {
@@ -95,7 +97,7 @@ function VotesPanel() {
   const { data, error, isLoading } = useQuery<VoteAPI[]>(
     "votes",
     async () => {
-      const res = await fetch("http://localhost:8000/v1/votes");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BREAD_API_URL}/votes`);
       return res.json();
     },
     {
