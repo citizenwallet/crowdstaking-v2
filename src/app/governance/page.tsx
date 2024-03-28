@@ -4,6 +4,7 @@ import { useConnectedUser } from "../core/hooks/useConnectedUser";
 import { useEffect } from "react";
 import { ProjectPanel } from "./components/ProjectPanel";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { SlicesPanel } from "./components/SlicesPanel";
 
 const client = new QueryClient();
 
@@ -23,6 +24,7 @@ export default function Governance() {
     <QueryClientProvider client={client}>
       <section className="grow max-w-6xl w-full m-auto">
         <ProjectPanel />
+        <SlicesPanel />
       </section>
     </QueryClientProvider>
   ) : null;

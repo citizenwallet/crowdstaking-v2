@@ -62,7 +62,7 @@ export function ProjectRow({
           }}
           value={value === null ? "" : value}
         />
-        <InputButton onClick={decrement}>
+        <InputButton onClick={increment}>
           <div className="w-5 h-5">
             <IncrementIcon />
           </div>

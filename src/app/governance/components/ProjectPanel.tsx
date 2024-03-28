@@ -54,7 +54,7 @@ export function ProjectPanel() {
   }, 100);
 
   return (
-    <div className="min-h-screen grid grid-cols-12 p-4 md:p-8 gap-4">
+    <div className="grid grid-cols-12 p-4 md:p-8 gap-4">
       <div className="col-span-12 md:col-span-8">
         <div className="grid grid-cols-1 gap-4">
           {projects.length === 0 && !isLoading && <div>no projects</div>}
@@ -87,16 +87,17 @@ export function ProjectPanel() {
         </div>
       </div>
       <div className="col-span-4 p-4">
-        <VotesPanel />
+        {projects.length > 0 && <VotesPanel projects={projects} />}
       </div>
     </div>
   );
 }
 
-function VotesPanel() {
+function VotesPanel({ projects }: { projects: ProjectAPI[] }) {
   const { data, error, isLoading } = useQuery<VoteAPI[]>(
     "votes",
     async () => {
+      // console.log("fetching votes");
       const res = await fetch(`${process.env.NEXT_PUBLIC_BREAD_API_URL}/votes`);
       return res.json();
     },
@@ -105,26 +106,28 @@ function VotesPanel() {
     }
   );
 
-  console.log("votes res", { error, data });
-
   const totals = useMemo(() => {
     return data?.reduce(
       (acc, vote) => {
-        console.log("\n\n-----", { vote });
-        acc[vote.project_id] =
-          acc[vote["project_id"]] + vote.value || vote.value;
+        const projectName = projects.find(
+          (project) => project.id === vote.project_id
+        )?.name;
+        if (!projectName) {
+          return acc;
+        }
+        acc[projectName] = acc[projectName] + vote.value || vote.value;
         acc.count += 1;
         return acc;
       },
       { count: 0 } as Record<string, number>
     );
-  }, [data]);
+  }, [data, projects]);
 
   return (
     <div>
       votes!!
       <pre>{totals && JSON.stringify(totals, null, 2)}</pre>
-      {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
+      {/* {data && <pre>{JSON.stringify(data, null, 2)}</pre>} */}
     </div>
   );
 }
