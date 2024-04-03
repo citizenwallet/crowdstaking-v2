@@ -18,14 +18,18 @@ export function useWatchAsset() {
         chain: mainnet,
         transport: custom(ethereum),
       });
-      await walletClient.watchAsset({
-        type: "ERC20",
-        options: {
-          address: "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3",
-          decimals: 18,
-          symbol: "BREAD",
-        },
-      });
+      try {
+        await walletClient.watchAsset({
+          type: "ERC20",
+          options: {
+            address: "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3",
+            decimals: 18,
+            symbol: "BREAD",
+          },
+        });
+      } catch (err) {
+        console.log(err);
+      }
       setIsComplete(true);
     })();
   }, [isComplete, setIsComplete]);

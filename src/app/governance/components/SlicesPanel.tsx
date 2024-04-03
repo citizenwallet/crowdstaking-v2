@@ -5,7 +5,6 @@ export function SlicesPanel() {
   const { data, error, isLoading } = useQuery(
     "slices",
     async () => {
-      console.log("fetching votes");
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BREAD_API_URL}/slices`
       );
@@ -15,7 +14,6 @@ export function SlicesPanel() {
       refetchInterval: 1000,
     }
   );
-  console.log({ data });
   // const totals = useMemo(() => {
   //   return data?.reduce(
   //     (acc, vote) => {

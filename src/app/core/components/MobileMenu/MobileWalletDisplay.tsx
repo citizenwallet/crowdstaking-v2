@@ -6,6 +6,7 @@ import { truncateAddress } from "@/app/core/util/formatter";
 import Button from "../Button";
 import { useEnsName } from "@/app/core/hooks/useEnsName";
 import { blo } from "blo";
+import { useWatchAsset } from "../../hooks/useWatchAsset";
 
 function MobileWalletDisplay({
   handleNavToggle,
@@ -13,6 +14,11 @@ function MobileWalletDisplay({
   handleNavToggle: () => void;
 }) {
   const { disconnectAsync } = useDisconnect();
+  const { watchAsset } = useWatchAsset();
+
+  function addToken() {
+    watchAsset();
+  }
   return (
     <ConnectButton.Custom>
       {({
@@ -61,6 +67,8 @@ function MobileWalletDisplay({
                   <MobileWalletDisconnectButton
                     handleDisconnect={() => disconnectAsync()}
                   />
+
+                  <button onClick={addToken}>add token to wallet</button>
                 </div>
               );
             })()}
@@ -141,7 +149,7 @@ function ChainPanel({
 }) {
   return chain ? (
     <section className="flex flex-col gap-4">
-      <div className="text-right text-xs font-light text-status-success">
+      <div className="text-right text-xs font-light text-green-900 dark:text-status-success">
         Connected
       </div>
       <button

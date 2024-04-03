@@ -1,5 +1,6 @@
 import { ReactNode, useState } from "react";
 import { DecrementIcon, IncrementIcon } from "./Icons";
+import { formatVotePercentage } from "@/app/core/util/formatter";
 
 export function ProjectRow({
   id,
@@ -7,12 +8,14 @@ export function ProjectRow({
   value,
   updateValue,
   pointsRemaining,
+  total,
 }: {
   id: string;
   name: string;
   value: number | null;
   updateValue: (value: number | null, id: string) => void;
   pointsRemaining: number;
+  total: number;
 }) {
   const [isRed, setIsRed] = useState(false);
 
@@ -28,14 +31,14 @@ export function ProjectRow({
     <div className="flex flex-row rounded-lg p-4 justify-start gap-4 bg-breadgray-charcoal border border-breadgray-toast">
       <span className="rounded-full bg-neutral-700 w-8 h-8"></span>
       <span className="text-xl grow">{name}</span>
-      <div className="flex gap-2 border-2 border-breadgray-rye rounded-lg dark:bg-breadgray-burnt">
+      <div className="flex items-center gap-2 pr-2 border-2 border-breadgray-rye rounded-lg dark:bg-breadgray-burnt">
         <InputButton onClick={decrement}>
           <div className="w-5 h-5">
             <DecrementIcon />
           </div>
         </InputButton>
         <input
-          className={`min-w-14 max-w-0 p-2 dark:bg-breadgray-burnt border-neutral-300 text-2xl font-medium ${
+          className={`min-w-14 max-w-0 p-1 dark:bg-breadgray-burnt border-neutral-300 text-2xl font-medium ${
             isRed ? "text-red-500" : ""
           }`}
           type="text"
@@ -67,6 +70,7 @@ export function ProjectRow({
             <IncrementIcon />
           </div>
         </InputButton>
+        <div>{formatVotePercentage(value ? (value / total) * 100 : 0)}%</div>
       </div>
     </div>
   );

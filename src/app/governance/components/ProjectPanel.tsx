@@ -1,23 +1,30 @@
 import { useEffect, useMemo, useState } from "react";
-import { memberProjects } from "../projectData";
 import { ProjectRow } from "./ProjectRow";
 import { useQuery } from "react-query";
+import { SubmitVote } from "./SubmitVote/SubmitVote";
+import { useConnect } from "wagmi";
+import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
+import { VotesPanel } from "./VotesPanel";
+import Button from "@/app/core/components/Button";
+import { AccountMenu } from "@/app/core/components/Header/AccountMenu";
 
-type ProjectAPI = {
+export type ProjectAPI = {
   id: string;
   name: string;
+  wallet_address: string;
   value: number | null;
 };
 
-type VoteAPI = {
+export type VoteAPI = {
   id: string;
-  project_id: string;
+  createdAt: Date;
+  projectId: string;
   value: number;
-  user_id: string;
+  walletAddress: string;
 };
 export function ProjectPanel() {
-  // const [pointsRemaining, setPointsRemaining] = useState(100);
   const [projects, setProjects] = useState<ProjectAPI[]>([]);
+  const { user } = useConnectedUser();
 
   const { data, error, isLoading } = useQuery<ProjectAPI[]>(
     "memberProjects",
@@ -49,12 +56,21 @@ export function ProjectPanel() {
     setProjects(newProjects);
   }
 
-  const pointsRemaining = projects.reduce((acc, project) => {
-    return acc - (project.value || 0);
-  }, 100);
+  const { pointsRemaining, total } = projects.reduce(
+    (acc, project) => {
+      return {
+        total: acc.total + (project.value || 0),
+        pointsRemaining: acc.pointsRemaining - (project.value || 0),
+      };
+    },
+    { pointsRemaining: 100, total: 0 } as {
+      pointsRemaining: number;
+      total: number;
+    }
+  );
 
   return (
-    <div className="grid grid-cols-12 p-4 md:p-8 gap-4">
+    <div className="grid grid-cols-12 p-4 md:p-8 gap-8">
       <div className="col-span-12 md:col-span-8">
         <div className="grid grid-cols-1 gap-4">
           {projects.length === 0 && !isLoading && <div>no projects</div>}
@@ -67,67 +83,24 @@ export function ProjectPanel() {
                 value={project.value}
                 updateValue={updateValue}
                 pointsRemaining={pointsRemaining}
+                total={total}
               />
             ))}
           <div>
-            {pointsRemaining === 0 ? (
-              <button className="w-full bg-pink-500 text-white px-3 py-2 border-2 border-neutral-400 rounded text-center font-bold">
-                Go
-              </button>
-            ) : pointsRemaining < 0 ? (
-              <div className="bg-red-500 text-white px-3 py-2 border-2 border-neutral-400 rounded text-center font-bold">
-                ERRR
-              </div>
-            ) : (
-              <div className="px-3 py-2 border-2 border-neutral-400 rounded text-center font-bold">
-                Points remaining to distribute: {pointsRemaining}
-              </div>
+            {user.status === "NOT_CONNECTED" && (
+              <AccountMenu variant="large" fullWidth>
+                <div className="tracking-wider">Connect to vote</div>
+              </AccountMenu>
+            )}
+            {user.status === "CONNECTED" && (
+              <SubmitVote projects={projects} user={user} />
             )}
           </div>
         </div>
       </div>
-      <div className="col-span-4 p-4">
+      <div className="col-span-4">
         {projects.length > 0 && <VotesPanel projects={projects} />}
       </div>
-    </div>
-  );
-}
-
-function VotesPanel({ projects }: { projects: ProjectAPI[] }) {
-  const { data, error, isLoading } = useQuery<VoteAPI[]>(
-    "votes",
-    async () => {
-      // console.log("fetching votes");
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BREAD_API_URL}/votes`);
-      return res.json();
-    },
-    {
-      refetchInterval: 1000,
-    }
-  );
-
-  const totals = useMemo(() => {
-    return data?.reduce(
-      (acc, vote) => {
-        const projectName = projects.find(
-          (project) => project.id === vote.project_id
-        )?.name;
-        if (!projectName) {
-          return acc;
-        }
-        acc[projectName] = acc[projectName] + vote.value || vote.value;
-        acc.count += 1;
-        return acc;
-      },
-      { count: 0 } as Record<string, number>
-    );
-  }, [data, projects]);
-
-  return (
-    <div>
-      votes!!
-      <pre>{totals && JSON.stringify(totals, null, 2)}</pre>
-      {/* {data && <pre>{JSON.stringify(data, null, 2)}</pre>} */}
     </div>
   );
 }

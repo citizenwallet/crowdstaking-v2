@@ -20,3 +20,13 @@ export function formatSupply(value: number) {
   });
   return balanceFormatter.format(value);
 }
+
+export function formatVotePercentage(value: number) {
+  const balanceFormatter = new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+    minimumIntegerDigits: 2,
+    useGrouping: true,
+  });
+  return balanceFormatter.format(value);
+}

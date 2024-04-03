@@ -5,13 +5,16 @@ import { TButtonVariant } from "../Button/Button";
 import Image from "next/image";
 import { WalletMenu } from "./WalletMenu/WalletMenu";
 import { useDisconnect } from "wagmi";
+import { ReactNode } from "react";
 
 export function AccountMenu({
   variant = "regular",
   fullWidth = false,
+  children,
 }: {
   variant?: TButtonVariant;
   fullWidth?: boolean;
+  children: ReactNode;
 }) {
   const { disconnectAsync } = useDisconnect();
   return (
@@ -53,7 +56,7 @@ export function AccountMenu({
                     fullWidth={fullWidth}
                     onClick={openConnectModal}
                   >
-                    Connect
+                    {children}
                   </Button>
                 );
               }

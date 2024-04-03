@@ -14,7 +14,10 @@ function Container({ children }: { children: ReactNode }) {
   return (
     <header>
       <div
-        className={clsx(WRAPPER_CLASSES, "p-4 md:py-6 flex justify-between")}
+        className={clsx(
+          WRAPPER_CLASSES,
+          "p-4 md:py-6 flex justify-between items-center"
+        )}
       >
         {children}
       </div>
@@ -34,10 +37,13 @@ function Header() {
   return (
     <Container>
       <Logo />
+      <div className="md:hidden font-pressstart uppercase text-xs">bread</div>
       <DesktopNavigation currentPath={currentPath} />
       <div className="hidden md:flex gap-4">
         <ColorToggle />
-        <AccountMenu variant="regular" fullWidth={false} />
+        <AccountMenu variant="regular" fullWidth={false}>
+          Connect
+        </AccountMenu>
       </div>
       <MobileNavigationToggle
         isOpen={isMobNavOpen}

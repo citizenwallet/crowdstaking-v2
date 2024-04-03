@@ -113,7 +113,11 @@ export function Swap() {
                 case "LOADING":
                   return <ButtonShell />;
                 case "NOT_CONNECTED":
-                  return <AccountMenu fullWidth={true} variant="large" />;
+                  return (
+                    <AccountMenu fullWidth={true} variant="large">
+                      Connect
+                    </AccountMenu>
+                  );
                 case "UNSUPPORTED_CHAIN":
                   return (
                     <Button

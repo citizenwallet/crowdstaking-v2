@@ -24,7 +24,7 @@ export default function Governance() {
     <QueryClientProvider client={client}>
       <section className="grow max-w-6xl w-full m-auto">
         <ProjectPanel />
-        <SlicesPanel />
+        {/* <SlicesPanel /> */}
       </section>
     </QueryClientProvider>
   ) : null;

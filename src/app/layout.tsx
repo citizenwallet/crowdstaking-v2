@@ -5,6 +5,7 @@ import { AppProvider } from "./core/hooks/AppProvider";
 
 import "./app.css";
 import "@rainbow-me/rainbowkit/styles.css";
+import { DevTools } from "./core/components/Devtools/DevTools";
 
 function parseFeatureVar(feature: string | undefined): boolean {
   return feature === "true" ? true : false;
@@ -46,6 +47,8 @@ export default function App({ children }: { children: React.ReactNode }) {
         )}
       >
         <AppProvider features={features}>{children}</AppProvider>
+
+        {/* {process.env.ADMIN_WALLET && <DevTools />} */}
       </body>
     </html>
   );

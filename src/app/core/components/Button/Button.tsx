@@ -1,7 +1,7 @@
 import { forwardRef, Ref, type MouseEvent, type ReactNode } from "react";
 import clsx from "clsx";
 
-export type TButtonVariant = "small" | "regular" | "large";
+export type TButtonVariant = "small" | "regular" | "large" | "xl";
 
 interface IProps {
   children: ReactNode;
@@ -14,7 +14,8 @@ interface IProps {
 export const ButtonVariants = {
   small: "px-4 py-2 text-sm",
   regular: "px-4 py-2 text-base",
-  large: "px-7 py-4 text-xl sm:text-2xl",
+  large: "px-7 py-2.5 text-lg sm:text-lg",
+  xl: "px-7 py-4 text-xl sm:text-2xl",
 };
 
 const Button = forwardRef(
