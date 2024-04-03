@@ -93,7 +93,7 @@ export function ProjectPanel() {
               </AccountMenu>
             )}
             {user.status === "CONNECTED" && (
-              <SubmitVote projects={projects} user={user} />
+              <SubmitVote projects={projects} total={total} user={user} />
             )}
           </div>
         </div>

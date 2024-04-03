@@ -1,15 +1,37 @@
 import { TUserConnected } from "@/app/core/hooks/useConnectedUser";
 import { useMutation, useQueryClient } from "react-query";
 import { ProjectAPI } from "../ProjectPanel";
+import { useMemo } from "react";
 
 export function SubmitVote({
   user,
   projects,
+  total,
 }: {
   user: TUserConnected;
   projects: ProjectAPI[];
+  total: number;
 }) {
   const queryClient = useQueryClient();
+
+  const votes = useMemo(() => {
+    let percentageLeft = 100;
+    const votes = projects.map((project) => {
+      const value = project.value || (0 / total) * 100;
+      percentageLeft -= value;
+      return {
+        userAddress: user.address,
+        projectAddress: project.wallet_address,
+        value,
+      };
+    });
+
+    if (percentageLeft < 0)
+      throw new Error("something went wrong calculating vote percentages");
+    if (percentageLeft > 0) votes[votes.length - 1].value += percentageLeft;
+    return votes;
+  }, [projects, user, total]);
+
   const mutation = useMutation(
     "submitVote",
     async () => {
@@ -22,11 +44,7 @@ export function SubmitVote({
             Authorization: `Address ${user.address}`,
           },
           body: JSON.stringify({
-            votes: projects.map((project) => ({
-              userAddress: user.address,
-              projectAddress: project.wallet_address,
-              value: project.value || 0,
-            })),
+            votes,
           }),
         }
       );
