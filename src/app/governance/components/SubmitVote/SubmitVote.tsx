@@ -15,6 +15,7 @@ export function SubmitVote({
   const queryClient = useQueryClient();
 
   const votes = useMemo(() => {
+    if (!projects.length) return [];
     let percentageLeft = 100;
     const votes = projects.map((project) => {
       const value = project.value || (0 / total) * 100;
@@ -28,6 +29,8 @@ export function SubmitVote({
 
     if (percentageLeft < 0)
       throw new Error("something went wrong calculating vote percentages");
+    console.log("\n\nvotes");
+    console.log({ votes });
     if (percentageLeft > 0) votes[votes.length - 1].value += percentageLeft;
     return votes;
   }, [projects, user, total]);
