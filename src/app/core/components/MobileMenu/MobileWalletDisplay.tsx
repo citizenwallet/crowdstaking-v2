@@ -68,7 +68,7 @@ function MobileWalletDisplay({
                     handleDisconnect={() => disconnectAsync()}
                   />
 
-                  <button onClick={addToken}>add token to wallet</button>
+                  {/* <button onClick={addToken}>add token to wallet</button> */}
                 </div>
               );
             })()}
