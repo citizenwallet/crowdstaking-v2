@@ -82,7 +82,7 @@ export function Swap() {
 
   return (
     <>
-      {/* <TotalSupply /> */}
+      {user.features.breadCounter && <TotalSupply />}
       <div className="w-full p-2 sm:p-4">
         <div className="w-full max-w-[30rem] m-auto relative rounded-xl swap-drop-shadow bg-breadgray-ultra-white dark:bg-breadgray-grey200 border-breadgray-burnt flex flex-col items-center">
           <div className="w-full drop-shadow-swap">

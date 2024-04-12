@@ -9,6 +9,7 @@ import { ToastProvider } from "@/app/core/context/ToastContext/ToastContext";
 import Header from "../components/Header/Header";
 import { Footer } from "../components/Footer/Footer";
 import { Features } from "@/app/layout";
+import { useSentry } from "./useSentry";
 
 export function AppProvider({
   children,
@@ -17,6 +18,8 @@ export function AppProvider({
   children: ReactNode;
   features: Features;
 }) {
+  useSentry();
+
   return (
     <WagmiProvider>
       <ConnectedUserProvider features={features}>

@@ -13,6 +13,7 @@ function parseFeatureVar(feature: string | undefined): boolean {
 
 const features = {
   governancePage: parseFeatureVar(process.env.FEATURE_GOVERNANCE),
+  breadCounter: parseFeatureVar(process.env.FEATURE_BREAD_COUNTER),
 };
 
 export type Features = {

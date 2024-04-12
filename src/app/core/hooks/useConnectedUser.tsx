@@ -38,7 +38,10 @@ const ConnectedUserContext = createContext<{
   user: TConnectedUserState;
   isSafe: boolean;
 }>({
-  user: { status: "LOADING", features: { governancePage: false } },
+  user: {
+    status: "LOADING",
+    features: { governancePage: false, breadCounter: false },
+  },
   isSafe: false,
 });
 
