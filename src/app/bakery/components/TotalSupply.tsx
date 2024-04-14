@@ -16,7 +16,7 @@ export function TotalSupply() {
 
   return (
     <div className="flex justify-center">
-      <div className="flex items-center gap-2 p-2 bg-breadgray-charcoal rounded">
+      <div className="flex items-center gap-2 p-2 bg-white dark:bg-breadgray-charcoal rounded">
         <span className="rounded-full w-2 h-2 bg-status-success" />
         <span className="text-xl font-semibold">
           {data
