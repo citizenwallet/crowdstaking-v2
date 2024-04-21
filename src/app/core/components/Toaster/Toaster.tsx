@@ -46,7 +46,7 @@ function Toast({
   return (
     <ToastPrimitive.Provider>
       <ToastPrimitive.Root forceMount onOpenChange={handleOpenChange}>
-        <ToastUI toastType={toastType} explorerUrl={txHash} />
+        <ToastUI toastType={toastType} txHash={txHash} />
       </ToastPrimitive.Root>
       <ToastPrimitive.Viewport />
     </ToastPrimitive.Provider>

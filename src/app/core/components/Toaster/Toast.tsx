@@ -16,10 +16,10 @@ const toastMessages: {
 
 export function Toast({
   toastType,
-  explorerUrl,
+  txHash,
 }: {
   toastType: TToastType;
-  explorerUrl: string;
+  txHash: string;
 }) {
   return (
     <li
@@ -38,7 +38,7 @@ export function Toast({
       </ToastPrimitive.Title>
       <ToastPrimitive.Description>
         <a
-          href={explorerUrl}
+          href={`https://gnosisscan.io/tx//${txHash}`}
           target="_blank"
           className="flex flex-row gap-2 items-center text-breadviolet-violet dark:text-breadpink-300 font-medium"
         >
