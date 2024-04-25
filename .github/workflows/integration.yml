@@ -4,6 +4,9 @@ on:
   pull_request:
     branches: [main, development]
 
+env:
+  NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: xxxx
+
 jobs:
   linting:
     name: ESLint
