@@ -6,6 +6,7 @@ on:
 
 env:
   NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: xxxx
+  NEXT_PUBLIC_QUIKNODE_URL: xxxx
 
 jobs:
   linting:
