@@ -3,17 +3,11 @@ import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
 import { gnosis } from "wagmi/chains";
 import { connectorsForWallets } from "@rainbow-me/rainbowkit";
-import {
-  metaMaskWallet,
-  rainbowWallet,
-  argentWallet,
-  injectedWallet,
-  ledgerWallet,
-  trustWallet,
-} from "@rainbow-me/rainbowkit/wallets";
+
 import { publicProvider } from "wagmi/providers/public";
 import { getWallets } from "./wallets";
 import { SafeConnector } from "wagmi/connectors/safe";
+import { mockWallet } from "./mockWallet";
 
 const NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID =
   process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID;
@@ -50,7 +44,9 @@ const projectId = NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID;
 const connectors = connectorsForWallets([
   {
     groupName: "Wallets",
-    wallets: getWallets(chains, projectId),
+    wallets: process.env.CI
+      ? [...getWallets(chains, projectId), mockWallet({ chains })]
+      : [...getWallets(chains, projectId)],
   },
 ]);
 
