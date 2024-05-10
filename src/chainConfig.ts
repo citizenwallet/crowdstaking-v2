@@ -15,8 +15,6 @@ export interface IConfig {
   [chainId: number]: ChainConfiguration;
 }
 
-// test contract address: 0x2993bD6dA994378Eadf1A5ba5c9017FdFc92f111
-
 function getConfig(): IConfig {
   if (process.env.NODE_ENV === "development") {
     return {

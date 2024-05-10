@@ -5,7 +5,9 @@ import { gnosis, hardhat } from "wagmi/chains";
 import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 
 import { publicProvider } from "wagmi/providers/public";
+
 import { getWallets } from "./wallets";
+import { mockWallet } from "./mockWallet";
 
 const WALLET_CONNECT_PROJECT_ID =
   process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID;
@@ -40,7 +42,7 @@ const projectId = WALLET_CONNECT_PROJECT_ID;
 const connectors = connectorsForWallets([
   {
     groupName: "Wallets",
-    wallets: getWallets(chains, projectId),
+    wallets: [...getWallets(chains, projectId), mockWallet({ chains })],
   },
 ]);
 
