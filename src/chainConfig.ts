@@ -9,7 +9,13 @@ export interface ChainConfiguration {
   NETWORK_STRING: string;
   EXPLORER: string;
   BREAD: IToken;
+  DISBURSER: {
+    address: `0x${string}`;
+  };
 }
+
+export const BREAD_ADDRESS = "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3";
+export const DISBURSER_ADDRESS = "0xA15BB66138824a1c7167f5E85b957d04Dd34E468";
 
 export interface IConfig {
   [chainId: number]: ChainConfiguration;
@@ -27,6 +33,9 @@ function getConfig(): IConfig {
           decimals: 18,
           address: "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3",
         },
+        DISBURSER: {
+          address: DISBURSER_ADDRESS,
+        },
       },
       100: {
         ID: 100,
@@ -37,20 +46,8 @@ function getConfig(): IConfig {
           decimals: 18,
           address: "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3",
         },
-      },
-    };
-  }
-
-  if (process.env.NEXT_PUBLIC_TEST_CONNECTOR === "true") {
-    return {
-      31337: {
-        ID: 31337,
-        NETWORK_STRING: "Hardhat",
-        EXPLORER: "NONE",
-        BREAD: {
-          symbol: "BREAD",
-          decimals: 18,
-          address: "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3",
+        DISBURSER: {
+          address: DISBURSER_ADDRESS,
         },
       },
     };
@@ -65,6 +62,9 @@ function getConfig(): IConfig {
         symbol: "BREAD",
         decimals: 18,
         address: "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3",
+      },
+      DISBURSER: {
+        address: DISBURSER_ADDRESS,
       },
     },
   };

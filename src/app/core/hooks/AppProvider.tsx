@@ -10,6 +10,7 @@ import Header from "../components/Header/Header";
 import { Footer } from "../components/Footer/Footer";
 import { Features } from "@/app/layout";
 import { useSentry } from "./useSentry";
+import { Toaster } from "../components/Toaster/Toaster";
 
 export function AppProvider({
   children,
@@ -39,7 +40,10 @@ function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      {children}
+      <main className="grow relative">
+        <Toaster />
+        {children}
+      </main>
       <Footer />
     </div>
   );

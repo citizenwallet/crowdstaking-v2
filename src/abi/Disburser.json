@@ -1,0 +1,535 @@
+[
+  { "type": "constructor", "inputs": [], "stateMutability": "nonpayable" },
+  {
+    "type": "function",
+    "name": "PRECISION",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "breadToken",
+    "inputs": [],
+    "outputs": [
+      { "name": "", "type": "address", "internalType": "contract Bread" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "breadchainProjects",
+    "inputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "breadchainVoters",
+    "inputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "castVote",
+    "inputs": [
+      { "name": "points", "type": "uint256[]", "internalType": "uint256[]" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "currentVoteCasted",
+    "inputs": [
+      { "name": "holder", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [
+      { "name": "", "type": "uint256[]", "internalType": "uint256[]" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "currentVotes",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "currentVotesCasted",
+    "inputs": [],
+    "outputs": [
+      { "name": "", "type": "address[]", "internalType": "address[]" },
+      { "name": "", "type": "uint256[][]", "internalType": "uint256[][]" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "distributeYield",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "getBreadchainProjectsLength",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getCurrentProjects",
+    "inputs": [],
+    "outputs": [
+      { "name": "", "type": "address[]", "internalType": "address[]" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getNumCheckpoints",
+    "inputs": [
+      { "name": "holder", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getUserVotingPower",
+    "inputs": [
+      { "name": "holder", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getVotingPowerForPeriod",
+    "inputs": [
+      { "name": "start", "type": "uint256", "internalType": "uint256" },
+      { "name": "end", "type": "uint256", "internalType": "uint256" },
+      { "name": "account", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "holderToDistribution",
+    "inputs": [
+      { "name": "", "type": "address", "internalType": "address" },
+      { "name": "", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "holderToDistributionTotal",
+    "inputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "initialize",
+    "inputs": [
+      { "name": "breadAddress", "type": "address", "internalType": "address" },
+      {
+        "name": "_breadchainProjects",
+        "type": "address[]",
+        "internalType": "address[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "lastClaimedBlocknumber",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "lastClaimedTimestamp",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint48", "internalType": "uint48" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "maxVotes",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "minRequiredVotingPower",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "minVotingAmount",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "minVotingHoldingDuration",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "minimumTimeBetweenClaims",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint48", "internalType": "uint48" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "owner",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "pointsMax",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "queueProjectAddition",
+    "inputs": [
+      { "name": "project", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "queueProjectRemoval",
+    "inputs": [
+      { "name": "project", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "queuedProjectsForAddition",
+    "inputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "queuedProjectsForRemoval",
+    "inputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "renounceOwnership",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "resolveYieldDistribution",
+    "inputs": [],
+    "outputs": [
+      { "name": "", "type": "bool", "internalType": "bool" },
+      { "name": "", "type": "bytes", "internalType": "bytes" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "setCurrentVotes",
+    "inputs": [
+      { "name": "_currentVotes", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setLastClaimedBlocknumber",
+    "inputs": [
+      {
+        "name": "_lastClaimedBlocknumber",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setMaxVotes",
+    "inputs": [
+      { "name": "_maxVotes", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setMinRequiredVotingPower",
+    "inputs": [
+      {
+        "name": "_minRequiredVotingPower",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setMinVotingAmount",
+    "inputs": [
+      {
+        "name": "_minVotingAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setMinVotingHoldingDuration",
+    "inputs": [
+      {
+        "name": "_minVotingHoldingDuration",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setMinimumTimeBetweenClaims",
+    "inputs": [
+      {
+        "name": "_minimumTimeBetweenClaims",
+        "type": "uint48",
+        "internalType": "uint48"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setPointsMax",
+    "inputs": [
+      { "name": "_pointsMax", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setlastClaimedTimestamp",
+    "inputs": [
+      {
+        "name": "_lastClaimedTimestamp",
+        "type": "uint48",
+        "internalType": "uint48"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "transferOwnership",
+    "inputs": [
+      { "name": "newOwner", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "event",
+    "name": "BreadHolderVoted",
+    "inputs": [
+      {
+        "name": "holder",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "percentages",
+        "type": "uint256[]",
+        "indexed": false,
+        "internalType": "uint256[]"
+      },
+      {
+        "name": "projects",
+        "type": "address[]",
+        "indexed": false,
+        "internalType": "address[]"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "Initialized",
+    "inputs": [
+      {
+        "name": "version",
+        "type": "uint64",
+        "indexed": false,
+        "internalType": "uint64"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "OwnershipTransferred",
+    "inputs": [
+      {
+        "name": "previousOwner",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "newOwner",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "ProjectAdded",
+    "inputs": [
+      {
+        "name": "project",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "ProjectRemoved",
+    "inputs": [
+      {
+        "name": "project",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "YieldDistributed",
+    "inputs": [
+      {
+        "name": "votedYield",
+        "type": "uint256[]",
+        "indexed": false,
+        "internalType": "uint256[]"
+      },
+      {
+        "name": "baseYield",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "percentage",
+        "type": "uint256[]",
+        "indexed": false,
+        "internalType": "uint256[]"
+      },
+      {
+        "name": "project",
+        "type": "address[]",
+        "indexed": false,
+        "internalType": "address[]"
+      }
+    ],
+    "anonymous": false
+  },
+  { "type": "error", "name": "AlreadyClaimed", "inputs": [] },
+  { "type": "error", "name": "AlreadyMemberProject", "inputs": [] },
+  { "type": "error", "name": "BelowMinRequiredVotingPower", "inputs": [] },
+  { "type": "error", "name": "EndAfterCurrentBlock", "inputs": [] },
+  { "type": "error", "name": "IncorrectNumberOfProjects", "inputs": [] },
+  { "type": "error", "name": "InvalidInitialization", "inputs": [] },
+  { "type": "error", "name": "InvalidSignature", "inputs": [] },
+  { "type": "error", "name": "MustBeGreaterThanZero", "inputs": [] },
+  { "type": "error", "name": "NoCheckpointsForAccount", "inputs": [] },
+  { "type": "error", "name": "NotInitializing", "inputs": [] },
+  {
+    "type": "error",
+    "name": "OwnableInvalidOwner",
+    "inputs": [
+      { "name": "owner", "type": "address", "internalType": "address" }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "OwnableUnauthorizedAccount",
+    "inputs": [
+      { "name": "account", "type": "address", "internalType": "address" }
+    ]
+  },
+  { "type": "error", "name": "ProjectAlreadyQueued", "inputs": [] },
+  { "type": "error", "name": "ProjectNotFound", "inputs": [] },
+  {
+    "type": "error",
+    "name": "SafeCastOverflowedUintDowncast",
+    "inputs": [
+      { "name": "bits", "type": "uint8", "internalType": "uint8" },
+      { "name": "value", "type": "uint256", "internalType": "uint256" }
+    ]
+  },
+  { "type": "error", "name": "StartMustBeBeforeEnd", "inputs": [] },
+  { "type": "error", "name": "VotePointsTooLarge", "inputs": [] },
+  { "type": "error", "name": "YieldNotResolved", "inputs": [] },
+  {
+    "type": "error",
+    "name": "YieldTooLow",
+    "inputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }]
+  }
+]
