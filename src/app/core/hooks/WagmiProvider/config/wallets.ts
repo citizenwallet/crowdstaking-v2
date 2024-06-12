@@ -5,7 +5,6 @@ import {
   walletConnectWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { Chain } from "wagmi";
-import { SafeConnector } from "wagmi/connectors/safe";
 
 export function getWallets(chains: Chain[], projectId: string) {
   return [

@@ -1,9 +1,9 @@
 require("@nomicfoundation/hardhat-toolbox-viem");
 require("dotenv").config();
 
-const RPC_URL = process.env.RPC_URL;
+const HARDHAT_RPC_URL = process.env.HARDHAT_RPC_URL;
 
-if (!RPC_URL) throw new Error("RPC_URL not provided");
+if (!HARDHAT_RPC_URL) throw new Error("HARDHAT_RPC_URL not provided");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
   networks: {
     hardhat: {
       forking: {
-        url: RPC_URL,
+        url: HARDHAT_RPC_URL,
       },
       mining: {
         auto: false,

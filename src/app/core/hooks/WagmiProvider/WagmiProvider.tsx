@@ -4,8 +4,6 @@ import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
 
 import { getConfig } from "./config/getConfig";
 
-const { chains, config } = getConfig();
-
 const baseTheme = darkTheme({
   accentColor: "#E873D3",
   accentColorForeground: "#2E2E2E",
@@ -26,6 +24,8 @@ const theme = {
 };
 
 export function WagmiProvider({ children }: { children: ReactNode }) {
+  const { chains, config } = getConfig();
+
   return (
     <WagmiConfig config={config}>
       <RainbowKitProvider modalSize="compact" theme={theme} chains={chains}>
