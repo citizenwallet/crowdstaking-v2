@@ -69,6 +69,42 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+
+  .supply-light {
+    transform-origin: center;
+    animation-delay: 3000ms;
+    animation-name: supply-light-animation;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes supply-light-animation {
+    0% {
+      transform: scale(100%);
+      opacity: 1;
+    }
+    20% {
+      transform: scale(100%);
+      opacity: 1;
+    }
+    40% {
+      transform: scale(0%);
+      opacity: 0;
+    }
+    60% {
+      transform: scale(0%);
+      opacity: 0;
+    }
+    80% {
+      transform: scale(100%);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(100%);
+      opacity: 1;
+    }
+  }
+
   .spinner_QPB9 {
     transform-origin: center;
     animation: spinner_4N1C 2s linear infinite;
