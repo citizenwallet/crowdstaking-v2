@@ -15,7 +15,7 @@ export const ButtonVariants = {
   small: "px-4 py-2 text-sm",
   regular: "px-4 py-2 text-base",
   large: "px-7 py-2.5 text-lg sm:text-lg",
-  xl: "px-7 py-4 text-xl sm:text-2xl",
+  xl: "px-7 py-3 text-xl sm:text-xl tracking-wider",
 };
 
 const Button = forwardRef(
