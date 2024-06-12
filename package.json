@@ -14,7 +14,7 @@
     "storybook:serve": "serve storybook-static",
     "prod:build": "next build",
     "prod:serve": "serve out",
-    "prod:deploy": "npm install -g pnpm@8.15.4 && pnpm install --prod=true --frozen-lockfile && pnpm run prod:build",
+    "prod:deploy": "npm install -g pnpm@9.1.4 && pnpm install --prod=true --frozen-lockfile && pnpm run prod:build",
     "lint": "next lint",
     "find-deadcode": "ts-prune | grep -v '(used in module)'"
   },
