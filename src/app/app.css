@@ -79,9 +79,8 @@
 
   .supply-light {
     transform-origin: center;
-    animation-delay: 3000ms;
     animation-name: supply-light-animation;
-    animation-duration: 3s;
+    animation-duration: 2.5s;
     animation-iteration-count: infinite;
   }
 
@@ -94,11 +93,11 @@
       transform: scale(100%);
       opacity: 1;
     }
-    40% {
+    45% {
       transform: scale(0%);
       opacity: 0;
     }
-    60% {
+    55% {
       transform: scale(0%);
       opacity: 0;
     }
