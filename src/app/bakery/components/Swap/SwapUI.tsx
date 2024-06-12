@@ -6,9 +6,7 @@ export function PanelHeader({ children }: { children: ReactNode }) {
 
 export function PanelContent({ children }: { children: ReactNode }) {
   return (
-    <div className="flex flex-col items-start pb-2 justify-between">
-      {children}
-    </div>
+    <div className="flex flex-col items-start justify-between">{children}</div>
   );
 }
 
@@ -45,7 +43,7 @@ export function PanelBalance({ children }: { children: ReactNode }) {
 
 export function PanelContainer({ children }: { children: ReactNode }) {
   return (
-    <div className="w-full p-2 sm:px-8 sm:py-6 md:px-6  text-gray-300 bg-breadgray-ultra-white border border-1 border-breadgray-light-grey dark:border-none dark:bg-breadgray-grey300 rounded ">
+    <div className="w-full p-2 sm:px-8 sm:py-3 md:px-6 text-gray-300 bg-breadgray-ultra-white border border-1 border-breadgray-light-grey dark:border-none dark:bg-breadgray-grey300 rounded">
       {children}
     </div>
   );
@@ -53,7 +51,7 @@ export function PanelContainer({ children }: { children: ReactNode }) {
 
 export function PanelLabel({ children }: { children: ReactNode }) {
   return (
-    <span className="text-sm inline-block text-breadgray-rye dark:text-neutral-400 pl-3 pb-2">
+    <span className="text-sm inline-block text-breadgray-rye dark:text-neutral-400 pl-3">
       {children}
     </span>
   );
@@ -76,12 +74,12 @@ export function TokenLabelText({ children }: { children: ReactNode }) {
 }
 
 export function TokenBalanceContainer({ children }: { children: ReactNode }) {
-  return <div className="h-8 flex items-center justify-end">{children}</div>;
+  return <div className="h-6 flex items-center justify-end">{children}</div>;
 }
 
 export function TokenBalanceText({ children }: { children: ReactNode }) {
   return (
-    <div className="p-2 font-medium text-breadgray-rye dark:text-neutral-400 text-xs sm:text-[0.85rem] text-right">
+    <div className="px-2 font-medium text-breadgray-rye dark:text-neutral-400 text-xs sm:text-[0.85rem] text-right">
       {children}
     </div>
   );
