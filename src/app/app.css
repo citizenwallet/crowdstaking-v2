@@ -77,7 +77,7 @@
     background-clip: padding-box, border-box;
   }
 
-  .total-supply-light {
+  .supply-light {
     transform-origin: center;
     animation-delay: 3000ms;
     animation-name: supply-light-animation;
