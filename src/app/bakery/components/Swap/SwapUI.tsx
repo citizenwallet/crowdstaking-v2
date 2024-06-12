@@ -69,7 +69,7 @@ export function TokenLabelContainer({ children }: { children: ReactNode }) {
 
 export function TokenLabelText({ children }: { children: ReactNode }) {
   return (
-    <span className="ml-4 font-medium text-xl text-breadgray-grey100 dark:text-gray-300">
+    <span className="ml-2 font-medium text-xl text-breadgray-grey100 dark:text-gray-300">
       {children}
     </span>
   );
