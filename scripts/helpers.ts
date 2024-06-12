@@ -18,6 +18,8 @@ export const anvilAccounts: Array<`0x${string}`> = [
   "0xa0ee7a142d267c1f36714e4a8f75612f20a79720",
 ];
 
+export const DEV_ACCOUNT = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
+
 export const testClient = createTestClient({
   chain: foundry,
   mode: "anvil",

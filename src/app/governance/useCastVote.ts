@@ -13,7 +13,7 @@ export function useCastVote(user: TConnectedUserState) {
   const { data: voteCastedData, status: voteCastedStatus } = useContractRead({
     address: config[100].DISBURSER.address,
     abi: DISBURSER_ABI,
-    functionName: "currentVoteCasted",
+    functionName: "currentVoteCast",
     args: [userAddress],
     enabled: !!userAddress,
     watch: true,

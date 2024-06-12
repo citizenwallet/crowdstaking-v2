@@ -4,7 +4,7 @@ import {
   Portal as DialogPrimitivePortal,
 } from "@radix-ui/react-dialog";
 
-import { TransactionModal } from "./TransactionModal";
+import { TransactionModal } from "./BakeryTransactionModal";
 
 const meta = {
   title: "TransactionModal/Burning",

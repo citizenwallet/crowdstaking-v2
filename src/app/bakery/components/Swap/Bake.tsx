@@ -15,7 +15,7 @@ import useDebounce from "@/app/bakery/hooks/useDebounce";
 import { useEffect, useState } from "react";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { nanoid } from "nanoid";
-import { TransactionModal } from "@/app/core/components/Modal/TransactionModal/TransactionModal";
+import { BakeryTransactionModal } from "@/app/core/components/Modal/TransactionModal/BakeryTransactionModal";
 import { AnimatePresence } from "framer-motion";
 import SafeAppsSDK from "@safe-global/safe-apps-sdk/dist/src/sdk";
 import { TransactionStatus } from "@safe-global/safe-apps-sdk/dist/src/types";
@@ -127,7 +127,10 @@ export default function Bake({
               setTxId(newId);
               transactionsDispatch({
                 type: "NEW",
-                payload: { id: newId, value: debouncedValue },
+                payload: {
+                  id: newId,
+                  data: { type: "BAKERY", value: debouncedValue },
+                },
               });
               write();
             }}
@@ -138,7 +141,7 @@ export default function Bake({
         <DialogPrimitivePortal forceMount>
           <AnimatePresence>
             {transaction && (
-              <TransactionModal
+              <BakeryTransactionModal
                 transactionType="BAKE"
                 transaction={transaction}
               />

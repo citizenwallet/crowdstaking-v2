@@ -1,13 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import { ProjectRow, VoteDisplay, VoteForm } from "./ProjectRow";
-import { SubmitVote } from "./SubmitVote/SubmitVote";
+import { CastVote } from "./CastVote";
 import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
 import { VotesPanel } from "./VotesPanel";
 import { AccountMenu } from "@/app/core/components/Header/AccountMenu";
 import { useMemberProjects } from "../useMemberProjects";
 import { useCastVote } from "../useCastVote";
-import { formatUnits } from "viem";
 
 export type Project = {
   address: `0x${string}`;
@@ -15,7 +14,7 @@ export type Project = {
 };
 
 export function ProjectPanel() {
-  const { user } = useConnectedUser();
+  const { user, isSafe } = useConnectedUser();
   const { memberProjects } = useMemberProjects();
   const { castVote } = useCastVote(user);
 
@@ -79,16 +78,19 @@ export function ProjectPanel() {
               </AccountMenu>
             )}
             {user.status === "CONNECTED" && (
-              <SubmitVote
+              <CastVote
                 vote={projects.map((project) => project.points)}
-                user={user}
+                voteIsCast={castVote && castVote.length > 0 ? true : false}
+                isSafe={isSafe}
               />
             )}
           </div>
         </div>
       </div>
-      <div className="col-span-4">
-        <VotesPanel projects={projects} />
+      <div className="col-span-12 md:col-span-4">
+        <VotesPanel
+          projectAccounts={projects.map((project) => project.address)}
+        />
       </div>
     </div>
   );

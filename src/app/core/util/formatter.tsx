@@ -12,21 +12,30 @@ export function formatBalance(value: number, decimals: number) {
 }
 
 export function formatSupply(value: number) {
-  const balanceFormatter = new Intl.NumberFormat("en-US", {
+  const supplyFormatter = new Intl.NumberFormat("en-US", {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
     minimumIntegerDigits: 1,
     useGrouping: true,
   });
-  return balanceFormatter.format(value);
+  return supplyFormatter.format(value);
 }
 
 export function formatVotePercentage(value: number) {
-  const balanceFormatter = new Intl.NumberFormat("en-US", {
+  const percentageFormatter = new Intl.NumberFormat("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
     minimumIntegerDigits: 2,
     useGrouping: true,
   });
-  return balanceFormatter.format(value);
+  return percentageFormatter.format(value);
+}
+
+export function formatPointsInput(value: number) {
+  const pointsInputFormatter = new Intl.NumberFormat("en-US", {
+    maximumFractionDigits: 0,
+    minimumIntegerDigits: 2,
+    useGrouping: true,
+  });
+  return pointsInputFormatter.format(value);
 }

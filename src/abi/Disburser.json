@@ -41,7 +41,7 @@
   },
   {
     "type": "function",
-    "name": "currentVoteCasted",
+    "name": "currentVoteCast",
     "inputs": [
       { "name": "holder", "type": "address", "internalType": "address" }
     ],

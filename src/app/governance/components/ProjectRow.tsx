@@ -2,10 +2,6 @@ import { ReactNode } from "react";
 import { DecrementIcon, IncrementIcon } from "./Icons";
 import { formatVotePercentage } from "@/app/core/util/formatter";
 import { projectsMeta } from "@/app/projectsMeta";
-import { useContractRead } from "wagmi";
-import config from "@/chainConfig";
-import { BREAD_GNOSIS_ABI } from "@/abi";
-import { formatUnits } from "viem";
 
 export function ProjectRow({
   address,
@@ -14,28 +10,14 @@ export function ProjectRow({
   address: `0x${string}`;
   children: ReactNode;
 }) {
-  const { data: breadBalanceData, status: breadBalanceStatus } =
-    useContractRead({
-      address: config[100].BREAD.address,
-      abi: BREAD_GNOSIS_ABI,
-      functionName: "balanceOf",
-      args: [address],
-      watch: true,
-    });
-
   return (
     <div>
       <div className="flex flex-row rounded-lg p-4 justify-start gap-4 bg-breadgray-charcoal border border-breadgray-toast">
-        <span className="rounded-full bg-neutral-700 w-8 h-8"></span>
+        <span className="rounded-full bg-neutral-700 w-14 h-14"></span>
         <span className="text-xl grow">{projectsMeta[address].name}</span>
         <div className="flex items-center gap-2 pr-2 border-2 border-breadgray-rye rounded-lg dark:bg-breadgray-burnt">
           {children}
         </div>
-      </div>
-
-      <div className="text-sm text-neutral-500">
-        {breadBalanceData ? formatUnits(breadBalanceData as bigint, 18) : ""}{" "}
-        BREAD
       </div>
     </div>
   );
@@ -67,7 +49,7 @@ export function VoteForm({
         </div>
       </InputButton>
       <input
-        className={`min-w-14 max-w-0 p-1 dark:bg-breadgray-burnt border-neutral-300 text-2xl font-medium`}
+        className={`min-w-12 max-w-0 p-1 dark:bg-breadgray-burnt border-neutral-300 text-2xl font-medium`}
         type="text"
         placeholder="00"
         inputMode="decimal"
@@ -83,14 +65,14 @@ export function VoteForm({
             address
           );
         }}
-        value={value === null ? "" : value}
+        value={value === null ? "00" : value}
       />
       <InputButton onClick={increment}>
         <div className="w-5 h-5">
           <IncrementIcon />
         </div>
       </InputButton>
-      <div>
+      <div className="min-w-16 text-right">
         {formatVotePercentage(value ? (value / totalPoints) * 100 : 0)}%
       </div>
     </>

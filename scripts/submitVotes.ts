@@ -40,12 +40,16 @@ export async function balanceOf(anvilAccount: `0x${string}`) {
   console.log(`Bread balance of ${anvilAccount} - ${res}`);
 }
 
+function generateVote() {
+  const vote = Math.floor(Math.random() * 10) + 1;
+  console.log(`Vote: ${vote}`);
+  return vote;
+}
+
 export async function submitVote(anvilAccount: `0x${string}`) {
   await testClient.impersonateAccount({
     address: anvilAccount,
   });
-
-  const vote = 1 * Math.floor(Math.random() * 10) + 1;
 
   try {
     const hash = await testClient.writeContract({
@@ -53,7 +57,15 @@ export async function submitVote(anvilAccount: `0x${string}`) {
       abi: DISBURSER_ABI,
       functionName: "castVote",
       account: anvilAccount,
-      args: [[vote, vote, vote, vote, vote]],
+      args: [
+        [
+          generateVote(),
+          generateVote(),
+          generateVote(),
+          generateVote(),
+          generateVote(),
+        ],
+      ],
     });
 
     const transaction = await publicClient.waitForTransactionReceipt({ hash });

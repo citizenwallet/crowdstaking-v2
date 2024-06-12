@@ -7,10 +7,8 @@ import { Project } from "./ProjectPanel";
 import config from "@/chainConfig";
 import { DISBURSER_ABI } from "@/abi";
 import { useContractRead } from "wagmi";
-import { useCurrentBlockNumber } from "./useBlockNumber";
-import { formatUnits } from "viem";
 import { projectsMeta } from "@/app/projectsMeta";
-import { useVotes } from "../useVotes";
+import { ParsedVote, useVotes } from "../useVotes";
 
 export type VoteAPI = {
   id: string;
@@ -20,7 +18,11 @@ export type VoteAPI = {
   walletAddress: string;
 };
 
-export function VotesPanel({ projects }: { projects: Array<Project> }) {
+export function VotesPanel({
+  projectAccounts,
+}: {
+  projectAccounts: Array<`0x${string}`>;
+}) {
   // get start of round blocknumber
   const {
     data: lastClaimedBlockNumberData,
@@ -32,43 +34,17 @@ export function VotesPanel({ projects }: { projects: Array<Project> }) {
     watch: true,
   });
 
-  const votes = useVotes(
-    lastClaimedBlockNumberData ? (lastClaimedBlockNumberData as bigint) : null
+  // console.log({ lastClaimedBlockNumberData, lastClaimedBlockNumberStatus });
+  const { data: votesData } = useVotes(
+    lastClaimedBlockNumberStatus == "success"
+      ? (lastClaimedBlockNumberData as bigint)
+      : null
   );
 
-  // const totals = useMemo(() => {
-  //   return data?.reduce(
-  //     (acc, vote) => {
-  //       const projectName = projects.find(
-  //         (project) => project.id === vote.projectId
-  //       )?.name;
-  //       if (!projectName) {
-  //         return acc;
-  //       }
-  //       acc.projects[projectName] =
-  //         acc.projects[projectName] + vote.value || vote.value;
-  //       acc.count += 1;
-
-  //       if (!acc.voters.find((voter) => voter.address === vote.walletAddress)) {
-  //         acc.voters.push({
-  //           address: vote.walletAddress,
-  //           votedAt: vote.createdAt,
-  //         });
-  //       }
-  //       return acc;
-  //     },
-  //     { count: 0, voters: [], projects: {} } as {
-  //       projects: {
-  //         [key: string]: number;
-  //       };
-  //       voters: {
-  //         votedAt: Date;
-  //         address: string;
-  //       }[];
-  //       count: number;
-  //     }
-  //   );
-  // }, [data, projects]);
+  const totals = useMemo(() => {
+    if (!votesData) return;
+    return calculateResults(votesData);
+  }, [votesData]);
 
   return (
     <section className="grid grid-cols-1 gap-4">
@@ -78,19 +54,23 @@ export function VotesPanel({ projects }: { projects: Array<Project> }) {
             results
           </h3>
           <div className="grid grid-cols-1 gap-6">
-            {projects.map((project) => (
-              <ResultsProject
-                key={`project_votes_${project.address}`}
-                address={project.address}
-                value={null}
-                total={null}
-              />
-            ))}
+            {projectAccounts &&
+              projectAccounts.map((account) => (
+                <ResultsProject
+                  key={`project_result_${account}`}
+                  address={account}
+                  value={totals?.projects[account] || null}
+                  total={(totals?.count && totals.count * 10000) || null}
+                />
+              ))}
           </div>
         </div>
       </div>
-      <div className="grid grid-coles-1 gap-3 rounded-lg bg-breadgray-charcoal border border-breadgray-toast p-4">
-        {/* {totals?.voters
+      {/* <div className="grid grid-cols-1 gap-3 rounded-lg bg-breadgray-charcoal border border-breadgray-toast p-4">
+        <h3 className="uppercase font-medium text-xl text-breadgray-light-grey">
+          Votes
+        </h3>
+        {totals?.voters
           .sort((a, b) => {
             return (
               new Date(b.votedAt).getTime() - new Date(a.votedAt).getTime()
@@ -112,8 +92,8 @@ export function VotesPanel({ projects }: { projects: Array<Project> }) {
               </div>
               <div className="text-lg">{truncateAddress(val.address)}</div>
             </div>
-          ))} */}
-      </div>
+          ))}
+      </div> */}
     </section>
   );
 }
@@ -146,3 +126,60 @@ function ResultsProject({
     </div>
   );
 }
+
+function calculateResults(votesData: Array<ParsedVote>) {
+  return votesData.reduce(
+    (acc, vote) => {
+      vote.projects.forEach((project, i) => {
+        if (!acc.projects[project]) {
+          acc.projects[project] = vote.permyriadDistribution[i];
+          return;
+        }
+        acc.projects[project] += vote.permyriadDistribution[i];
+      });
+
+      acc.count += 1;
+      return acc;
+    },
+    { count: 0, projects: {} } as {
+      projects: {
+        [key: string]: number;
+      };
+      count: number;
+    }
+  );
+}
+
+// const totals = useMemo(() => {
+//   return data?.reduce(
+//     (acc, vote) => {
+//       const projectName = projects.find(
+//         (project) => project.id === vote.projectId
+//       )?.name;
+//       if (!projectName) {
+//         return acc;
+//       }
+//       acc.projects[projectName] =
+//         acc.projects[projectName] + vote.value || vote.value;
+//       acc.count += 1;
+
+//       if (!acc.voters.find((voter) => voter.address === vote.walletAddress)) {
+//         acc.voters.push({
+//           address: vote.walletAddress,
+//           votedAt: vote.createdAt,
+//         });
+//       }
+//       return acc;
+//     },
+//     { count: 0, voters: [], projects: {} } as {
+//       projects: {
+//         [key: string]: number;
+//       };
+//       voters: {
+//         votedAt: Date;
+//         address: string;
+//       }[];
+//       count: number;
+//     }
+//   );
+// }, [data, projects]);

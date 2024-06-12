@@ -11,7 +11,7 @@ export function VotingPower({ address }: { address: `0x${string}` }) {
     args: [address],
     watch: true,
   });
-  console.log({ votingPowerData, votingPowerStatus });
+  // console.log({ votingPowerData, votingPowerStatus });
 
   const { data: numCheckpointsData, status: numCheckpointsStatus } =
     useContractRead({
@@ -22,7 +22,7 @@ export function VotingPower({ address }: { address: `0x${string}` }) {
       watch: true,
     });
 
-  console.log({ numCheckpointsData, numCheckpointsStatus });
+  // console.log({ numCheckpointsData, numCheckpointsStatus });
 
   return (
     <div className="flex justify-between">
