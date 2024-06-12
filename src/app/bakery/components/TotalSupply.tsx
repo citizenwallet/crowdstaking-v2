@@ -17,7 +17,7 @@ export function TotalSupply() {
   return (
     <div className="flex justify-center pb-2">
       <div className="flex items-center gap-2 p-2 bg-white dark:bg-breadgray-charcoal rounded">
-        <span className="rounded-full w-2 h-2 bg-status-success" />
+        <span className="rounded-full w-2 h-2 bg-status-success supply-light" />
         <span className="text-xl font-semibold">
           {data
             ? formatSupply(parseInt(formatUnits(BigInt(data as string), 18)))
