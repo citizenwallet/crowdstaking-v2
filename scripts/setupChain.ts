@@ -1,6 +1,12 @@
-import { DEV_ACCOUNT, anvilAccounts, testClient } from "./helpers";
-import { setClaimer } from "./setClaimer";
-import { bakeBread, balanceOf, submitVote } from "./submitVotes";
+import { DEV_ACCOUNT, anvilAccounts, testClient } from "./lib";
+import { setClaimer, bakeBread, balanceOf, submitVote } from "./lib";
+
+/**
+ *
+ * Sets Yield Claimer
+ * Bakes BREAD for test wallets
+ *
+ */
 
 export async function main() {
   await setClaimer();
@@ -16,12 +22,6 @@ export async function main() {
   anvilAccounts.forEach(async (account) => {
     await balanceOf(account);
   });
-
-  await testClient.mine({ blocks: 10 });
-
-  for (let i = 0; i < anvilAccounts.length; i++) {
-    await submitVote(anvilAccounts[i]);
-  }
 }
 
 main();
