@@ -7,6 +7,7 @@
     /* @apply bg-breadgray-grey100;
     @apply text-breadgray-white; */
     @apply font-redhat;
+    overflow-x: hidden;
   }
 
   .AccordionTrigger[data-state="open"] > .AccordionChevron {
