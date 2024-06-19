@@ -1,13 +1,12 @@
 import { ButtonVariants } from "@/app/core/components/Button/Button";
 import clsx from "clsx";
-import Image from "next/image";
 
 export function InsufficentBalance() {
   return (
     <div
       className={clsx(
         ButtonVariants["large"],
-        "flex justify-center items-center gap-4 w-full dark:bg-breadgray-og-dark text-status-danger-light dark:text-status-danger rounded-xl font-medium text-center border-2 border-status-danger-light dark:border-status-danger"
+        "flex justify-center items-center gap-4 w-full text-status-danger-light dark:text-status-danger rounded-xl font-bold text-center border-2 border-status-danger-light dark:border-status-danger"
       )}
     >
       <svg
