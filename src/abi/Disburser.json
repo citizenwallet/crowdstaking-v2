@@ -2,14 +2,7 @@
   { "type": "constructor", "inputs": [], "stateMutability": "nonpayable" },
   {
     "type": "function",
-    "name": "PRECISION",
-    "inputs": [],
-    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "breadToken",
+    "name": "BREAD",
     "inputs": [],
     "outputs": [
       { "name": "", "type": "address", "internalType": "contract Bread" }
@@ -18,37 +11,30 @@
   },
   {
     "type": "function",
-    "name": "breadchainProjects",
-    "inputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
-    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "name": "PRECISION",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
     "stateMutability": "view"
   },
   {
     "type": "function",
-    "name": "breadchainVoters",
-    "inputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
-    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "name": "blockTime",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
     "stateMutability": "view"
   },
   {
     "type": "function",
     "name": "castVote",
     "inputs": [
-      { "name": "points", "type": "uint256[]", "internalType": "uint256[]" }
+      {
+        "name": "_percentages",
+        "type": "uint256[]",
+        "internalType": "uint256[]"
+      }
     ],
     "outputs": [],
     "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "currentVoteCast",
-    "inputs": [
-      { "name": "holder", "type": "address", "internalType": "address" }
-    ],
-    "outputs": [
-      { "name": "", "type": "uint256[]", "internalType": "uint256[]" }
-    ],
-    "stateMutability": "view"
   },
   {
     "type": "function",
@@ -59,12 +45,9 @@
   },
   {
     "type": "function",
-    "name": "currentVotesCasted",
+    "name": "cycleLength",
     "inputs": [],
-    "outputs": [
-      { "name": "", "type": "address[]", "internalType": "address[]" },
-      { "name": "", "type": "uint256[][]", "internalType": "uint256[][]" }
-    ],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
     "stateMutability": "view"
   },
   {
@@ -76,35 +59,27 @@
   },
   {
     "type": "function",
-    "name": "getBreadchainProjectsLength",
-    "inputs": [],
-    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "getCurrentProjects",
+    "name": "getCurrentVotingDistribution",
     "inputs": [],
     "outputs": [
-      { "name": "", "type": "address[]", "internalType": "address[]" }
+      { "name": "", "type": "address[]", "internalType": "address[]" },
+      { "name": "", "type": "uint256[]", "internalType": "uint256[]" }
     ],
     "stateMutability": "view"
   },
   {
     "type": "function",
-    "name": "getNumCheckpoints",
+    "name": "getCurrentVotingPower",
     "inputs": [
-      { "name": "holder", "type": "address", "internalType": "address" }
+      { "name": "_account", "type": "address", "internalType": "address" }
     ],
     "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
     "stateMutability": "view"
   },
   {
     "type": "function",
-    "name": "getUserVotingPower",
-    "inputs": [
-      { "name": "holder", "type": "address", "internalType": "address" }
-    ],
+    "name": "getProjectsLength",
+    "inputs": [],
     "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
     "stateMutability": "view"
   },
@@ -112,28 +87,18 @@
     "type": "function",
     "name": "getVotingPowerForPeriod",
     "inputs": [
-      { "name": "start", "type": "uint256", "internalType": "uint256" },
-      { "name": "end", "type": "uint256", "internalType": "uint256" },
-      { "name": "account", "type": "address", "internalType": "address" }
+      { "name": "_start", "type": "uint256", "internalType": "uint256" },
+      { "name": "_end", "type": "uint256", "internalType": "uint256" },
+      { "name": "_account", "type": "address", "internalType": "address" }
     ],
     "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
     "stateMutability": "view"
   },
   {
     "type": "function",
-    "name": "holderToDistribution",
-    "inputs": [
-      { "name": "", "type": "address", "internalType": "address" },
-      { "name": "", "type": "uint256", "internalType": "uint256" }
-    ],
-    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "holderToDistributionTotal",
+    "name": "holderToLastVoted",
     "inputs": [{ "name": "", "type": "address", "internalType": "address" }],
-    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "outputs": [{ "name": "", "type": "uint48", "internalType": "uint48" }],
     "stateMutability": "view"
   },
   {
@@ -141,18 +106,38 @@
     "name": "initialize",
     "inputs": [
       { "name": "breadAddress", "type": "address", "internalType": "address" },
+      { "name": "_projects", "type": "address[]", "internalType": "address[]" },
+      { "name": "_blockTime", "type": "uint256", "internalType": "uint256" },
       {
-        "name": "_breadchainProjects",
-        "type": "address[]",
-        "internalType": "address[]"
-      }
+        "name": "_minVotingAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_minHoldingDuration",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      { "name": "_maxPoints", "type": "uint256", "internalType": "uint256" },
+      { "name": "_cycleLength", "type": "uint256", "internalType": "uint256" },
+      {
+        "name": "_lastClaimedTimestamp",
+        "type": "uint48",
+        "internalType": "uint48"
+      },
+      {
+        "name": "_lastClaimedBlockNumber",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      { "name": "_precision", "type": "uint256", "internalType": "uint256" }
     ],
     "outputs": [],
     "stateMutability": "nonpayable"
   },
   {
     "type": "function",
-    "name": "lastClaimedBlocknumber",
+    "name": "lastClaimedBlockNumber",
     "inputs": [],
     "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
     "stateMutability": "view"
@@ -166,7 +151,21 @@
   },
   {
     "type": "function",
+    "name": "maxPoints",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "maxVotes",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "minHoldingDuration",
     "inputs": [],
     "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
     "stateMutability": "view"
@@ -187,20 +186,6 @@
   },
   {
     "type": "function",
-    "name": "minVotingHoldingDuration",
-    "inputs": [],
-    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "minimumTimeBetweenClaims",
-    "inputs": [],
-    "outputs": [{ "name": "", "type": "uint48", "internalType": "uint48" }],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
     "name": "owner",
     "inputs": [],
     "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
@@ -208,16 +193,23 @@
   },
   {
     "type": "function",
-    "name": "pointsMax",
-    "inputs": [],
+    "name": "projectDistributions",
+    "inputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
     "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "projects",
+    "inputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
     "stateMutability": "view"
   },
   {
     "type": "function",
     "name": "queueProjectAddition",
     "inputs": [
-      { "name": "project", "type": "address", "internalType": "address" }
+      { "name": "_project", "type": "address", "internalType": "address" }
     ],
     "outputs": [],
     "stateMutability": "nonpayable"
@@ -226,7 +218,7 @@
     "type": "function",
     "name": "queueProjectRemoval",
     "inputs": [
-      { "name": "project", "type": "address", "internalType": "address" }
+      { "name": "_project", "type": "address", "internalType": "address" }
     ],
     "outputs": [],
     "stateMutability": "nonpayable"
@@ -264,22 +256,27 @@
   },
   {
     "type": "function",
-    "name": "setCurrentVotes",
+    "name": "setBlockTime",
     "inputs": [
-      { "name": "_currentVotes", "type": "uint256", "internalType": "uint256" }
+      { "name": "_blockTime", "type": "uint256", "internalType": "uint256" }
     ],
     "outputs": [],
     "stateMutability": "nonpayable"
   },
   {
     "type": "function",
-    "name": "setLastClaimedBlocknumber",
+    "name": "setCycleLength",
     "inputs": [
-      {
-        "name": "_lastClaimedBlocknumber",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
+      { "name": "_cycleLength", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setMaxPoints",
+    "inputs": [
+      { "name": "_maxPoints", "type": "uint256", "internalType": "uint256" }
     ],
     "outputs": [],
     "stateMutability": "nonpayable"
@@ -289,6 +286,19 @@
     "name": "setMaxVotes",
     "inputs": [
       { "name": "_maxVotes", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setMinHoldingDuration",
+    "inputs": [
+      {
+        "name": "_minHoldingDuration",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
     ],
     "outputs": [],
     "stateMutability": "nonpayable"
@@ -321,60 +331,19 @@
   },
   {
     "type": "function",
-    "name": "setMinVotingHoldingDuration",
-    "inputs": [
-      {
-        "name": "_minVotingHoldingDuration",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setMinimumTimeBetweenClaims",
-    "inputs": [
-      {
-        "name": "_minimumTimeBetweenClaims",
-        "type": "uint48",
-        "internalType": "uint48"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setPointsMax",
-    "inputs": [
-      { "name": "_pointsMax", "type": "uint256", "internalType": "uint256" }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setlastClaimedTimestamp",
-    "inputs": [
-      {
-        "name": "_lastClaimedTimestamp",
-        "type": "uint48",
-        "internalType": "uint48"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
     "name": "transferOwnership",
     "inputs": [
       { "name": "newOwner", "type": "address", "internalType": "address" }
     ],
     "outputs": [],
     "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "voters",
+    "inputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
   },
   {
     "type": "event",
@@ -492,13 +461,20 @@
   },
   { "type": "error", "name": "AlreadyClaimed", "inputs": [] },
   { "type": "error", "name": "AlreadyMemberProject", "inputs": [] },
-  { "type": "error", "name": "BelowMinRequiredVotingPower", "inputs": [] },
+  { "type": "error", "name": "AlreadyVotedInCycle", "inputs": [] },
+  {
+    "type": "error",
+    "name": "BelowMinRequiredVotingPower",
+    "inputs": [
+      { "name": "minimum", "type": "uint256", "internalType": "uint256" }
+    ]
+  },
   { "type": "error", "name": "EndAfterCurrentBlock", "inputs": [] },
   { "type": "error", "name": "IncorrectNumberOfProjects", "inputs": [] },
   { "type": "error", "name": "InvalidInitialization", "inputs": [] },
-  { "type": "error", "name": "InvalidSignature", "inputs": [] },
   { "type": "error", "name": "MustBeGreaterThanZero", "inputs": [] },
   { "type": "error", "name": "NoCheckpointsForAccount", "inputs": [] },
+  { "type": "error", "name": "NoVotesCasted", "inputs": [] },
   { "type": "error", "name": "NotInitializing", "inputs": [] },
   {
     "type": "error",
@@ -531,5 +507,6 @@
     "type": "error",
     "name": "YieldTooLow",
     "inputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }]
-  }
+  },
+  { "type": "error", "name": "ZeroVotePoints", "inputs": [] }
 ]

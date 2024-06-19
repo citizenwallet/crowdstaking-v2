@@ -3,6 +3,8 @@ import { viemClient } from "../core/viemClient";
 import { DISBURSER_ABI } from "@/abi";
 import { useQuery } from "react-query";
 import { formatUnits, fromHex } from "viem";
+import { useContractRead } from "wagmi";
+import { useLastClaimedBlockNumber } from "./useLastClaimedBlockNumber";
 
 type VoteLogData = {
   blockTimestamp: `0x${string}`;
@@ -13,17 +15,19 @@ type VoteLogData = {
   };
 };
 
-export function useVotes(fromBlock: bigint | null) {
+export function useCurrentVotes() {
+  const { lastClaimedBlocknumber } = useLastClaimedBlockNumber();
+
   return useQuery({
     queryKey: "getVotesForCurrentRound",
     refetchInterval: 500,
-    enabled: !!fromBlock,
+    enabled: !!lastClaimedBlocknumber,
     queryFn: async () => {
       const logs = await viemClient.getContractEvents({
         address: config[100].DISBURSER.address,
         abi: DISBURSER_ABI,
         eventName: "BreadHolderVoted",
-        fromBlock: fromBlock || BigInt(0),
+        fromBlock: lastClaimedBlocknumber || BigInt(0),
         toBlock: "latest",
       });
 
@@ -36,7 +40,7 @@ export function useVotes(fromBlock: bigint | null) {
 export type ParsedVote = {
   account: `0x${string}`;
   blockTimestamp: number;
-  permyriadDistribution: number[];
+  points: number[];
   projects: `0x${string}`[];
 };
 
@@ -44,9 +48,10 @@ function parseVoteLog(log: VoteLogData): ParsedVote {
   return {
     account: log.args.holder,
     blockTimestamp: fromHex(log.blockTimestamp, "number") * 1000,
-    permyriadDistribution: pointsToPermyraid(
-      log.args.percentages.map((b) => parseInt(formatUnits(b, 0)))
-    ),
+    points: log.args.percentages.map((bigPoints) => Number(bigPoints)),
+    // permyriadDistribution: pointsToPermyraid(
+    //   log.args.percentages.map((b) => parseInt(formatUnits(b, 0)))
+    // ),
     projects: log.args.projects,
   };
 }

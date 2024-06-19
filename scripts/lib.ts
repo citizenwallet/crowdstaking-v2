@@ -9,7 +9,8 @@ import { BREAD_ADDRESS, DISBURSER_ADDRESS } from "../src/chainConfig";
 import { BREAD_GNOSIS_ABI, DISBURSER_ABI } from "../src/abi";
 
 export const anvilAccounts: Array<`0x${string}`> = [
-  "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
+  // mock wallet 2
+  // "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
   "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc",
   "0x90f79bf6eb2c4f870365e785982e1f101e93b906",
   "0x15d34aaf54267db7d7c367839aaf71a00a2c6a65",
@@ -63,7 +64,7 @@ export async function bakeBread(anvilAccount: `0x${string}`) {
       address: BREAD_ADDRESS,
       abi: BREAD_GNOSIS_ABI,
       functionName: "mint",
-      value: 2000000000000000000000n,
+      value: 9900000000000000000000n,
       args: [anvilAccount],
     });
 
@@ -150,4 +151,14 @@ export async function submitVote(anvilAccount: `0x${string}`) {
   } catch (err) {
     console.log(err);
   }
+}
+
+export async function getCurrentDistribution() {
+  const res = await publicClient.readContract({
+    address: DISBURSER_ADDRESS,
+    abi: DISBURSER_ABI,
+    functionName: "getCurrentVotingDistribution",
+  });
+
+  console.log(`Current distribution: - ${res}`);
 }

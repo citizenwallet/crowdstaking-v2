@@ -1,4 +1,4 @@
-import { anvilAccounts, testClient } from "./lib";
+import { anvilAccounts, getCurrentDistribution, testClient } from "./lib";
 import { submitVote } from "./lib";
 
 async function main() {
@@ -10,6 +10,8 @@ async function main() {
   for (let i = 0; i < anvilAccounts.length; i++) {
     await submitVote(anvilAccounts[i]);
   }
+
+  await getCurrentDistribution();
 }
 
 main();

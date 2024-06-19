@@ -16,21 +16,62 @@ import { nanoid } from "nanoid";
 import { VoteTransactionModal } from "@/app/core/components/Modal/TransactionModal/VoteTransactionModal";
 import SafeAppsSDK from "@safe-global/safe-apps-sdk/dist/src/sdk";
 import { TransactionStatus } from "@safe-global/safe-apps-sdk/dist/src/types";
+import { TConnectedUserState } from "@/app/core/hooks/useConnectedUser";
+import { AccountMenu } from "@/app/core/components/Header/AccountMenu";
+
+export function CastVotePanel({
+  user,
+  userVote,
+  voteIsCast,
+  breadBalance,
+  votingPower,
+  isSafe,
+}: {
+  user: TConnectedUserState;
+  userVote: Array<number>;
+  voteIsCast: boolean;
+  breadBalance: number | null;
+  votingPower: number | null;
+  isSafe: boolean;
+}) {
+  const canVote =
+    (breadBalance && breadBalance > 0) || (votingPower && votingPower > 0);
+
+  if (user.status === "NOT_CONNECTED")
+    return (
+      <AccountMenu variant="large" fullWidth>
+        <div className="tracking-wider">Connect to vote</div>
+      </AccountMenu>
+    );
+
+  if (voteIsCast) return <VoteIsCast />;
+
+  if (!canVote) return <div>cant vote!!</div>;
+  return (
+    <div>
+      {user.status === "CONNECTED" && (
+        <CastVote vote={userVote} isSafe={isSafe} />
+      )}
+    </div>
+  );
+}
 
 export function CastVote({
   vote,
-  voteIsCast,
   isSafe,
 }: {
   vote: Array<number>;
-  voteIsCast: boolean;
   isSafe: boolean;
 }) {
   const { transactionsState, transactionsDispatch } = useTransactions();
   const [txId, setTxId] = useState<string | null>(null);
   const writeIsEnabled = !!(vote.reduce((acc, num) => (acc += num), 0) > 0);
 
-  const { config: prepareConfig } = usePrepareContractWrite({
+  const {
+    config: prepareConfig,
+    status: prepareConfigStatus,
+    error: prepareConfigError,
+  } = usePrepareContractWrite({
     address: config[100].DISBURSER.address,
     abi: DISBURSER_ABI,
     functionName: "castVote",
@@ -70,34 +111,35 @@ export function CastVote({
     <DialogPrimitiveRoot
     // onOpenChange={setModalOpen}
     >
-      {voteIsCast ? (
-        <VoteIsCast />
-      ) : (
-        <DialogPrimitiveTrigger asChild>
-          <Button
-            fullWidth
-            variant="large"
-            onClick={() => {
-              if (!write) return;
-              const newId = nanoid();
-              setTxId(newId);
-              transactionsDispatch({
-                type: "NEW",
-                payload: {
-                  id: newId,
-                  data: {
-                    type: "VOTE",
-                  },
+      <DialogPrimitiveTrigger asChild>
+        <Button
+          fullWidth
+          variant="large"
+          onClick={() => {
+            if (!write) return;
+            if (prepareConfigStatus !== "success") {
+              console.log("castVote tx prepare failed: ", prepareConfigError);
+              return;
+            }
+            const newId = nanoid();
+            setTxId(newId);
+            transactionsDispatch({
+              type: "NEW",
+              payload: {
+                id: newId,
+                data: {
+                  type: "VOTE",
                 },
-              });
-              write();
-            }}
-            disabled={!writeIsEnabled}
-          >
-            Cast Vote
-          </Button>
-        </DialogPrimitiveTrigger>
-      )}
+              },
+            });
+            write();
+          }}
+          disabled={!writeIsEnabled}
+        >
+          Cast Vote
+        </Button>
+      </DialogPrimitiveTrigger>
+
       <DialogPrimitivePortal forceMount>
         <AnimatePresence>
           {transaction && <VoteTransactionModal transaction={transaction} />}

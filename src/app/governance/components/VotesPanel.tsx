@@ -1,14 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
-
-import { truncateAddress } from "@/app/core/util/formatter";
-import { blo } from "blo";
-import { Project } from "./ProjectPanel";
-import config from "@/chainConfig";
-import { DISBURSER_ABI } from "@/abi";
-import { useContractRead } from "wagmi";
 import { projectsMeta } from "@/app/projectsMeta";
-import { ParsedVote, useVotes } from "../useVotes";
 
 export type VoteAPI = {
   id: string;
@@ -19,33 +9,10 @@ export type VoteAPI = {
 };
 
 export function VotesPanel({
-  projectAccounts,
+  distribution,
 }: {
-  projectAccounts: Array<`0x${string}`>;
+  distribution: [`0x${string}`[], number[]] | null;
 }) {
-  // get start of round blocknumber
-  const {
-    data: lastClaimedBlockNumberData,
-    status: lastClaimedBlockNumberStatus,
-  } = useContractRead({
-    address: config[100].DISBURSER.address,
-    abi: DISBURSER_ABI,
-    functionName: "lastClaimedBlocknumber",
-    watch: true,
-  });
-
-  // console.log({ lastClaimedBlockNumberData, lastClaimedBlockNumberStatus });
-  const { data: votesData } = useVotes(
-    lastClaimedBlockNumberStatus == "success"
-      ? (lastClaimedBlockNumberData as bigint)
-      : null
-  );
-
-  const totals = useMemo(() => {
-    if (!votesData) return;
-    return calculateResults(votesData);
-  }, [votesData]);
-
   return (
     <section className="grid grid-cols-1 gap-4">
       <div className="grid grid-cols-1 gap-8 rounded-lg bg-breadgray-charcoal border border-breadgray-toast p-4">
@@ -54,13 +21,16 @@ export function VotesPanel({
             results
           </h3>
           <div className="grid grid-cols-1 gap-6">
-            {projectAccounts &&
-              projectAccounts.map((account) => (
+            {distribution &&
+              distribution[0].map((account, i) => (
                 <ResultsProject
                   key={`project_result_${account}`}
                   address={account}
-                  value={totals?.projects[account] || null}
-                  total={(totals?.count && totals.count * 10000) || null}
+                  value={distribution[1][i] || null}
+                  total={distribution[1].reduce(
+                    (acc, points) => acc + points,
+                    0
+                  )}
                 />
               ))}
           </div>
@@ -127,28 +97,28 @@ function ResultsProject({
   );
 }
 
-function calculateResults(votesData: Array<ParsedVote>) {
-  return votesData.reduce(
-    (acc, vote) => {
-      vote.projects.forEach((project, i) => {
-        if (!acc.projects[project]) {
-          acc.projects[project] = vote.permyriadDistribution[i];
-          return;
-        }
-        acc.projects[project] += vote.permyriadDistribution[i];
-      });
+// function calculateResults(votesData: Array<ParsedVote>) {
+//   return votesData.reduce(
+//     (acc, vote) => {
+//       vote.projects.forEach((project, i) => {
+//         if (!acc.projects[project]) {
+//           acc.projects[project] = vote.permyriadDistribution[i];
+//           return;
+//         }
+//         acc.projects[project] += vote.permyriadDistribution[i];
+//       });
 
-      acc.count += 1;
-      return acc;
-    },
-    { count: 0, projects: {} } as {
-      projects: {
-        [key: string]: number;
-      };
-      count: number;
-    }
-  );
-}
+//       acc.count += 1;
+//       return acc;
+//     },
+//     { count: 0, projects: {} } as {
+//       projects: {
+//         [key: string]: number;
+//       };
+//       count: number;
+//     }
+//   );
+// }
 
 // const totals = useMemo(() => {
 //   return data?.reduce(

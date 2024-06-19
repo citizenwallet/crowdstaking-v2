@@ -9,8 +9,6 @@ import { setClaimer, bakeBread, balanceOf, submitVote } from "./lib";
  */
 
 export async function main() {
-  await setClaimer();
-
   const bakePromises = anvilAccounts.map(async (account) => {
     return bakeBread(account);
   });

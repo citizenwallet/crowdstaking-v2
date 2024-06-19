@@ -23,7 +23,6 @@ export default function Governance() {
     user: { features },
   } = useConnectedUser();
   useEffect(() => {
-    console.log({ features });
     if (!features.governancePage) {
       router.push("/");
     }
@@ -46,7 +45,7 @@ export default function Governance() {
           </div>
         </div>
         <ProjectPanel />
-        <Diagnostics />
+        {/* <Diagnostics /> */}
         {/* <SlicesPanel /> */}
         {/* <div className="max-w-2xl m-auto">
           {breadHolders.map((address) => (

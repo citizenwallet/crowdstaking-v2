@@ -13,14 +13,26 @@ import {
 
 export function Diagnostics() {
   const {
-    write,
-    data: distributeYieldData,
-    status: distributeYieldStatus,
-  } = useContractWrite({
+    config: prepareConfig,
+    status: prepareStatus,
+    error: prepareError,
+  } = usePrepareContractWrite({
     address: config[100].DISBURSER.address,
     abi: DISBURSER_ABI,
     functionName: "distributeYield",
   });
+
+  const {
+    write,
+    data: distributeYieldData,
+    status: distributeYieldStatus,
+  } = useContractWrite(prepareConfig);
+
+  useEffect(() => {
+    if (prepareError) {
+      console.log({ prepareError });
+    }
+  }, [prepareError]);
 
   return (
     <div className="m-4 p-4 rounded border border-neutral-500 grid grid-cols-1 gap-4">

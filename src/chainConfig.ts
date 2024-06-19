@@ -15,7 +15,7 @@ export interface ChainConfiguration {
 }
 
 export const BREAD_ADDRESS = "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3";
-export const DISBURSER_ADDRESS = "0xA15BB66138824a1c7167f5E85b957d04Dd34E468";
+export const DISBURSER_ADDRESS = "0xb19b36b1456E65E3A6D514D3F715f204BD59f431";
 
 export interface IConfig {
   [chainId: number]: ChainConfiguration;

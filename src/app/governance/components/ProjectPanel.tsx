@@ -1,12 +1,19 @@
 "use client";
 import { useEffect, useState } from "react";
 import { ProjectRow, VoteDisplay, VoteForm } from "./ProjectRow";
-import { CastVote } from "./CastVote";
-import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
+import { CastVote, CastVotePanel } from "./CastVote";
+import {
+  TConnectedUserState,
+  useConnectedUser,
+} from "@/app/core/hooks/useConnectedUser";
 import { VotesPanel } from "./VotesPanel";
 import { AccountMenu } from "@/app/core/components/Header/AccountMenu";
-import { useMemberProjects } from "../useMemberProjects";
+import { useCurrentVotingDistribution } from "../useCurrentVotingDistribution";
 import { useCastVote } from "../useCastVote";
+import { useCurrentVotes } from "../useCurrentVotes";
+import { useUserVotingPower } from "../useUserVotingPower";
+import { useTokenBalances } from "@/app/core/context/TokenBalanceContext/TokenBalanceContext";
+import { VotingPower } from "./VotingPower";
 
 export type Project = {
   address: `0x${string}`;
@@ -15,21 +22,23 @@ export type Project = {
 
 export function ProjectPanel() {
   const { user, isSafe } = useConnectedUser();
-  const { memberProjects } = useMemberProjects();
+  const { currentVotingDistribution } = useCurrentVotingDistribution();
   const { castVote } = useCastVote(user);
+  const { userVotingPower } = useUserVotingPower(user);
+  const { BREAD } = useTokenBalances();
 
   const [projects, setProjects] = useState<Array<Project>>([]);
 
   useEffect(() => {
-    if (memberProjects) {
+    if (currentVotingDistribution) {
       setProjects(
-        memberProjects.map((address) => ({
+        currentVotingDistribution[0].map((address) => ({
           address,
           points: 0,
         }))
       );
     }
-  }, [memberProjects]);
+  }, [currentVotingDistribution]);
 
   function updateValue(value: number, address: `0x${string}`) {
     const updatedProjects = projects.map((project) => {
@@ -50,47 +59,54 @@ export function ProjectPanel() {
     : 0;
 
   return (
-    <div className="grid grid-cols-12 p-4 md:p-8 gap-8">
-      <div className="col-span-12 md:col-span-8">
-        <div className="grid grid-cols-1 gap-4">
-          {memberProjects &&
-            memberProjects.map((projectAddress, i) => (
-              <ProjectRow key={projectAddress} address={projectAddress}>
-                {castVote && castVote.length > 0 ? (
-                  <VoteDisplay
-                    points={castVote[i]}
-                    percentage={(castVote[i] / castTotalPoints) * 100 || 0}
-                  />
-                ) : (
-                  <VoteForm
-                    value={projects[i]?.points}
-                    updateValue={updateValue}
-                    address={projectAddress}
-                    totalPoints={totalPoints}
-                  />
-                )}
-              </ProjectRow>
-            ))}
-          <div>
-            {user.status === "NOT_CONNECTED" && (
-              <AccountMenu variant="large" fullWidth>
-                <div className="tracking-wider">Connect to vote</div>
-              </AccountMenu>
-            )}
-            {user.status === "CONNECTED" && (
-              <CastVote
-                vote={projects.map((project) => project.points)}
-                voteIsCast={castVote && castVote.length > 0 ? true : false}
-                isSafe={isSafe}
-              />
-            )}
-          </div>
+    <div>
+      <div className="p-4 md:p-8">
+        <div>voting power: {JSON.stringify(userVotingPower)}</div>
+        <div>
+          BREAD balance:{" "}
+          {JSON.stringify(
+            BREAD?.status === "SUCCESS" ? BREAD.value : "loading???"
+          )}
         </div>
       </div>
-      <div className="col-span-12 md:col-span-4">
-        <VotesPanel
-          projectAccounts={projects.map((project) => project.address)}
-        />
+      <div className="grid grid-cols-12 p-4 md:p-8 gap-8">
+        <div className="col-span-12 md:col-span-8">
+          <div className="grid grid-cols-1 gap-4">
+            {currentVotingDistribution &&
+              currentVotingDistribution[0].map((address, i) => {
+                return (
+                  <ProjectRow key={address} address={address}>
+                    {castVote && castVote.length > 0 ? (
+                      <VoteDisplay
+                        points={castVote[i]}
+                        percentage={(castVote[i] / castTotalPoints) * 100 || 0}
+                      />
+                    ) : (
+                      <VoteForm
+                        value={projects[i]?.points}
+                        updateValue={updateValue}
+                        address={address}
+                        totalPoints={totalPoints}
+                      />
+                    )}
+                  </ProjectRow>
+                );
+              })}
+            <CastVotePanel
+              user={user}
+              userVote={projects.map((project) => project.points)}
+              voteIsCast={castVote && castVote.length > 0 ? true : false}
+              breadBalance={
+                BREAD?.status === "SUCCESS" ? Number(BREAD.value) : null
+              }
+              isSafe={isSafe}
+              votingPower={userVotingPower}
+            />
+          </div>
+        </div>
+        <div className="col-span-12 md:col-span-4">
+          <VotesPanel distribution={currentVotingDistribution} />
+        </div>
       </div>
     </div>
   );
