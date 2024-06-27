@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import { TConnectedUserState } from "../core/hooks/useConnectedUser";
 import { useCurrentVotes } from "./useCurrentVotes";
 
-export function useCastVote(user: TConnectedUserState) {
+export function useCastVote(
+  user: TConnectedUserState,
+  lastClaimedBlockNumber: bigint | null
+) {
   const [castVote, setCastVote] = useState<null | Array<number>>(null);
 
   const userAddress = user.status === "CONNECTED" ? user.address : "";
 
-  const { data: votesData } = useCurrentVotes();
+  const { data: votesData } = useCurrentVotes(lastClaimedBlockNumber);
 
   useEffect(() => {
     if (votesData) {

@@ -34,7 +34,7 @@ export default function Bake({
   const { transactionsState, transactionsDispatch } = useTransactions();
   const [txId, setTxId] = useState<string | null>(null);
   const [buttonIsEnabled, setButtonIsEnabled] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [txInProgress, setTxInProgress] = useState(false);
 
   const { BREAD } = config[user.chain.id];
 
@@ -90,7 +90,7 @@ export default function Bake({
       }
       // not safe
       transactionsDispatch({
-        type: "SET_PENDING",
+        type: "SET_SUBMITTED",
         payload: { id: txId, hash: writeData.hash },
       });
       clearInputValue();
@@ -110,17 +110,17 @@ export default function Bake({
   );
 
   useEffect(() => {
-    if (transaction?.status === "PREPARED") setModalOpen(true);
-  }, [transaction, setModalOpen]);
+    if (transaction?.status === "SUBMITTED") setTxInProgress(true);
+  }, [transaction, setTxInProgress]);
 
   return (
     <div className="relative">
-      <DialogPrimitiveRoot onOpenChange={setModalOpen}>
+      <DialogPrimitiveRoot>
         <DialogPrimitiveTrigger asChild>
           <Button
             fullWidth={true}
             variant="xl"
-            disabled={!buttonIsEnabled}
+            disabled={!buttonIsEnabled || txInProgress}
             onClick={() => {
               if (!write) return;
               const newId = nanoid();

@@ -1,14 +1,17 @@
 import {
+  Hex,
   createPublicClient,
   createTestClient,
   http,
+  parseEther,
   walletActions,
 } from "viem";
 import { foundry } from "viem/chains";
+
 import { BREAD_ADDRESS, DISBURSER_ADDRESS } from "../src/chainConfig";
 import { BREAD_GNOSIS_ABI, DISBURSER_ABI } from "../src/abi";
 
-export const anvilAccounts: Array<`0x${string}`> = [
+export const anvilAccounts: Array<Hex> = [
   // mock wallet 2
   // "0x70997970c51812dc3a010c7d01b50e0d17dc79c8",
   "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc",
@@ -53,10 +56,12 @@ export async function setClaimer() {
   console.log("Claimer set: ", transaction.status);
 }
 
-export async function bakeBread(anvilAccount: `0x${string}`) {
+export async function bakeBread(anvilAccount: Hex, value?: number) {
   await testClient.impersonateAccount({
     address: anvilAccount,
   });
+
+  if (!value) value = 5000;
 
   try {
     const hash = await testClient.writeContract({
@@ -64,7 +69,7 @@ export async function bakeBread(anvilAccount: `0x${string}`) {
       address: BREAD_ADDRESS,
       abi: BREAD_GNOSIS_ABI,
       functionName: "mint",
-      value: 9900000000000000000000n,
+      value: parseEther(value.toString()),
       args: [anvilAccount],
     });
 
@@ -76,7 +81,7 @@ export async function bakeBread(anvilAccount: `0x${string}`) {
   }
 }
 
-export async function balanceOf(anvilAccount: `0x${string}`) {
+export async function balanceOf(anvilAccount: Hex) {
   await testClient.impersonateAccount({
     address: anvilAccount,
   });
@@ -97,7 +102,7 @@ function generateVote() {
   return vote;
 }
 
-export async function submitVote(anvilAccount: `0x${string}`) {
+export async function submitVote(anvilAccount: Hex) {
   await testClient.impersonateAccount({
     address: anvilAccount,
   });

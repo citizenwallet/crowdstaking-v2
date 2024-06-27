@@ -1,8 +1,8 @@
-import { DISBURSER_ABI } from "@/abi";
-import config from "@/chainConfig";
-import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 import { useEffect, useState } from "react";
 import { useContractRead } from "wagmi";
+
+import { DISBURSER_ABI } from "@/abi";
+import config from "@/chainConfig";
 
 export function useLastClaimedBlockNumber() {
   const [lastClaimedBlocknumber, setLastClaimedBlockNumber] = useState<

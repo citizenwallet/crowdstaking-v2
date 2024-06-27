@@ -2,32 +2,28 @@ import config from "@/chainConfig";
 import { viemClient } from "../core/viemClient";
 import { DISBURSER_ABI } from "@/abi";
 import { useQuery } from "react-query";
-import { formatUnits, fromHex } from "viem";
-import { useContractRead } from "wagmi";
-import { useLastClaimedBlockNumber } from "./useLastClaimedBlockNumber";
+import { Hex, fromHex } from "viem";
 
 type VoteLogData = {
-  blockTimestamp: `0x${string}`;
+  blockTimestamp: Hex;
   args: {
-    holder: `0x${string}`;
+    holder: Hex;
     percentages: Array<bigint>;
-    projects: Array<`0x${string}`>;
+    projects: Array<Hex>;
   };
 };
 
-export function useCurrentVotes() {
-  const { lastClaimedBlocknumber } = useLastClaimedBlockNumber();
-
+export function useCurrentVotes(lastClaimedBlockNumber: bigint | null) {
   return useQuery({
     queryKey: "getVotesForCurrentRound",
     refetchInterval: 500,
-    enabled: !!lastClaimedBlocknumber,
+    enabled: !!lastClaimedBlockNumber,
     queryFn: async () => {
       const logs = await viemClient.getContractEvents({
         address: config[100].DISBURSER.address,
         abi: DISBURSER_ABI,
         eventName: "BreadHolderVoted",
-        fromBlock: lastClaimedBlocknumber || BigInt(0),
+        fromBlock: lastClaimedBlockNumber || BigInt(0),
         toBlock: "latest",
       });
 
@@ -38,10 +34,10 @@ export function useCurrentVotes() {
 }
 
 export type ParsedVote = {
-  account: `0x${string}`;
+  account: Hex;
   blockTimestamp: number;
   points: number[];
-  projects: `0x${string}`[];
+  projects: Hex[];
 };
 
 function parseVoteLog(log: VoteLogData): ParsedVote {

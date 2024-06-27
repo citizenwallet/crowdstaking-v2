@@ -18,25 +18,21 @@ import SafeAppsSDK from "@safe-global/safe-apps-sdk/dist/src/sdk";
 import { TransactionStatus } from "@safe-global/safe-apps-sdk/dist/src/types";
 import { TConnectedUserState } from "@/app/core/hooks/useConnectedUser";
 import { AccountMenu } from "@/app/core/components/Header/AccountMenu";
+import { CheckIcon } from "@/app/core/components/Icons/CheckIcon";
 
 export function CastVotePanel({
   user,
   userVote,
-  voteIsCast,
-  breadBalance,
-  votingPower,
+  userHasVoted,
+  userCanVote,
   isSafe,
 }: {
   user: TConnectedUserState;
   userVote: Array<number>;
-  voteIsCast: boolean;
-  breadBalance: number | null;
-  votingPower: number | null;
+  userHasVoted: boolean;
+  userCanVote: boolean;
   isSafe: boolean;
 }) {
-  const canVote =
-    (breadBalance && breadBalance > 0) || (votingPower && votingPower > 0);
-
   if (user.status === "NOT_CONNECTED")
     return (
       <AccountMenu variant="large" fullWidth>
@@ -44,13 +40,15 @@ export function CastVotePanel({
       </AccountMenu>
     );
 
-  if (voteIsCast) return <VoteIsCast />;
-
-  if (!canVote) return <div>cant vote!!</div>;
   return (
     <div>
       {user.status === "CONNECTED" && (
-        <CastVote vote={userVote} isSafe={isSafe} />
+        <CastVote
+          vote={userVote}
+          isSafe={isSafe}
+          userCanVote={userCanVote}
+          userHasVoted={userHasVoted}
+        />
       )}
     </div>
   );
@@ -58,10 +56,14 @@ export function CastVotePanel({
 
 export function CastVote({
   vote,
+  userCanVote,
   isSafe,
+  userHasVoted,
 }: {
   vote: Array<number>;
+  userCanVote: boolean;
   isSafe: boolean;
+  userHasVoted: boolean;
 }) {
   const { transactionsState, transactionsDispatch } = useTransactions();
   const [txId, setTxId] = useState<string | null>(null);
@@ -79,7 +81,12 @@ export function CastVote({
     enabled: writeIsEnabled,
   });
 
-  const { write, data: writeData } = useContractWrite(prepareConfig);
+  const {
+    write,
+    data: writeData,
+    isError: writeIsError,
+    error: writeError,
+  } = useContractWrite(prepareConfig);
 
   useEffect(() => {
     (async () => {
@@ -97,15 +104,25 @@ export function CastVote({
       }
       // not safe
       transactionsDispatch({
-        type: "SET_PENDING",
+        type: "SET_SUBMITTED",
         payload: { id: txId, hash: writeData.hash },
       });
     })();
   }, [txId, writeData, transactionsDispatch, isSafe]);
 
+  useEffect(() => {
+    if (!writeIsError && !writeError) return;
+    if (!txId) return;
+    // clear transaction closing modal on error including if user rejects the request
+    transactionsDispatch({ type: "CLEAR", payload: { id: txId } });
+    setTxId(null);
+  }, [writeIsError, writeError, txId, transactionsDispatch]);
+
   const transaction = transactionsState.find(
     (transaction) => transaction.id === txId
   );
+
+  if (userHasVoted) return <VoteIsCast />;
 
   return (
     <DialogPrimitiveRoot
@@ -134,7 +151,7 @@ export function CastVote({
             });
             write();
           }}
-          disabled={!writeIsEnabled}
+          disabled={!userCanVote || !writeIsEnabled}
         >
           Cast Vote
         </Button>
@@ -153,19 +170,8 @@ function VoteIsCast() {
   return (
     <div className="py-2.5 border-2 border-status-success rounded-lg w-full flex justify-center text-lg font-bold">
       <span className="flex gap-4">
-        <div className="w-7 h-7 flex items-center transform ">
-          <svg
-            viewBox="0 0 44 33"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M38 0.5H43.3334V5.83333H38V0.5ZM32.6667 11.1667V5.83333H38L38 11.1667H32.6667ZM27.3334 16.5V11.1667H32.6667V16.5H27.3334ZM22 21.8333H27.3334V16.5L22 16.5V21.8333ZM16.6667 27.1667H22V21.8333H16.6667L16.6667 27.1667ZM11.3334 27.1667V32.5H16.6667V27.1667H11.3334ZM6.00002 21.8333H11.3334V27.1667H6.00002V21.8333ZM6.00002 21.8333H0.666687V16.5H6.00002V21.8333Z"
-              fill="#9EC958"
-            />
-          </svg>
+        <div className="w-7 h-7 flex items-center text-status-success">
+          <CheckIcon />
         </div>
         Voted
       </span>

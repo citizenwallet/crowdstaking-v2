@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+
 export const truncateAddress = (address: string): string =>
   `${address.slice(0, 5)}...${address.slice(address.length - 4)}`;
 
@@ -23,9 +25,9 @@ export function formatSupply(value: number) {
 
 export function formatVotePercentage(value: number) {
   const percentageFormatter = new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 2,
+    minimumFractionDigits: 0,
     maximumFractionDigits: 2,
-    minimumIntegerDigits: 2,
+    minimumIntegerDigits: 1,
     useGrouping: true,
   });
   return percentageFormatter.format(value);
@@ -38,4 +40,8 @@ export function formatPointsInput(value: number) {
     useGrouping: true,
   });
   return pointsInputFormatter.format(value);
+}
+
+export function formatDate(date: Date): string {
+  return `${format(date, "d")}/${format(date, "M")}/${format(date, "yy")}`;
 }

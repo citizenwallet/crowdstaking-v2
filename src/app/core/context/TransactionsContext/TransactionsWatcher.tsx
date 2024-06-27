@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
-  TTransactionPending,
+  TTransactionSubmitted,
   TTransactionsDispatch,
 } from "./TransactionsReducer";
 import { useWaitForTransaction } from "wagmi";
@@ -10,13 +10,11 @@ export function TransactionWatcher({
   transaction,
   transactionsDispatch,
 }: {
-  transaction: TTransactionPending;
+  transaction: TTransactionSubmitted;
   transactionsDispatch: TTransactionsDispatch;
 }) {
   const { id, status, hash } = transaction;
   const { toastDispatch } = useToast();
-
-  const [haveResult, setHaveResult] = useState(false);
 
   const { data: waitData } = useWaitForTransaction({ hash });
 
@@ -28,17 +26,13 @@ export function TransactionWatcher({
   }, [hash, toastDispatch]);
 
   useEffect(() => {
-    if (!waitData || haveResult) return;
-    console.log("\n\n");
-    console.log("waitData", waitData);
-    console.log("\n\n");
-    if (waitData.status === "success") {
+    if (!waitData) return;
+    if (waitData.status === "success" && status === "SUBMITTED") {
       transactionsDispatch({ type: "SET_SUCCESS", payload: { id } });
       toastDispatch({
         type: "NEW",
         payload: { toastType: "CONFIRMED", txHash: hash },
       });
-      setHaveResult(true);
     }
     if (waitData.status === "reverted") {
       transactionsDispatch({ type: "SET_REVERTED", payload: { id } });
@@ -46,18 +40,8 @@ export function TransactionWatcher({
         type: "NEW",
         payload: { toastType: "REVERTED", txHash: hash },
       });
-      setHaveResult(true);
     }
-  }, [
-    id,
-    status,
-    hash,
-    waitData,
-    transactionsDispatch,
-    toastDispatch,
-    haveResult,
-    setHaveResult,
-  ]);
+  }, [id, status, hash, waitData, transactionsDispatch, toastDispatch]);
 
   return null;
 }

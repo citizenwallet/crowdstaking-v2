@@ -1,45 +1,105 @@
-import { BREAD_GNOSIS_ABI, DISBURSER_ABI } from "@/abi";
-import config from "@/chainConfig";
-import { formatUnits } from "viem";
-import { useContractRead } from "wagmi";
+import clsx from "clsx";
 
-export function VotingPower({ address }: { address: `0x${string}` }) {
-  const { data: votingPowerData, status: votingPowerStatus } = useContractRead({
-    address: config[100].DISBURSER.address,
-    abi: DISBURSER_ABI,
-    functionName: "getUserVotingPower",
-    args: [address],
-    watch: true,
-  });
-  // console.log({ votingPowerData, votingPowerStatus });
+import { CheckIcon } from "@/app/core/components/Icons/CheckIcon";
+import { formatBalance, formatDate } from "@/app/core/util/formatter";
+import { PowerIcon } from "@/app/core/components/Icons/PowerIcon";
+import { TConnectedUserState } from "@/app/core/hooks/useConnectedUser";
+import { CycleEndDateState } from "../useCycleEndDate";
+import { CycleLengthSuccess } from "../useCycleLength";
 
-  const { data: numCheckpointsData, status: numCheckpointsStatus } =
-    useContractRead({
-      address: config[100].BREAD.address,
-      abi: BREAD_GNOSIS_ABI,
-      functionName: "numCheckpoints",
-      args: [address],
-      watch: true,
-    });
-
-  // console.log({ numCheckpointsData, numCheckpointsStatus });
-
+export function VotingPower({
+  userVotingPower,
+  userHasVoted,
+  userCanVote,
+  cycleEndDate,
+  cycleLength,
+  user,
+}: {
+  userVotingPower: number | null;
+  userHasVoted: boolean;
+  userCanVote: boolean;
+  cycleEndDate: CycleEndDateState;
+  cycleLength: CycleLengthSuccess;
+  user: TConnectedUserState;
+}) {
+  const days = (cycleLength.data * 5) / 60 / 60 / 24;
   return (
-    <div className="flex justify-between">
-      <pre></pre>
-      {/* <p>
-        numCheckpoints:
-        <span className="pl-4">
-          {numCheckpointsStatus === "success"
-            ? (numCheckpointsData as number)
-            : null}
+    <section className="sm:pt-8 sm:pb-4 flex flex-col sm:flex-row">
+      <div className="grow">
+        <div className="flex gap-2 items-center">
+          <span className="size-5">
+            <PowerIcon />
+          </span>
+          <span className="font-bold text-2xl leading-none">Power: </span>
+          <span className="font-medium text-xl">
+            {user.status === "NOT_CONNECTED"
+              ? null
+              : // <span className="text-base text-breadgray-grey">
+                //   connect wallet
+                // </span>
+                userVotingPower && formatBalance(userVotingPower, 2)}
+          </span>
+        </div>
+        <p className="max-w-96 dark:text-breadgray-light-grey pt-2">
+          {`Your Voting Power is equal to the average amount of BREAD you held during the ${days} days up until the current round of voting opened.`}
+        </p>
+      </div>
+      <div className="pt-6 sm:p-0">
+        {userHasVoted ? (
+          <UserHasVoted cycleEndDate={cycleEndDate} />
+        ) : !userCanVote && userVotingPower === 0 ? (
+          <NoPower />
+        ) : null}
+      </div>
+    </section>
+  );
+}
+const widgetBaseClasses =
+  "py-3 sm:py-2 px-4 sm:w-[215px] flex flex-col items-center justify-center rounded-xl border-2";
+
+function NoPower() {
+  return (
+    <div className={clsx(widgetBaseClasses, "border-status-danger")}>
+      <span className="dark:text-breadgray-ultra-white font-bold text-xl">
+        No Voting Power
+      </span>
+      <a
+        className="font-bold text-breadpink-shaded"
+        href="https://breadchain.notion.site/BREAD-Voting-Power-UI-0f2d350320b94e4ba9aeec2ef6fdcb84"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Learn why
+      </a>
+    </div>
+  );
+}
+
+function UserHasVoted({ cycleEndDate }: { cycleEndDate: CycleEndDateState }) {
+  return (
+    <div className={clsx(widgetBaseClasses, "border-status-success")}>
+      <div className="flex gap-4">
+        <div className="w-7 h-7 flex items-center text-status-success">
+          <CheckIcon />
+        </div>
+        <span className="dark:text-breadgray-ultra-white font-bold text-xl">
+          Voted
         </span>
-      </p>
-      <p>
-        <span className="ol-4">
-          {votingPowerData ? formatUnits(votingPowerData as bigint, 1) : "0"}
-        </span>
-      </p> */}
+      </div>
+      <div>
+        <span className="dark:text-breadgray-grey">Next round: </span>
+        {(() => {
+          switch (cycleEndDate.status) {
+            case "LOADING":
+              return <span>--/--/--</span>;
+            case "SUCCESS":
+              return <span>{formatDate(cycleEndDate.data)}</span>;
+            case "ERROR":
+            default:
+              throw new Error("Invalid status!");
+          }
+        })()}
+      </div>
     </div>
   );
 }

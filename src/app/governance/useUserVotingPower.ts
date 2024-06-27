@@ -4,8 +4,22 @@ import { useEffect, useState } from "react";
 import { useContractRead } from "wagmi";
 import { TConnectedUserState } from "../core/hooks/useConnectedUser";
 import { formatUnits } from "viem";
+import { CycleLengthState, useCycleLength } from "./useCycleLength";
 
-export function useUserVotingPower(user: TConnectedUserState) {
+type UserVotingPowerState =
+  | {
+      status: "ACTUAL";
+      value: number;
+    }
+  | {
+      status: "NOMINAL";
+      value: number;
+    };
+
+export function useUserVotingPower(
+  user: TConnectedUserState,
+  cycleLength: CycleLengthState
+) {
   const [userVotingPower, setUserVotingPower] = useState<number | null>(null);
 
   const {
@@ -26,16 +40,20 @@ export function useUserVotingPower(user: TConnectedUserState) {
     }
     if (
       currentVotingPowerStatus === "success" &&
-      currentVotingPowerData !== null
+      currentVotingPowerData !== null &&
+      cycleLength.status === "SUCCESS"
     ) {
-      setUserVotingPower(
-        Number(formatUnits(currentVotingPowerData as bigint, 18))
-      );
+      console.log({
+        vp: Number(formatUnits(currentVotingPowerData as bigint, 18)),
+      });
+      const vp = Number(formatUnits(currentVotingPowerData as bigint, 18));
+      setUserVotingPower(vp / cycleLength.data);
     }
   }, [
     currentVotingPowerStatus,
     currentVotingPowerData,
     currentVotingPowerError,
+    cycleLength,
   ]);
 
   return { userVotingPower };

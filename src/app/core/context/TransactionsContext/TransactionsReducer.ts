@@ -17,7 +17,7 @@ export type TTransactionNew = {
   status: "PREPARED";
   data: TTransactionData;
 };
-export type TTransactionPending = {
+export type TTransactionSubmitted = {
   id: string;
   status: "SUBMITTED";
   data: TTransactionData;
@@ -44,7 +44,7 @@ export type TSafeTransactionSubmitted = {
 
 export type TTransaction =
   | TTransactionNew
-  | TTransactionPending
+  | TTransactionSubmitted
   | TTransactionSuccess
   | TTransactionReverted
   | TSafeTransactionSubmitted;
@@ -62,7 +62,7 @@ export type TTransactionsAction =
       payload: { id: string; data: TTransactionData };
     }
   | {
-      type: "SET_PENDING";
+      type: "SET_SUBMITTED";
       payload: { id: string; hash: TTransactionHash };
     }
   | {
@@ -99,7 +99,7 @@ export function TransactionsReducer(
         ...state,
       ];
     }
-    case "SET_PENDING": {
+    case "SET_SUBMITTED": {
       return state.map((tx) => {
         if (tx.id === action.payload.id) {
           if (tx.status !== "PREPARED") {

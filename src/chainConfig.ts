@@ -1,5 +1,7 @@
+import { Hex } from "viem";
+
 interface IToken {
-  address: `0x${string}`;
+  address: Hex;
   symbol: string;
   decimals: number;
 }
@@ -10,7 +12,7 @@ export interface ChainConfiguration {
   EXPLORER: string;
   BREAD: IToken;
   DISBURSER: {
-    address: `0x${string}`;
+    address: Hex;
   };
 }
 

@@ -1,9 +1,8 @@
-import { DEV_ACCOUNT, anvilAccounts, testClient } from "./lib";
-import { setClaimer, bakeBread, balanceOf, submitVote } from "./lib";
+import { DEV_ACCOUNT, anvilAccounts } from "./lib";
+import { bakeBread, balanceOf } from "./lib";
 
 /**
  *
- * Sets Yield Claimer
  * Bakes BREAD for test wallets
  *
  */

@@ -1,4 +1,4 @@
-import { anvilAccounts, getCurrentDistribution, testClient } from "./lib";
+import { anvilAccounts, getCurrentDistribution } from "./lib";
 import { submitVote } from "./lib";
 
 async function main() {

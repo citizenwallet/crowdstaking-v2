@@ -88,7 +88,7 @@ export default function Burn({
       }
       // not safe
       transactionsDispatch({
-        type: "SET_PENDING",
+        type: "SET_SUBMITTED",
         payload: { id: txId, hash: writeData.hash },
       });
       clearInputValue();
