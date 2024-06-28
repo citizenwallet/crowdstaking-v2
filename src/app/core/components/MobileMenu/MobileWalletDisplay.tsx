@@ -1,11 +1,12 @@
 import { useDisconnect } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
+import { Hex } from "viem";
+import { blo } from "blo";
 
 import { truncateAddress } from "@/app/core/util/formatter";
 import Button from "../Button";
 import { useEnsName } from "@/app/core/hooks/useEnsName";
-import { blo } from "blo";
 import { useWatchAsset } from "../../hooks/useWatchAsset";
 
 function MobileWalletDisplay({
@@ -95,7 +96,7 @@ function AccountPanel({ accountAddress }: { accountAddress: string }) {
       >
         <div className="rounded-full overflow-clip">
           <Image
-            src={blo(accountAddress as `0x${string}`)}
+            src={blo(accountAddress as Hex)}
             alt="ens avatar"
             width="24"
             height="24"

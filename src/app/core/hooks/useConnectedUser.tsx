@@ -11,19 +11,20 @@ import { type Chain, useAccount, useNetwork } from "wagmi";
 import config, { type ChainConfiguration } from "@/chainConfig";
 import { useAutoConnect } from "./useAutoConnect";
 import { Features } from "@/app/layout";
+import { Hex } from "viem";
 
 export type TUserLoading = { status: "LOADING"; features: Features };
 export type TUserNotConnected = { status: "NOT_CONNECTED"; features: Features };
 export type TUserConnected = {
   status: "CONNECTED";
-  address: `0x${string}`;
+  address: Hex;
   config: ChainConfiguration;
   chain: Chain;
   features: Features;
 };
 export type TUnsupportedChain = {
   status: "UNSUPPORTED_CHAIN";
-  address: `0x${string}`;
+  address: Hex;
   chain: Chain;
   features: Features;
 };

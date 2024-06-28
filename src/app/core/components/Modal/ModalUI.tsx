@@ -4,6 +4,7 @@ import { Close as DialogPrimitiveClose } from "@radix-ui/react-dialog";
 import CloseIcon from "../Icons/CloseIcon";
 import { formatBalance } from "../../util/formatter";
 import { motion } from "framer-motion";
+import { Spinner } from "../Icons/Spinner";
 
 export const ModalContainer = forwardRef(
   (
@@ -89,17 +90,7 @@ ModalOverlay.displayName = "ModalOverlay";
 export function TransactionStatusSpinner() {
   return (
     <StatusIconWrapper>
-      <svg
-        width="33"
-        height="33"
-        className="stroke-current text-breadpink-shaded"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <g className="spinner_QPB9">
-          <circle cx="12" cy="12" r="9.5" fill="none" strokeWidth="2"></circle>
-        </g>
-      </svg>
+      <Spinner />
     </StatusIconWrapper>
   );
 }
@@ -147,5 +138,9 @@ export function TransactionStatusCross() {
 }
 
 function StatusIconWrapper({ children }: { children: ReactNode }) {
-  return <div className="pt-3 pb-4">{children}</div>;
+  return (
+    <div className="size-8 pt-3 pb-4 text-breadpink-shaded flex items-center">
+      {children}
+    </div>
+  );
 }

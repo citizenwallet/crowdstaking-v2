@@ -10,7 +10,18 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: { ...breadTheme },
+    extend: {
+      ...breadTheme,
+      gridTemplateRows: {
+        "governance-rows": "repeat(5, minmax(1fr, auto))",
+      },
+      gridTemplateCols: {
+        "project-row-cols": "repeat(24, minmax(1fr, auto))",
+      },
+      gridColumn: {
+        "project-row-span-23": "span 23 / span 23",
+      },
+    },
   },
   plugins: [
     require("@tailwindcss/typography"),

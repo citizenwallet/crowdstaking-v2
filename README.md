@@ -6,10 +6,10 @@ Install dependencies with pnpm
 pnpm i
 ```
 
-Start a hardhat node
+Start an anvil node
 
 ```sh
-pnpm hardhat:node
+$ anvil --fork-url https://rpc.gnosis.gateway.fm --chain-id 31337 --block-time 1
 ```
 
 Run dev server
@@ -18,22 +18,8 @@ Run dev server
 pnpm run dev
 ```
 
-## E2E Tests with Synpress
+/\*
+2b21828ccd20d6bd2e554cd96df03ba0f779755e8e4014d7f614dac144a27fe0
 
-Stop any hardhat node you may have running and start a fresh one
-
-```sh
-pnpm hardhat:node
-```
-
-In a second terminal window run the test build/serve script:
-
-```sh
-pnpm test:serve
-```
-
-In a third terminal window run the e2e test script
-
-```sh
-pnpm test:e2e
-```
+cast s 0x689666145B8E80F705B87f4e4190820D9A4C1646 "function mint(address,uint256)" `cast wallet address $TEST_PK_2` 1000000000000000000 --private-key $TEST_PK_2 --rpc-url $RPC_URL
+\*/
