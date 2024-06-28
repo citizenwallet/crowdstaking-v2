@@ -19,7 +19,7 @@ export function useCurrentVotes(lastClaimedBlockNumber: bigint | null) {
   const { chain: activeChain } = useNetwork();
   const distributorAddress = activeChain
     ? config[activeChain.id].DISBURSER.address
-    : "0x";
+    : config[100].BREAD.address;
   const publicClient = getPublicClient();
 
   return useQuery({

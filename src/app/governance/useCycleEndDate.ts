@@ -25,7 +25,7 @@ export function useCycleEndDate(cycleLength: CycleLengthState) {
   const { chain: activeChain } = useNetwork();
   const distriubutorAddress = activeChain
     ? config[activeChain.id].DISBURSER.address
-    : "0x";
+    : config[100].DISBURSER.address;
 
   const {
     data: lastClaimedBlockNumberData,
@@ -35,7 +35,6 @@ export function useCycleEndDate(cycleLength: CycleLengthState) {
     abi: DISBURSER_ABI,
     functionName: "lastClaimedBlockNumber",
     watch: true,
-    enabled: distriubutorAddress !== "0x",
   });
 
   const { data: currentBlockNumberData, status: currentBlockNumberStatus } =
