@@ -6,7 +6,7 @@ import {
   useState,
   useMemo,
 } from "react";
-import config from "@/chainConfig";
+import { getConfig } from "@/chainConfig";
 import { TUserConnected, useConnectedUser } from "../../hooks/useConnectedUser";
 import { useBalance, useContractRead } from "wagmi";
 import { ERC20_ABI } from "@/abi";
@@ -66,10 +66,11 @@ function ProviderWithUser({
     status: "LOADING",
   });
 
+  const config = getConfig(user.chain.id);
   // BREAD balance
   const { data: breadBalanceData, status: breadBalanceStatus } =
     useContractRead({
-      address: config[user.chain.id].BREAD.address,
+      address: config.BREAD.address,
       abi: ERC20_ABI,
       functionName: "balanceOf",
       args: [user.address],

@@ -1,5 +1,5 @@
 import { DISBURSER_ABI } from "@/abi";
-import config from "@/chainConfig";
+import { getConfig } from "@/chainConfig";
 import { useEffect, useState } from "react";
 import { Hex } from "viem";
 import { useContractRead, useNetwork } from "wagmi";
@@ -27,9 +27,8 @@ export function useCurrentVotingDistribution() {
     });
 
   const { chain: activeChain } = useNetwork();
-  const distriubutorAddress = activeChain
-    ? config[activeChain.id].DISBURSER.address
-    : config["DEFAULT"].DISBURSER.address;
+  const config = activeChain ? getConfig(activeChain.id) : getConfig("DEFAULT");
+  const distriubutorAddress = config.DISBURSER.address;
 
   const {
     data: currentVotingDistributionData,

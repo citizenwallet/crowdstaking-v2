@@ -2,22 +2,27 @@
 import { BREAD_GNOSIS_ABI, DISBURSER_ABI } from "@/abi";
 import Button from "@/app/core/components/Button";
 import { projectsMeta } from "@/app/projectsMeta";
-import config from "@/chainConfig";
+import { getConfig } from "@/chainConfig";
 import { useEffect, useState } from "react";
 import { formatUnits } from "viem";
 import {
   useContractRead,
   useContractWrite,
+  useNetwork,
   usePrepareContractWrite,
 } from "wagmi";
 
 export function Diagnostics() {
+  const { chain: activeChain } = useNetwork();
+  const config = activeChain ? getConfig(activeChain.id) : getConfig("DEFAULT");
+  const distributorAddress = config.DISBURSER.address;
+
   const {
     config: prepareConfig,
     status: prepareStatus,
     error: prepareError,
   } = usePrepareContractWrite({
-    address: config["DEFAULT"].DISBURSER.address,
+    address: distributorAddress,
     abi: DISBURSER_ABI,
     functionName: "distributeYield",
   });
@@ -56,9 +61,13 @@ export function Diagnostics() {
 }
 
 function ProjectDisplay({ account }: { account: string }) {
+  const { chain: activeChain } = useNetwork();
+  const config = activeChain ? getConfig(activeChain.id) : getConfig("DEFAULT");
+  const breadAddress = config.BREAD.address;
+
   const { data: breadBalanceData, status: breadBalanceStatus } =
     useContractRead({
-      address: config["DEFAULT"].BREAD.address,
+      address: breadAddress,
       abi: BREAD_GNOSIS_ABI,
       functionName: "balanceOf",
       args: [account],

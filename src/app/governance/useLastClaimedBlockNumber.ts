@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useContractRead, useNetwork } from "wagmi";
 
 import { DISBURSER_ABI } from "@/abi";
-import config from "@/chainConfig";
+import { getConfig } from "@/chainConfig";
 
 export function useLastClaimedBlockNumber() {
   const [lastClaimedBlocknumber, setLastClaimedBlockNumber] = useState<
@@ -10,9 +10,8 @@ export function useLastClaimedBlockNumber() {
   >(null);
 
   const { chain: activeChain } = useNetwork();
-  const distributorAddress = activeChain
-    ? config[activeChain.id].DISBURSER.address
-    : config["DEFAULT"].BREAD.address;
+  const config = activeChain ? getConfig(activeChain.id) : getConfig("DEFAULT");
+  const distributorAddress = config.DISBURSER.address;
 
   const {
     data: lastClaimedBlockNumberData,

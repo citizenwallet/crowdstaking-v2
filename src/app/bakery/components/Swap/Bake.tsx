@@ -8,7 +8,7 @@ import {
 
 import { TUserConnected } from "@/app/core/hooks/useConnectedUser";
 import Button from "@/app/core/components/Button";
-import config from "@/chainConfig";
+import config, { getConfig } from "@/chainConfig";
 import { BREAD_GNOSIS_ABI } from "@/abi";
 import useDebounce from "@/app/bakery/hooks/useDebounce";
 
@@ -36,7 +36,7 @@ export default function Bake({
   const [buttonIsEnabled, setButtonIsEnabled] = useState(false);
   const [txInProgress, setTxInProgress] = useState(false);
 
-  const { BREAD } = config[user.chain.id];
+  const { BREAD } = getConfig(user.chain.id);
 
   const debouncedValue = useDebounce(inputValue, 500);
 

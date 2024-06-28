@@ -1,6 +1,6 @@
 import { getPublicClient } from "@wagmi/core";
 
-import config from "@/chainConfig";
+import { getConfig } from "@/chainConfig";
 import { DISBURSER_ABI } from "@/abi";
 import { useQuery } from "react-query";
 import { Hex } from "viem";
@@ -17,9 +17,8 @@ type VoteLogData = {
 
 export function useCurrentVotes(lastClaimedBlockNumber: bigint | null) {
   const { chain: activeChain } = useNetwork();
-  const distributorAddress = activeChain
-    ? config[activeChain.id].DISBURSER.address
-    : config["DEFAULT"].BREAD.address;
+  const config = activeChain ? getConfig(activeChain.id) : getConfig("DEFAULT");
+  const distributorAddress = config.DISBURSER.address;
   const publicClient = getPublicClient();
 
   return useQuery({

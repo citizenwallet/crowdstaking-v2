@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 import { type Chain, useAccount, useNetwork } from "wagmi";
-import config, { type ChainConfiguration } from "@/chainConfig";
+import { getConfig, type ChainConfiguration } from "@/chainConfig";
 import { useAutoConnect } from "./useAutoConnect";
 import { Features } from "@/app/layout";
 import { Hex } from "viem";
@@ -68,16 +68,17 @@ function ConnectedUserProvider({
   const { chain: activeChain } = useNetwork();
 
   useEffect(() => {
-    const configuration =
-      activeChain?.id && config[activeChain.id] ? config[activeChain.id] : null;
+    const config = activeChain
+      ? getConfig(activeChain.id)
+      : getConfig("DEFAULT");
 
     if (activeConnector && activeChain && accountAddress && isConnected) {
       setUser(
-        configuration
+        config
           ? {
               status: "CONNECTED",
               address: accountAddress,
-              config: configuration,
+              config,
               chain: activeChain,
               features,
             }
