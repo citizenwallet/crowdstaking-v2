@@ -30,7 +30,10 @@ const chainsConfig = configureChains(
     publicProvider(),
     jsonRpcProvider({
       rpc: () => ({
-        http: NEXT_PUBLIC_QUIKNODE_URL,
+        http:
+          process.env.NEXT_PUBLIC_TESTNET === "true"
+            ? sepolia.rpcUrls.default.http[0]
+            : NEXT_PUBLIC_QUIKNODE_URL,
       }),
     }),
   ]
