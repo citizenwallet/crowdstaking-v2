@@ -73,8 +73,6 @@ export function GovernancePage() {
       ? true
       : false;
 
-  console.log({ minRequiredVotingPower });
-
   if (
     currentVotingDistribution.status === "ERROR" ||
     cycleEndDate.status === "ERROR" ||
@@ -121,6 +119,7 @@ export function GovernancePage() {
 
         <div className="col-span-12 row-start-4 lg:col-start-1 lg:col-span-8 lg:row-start-2">
           <VotingPower
+            minRequiredVotingPower={minRequiredVotingPower}
             userVotingPower={userVotingPower}
             userHasVoted={userHasVoted}
             cycleEndDate={cycleEndDate}

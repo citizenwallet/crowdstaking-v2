@@ -8,6 +8,7 @@ import { CycleEndDateState } from "../useCycleEndDate";
 import { CycleLengthSuccess } from "../useCycleLength";
 
 export function VotingPower({
+  minRequiredVotingPower,
   userVotingPower,
   userHasVoted,
   userCanVote,
@@ -15,6 +16,7 @@ export function VotingPower({
   cycleLength,
   user,
 }: {
+  minRequiredVotingPower: bigint | null;
   userVotingPower: number | null;
   userHasVoted: boolean;
   userCanVote: boolean;
@@ -50,8 +52,11 @@ export function VotingPower({
       <div className="pt-6 sm:p-0">
         {userHasVoted ? (
           <UserHasVoted cycleEndDate={cycleEndDate} />
-        ) : !userCanVote && userVotingPower === 0 ? (
-          <NoPower />
+        ) : !userCanVote &&
+          minRequiredVotingPower &&
+          userVotingPower &&
+          userVotingPower < minRequiredVotingPower ? (
+          <NotEnoughPower />
         ) : null}
       </div>
     </section>
@@ -60,11 +65,11 @@ export function VotingPower({
 const widgetBaseClasses =
   "py-3 sm:py-2 px-4 sm:w-[215px] flex flex-col items-center justify-center rounded-xl border-2";
 
-function NoPower() {
+function NotEnoughPower() {
   return (
     <div className={clsx(widgetBaseClasses, "border-status-danger")}>
       <span className="dark:text-breadgray-ultra-white font-bold text-xl">
-        No Voting Power
+        No Power
       </span>
       <a
         className="font-bold text-breadpink-shaded"
