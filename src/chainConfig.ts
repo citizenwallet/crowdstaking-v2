@@ -75,6 +75,7 @@ const developmentConfig: IConfig = {
 
 const stagingConfig: IConfig = {
   100: gnosis,
+  11155111: sepolia,
   DEFAULT: sepolia,
 };
 
