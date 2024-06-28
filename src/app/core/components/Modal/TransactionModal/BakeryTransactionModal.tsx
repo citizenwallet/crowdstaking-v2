@@ -40,7 +40,7 @@ const modalAdviceText: {
   REVERTED: "Transaction Reverted",
 };
 
-export function TransactionModal({
+export function BakeryTransactionModal({
   transaction,
   transactionType,
 }: {
@@ -64,7 +64,13 @@ export function TransactionModal({
             )}
             {transaction.status === "REVERTED" && <TransactionStatusCross />}
             <div className="flex gap-2 items-center justify-center">
-              <TransactionValue value={transaction.value} />
+              <TransactionValue
+                value={
+                  transaction.data.type === "BAKERY"
+                    ? transaction.data.value
+                    : "0"
+                }
+              />
               <TokenLabelContainer>
                 <BreadIcon />
                 <TokenLabelText>BREAD</TokenLabelText>

@@ -1,5 +1,5 @@
 import { ERC20_ABI } from "@/abi";
-import { formatUnits } from "viem";
+import { Hex, formatUnits } from "viem";
 import { useContractRead } from "wagmi";
 
 export interface UseTokenBalanceResult {
@@ -9,7 +9,7 @@ export interface UseTokenBalanceResult {
 }
 
 export function useTokenBalance(
-  tokenAddress: `0x${string}`,
+  tokenAddress: Hex,
   holderAddress: string
 ): UseTokenBalanceResult {
   const { data, status, error } = useContractRead({

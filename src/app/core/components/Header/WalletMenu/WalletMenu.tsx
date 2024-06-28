@@ -1,5 +1,6 @@
 import { type ReactNode } from "react";
 import Image from "next/image";
+import { Hex } from "viem";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { blo } from "blo";
 
@@ -75,9 +76,9 @@ export function WalletMenuContent({
                   case "SUCCESS":
                     return (
                       <>
-                        <div className="rounded-full overflow-clip">
+                        <div className="rounded-full overflow-clip w-6 h-6">
                           <Image
-                            src={blo(account.address as `0x${string}`)}
+                            src={blo(account.address as Hex)}
                             alt="ens avatar"
                             width="24"
                             height="24"

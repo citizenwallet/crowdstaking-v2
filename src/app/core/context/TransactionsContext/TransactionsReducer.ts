@@ -2,39 +2,49 @@ import { WriteContractReturnType } from "viem";
 
 export type TTransactionHash = WriteContractReturnType;
 
+export type TTransactionData =
+  | {
+      type: "BAKERY";
+      value: string;
+      isSafe?: boolean;
+    }
+  | {
+      type: "VOTE";
+    };
+
 export type TTransactionNew = {
   id: string;
   status: "PREPARED";
-  value: string;
+  data: TTransactionData;
 };
-export type TTransactionPending = {
+export type TTransactionSubmitted = {
   id: string;
   status: "SUBMITTED";
-  value: string;
+  data: TTransactionData;
   hash: TTransactionHash;
 };
 export type TTransactionSuccess = {
   id: string;
   status: "CONFIRMED";
-  value: string;
+  data: TTransactionData;
   hash: TTransactionHash;
 };
 export type TTransactionReverted = {
   id: string;
   status: "REVERTED";
-  value: string;
+  data: TTransactionData;
   hash: TTransactionHash;
 };
 export type TSafeTransactionSubmitted = {
   id: string;
   status: "SAFE_SUBMITTED";
-  value: string;
+  data: TTransactionData;
   hash: TTransactionHash;
 };
 
 export type TTransaction =
   | TTransactionNew
-  | TTransactionPending
+  | TTransactionSubmitted
   | TTransactionSuccess
   | TTransactionReverted
   | TSafeTransactionSubmitted;
@@ -43,13 +53,16 @@ export type TTransactionStatus = TTransaction["status"];
 
 export type TTransactionsState = TTransaction[];
 
+// TODO made value optional for now
+// value could be a union eg. eth/bread amount | vote points
+
 export type TTransactionsAction =
   | {
       type: "NEW";
-      payload: { id: string; value: string; isSafe?: boolean };
+      payload: { id: string; data: TTransactionData };
     }
   | {
-      type: "SET_PENDING";
+      type: "SET_SUBMITTED";
       payload: { id: string; hash: TTransactionHash };
     }
   | {
@@ -81,12 +94,12 @@ export function TransactionsReducer(
         {
           id: action.payload.id,
           status: "PREPARED",
-          value: action.payload.value,
+          data: action.payload.data,
         },
         ...state,
       ];
     }
-    case "SET_PENDING": {
+    case "SET_SUBMITTED": {
       return state.map((tx) => {
         if (tx.id === action.payload.id) {
           if (tx.status !== "PREPARED") {

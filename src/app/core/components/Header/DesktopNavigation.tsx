@@ -12,7 +12,7 @@ export function DesktopNavigationLink(props: {
   const { children, href, isCurrentPage, isExternal } = props;
 
   const classList = clsx(
-    "font-redhat text-breadgray-grey100 hover:text-breadgray-grey100 dark:hover:text-breadgray-ultra-white active:text-breadgray-violet flex items-center p-2 text-xl font-bold leading-none tracking-wider min-[810px]:px-4",
+    "font-redhat text-breadgray-grey100 hover:text-breadgray-grey100 dark:hover:text-breadgray-ultra-white active:text-breadgray-violet flex items-center px-3 py-2 text-xl font-bold leading-none tracking-wider",
     isCurrentPage
       ? "text-breadgray-grey100 dark:text-breadgray-ultra-white"
       : "text-breadgray-rye"
@@ -45,7 +45,7 @@ function DesktopNavigation({ currentPath }: { currentPath: string }) {
   return (
     <nav
       aria-label="site navigation"
-      className="hidden flex-grow items-center gap-2 pl-6 md:flex lg:gap-4 lg:pl-12"
+      className="hidden flex-grow items-center gap-2 pl-6 md:flex lg:gap-0 lg:pl-12"
     >
       <DesktopNavigationLink isCurrentPage={currentPath === "/"} href="/">
         Bake

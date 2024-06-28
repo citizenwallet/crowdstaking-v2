@@ -14,7 +14,7 @@ import useDebounce from "@/app/bakery/hooks/useDebounce";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
-import { TransactionModal } from "@/app/core/components/Modal/TransactionModal/TransactionModal";
+import { BakeryTransactionModal } from "@/app/core/components/Modal/TransactionModal/BakeryTransactionModal";
 import { AnimatePresence } from "framer-motion";
 import SafeAppsSDK from "@safe-global/safe-apps-sdk/dist/src/sdk";
 import { TransactionStatus } from "@safe-global/safe-apps-sdk";
@@ -88,7 +88,7 @@ export default function Burn({
       }
       // not safe
       transactionsDispatch({
-        type: "SET_PENDING",
+        type: "SET_SUBMITTED",
         payload: { id: txId, hash: writeData.hash },
       });
       clearInputValue();
@@ -124,7 +124,13 @@ export default function Burn({
               setTxId(newId);
               transactionsDispatch({
                 type: "NEW",
-                payload: { id: newId, value: debouncedValue },
+                payload: {
+                  id: newId,
+                  data: {
+                    type: "BAKERY",
+                    value: debouncedValue,
+                  },
+                },
               });
               write();
             }}
@@ -135,7 +141,7 @@ export default function Burn({
         <DialogPrimitivePortal forceMount>
           <AnimatePresence>
             {transaction && (
-              <TransactionModal
+              <BakeryTransactionModal
                 transactionType="BURN"
                 transaction={transaction}
               />

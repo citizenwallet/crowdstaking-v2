@@ -1,11 +1,17 @@
 import { MockConnector } from "wagmi/connectors/mock";
-import { Chain, createWalletClient, http } from "viem";
+import { Chain, Hex, createWalletClient, http } from "viem";
 import { hardhat } from "viem/chains";
 
-export function mockWallet({ chains }: { chains: Chain[] }) {
+export function mockWallet(
+  chains: Chain[],
+  id: string,
+  name: string,
+  account: Hex,
+  key: Hex
+) {
   return {
-    id: "mock",
-    name: "Mock Wallet",
+    id,
+    name,
     iconUrl: "",
     iconBackground: "",
     createConnector() {
@@ -15,8 +21,8 @@ export function mockWallet({ chains }: { chains: Chain[] }) {
           walletClient: createWalletClient({
             transport: http("http://localhost:8545"),
             chain: hardhat,
-            account: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-            key: "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
+            account,
+            key,
             pollingInterval: 100,
           }),
         },

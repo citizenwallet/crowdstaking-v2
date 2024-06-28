@@ -2,9 +2,12 @@
 import { useRouter } from "next/navigation";
 import { useConnectedUser } from "../core/hooks/useConnectedUser";
 import { useEffect } from "react";
-import { ProjectPanel } from "./components/ProjectPanel";
+
 import { QueryClient, QueryClientProvider } from "react-query";
-import { SlicesPanel } from "./components/SlicesPanel";
+
+import { GovernancePage } from "./GovernancePage";
+import { ClaimableYield } from "./components/ClaimableYield";
+import { Diagnostics } from "./components/Diagnostics";
 
 const client = new QueryClient();
 
@@ -14,7 +17,6 @@ export default function Governance() {
     user: { features },
   } = useConnectedUser();
   useEffect(() => {
-    console.log({ features });
     if (!features.governancePage) {
       router.push("/");
     }
@@ -22,10 +24,7 @@ export default function Governance() {
 
   return features.governancePage ? (
     <QueryClientProvider client={client}>
-      <section className="grow max-w-6xl w-full m-auto">
-        <ProjectPanel />
-        {/* <SlicesPanel /> */}
-      </section>
+      <GovernancePage />
     </QueryClientProvider>
   ) : null;
 }

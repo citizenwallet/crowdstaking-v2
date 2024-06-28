@@ -15,7 +15,7 @@ import useDebounce from "@/app/bakery/hooks/useDebounce";
 import { useEffect, useState } from "react";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { nanoid } from "nanoid";
-import { TransactionModal } from "@/app/core/components/Modal/TransactionModal/TransactionModal";
+import { BakeryTransactionModal } from "@/app/core/components/Modal/TransactionModal/BakeryTransactionModal";
 import { AnimatePresence } from "framer-motion";
 import SafeAppsSDK from "@safe-global/safe-apps-sdk/dist/src/sdk";
 import { TransactionStatus } from "@safe-global/safe-apps-sdk/dist/src/types";
@@ -34,7 +34,7 @@ export default function Bake({
   const { transactionsState, transactionsDispatch } = useTransactions();
   const [txId, setTxId] = useState<string | null>(null);
   const [buttonIsEnabled, setButtonIsEnabled] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [txInProgress, setTxInProgress] = useState(false);
 
   const { BREAD } = config[user.chain.id];
 
@@ -90,7 +90,7 @@ export default function Bake({
       }
       // not safe
       transactionsDispatch({
-        type: "SET_PENDING",
+        type: "SET_SUBMITTED",
         payload: { id: txId, hash: writeData.hash },
       });
       clearInputValue();
@@ -110,24 +110,27 @@ export default function Bake({
   );
 
   useEffect(() => {
-    if (transaction?.status === "PREPARED") setModalOpen(true);
-  }, [transaction, setModalOpen]);
+    if (transaction?.status === "SUBMITTED") setTxInProgress(true);
+  }, [transaction, setTxInProgress]);
 
   return (
     <div className="relative">
-      <DialogPrimitiveRoot onOpenChange={setModalOpen}>
+      <DialogPrimitiveRoot>
         <DialogPrimitiveTrigger asChild>
           <Button
             fullWidth={true}
             variant="xl"
-            disabled={!buttonIsEnabled}
+            disabled={!buttonIsEnabled || txInProgress}
             onClick={() => {
               if (!write) return;
               const newId = nanoid();
               setTxId(newId);
               transactionsDispatch({
                 type: "NEW",
-                payload: { id: newId, value: debouncedValue },
+                payload: {
+                  id: newId,
+                  data: { type: "BAKERY", value: debouncedValue },
+                },
               });
               write();
             }}
@@ -138,7 +141,7 @@ export default function Bake({
         <DialogPrimitivePortal forceMount>
           <AnimatePresence>
             {transaction && (
-              <TransactionModal
+              <BakeryTransactionModal
                 transactionType="BAKE"
                 transaction={transaction}
               />
