@@ -94,3 +94,15 @@ export function getConfig(id: number | "DEFAULT"): ChainConfiguration {
 
   return prodConfig[id] || prodConfig["DEFAULT"];
 }
+
+export function isChainSupported(id: number) {
+  if (process.env.NODE_ENV === "development") {
+    return !!developmentConfig[id];
+  }
+
+  if (process.env.NEXT_PUBLIC_TESTNET === "true") {
+    return !!stagingConfig[id];
+  }
+
+  return !!prodConfig[id];
+}

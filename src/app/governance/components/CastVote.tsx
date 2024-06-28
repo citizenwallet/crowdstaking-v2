@@ -19,6 +19,7 @@ import { TransactionStatus } from "@safe-global/safe-apps-sdk/dist/src/types";
 import { TConnectedUserState } from "@/app/core/hooks/useConnectedUser";
 import { AccountMenu } from "@/app/core/components/Header/AccountMenu";
 import { CheckIcon } from "@/app/core/components/Icons/CheckIcon";
+import { useChainModal } from "@rainbow-me/rainbowkit";
 
 export function CastVotePanel({
   user,
@@ -33,11 +34,24 @@ export function CastVotePanel({
   userCanVote: boolean;
   isSafe: boolean;
 }) {
+  const { openChainModal } = useChainModal();
+
   if (user.status === "NOT_CONNECTED")
     return (
       <AccountMenu variant="large" fullWidth>
         <div className="tracking-wider">Connect to vote</div>
       </AccountMenu>
+    );
+
+  if (user.status === "UNSUPPORTED_CHAIN")
+    return (
+      <Button
+        fullWidth={true}
+        variant="large"
+        onClick={() => openChainModal?.()}
+      >
+        Switch Chain
+      </Button>
     );
 
   return (
