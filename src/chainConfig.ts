@@ -48,7 +48,7 @@ const gnosis: ChainConfiguration = {
     address: "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3",
   },
   DISBURSER: {
-    address: "0xA15BB66138824a1c7167f5E85b957d04Dd34E468",
+    address: "0xeE95A62b749d8a2520E0128D9b3aCa241269024b",
   },
 };
 
@@ -75,6 +75,7 @@ const developmentConfig: IConfig = {
 
 const stagingConfig: IConfig = {
   100: gnosis,
+  11155111: sepolia,
   DEFAULT: sepolia,
 };
 
