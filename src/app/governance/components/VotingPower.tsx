@@ -41,7 +41,9 @@ export function VotingPower({
           </span>
         </div>
         <p className="max-w-96 dark:text-breadgray-light-grey pt-2">
-          {`Your Voting Power is equal to the average amount of BREAD you held during the ${days} days up until the current round of voting opened.`}
+          {`Your Voting Power is equal to the average amount of BREAD you held during the ${Math.round(
+            days
+          )} days up until the current round of voting opened.`}
         </p>
       </div>
       <div className="pt-6 sm:p-0">
