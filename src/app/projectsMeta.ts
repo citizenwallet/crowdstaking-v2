@@ -37,4 +37,35 @@ export const projectsMeta: {
       "A co-owned treasury in Breadchain used for grants and sponsorships.",
     logoSrc: "project/treasury.png",
   },
+  // Sepolia
+  "0x7E1367998e1fe8Fab8f0bbF41e97cD6E0C891B64": {
+    name: "Breadchain Treasury",
+    description:
+      "A co-owned treasury in Breadchain used for grants and sponsorships.",
+    logoSrc: "project/treasury.png",
+  },
+  "0x5405e2D4D12AAdB57579E780458c9a1151b560F1": {
+    name: "Breadchain Treasury",
+    description:
+      "A co-owned treasury in Breadchain used for grants and sponsorships.",
+    logoSrc: "project/treasury.png",
+  },
+  "0x5c22B3F03b3d8FFf56C9B2e90151512Cb3F3dE0F": {
+    name: "Breadchain Treasury",
+    description:
+      "A co-owned treasury in Breadchain used for grants and sponsorships.",
+    logoSrc: "project/treasury.png",
+  },
+  "0x6A148b997e6651237F2fCfc9E30330a6480519f0": {
+    name: "Breadchain Treasury",
+    description:
+      "A co-owned treasury in Breadchain used for grants and sponsorships.",
+    logoSrc: "project/treasury.png",
+  },
+  "0x918dEf5d593F46735f74F9E2B280Fe51AF3A99ad": {
+    name: "Breadchain Treasury",
+    description:
+      "A co-owned treasury in Breadchain used for grants and sponsorships.",
+    logoSrc: "project/treasury.png",
+  },
 };

@@ -18,6 +18,8 @@ export function TransactionWatcher({
 
   const { data: waitData } = useWaitForTransaction({ hash });
 
+  console.log({ waitData });
+
   useEffect(() => {
     toastDispatch({
       type: "NEW",

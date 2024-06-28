@@ -8,7 +8,6 @@ import { ResultsPanel } from "./components/ResultsPanel";
 import { useCurrentVotingDistribution } from "./useCurrentVotingDistribution";
 import { useCastVote } from "./useCastVote";
 import { useUserVotingPower } from "./useUserVotingPower";
-import { useTokenBalances } from "@/app/core/context/TokenBalanceContext/TokenBalanceContext";
 import { ClaimableYield } from "./components/ClaimableYield";
 import { Hex } from "viem";
 import { VotingPower } from "./components/VotingPower";
@@ -31,8 +30,6 @@ export function GovernancePage() {
   const { userVotingPower } = useUserVotingPower(user, cycleLength);
 
   const { cycleEndDate } = useCycleEndDate(cycleLength);
-
-  const { BREAD } = useTokenBalances();
 
   const [projects, setProjects] = useState<Array<Project>>([]);
 
@@ -95,9 +92,9 @@ export function GovernancePage() {
     );
 
   return (
-    <section className="grow max-w-[44rem] lg:max-w-[67rem] w-full m-auto">
+    <section className="grow max-w-[44rem] lg:max-w-[67rem] w-full m-auto pb-16">
       <div className="max-w-96 m-auto sm:max-w-none grid w-full grid-cols-12 governance-rows p-4 md:p-8 gap-y-8 sm:gap-8 lg:gap-y-0 ">
-        <div className="col-span-12 md:col-span-8 row-start-1 row-span-1">
+        <div className="col-span-12 lg:col-span-8 row-start-1 row-span-1">
           <h3 className="text-2xl font-bold">Bread Governance</h3>
           <p className="pt-4 text-lg max-w-xl">
             Distribute your voting power across the various projects in the

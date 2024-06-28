@@ -2,7 +2,7 @@ import { DISBURSER_ABI } from "@/abi";
 import config from "@/chainConfig";
 import { useEffect, useState } from "react";
 import { Hex } from "viem";
-import { useContractRead } from "wagmi";
+import { useContractRead, useNetwork } from "wagmi";
 
 export type CurrentVotingDistributionState =
   | CurrentVotingDistributionLoading
@@ -26,15 +26,21 @@ export function useCurrentVotingDistribution() {
       status: "LOADING",
     });
 
+  const { chain: activeChain } = useNetwork();
+  const distriubutorAddress = activeChain
+    ? config[activeChain.id].DISBURSER.address
+    : "0x";
+
   const {
     data: currentVotingDistributionData,
     status: currentVotingDistributionStatus,
     error: currentVotingDistributionError,
   } = useContractRead({
-    address: config[100].DISBURSER.address,
+    address: distriubutorAddress,
     abi: DISBURSER_ABI,
     functionName: "getCurrentVotingDistribution",
     watch: true,
+    enabled: distriubutorAddress !== "0x",
   });
 
   useEffect(() => {

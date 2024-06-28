@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useContractRead } from "wagmi";
+import { useContractRead, useNetwork } from "wagmi";
 
 import { DISBURSER_ABI } from "@/abi";
 import config from "@/chainConfig";
@@ -9,14 +9,20 @@ export function useLastClaimedBlockNumber() {
     bigint | null
   >(null);
 
+  const { chain: activeChain } = useNetwork();
+  const distributorAddress = activeChain
+    ? config[activeChain.id].DISBURSER.address
+    : "0x";
+
   const {
     data: lastClaimedBlockNumberData,
     status: lastClaimedBlockNumberStatus,
   } = useContractRead({
-    address: config[100].DISBURSER.address,
+    address: distributorAddress,
     abi: DISBURSER_ABI,
     functionName: "lastClaimedBlockNumber",
     watch: true,
+    enabled: distributorAddress !== "0x",
   });
 
   useEffect(() => {

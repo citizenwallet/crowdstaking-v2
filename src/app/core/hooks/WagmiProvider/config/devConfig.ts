@@ -1,4 +1,4 @@
-import { configureChains, createConfig } from "wagmi";
+import { configureChains, createConfig, sepolia } from "wagmi";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
 import { gnosis, hardhat } from "wagmi/chains";
@@ -21,6 +21,7 @@ const chainsConfig = configureChains(
       ...gnosis,
       iconUrl: "gnosis_icon.svg",
     },
+    sepolia,
   ],
   [
     publicProvider(),

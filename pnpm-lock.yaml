@@ -32,6 +32,9 @@ importers:
       '@sentry/react':
         specifier: ^7.109.0
         version: 7.109.0(react@18.2.0)
+      '@wagmi/core':
+        specifier: ^1.4.12
+        version: 1.4.13(@types/react@18.2.64)(bufferutil@4.0.8)(react@18.2.0)(typescript@5.4.2)(utf-8-validate@5.0.10)(viem@1.21.4(bufferutil@4.0.8)(typescript@5.4.2)(utf-8-validate@5.0.10))
       blo:
         specifier: ^1.1.1
         version: 1.1.1

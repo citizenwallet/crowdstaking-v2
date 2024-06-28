@@ -35,7 +35,7 @@ export function ProjectRow({
           </div>
           <div>{description}</div>
         </div>
-        <div className="flex items-center">{children}</div>
+        <div className="flex items-center justify-center">{children}</div>
       </div>
       {/* large */}
       <div className="hidden sm:flex flex-col sm:flex-row rounded-lg px-5 py-4 justify-start gap-4 bg-breadgray-ultra-white dark:bg-breadgray-charcoal border dark:border-breadgray-toast">

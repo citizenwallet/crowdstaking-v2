@@ -1,8 +1,10 @@
+import { getPublicClient } from "@wagmi/core";
+
 import config from "@/chainConfig";
-import { viemClient } from "../core/viemClient";
 import { DISBURSER_ABI } from "@/abi";
 import { useQuery } from "react-query";
-import { Hex, fromHex } from "viem";
+import { Hex } from "viem";
+import { useNetwork } from "wagmi";
 
 type VoteLogData = {
   blockTimestamp: Hex;
@@ -14,13 +16,19 @@ type VoteLogData = {
 };
 
 export function useCurrentVotes(lastClaimedBlockNumber: bigint | null) {
+  const { chain: activeChain } = useNetwork();
+  const distributorAddress = activeChain
+    ? config[activeChain.id].DISBURSER.address
+    : "0x";
+  const publicClient = getPublicClient();
+
   return useQuery({
     queryKey: "getVotesForCurrentRound",
     refetchInterval: 500,
     enabled: !!lastClaimedBlockNumber,
     queryFn: async () => {
-      const logs = await viemClient.getContractEvents({
-        address: config[100].DISBURSER.address,
+      const logs = await publicClient.getContractEvents({
+        address: distributorAddress,
         abi: DISBURSER_ABI,
         eventName: "BreadHolderVoted",
         fromBlock: lastClaimedBlockNumber || BigInt(0),
@@ -43,11 +51,8 @@ export type ParsedVote = {
 function parseVoteLog(log: VoteLogData): ParsedVote {
   return {
     account: log.args.holder,
-    blockTimestamp: fromHex(log.blockTimestamp, "number") * 1000,
+    blockTimestamp: 1000,
     points: log.args.percentages.map((bigPoints) => Number(bigPoints)),
-    // permyriadDistribution: pointsToPermyraid(
-    //   log.args.percentages.map((b) => parseInt(formatUnits(b, 0)))
-    // ),
     projects: log.args.projects,
   };
 }

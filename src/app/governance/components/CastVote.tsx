@@ -1,4 +1,4 @@
-import { useContractWrite, usePrepareContractWrite } from "wagmi";
+import { useContractWrite, useNetwork, usePrepareContractWrite } from "wagmi";
 import {
   Root as DialogPrimitiveRoot,
   Portal as DialogPrimitivePortal,
@@ -69,16 +69,21 @@ export function CastVote({
   const [txId, setTxId] = useState<string | null>(null);
   const writeIsEnabled = !!(vote.reduce((acc, num) => (acc += num), 0) > 0);
 
+  const { chain: activeChain } = useNetwork();
+  const distributorAddress = activeChain
+    ? config[activeChain.id].DISBURSER.address
+    : "0x";
+
   const {
     config: prepareConfig,
     status: prepareConfigStatus,
     error: prepareConfigError,
   } = usePrepareContractWrite({
-    address: config[100].DISBURSER.address,
+    address: distributorAddress,
     abi: DISBURSER_ABI,
     functionName: "castVote",
     args: [vote],
-    enabled: writeIsEnabled,
+    enabled: writeIsEnabled && distributorAddress !== "0x",
   });
 
   const {

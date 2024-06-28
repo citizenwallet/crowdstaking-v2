@@ -1,7 +1,7 @@
 import { DISBURSER_ABI } from "@/abi";
 import config from "@/chainConfig";
 import { useEffect, useState } from "react";
-import { useBlockNumber, useContractRead } from "wagmi";
+import { useBlockNumber, useContractRead, useNetwork } from "wagmi";
 import { add } from "date-fns";
 import { CycleLengthState } from "./useCycleLength";
 
@@ -22,14 +22,20 @@ export function useCycleEndDate(cycleLength: CycleLengthState) {
     status: "LOADING",
   });
 
+  const { chain: activeChain } = useNetwork();
+  const distriubutorAddress = activeChain
+    ? config[activeChain.id].DISBURSER.address
+    : "0x";
+
   const {
     data: lastClaimedBlockNumberData,
     status: lastClaimedBlockNumberStatus,
   } = useContractRead({
-    address: config[100].DISBURSER.address,
+    address: distriubutorAddress,
     abi: DISBURSER_ABI,
     functionName: "lastClaimedBlockNumber",
     watch: true,
+    enabled: distriubutorAddress !== "0x",
   });
 
   const { data: currentBlockNumberData, status: currentBlockNumberStatus } =

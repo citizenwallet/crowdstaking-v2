@@ -1,7 +1,7 @@
 import { DISBURSER_ABI } from "@/abi";
 import config from "@/chainConfig";
 import { useEffect, useState } from "react";
-import { useContractRead } from "wagmi";
+import { useContractRead, useNetwork } from "wagmi";
 import { TConnectedUserState } from "../core/hooks/useConnectedUser";
 import { formatUnits } from "viem";
 import { CycleLengthState, useCycleLength } from "./useCycleLength";
@@ -22,13 +22,18 @@ export function useUserVotingPower(
 ) {
   const [userVotingPower, setUserVotingPower] = useState<number | null>(null);
 
+  const { chain: activeChain } = useNetwork();
+  const distriubutorAddress = activeChain
+    ? config[activeChain.id].DISBURSER.address
+    : "0x";
+
   const {
     data: currentVotingPowerData,
     status: currentVotingPowerStatus,
     error: currentVotingPowerError,
   } = useContractRead({
-    enabled: user.status === "CONNECTED",
-    address: config[100].DISBURSER.address,
+    enabled: user.status === "CONNECTED" && distriubutorAddress !== "0x",
+    address: distriubutorAddress,
     abi: DISBURSER_ABI,
     functionName: "getCurrentVotingPower",
     args: [user.status === "CONNECTED" ? user.address : ""],

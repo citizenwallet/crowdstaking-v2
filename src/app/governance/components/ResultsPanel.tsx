@@ -15,7 +15,7 @@ export function ResultsPanel({
       : 0;
 
   return (
-    <section className="grid grid-cols-1 gap-4">
+    <section className="max-w-96 m-auto grid grid-cols-1 gap-4">
       <div className="grid grid-cols-1 gap-8 rounded-lg bg-breadgray-ultra-white dark:bg-breadgray-charcoal border dark:border-breadgray-toast p-4">
         <div className="grid grid-cols-1 gap-4">
           <h3 className="uppercase font-medium text-xl dark:text-breadgray-light-grey">
@@ -49,7 +49,7 @@ function ResultsProject({
 }) {
   const percentage = totalPoints > 0 ? (projectPoints / totalPoints) * 100 : 0;
   return (
-    <div className="grid grid-cols-1 gap-1">
+    <div className="grid grid-cols-1 gap-2">
       <div className="flex gap-2">
         <h3 className="grow font-bold text-xl">{projectsMeta[address].name}</h3>
         <span>{`${formatVotePercentage(percentage)}%`}</span>
