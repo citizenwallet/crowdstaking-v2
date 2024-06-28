@@ -9,7 +9,7 @@ import {
 import { TUserConnected } from "@/app/core/hooks/useConnectedUser";
 import { BREAD_GNOSIS_ABI } from "@/abi";
 import Button from "@/app/core/components/Button";
-import config from "@/chainConfig";
+import { getConfig } from "@/chainConfig";
 import useDebounce from "@/app/bakery/hooks/useDebounce";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { useEffect, useState } from "react";
@@ -35,7 +35,7 @@ export default function Burn({
   const [buttonIsEnabled, setButtonIsEnabled] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const { BREAD } = config[user.chain.id];
+  const { BREAD } = getConfig(user.chain.id);
 
   const debouncedValue = useDebounce(inputValue, 500);
 

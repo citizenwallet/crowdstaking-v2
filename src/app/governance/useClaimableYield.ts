@@ -1,5 +1,5 @@
 import { BREAD_GNOSIS_ABI } from "@/abi";
-import config from "@/chainConfig";
+import { getConfig } from "@/chainConfig";
 import { useEffect, useState } from "react";
 import { formatUnits } from "viem";
 import { useContractRead, useNetwork } from "wagmi";
@@ -8,9 +8,9 @@ export function useClaimableYield() {
   const [claimableYield, setClaimableYield] = useState<number | null>(null);
 
   const { chain: activeChain } = useNetwork();
-  const breadAddress = activeChain
-    ? config[activeChain.id].BREAD.address
-    : config["DEFAULT"].BREAD.address;
+
+  const config = activeChain ? getConfig(activeChain.id) : getConfig("DEFAULT");
+  const breadAddress = config.BREAD.address;
 
   const { data, status, error } = useContractRead({
     address: breadAddress,

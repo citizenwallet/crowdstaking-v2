@@ -24,35 +24,6 @@ export interface IConfig {
   DEFAULT: ChainConfiguration;
 }
 
-function getConfig(): IConfig {
-  console.log(process.env.TESTNET === "true");
-  console.log(process.env.TESTNET === "true");
-  console.log(process.env.TESTNET === "true");
-  console.log(process.env.TESTNET === "true");
-  if (process.env.NODE_ENV === "development") {
-    return {
-      100: gnosis,
-      11155111: sepolia,
-      31337: anvil,
-      DEFAULT: anvil,
-    };
-  }
-
-  if (process.env.NEXT_PUBLIC_TESTNET === "true") {
-    return {
-      100: gnosis,
-      11155111: sepolia,
-      31337: anvil,
-      DEFAULT: sepolia,
-    };
-  }
-
-  return {
-    100: gnosis,
-    DEFAULT: gnosis,
-  };
-}
-
 const sepolia: ChainConfiguration = {
   ID: 11155111,
   NETWORK_STRING: "Sepolia",
@@ -95,6 +66,31 @@ const anvil: ChainConfiguration = {
   },
 };
 
-const config: IConfig = getConfig();
+const developmentConfig: IConfig = {
+  100: gnosis,
+  11155111: sepolia,
+  31337: anvil,
+  DEFAULT: anvil,
+};
 
-export default config;
+const stagingConfig: IConfig = {
+  100: gnosis,
+  DEFAULT: sepolia,
+};
+
+const prodConfig: IConfig = {
+  100: gnosis,
+  DEFAULT: gnosis,
+};
+
+export function getConfig(id: number | "DEFAULT"): ChainConfiguration {
+  if (process.env.NODE_ENV === "development") {
+    return developmentConfig[id] || developmentConfig["DEFAULT"];
+  }
+
+  if (process.env.NEXT_PUBLIC_TESTNET === "true") {
+    return stagingConfig[id] || stagingConfig["DEFAULT"];
+  }
+
+  return prodConfig[id] || prodConfig["DEFAULT"];
+}

@@ -7,7 +7,7 @@ import {
 
 import Button from "@/app/core/components/Button";
 
-import config from "@/chainConfig";
+import { getConfig } from "@/chainConfig";
 import { DISBURSER_ABI } from "@/abi";
 import { AnimatePresence } from "framer-motion";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
@@ -70,9 +70,8 @@ export function CastVote({
   const writeIsEnabled = !!(vote.reduce((acc, num) => (acc += num), 0) > 0);
 
   const { chain: activeChain } = useNetwork();
-  const distributorAddress = activeChain
-    ? config[activeChain.id].DISBURSER.address
-    : config["DEFAULT"].BREAD.address;
+  const config = activeChain ? getConfig(activeChain.id) : getConfig("DEFAULT");
+  const distributorAddress = config.DISBURSER.address;
 
   const {
     config: prepareConfig,
