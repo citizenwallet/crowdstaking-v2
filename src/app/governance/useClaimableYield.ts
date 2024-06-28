@@ -10,7 +10,7 @@ export function useClaimableYield() {
   const { chain: activeChain } = useNetwork();
   const breadAddress = activeChain
     ? config[activeChain.id].BREAD.address
-    : "0x";
+    : config[100].BREAD.address;
 
   const { data, status, error } = useContractRead({
     address: breadAddress,

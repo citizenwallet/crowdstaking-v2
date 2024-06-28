@@ -29,7 +29,7 @@ export function useCurrentVotingDistribution() {
   const { chain: activeChain } = useNetwork();
   const distriubutorAddress = activeChain
     ? config[activeChain.id].DISBURSER.address
-    : "0x";
+    : config[100].DISBURSER.address;
 
   const {
     data: currentVotingDistributionData,

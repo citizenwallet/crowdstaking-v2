@@ -12,7 +12,7 @@ export function useLastClaimedBlockNumber() {
   const { chain: activeChain } = useNetwork();
   const distributorAddress = activeChain
     ? config[activeChain.id].DISBURSER.address
-    : "0x";
+    : config[100].BREAD.address;
 
   const {
     data: lastClaimedBlockNumberData,
