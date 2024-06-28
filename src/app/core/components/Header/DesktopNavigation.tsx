@@ -50,9 +50,6 @@ function DesktopNavigation({ currentPath }: { currentPath: string }) {
       <DesktopNavigationLink isCurrentPage={currentPath === "/"} href="/">
         Bake
       </DesktopNavigationLink>
-      <DesktopNavigationLink href="https://breadchain.mirror.xyz/" isExternal>
-        Blog
-      </DesktopNavigationLink>
       {features.governancePage === true && (
         <DesktopNavigationLink
           isCurrentPage={currentPath === "/governance"}
@@ -61,6 +58,9 @@ function DesktopNavigation({ currentPath }: { currentPath: string }) {
           Governance
         </DesktopNavigationLink>
       )}
+      <DesktopNavigationLink href="https://breadchain.mirror.xyz/" isExternal>
+        Blog
+      </DesktopNavigationLink>
     </nav>
   );
 }

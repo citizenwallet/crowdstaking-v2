@@ -37,7 +37,8 @@ export function VotingPower({
               : // <span className="text-base text-breadgray-grey">
                 //   connect wallet
                 // </span>
-                userVotingPower && formatBalance(userVotingPower, 2)}
+                userVotingPower &&
+                formatBalance(userVotingPower / cycleLength.data, 2)}
           </span>
         </div>
         <p className="max-w-96 dark:text-breadgray-light-grey pt-2">

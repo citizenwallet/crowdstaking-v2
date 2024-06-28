@@ -51,7 +51,7 @@ export function useUserVotingPower(
         vp: Number(formatUnits(currentVotingPowerData as bigint, 18)),
       });
       const vp = Number(formatUnits(currentVotingPowerData as bigint, 18));
-      setUserVotingPower(vp / cycleLength.data);
+      setUserVotingPower(vp);
     }
   }, [
     currentVotingPowerStatus,

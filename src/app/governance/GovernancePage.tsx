@@ -15,6 +15,7 @@ import { useLastClaimedBlockNumber } from "./useLastClaimedBlockNumber";
 import { useCycleLength } from "./useCycleLength";
 import { Spinner } from "../core/components/Icons/Spinner";
 import { useCycleEndDate } from "./useCycleEndDate";
+import { useMinRequiredVotingPower } from "./useMinRequiredVotingPower";
 
 export type Project = {
   address: Hex;
@@ -28,6 +29,7 @@ export function GovernancePage() {
   const { cycleLength } = useCycleLength();
   const { castVote } = useCastVote(user, lastClaimedBlocknumber);
   const { userVotingPower } = useUserVotingPower(user, cycleLength);
+  const { minRequiredVotingPower } = useMinRequiredVotingPower();
 
   const { cycleEndDate } = useCycleEndDate(cycleLength);
 
@@ -64,7 +66,14 @@ export function GovernancePage() {
 
   const userHasVoted = castVote && castVote.length > 0 ? true : false;
 
-  const userCanVote = userVotingPower && userVotingPower > 0 ? true : false;
+  const userCanVote =
+    userVotingPower &&
+    minRequiredVotingPower &&
+    userVotingPower > Number(minRequiredVotingPower)
+      ? true
+      : false;
+
+  console.log({ minRequiredVotingPower });
 
   if (
     currentVotingDistribution.status === "ERROR" ||
