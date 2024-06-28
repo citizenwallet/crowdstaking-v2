@@ -1,7 +1,7 @@
-import { configureChains, createConfig, sepolia } from "wagmi";
+import { configureChains, createConfig } from "wagmi";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
-import { gnosis } from "wagmi/chains";
+import { gnosis, sepolia } from "wagmi/chains";
 import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 
 import { publicProvider } from "wagmi/providers/public";
@@ -18,16 +18,14 @@ const NEXT_PUBLIC_QUIKNODE_URL = process.env.NEXT_PUBLIC_QUIKNODE_URL;
 if (!NEXT_PUBLIC_QUIKNODE_URL)
   throw new Error("NEXT_PUBLIC_QUIKNODE_URL not set!");
 
-const chain =
-  process.env.NEXT_PUBLIC_TESTNET === "true"
-    ? sepolia
-    : {
-        ...gnosis,
-        iconUrl: "gnosis_icon.svg",
-      };
-
 const chainsConfig = configureChains(
-  [chain],
+  [
+    {
+      ...gnosis,
+      iconUrl: "gnosis_icon.svg",
+    },
+    ...(process.env.NEXT_PUBLIC_TESTNET === "true" ? [sepolia] : []),
+  ],
   [
     publicProvider(),
     jsonRpcProvider({
