@@ -16,7 +16,7 @@ export function VotingPower({
   cycleLength,
   user,
 }: {
-  minRequiredVotingPower: bigint | null;
+  minRequiredVotingPower: number | null;
   userVotingPower: number | null;
   userHasVoted: boolean;
   userCanVote: boolean;

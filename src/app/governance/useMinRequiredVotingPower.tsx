@@ -3,10 +3,11 @@ import { useContractRead, useNetwork } from "wagmi";
 
 import { DISBURSER_ABI } from "@/abi";
 import { getConfig } from "@/chainConfig";
+import { formatUnits } from "viem";
 
 export function useMinRequiredVotingPower() {
   const [minRequiredVotingPower, setMinRequiredVotingPower] = useState<
-    bigint | null
+    number | null
   >(null);
 
   const { chain: activeChain } = useNetwork();
@@ -28,7 +29,9 @@ export function useMinRequiredVotingPower() {
       minRequiredVotingPowerStatus === "success" &&
       minRequiredVotingPowerData
     ) {
-      setMinRequiredVotingPower(minRequiredVotingPowerData as bigint);
+      setMinRequiredVotingPower(
+        Number(formatUnits(minRequiredVotingPowerData as bigint, 18))
+      );
     }
   }, [minRequiredVotingPowerStatus, minRequiredVotingPowerData]);
 
