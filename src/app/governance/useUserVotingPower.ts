@@ -25,7 +25,7 @@ export function useUserVotingPower(
   const { chain: activeChain } = useNetwork();
   const distriubutorAddress = activeChain
     ? config[activeChain.id].DISBURSER.address
-    : config[100].BREAD.address;
+    : config["DEFAULT"].BREAD.address;
 
   const {
     data: currentVotingPowerData,

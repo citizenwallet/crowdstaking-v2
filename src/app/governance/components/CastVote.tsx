@@ -72,7 +72,7 @@ export function CastVote({
   const { chain: activeChain } = useNetwork();
   const distributorAddress = activeChain
     ? config[activeChain.id].DISBURSER.address
-    : config[100].BREAD.address;
+    : config["DEFAULT"].BREAD.address;
 
   const {
     config: prepareConfig,

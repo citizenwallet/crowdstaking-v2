@@ -1,3 +1,4 @@
+import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 import { Hex } from "viem";
 
 interface IToken {
@@ -17,24 +18,38 @@ export interface ChainConfiguration {
 }
 
 export const BREAD_ADDRESS = "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3";
-export const DISBURSER_ADDRESS = "0xb19b36b1456E65E3A6D514D3F715f204BD59f431";
 
 export interface IConfig {
   [chainId: number]: ChainConfiguration;
+  DEFAULT: ChainConfiguration;
 }
 
 function getConfig(): IConfig {
+  console.log(process.env.TESTNET === "true");
+  console.log(process.env.TESTNET === "true");
+  console.log(process.env.TESTNET === "true");
+  console.log(process.env.TESTNET === "true");
   if (process.env.NODE_ENV === "development") {
     return {
       100: gnosis,
       11155111: sepolia,
       31337: anvil,
+      DEFAULT: anvil,
+    };
+  }
+
+  if (process.env.TESTNET === "true") {
+    return {
+      100: gnosis,
+      11155111: sepolia,
+      31337: anvil,
+      DEFAULT: sepolia,
     };
   }
 
   return {
     100: gnosis,
-    11155111: sepolia,
+    DEFAULT: gnosis,
   };
 }
 
@@ -62,7 +77,7 @@ const gnosis: ChainConfiguration = {
     address: "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3",
   },
   DISBURSER: {
-    address: DISBURSER_ADDRESS,
+    address: "0xA15BB66138824a1c7167f5E85b957d04Dd34E468",
   },
 };
 
@@ -76,7 +91,7 @@ const anvil: ChainConfiguration = {
     address: "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3",
   },
   DISBURSER: {
-    address: DISBURSER_ADDRESS,
+    address: "0xA15BB66138824a1c7167f5E85b957d04Dd34E468",
   },
 };
 
