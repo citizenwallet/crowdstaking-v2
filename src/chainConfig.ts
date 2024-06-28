@@ -38,7 +38,7 @@ function getConfig(): IConfig {
     };
   }
 
-  if (process.env.TESTNET === "true") {
+  if (process.env.NEXT_PUBLIC_TESTNET === "true") {
     return {
       100: gnosis,
       11155111: sepolia,
