@@ -17,7 +17,7 @@ export function Diagnostics() {
     status: prepareStatus,
     error: prepareError,
   } = usePrepareContractWrite({
-    address: config[100].DISBURSER.address,
+    address: config["DEFAULT"].DISBURSER.address,
     abi: DISBURSER_ABI,
     functionName: "distributeYield",
   });
@@ -58,7 +58,7 @@ export function Diagnostics() {
 function ProjectDisplay({ account }: { account: string }) {
   const { data: breadBalanceData, status: breadBalanceStatus } =
     useContractRead({
-      address: config[100].BREAD.address,
+      address: config["DEFAULT"].BREAD.address,
       abi: BREAD_GNOSIS_ABI,
       functionName: "balanceOf",
       args: [account],
