@@ -18,20 +18,22 @@ const NEXT_PUBLIC_QUIKNODE_URL = process.env.NEXT_PUBLIC_QUIKNODE_URL;
 if (!NEXT_PUBLIC_QUIKNODE_URL)
   throw new Error("NEXT_PUBLIC_QUIKNODE_URL not set!");
 
+const chain =
+  process.env.NEXT_PUBLIC_TESTNET !== "true"
+    ? {
+        ...gnosis,
+        iconUrl: "gnosis_icon.svg",
+      }
+    : sepolia;
+
 const chainsConfig = configureChains(
-  [
-    {
-      ...gnosis,
-      iconUrl: "gnosis_icon.svg",
-    },
-    sepolia,
-  ],
+  [chain],
   [
     publicProvider(),
     jsonRpcProvider({
       rpc: () => ({
         http:
-          process.env.NEXT_PUBLIC_TESTNET === "true"
+          process.env.NEXT_PUBLIC_TESTNET !== "true"
             ? sepolia.rpcUrls.default.http[0]
             : NEXT_PUBLIC_QUIKNODE_URL,
       }),
