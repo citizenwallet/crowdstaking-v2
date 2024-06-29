@@ -90,42 +90,51 @@ export function VoteForm({
   const isDisabled = user.status !== "CONNECTED" || !userCanVote;
 
   return (
-    <div className="w-full flex items-center px-2 border-2 border-breadgray-light-grey dark:border-breadgray-rye rounded-lg dark:bg-breadgray-burnt">
-      <InputButton onClick={decrement} isDisabled={isDisabled}>
-        <div className={clsx("size-5", !userCanVote && "opacity-50")}>
-          <DecrementIcon />
-        </div>
-      </InputButton>
-      <input
+    <div className="w-full flex flex-col gap-2 sm:gap-0 sm:flex-row items-center p-4 sm:px-2 sm:py-0 border-2 border-breadgray-light-grey dark:border-breadgray-rye rounded-lg dark:bg-breadgray-burnt">
+      <div className="flex items-center justify-between w-full">
+        <InputButton onClick={decrement} isDisabled={isDisabled}>
+          <div
+            className={clsx("size-6 sm:size-5", !userCanVote && "opacity-50")}
+          >
+            <DecrementIcon />
+          </div>
+        </InputButton>
+        <input
+          className={clsx(
+            "min-w-12 max-w-0 p-1 bg-breadgray-ultra-white dark:bg-breadgray-burnt border-neutral-300 text-4xl sm:text-2xl font-medium text-center",
+            !userCanVote && "opacity-50"
+          )}
+          type="text"
+          placeholder="00"
+          inputMode="decimal"
+          autoComplete="off"
+          autoCorrect="off"
+          pattern="^[0-9]*[.,]?[0-9]*$"
+          minLength={1}
+          maxLength={2}
+          spellCheck="false"
+          onChange={(event) => {
+            updateValue(
+              event.target.value ? parseInt(event.target.value) : 0,
+              address
+            );
+          }}
+          value={value === null ? "00" : value}
+          disabled={isDisabled}
+        />
+        <InputButton onClick={increment} isDisabled={isDisabled}>
+          <div
+            className={clsx("size-6 sm:size-5", !userCanVote && "opacity-50")}
+          >
+            <IncrementIcon />
+          </div>
+        </InputButton>
+      </div>
+      <div
         className={clsx(
-          "min-w-12 max-w-0 p-1 bg-breadgray-ultra-white dark:bg-breadgray-burnt border-neutral-300 text-2xl font-medium text-center",
+          "w-full text-center sm:min-w-16 sm:text-right",
           !userCanVote && "opacity-50"
         )}
-        type="text"
-        placeholder="00"
-        inputMode="decimal"
-        autoComplete="off"
-        autoCorrect="off"
-        pattern="^[0-9]*[.,]?[0-9]*$"
-        minLength={1}
-        maxLength={2}
-        spellCheck="false"
-        onChange={(event) => {
-          updateValue(
-            event.target.value ? parseInt(event.target.value) : 0,
-            address
-          );
-        }}
-        value={value === null ? "00" : value}
-        disabled={isDisabled}
-      />
-      <InputButton onClick={increment} isDisabled={isDisabled}>
-        <div className={clsx("size-5", !userCanVote && "opacity-50")}>
-          <IncrementIcon />
-        </div>
-      </InputButton>
-      <div
-        className={clsx("min-w-16 text-right", !userCanVote && "opacity-50")}
       >
         {formatVotePercentage(value ? (value / totalPoints) * 100 : 0)}%
       </div>
