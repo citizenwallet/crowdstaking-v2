@@ -53,8 +53,8 @@ export function VotingPower({
         {userHasVoted ? (
           <UserHasVoted cycleEndDate={cycleEndDate} />
         ) : !userCanVote &&
-          minRequiredVotingPower &&
-          userVotingPower &&
+          minRequiredVotingPower !== null &&
+          userVotingPower !== null &&
           userVotingPower < minRequiredVotingPower ? (
           <NotEnoughPower />
         ) : null}
