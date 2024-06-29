@@ -119,6 +119,13 @@ export function CastVote({
           });
           return;
         }
+        if (tx.txStatus === TransactionStatus.SUCCESS) {
+          transactionsDispatch({
+            type: "SET_SUBMITTED",
+            payload: { id: txId, hash: writeData.hash },
+          });
+          return;
+        }
       }
       // not safe
       transactionsDispatch({
