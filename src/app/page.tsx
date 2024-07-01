@@ -28,9 +28,9 @@ export default function Home() {
           <Swap />
         </Suspense>
       </div>
-      {/* <Suspense>
+      <Suspense>
         <FAQ />
-      </Suspense> */}
+      </Suspense>
     </>
   );
 }
