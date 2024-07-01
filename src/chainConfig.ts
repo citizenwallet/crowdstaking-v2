@@ -1,4 +1,3 @@
-import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 import { Hex } from "viem";
 
 interface IToken {
@@ -62,7 +61,7 @@ const anvil: ChainConfiguration = {
     address: "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3",
   },
   DISBURSER: {
-    address: "0xA15BB66138824a1c7167f5E85b957d04Dd34E468",
+    address: "0xb19b36b1456E65E3A6D514D3F715f204BD59f431",
   },
 };
 

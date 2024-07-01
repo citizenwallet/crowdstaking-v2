@@ -8,7 +8,7 @@ import {
 } from "viem";
 import { foundry } from "viem/chains";
 
-import { BREAD_ADDRESS, DISBURSER_ADDRESS } from "../src/chainConfig";
+import { BREAD_ADDRESS, getConfig } from "../src/chainConfig";
 import { BREAD_GNOSIS_ABI, DISBURSER_ABI } from "../src/abi";
 
 export const anvilAccounts: Array<Hex> = [
@@ -25,6 +25,7 @@ export const anvilAccounts: Array<Hex> = [
 ];
 
 export const DEV_ACCOUNT = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
+const config = getConfig(31337);
 
 export const testClient = createTestClient({
   chain: foundry,
@@ -48,7 +49,7 @@ export async function setClaimer() {
     address: BREAD_ADDRESS,
     abi: BREAD_GNOSIS_ABI,
     functionName: "setYieldClaimer",
-    args: [DISBURSER_ADDRESS],
+    args: [config.DISBURSER.address],
   });
 
   const transaction = await publicClient.waitForTransactionReceipt({ hash });
@@ -109,7 +110,7 @@ export async function submitVote(anvilAccount: Hex) {
 
   try {
     const hash = await testClient.writeContract({
-      address: DISBURSER_ADDRESS,
+      address: config.DISBURSER.address,
       abi: DISBURSER_ABI,
       functionName: "castVote",
       account: anvilAccount,
@@ -160,7 +161,7 @@ export async function submitVote(anvilAccount: Hex) {
 
 export async function getCurrentDistribution() {
   const res = await publicClient.readContract({
-    address: DISBURSER_ADDRESS,
+    address: config.DISBURSER.address,
     abi: DISBURSER_ABI,
     functionName: "getCurrentVotingDistribution",
   });

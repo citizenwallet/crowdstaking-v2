@@ -16,12 +16,12 @@ export function PowerIcon() {
           y2="22.8591"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.0208333" stop-color="#B72085" />
-          <stop offset="0.28125" stop-color="#CD19AA" />
-          <stop offset="0.546875" stop-color="#C463CA" />
-          <stop offset="0.71875" stop-color="#F5AC37" />
-          <stop offset="0.864583" stop-color="#F9C625" />
-          <stop offset="1" stop-color="#FFE70F" />
+          <stop offset="0.0208333" stopColor="#B72085" />
+          <stop offset="0.28125" stopColor="#CD19AA" />
+          <stop offset="0.546875" stopColor="#C463CA" />
+          <stop offset="0.71875" stopColor="#F5AC37" />
+          <stop offset="0.864583" stopColor="#F9C625" />
+          <stop offset="1" stopColor="#FFE70F" />
         </linearGradient>
       </defs>
     </svg>
