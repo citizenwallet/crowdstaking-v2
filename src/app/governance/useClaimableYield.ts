@@ -1,6 +1,5 @@
 import { BREAD_GNOSIS_ABI } from "@/abi";
 import { getConfig } from "@/chainConfig";
-import { withCoalescedInvoke } from "next/dist/lib/coalesced-function";
 import { useEffect, useState } from "react";
 import { formatUnits } from "viem";
 import { useContractRead, useNetwork } from "wagmi";
