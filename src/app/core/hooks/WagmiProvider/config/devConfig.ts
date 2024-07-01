@@ -1,7 +1,7 @@
 import { configureChains, createConfig, sepolia } from "wagmi";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
-import { gnosis, hardhat } from "wagmi/chains";
+import { foundry, gnosis } from "wagmi/chains";
 import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 
 import { publicProvider } from "wagmi/providers/public";
@@ -16,7 +16,7 @@ if (!WALLET_CONNECT_PROJECT_ID)
 
 const chainsConfig = configureChains(
   [
-    { ...hardhat, id: 31337 },
+    { ...foundry, id: 31337 },
     {
       ...gnosis,
       iconUrl: "gnosis_icon.svg",

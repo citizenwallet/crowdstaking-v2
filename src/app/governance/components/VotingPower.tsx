@@ -32,7 +32,9 @@ export function VotingPower({
           <span className="size-5">
             <PowerIcon />
           </span>
-          <span className="font-bold text-2xl leading-none">Power: </span>
+          <span className="font-bold text-2xl leading-none">
+            Voting power:{" "}
+          </span>
           <span className="font-medium text-xl">
             {user.status === "NOT_CONNECTED"
               ? null

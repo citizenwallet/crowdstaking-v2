@@ -21,7 +21,7 @@ export function ResultsPanel({
           <h3 className="uppercase font-medium text-xl dark:text-breadgray-light-grey">
             results
           </h3>
-          <div className="grid grid-cols-1 gap-6">
+          <div className="grid grid-cols-1 gap-4">
             {distribution.status === "SUCCESS" &&
               distribution.data[0].map((account, i) => (
                 <ResultsProject
