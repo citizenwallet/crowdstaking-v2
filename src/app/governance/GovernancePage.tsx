@@ -30,6 +30,7 @@ export function GovernancePage() {
   const { castVote } = useCastVote(user, lastClaimedBlocknumber);
   const { userVotingPower } = useUserVotingPower(user, cycleLength);
   const { minRequiredVotingPower } = useMinRequiredVotingPower();
+  // const distributions = useDistributions();
 
   const { cycleEndDate } = useCycleEndDate(cycleLength);
 
@@ -128,7 +129,7 @@ export function GovernancePage() {
             user={user}
           />
         </div>
-        <div className="col-span-12 row-start-5 lg:col-start-1 lg:col-span-8 lg:row-start-3 grid grid-cols-1 gap-4">
+        <div className="col-span-12 row-start-5 lg:col-start-1 lg:col-span-8 lg:row-start-3 grid grid-cols-1 gap-1">
           {currentVotingDistribution.data[0].map((address, i) => {
             return (
               <ProjectRow key={address} address={address}>
