@@ -16,6 +16,7 @@ import { useCycleLength } from "./useCycleLength";
 import { Spinner } from "../core/components/Icons/Spinner";
 import { useCycleEndDate } from "./useCycleEndDate";
 import { useMinRequiredVotingPower } from "./useMinRequiredVotingPower";
+import { InfoCallout } from "./components/InfoCallout";
 
 export type Project = {
   address: Hex;
@@ -114,8 +115,9 @@ export function GovernancePage() {
 
         <ClaimableYield cycleEndDate={cycleEndDate} />
 
-        <div className="col-span-12 row-start-3 row-span-1 lg:row-start-3 lg:col-start-9 lg:col-span-4">
+        <div className="max-w-md m-auto col-span-12 row-start-3 row-span-1 lg:row-start-3 lg:col-start-9 lg:col-span-4 h-full flex flex-col gap-4">
           <ResultsPanel distribution={currentVotingDistribution} />
+          <InfoCallout />
         </div>
 
         <div className="col-span-12 row-start-4 lg:col-start-1 lg:col-span-8 lg:row-start-2">
