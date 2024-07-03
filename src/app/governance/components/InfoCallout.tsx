@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export function InfoCallout() {
   return (
-    <div className="grow relative rounded-lg overflow-clip bg-breadgray-ultra-white dark:bg-breadgray-charcoal border dark:border-breadgray-toast">
+    <div className="grow relative rounded-lg overflow-clip dark:border dark:border-breadgray-toast">
       <div className="absolute top-0 left-0 w-full h-full ">
         <Image
           className="h-full object-cover"
@@ -12,7 +12,7 @@ export function InfoCallout() {
           alt="cosy background image"
         />
       </div>
-      <div className="h-full flex flex-col justify-center backdrop-blur-sm bg-black bg-opacity-80 p-4 py-16 lg:py-0 text-center">
+      <div className="h-full flex flex-col justify-center backdrop-blur-sm bg-white dark:bg-black bg-opacity-60 dark:bg-opacity-80 p-4 py-16 lg:py-0 text-center">
         <a
           href="https://www.notion.so/breadchain/Understanding-BREAD-Voting-Power-0f2d350320b94e4ba9aeec2ef6fdcb84"
           target="_blank"
