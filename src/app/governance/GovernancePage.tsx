@@ -58,6 +58,10 @@ export function GovernancePage() {
     setProjects(updatedProjects);
   }
 
+  function distributeEqually() {
+    setProjects(projects.map((project) => ({ ...project, points: 1 })));
+  }
+
   const totalPoints = projects.reduce((acc, project) => {
     return acc + project.points;
   }, 0);
@@ -129,6 +133,7 @@ export function GovernancePage() {
             cycleLength={cycleLength}
             userCanVote={userCanVote}
             user={user}
+            distributeEqually={distributeEqually}
           />
         </div>
         <div className="col-span-12 row-start-5 lg:col-start-1 lg:col-span-8 lg:row-start-3 grid grid-cols-1 gap-1">

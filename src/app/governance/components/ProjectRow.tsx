@@ -40,7 +40,7 @@ export function ProjectRow({
       {/* large */}
       <div className="hidden sm:flex flex-col sm:flex-row rounded-lg px-5 py-4 justify-start gap-4 bg-breadgray-ultra-white dark:bg-breadgray-charcoal border dark:border-breadgray-toast">
         <div className="flex gap-4">
-          <div className="">
+          <div className="flex items-center">
             <Image
               className="min-w-14 h-14"
               src={logoSrc}

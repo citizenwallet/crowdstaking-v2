@@ -15,6 +15,7 @@ export function VotingPower({
   cycleEndDate,
   cycleLength,
   user,
+  distributeEqually,
 }: {
   minRequiredVotingPower: number | null;
   userVotingPower: number | null;
@@ -23,6 +24,7 @@ export function VotingPower({
   cycleEndDate: CycleEndDateState;
   cycleLength: CycleLengthSuccess;
   user: TConnectedUserState;
+  distributeEqually: () => void;
 }) {
   const days = (cycleLength.data * 5) / 60 / 60 / 24;
   return (
@@ -59,7 +61,9 @@ export function VotingPower({
           userVotingPower !== null &&
           userVotingPower < minRequiredVotingPower ? (
           <NotEnoughPower />
-        ) : null}
+        ) : (
+          <DistributeEqually distributeEqually={distributeEqually} />
+        )}
       </div>
     </section>
   );
@@ -111,5 +115,34 @@ function UserHasVoted({ cycleEndDate }: { cycleEndDate: CycleEndDateState }) {
         })()}
       </div>
     </div>
+  );
+}
+
+function DistributeEqually({
+  distributeEqually,
+}: {
+  distributeEqually: () => void;
+}) {
+  return (
+    <button
+      className="dis-equally-button-bg text-white dark:text-breadgray-grey100 rounded-xl p-2.5 flex items-center gap-4"
+      onClick={distributeEqually}
+    >
+      <div className="w-6 h-6 flex items-center text-white">
+        <svg
+          className="fill-current"
+          viewBox="0 0 22 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M8 0H4V2H2V4H0V10H2V12H4V14H6V16H8V18H10V20H12V18H14V16H16V14H18V12H20V10H22V4H20V2H18V0H14V2H12V4H10V2H8V0ZM8 2V4H10V6H12V4H14V2H18V4H20V10H18V12H16V14H14V16H12V18H10V16H8V14H6V12H4V10H2V4H4V2H8Z"
+          />
+        </svg>
+      </div>
+
+      <span className="text-xl font-bold">Distribute Equally</span>
+    </button>
   );
 }

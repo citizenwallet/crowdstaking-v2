@@ -71,6 +71,14 @@
     -webkit-text-fill-color: transparent;
   }
 
+  .dis-equally-button-bg {
+    background: linear-gradient(
+      90deg,
+      rgba(252, 107, 170, 1) 0%,
+      rgba(209, 88, 215, 1) 55%,
+      rgba(175, 44, 236, 1) 100%
+    );
+  }
   .total-supply-border {
     background: linear-gradient(canvas, canvas),
       linear-gradient(120deg, hsl(278, 44%, 73%), hsl(35, 81%, 73%));
