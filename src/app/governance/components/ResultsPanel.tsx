@@ -15,7 +15,7 @@ export function ResultsPanel({
       : 0;
 
   return (
-    <section className="max-w-96 m-auto grid grid-cols-1 gap-4">
+    <section className="grid grid-cols-1 gap-4">
       <div className="grid grid-cols-1 gap-8 rounded-lg bg-breadgray-ultra-white dark:bg-breadgray-charcoal border dark:border-breadgray-toast p-4">
         <div className="grid grid-cols-1 gap-4">
           <h3 className="uppercase font-medium text-xl dark:text-breadgray-light-grey">

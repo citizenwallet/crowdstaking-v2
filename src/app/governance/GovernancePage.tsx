@@ -16,6 +16,7 @@ import { useCycleLength } from "./useCycleLength";
 import { Spinner } from "../core/components/Icons/Spinner";
 import { useCycleEndDate } from "./useCycleEndDate";
 import { useMinRequiredVotingPower } from "./useMinRequiredVotingPower";
+import { InfoCallout } from "./components/InfoCallout";
 
 export type Project = {
   address: Hex;
@@ -30,6 +31,7 @@ export function GovernancePage() {
   const { castVote } = useCastVote(user, lastClaimedBlocknumber);
   const { userVotingPower } = useUserVotingPower(user, cycleLength);
   const { minRequiredVotingPower } = useMinRequiredVotingPower();
+  // const distributions = useDistributions();
 
   const { cycleEndDate } = useCycleEndDate(cycleLength);
 
@@ -54,6 +56,10 @@ export function GovernancePage() {
       return project;
     });
     setProjects(updatedProjects);
+  }
+
+  function distributeEqually() {
+    setProjects(projects.map((project) => ({ ...project, points: 1 })));
   }
 
   const totalPoints = projects.reduce((acc, project) => {
@@ -113,8 +119,9 @@ export function GovernancePage() {
 
         <ClaimableYield cycleEndDate={cycleEndDate} />
 
-        <div className="col-span-12 row-start-3 row-span-1 lg:row-start-3 lg:col-start-9 lg:col-span-4">
+        <div className="max-w-md m-auto col-span-12 row-start-3 row-span-1 lg:row-start-3 lg:col-start-9 lg:col-span-4 h-full flex flex-col gap-4">
           <ResultsPanel distribution={currentVotingDistribution} />
+          <InfoCallout />
         </div>
 
         <div className="col-span-12 row-start-4 lg:col-start-1 lg:col-span-8 lg:row-start-2">
@@ -126,9 +133,10 @@ export function GovernancePage() {
             cycleLength={cycleLength}
             userCanVote={userCanVote}
             user={user}
+            distributeEqually={distributeEqually}
           />
         </div>
-        <div className="col-span-12 row-start-5 lg:col-start-1 lg:col-span-8 lg:row-start-3 grid grid-cols-1 gap-4">
+        <div className="col-span-12 row-start-5 lg:col-start-1 lg:col-span-8 lg:row-start-3 grid grid-cols-1 gap-1">
           {currentVotingDistribution.data[0].map((address, i) => {
             return (
               <ProjectRow key={address} address={address}>
