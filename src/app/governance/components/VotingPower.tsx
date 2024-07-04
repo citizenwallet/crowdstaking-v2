@@ -142,7 +142,7 @@ function DistributeEqually({
         </svg>
       </div>
 
-      <span className="text-xl font-bold">Distribute Equally</span>
+      <span className="text-lg font-bold">Distribute Equally</span>
     </button>
   );
 }
