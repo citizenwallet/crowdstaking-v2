@@ -2,7 +2,12 @@ import Image from "next/image";
 
 export function InfoCallout() {
   return (
-    <div className="grow relative rounded-lg overflow-clip dark:border dark:border-breadgray-toast">
+    <a
+      className="grow relative rounded-lg overflow-clip dark:border dark:border-breadgray-toast dark:hover:border-breadgray-light-grey transform transition-all"
+      href="https://www.notion.so/breadchain/Understanding-BREAD-Voting-Power-0f2d350320b94e4ba9aeec2ef6fdcb84"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <div className="absolute top-0 left-0 w-full h-full ">
         <Image
           className="h-full object-cover"
@@ -13,13 +18,9 @@ export function InfoCallout() {
         />
       </div>
       <div className="h-full flex flex-col justify-center backdrop-blur-sm bg-white dark:bg-black bg-opacity-60 dark:bg-opacity-80 p-4 py-16 lg:py-0 text-center">
-        <a
-          href="https://www.notion.so/breadchain/Understanding-BREAD-Voting-Power-0f2d350320b94e4ba9aeec2ef6fdcb84"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="absolute top-4 right-4 w-6 h-6"
-        >
+        <div>
           <svg
+            className="absolute top-4 right-4 w-6 h-6"
             viewBox="0 0 24 25"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +30,7 @@ export function InfoCallout() {
               fill="#E873D3"
             />
           </svg>
-        </a>
+        </div>
         <div className="flex flex-col gap-2">
           <h3 className="font-semibold text-2xl">What the BREAD is this?</h3>
           <p>
@@ -37,6 +38,6 @@ export function InfoCallout() {
           </p>
         </div>
       </div>
-    </div>
+    </a>
   );
 }
