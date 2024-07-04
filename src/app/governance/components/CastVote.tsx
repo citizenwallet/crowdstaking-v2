@@ -55,7 +55,7 @@ export function CastVotePanel({
     );
 
   return (
-    <div>
+    <div className="pt-2">
       {user.status === "CONNECTED" && (
         <CastVote
           vote={userVote}
