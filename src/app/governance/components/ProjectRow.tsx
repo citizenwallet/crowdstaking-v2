@@ -50,10 +50,10 @@ export function ProjectRow({
             />
           </div>
           <div>
-            <div className="col-start-2 col-span-11 row-start-1 row-span-1 flex items-center font-bold sm:text-xl sm:font-normal">
+            <div className="col-start-2 col-span-11 row-start-1 row-span-1 flex items-center font-bold sm:text-xl sm:font-normal dark:text-breadgray-ultra-white">
               {name}
             </div>
-            <div className="col-start-1 sm:col-start-2 sm:col-span-11 col-span-12 max-w-xs">
+            <div className="col-start-1 sm:col-start-2 sm:col-span-11 col-span-12 max-w-xs dark:text-breadgray-grey">
               {description}
             </div>
           </div>

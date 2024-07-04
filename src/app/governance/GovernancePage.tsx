@@ -108,8 +108,10 @@ export function GovernancePage() {
     <section className="grow max-w-[44rem] lg:max-w-[67rem] w-full m-auto pb-16">
       <div className="max-w-96 m-auto sm:max-w-none grid w-full grid-cols-12 governance-rows p-4 md:p-8 gap-y-8 sm:gap-8 lg:gap-y-0 ">
         <div className="col-span-12 lg:col-span-8 row-start-1 row-span-1">
-          <h3 className="text-2xl font-bold">Bread Governance</h3>
-          <p className="pt-4 text-lg max-w-xl">
+          <h3 className="text-2xl font-bold dark:text-breadgray-ultra-white">
+            Bread Governance
+          </h3>
+          <p className="pt-4 text-lg max-w-xl dark:text-breadgray-light-grey">
             Distribute your voting power across the various projects in the
             Breadchain Network to influence how much yield is given to each. The
             actual distribution will be made at the end of the month based on
