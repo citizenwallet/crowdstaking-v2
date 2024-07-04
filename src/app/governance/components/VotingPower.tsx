@@ -38,13 +38,9 @@ export function VotingPower({
             Voting power:{" "}
           </span>
           <span className="font-medium text-xl">
-            {user.status === "NOT_CONNECTED"
-              ? null
-              : // <span className="text-base text-breadgray-grey">
-                //   connect wallet
-                // </span>
-                userVotingPower &&
-                formatBalance(userVotingPower / cycleLength.data, 2)}
+            {user.status === "CONNECTED" &&
+              userVotingPower &&
+              formatBalance(userVotingPower / cycleLength.data, 2)}
           </span>
         </div>
         <p className="max-w-96 dark:text-breadgray-light-grey pt-2">
@@ -61,9 +57,9 @@ export function VotingPower({
           userVotingPower !== null &&
           userVotingPower < minRequiredVotingPower ? (
           <NotEnoughPower />
-        ) : (
+        ) : user.status === "CONNECTED" ? (
           <DistributeEqually distributeEqually={distributeEqually} />
-        )}
+        ) : null}
       </div>
     </section>
   );
@@ -125,7 +121,7 @@ function DistributeEqually({
 }) {
   return (
     <button
-      className="dis-equally-button-bg text-white dark:text-breadgray-grey100 rounded-xl p-2.5 flex items-center gap-4"
+      className="dis-equally-button-bg text-white dark:text-breadgray-grey100 rounded-xl p-2.5 flex items-center gap-4 border-2 border-breadgray-grey100 hover:border-breadgray-ultra-white "
       onClick={distributeEqually}
     >
       <div className="w-6 h-6 flex items-center text-white">
