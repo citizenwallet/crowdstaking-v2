@@ -3,7 +3,7 @@ import { BREAD_GNOSIS_ABI, DISBURSER_ABI } from "@/abi";
 import Button from "@/app/core/components/Button";
 import { projectsMeta } from "@/app/projectsMeta";
 import { getConfig } from "@/chainConfig";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { formatUnits } from "viem";
 import {
   useContractRead,
