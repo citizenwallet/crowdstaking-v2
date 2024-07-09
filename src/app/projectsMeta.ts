@@ -2,6 +2,9 @@ type ProjectMeta = {
   name: string;
   description: string;
   logoSrc: string;
+  links?: {
+    [key: string]: string;
+  };
 };
 
 export const projectsMeta: {
@@ -12,18 +15,27 @@ export const projectsMeta: {
     description:
       "A DAO supporting workers who want to organize in web3 and out.",
     logoSrc: "project/labor_dao.png",
+    links: {
+      twitter: "",
+    },
   },
   "0x5405e2D4D12AAdB57579E780458c9a1151b560F1": {
     name: "Symbiota",
     description:
       "Event-focused organisations devoted to new forms of culture and enquiry.",
     logoSrc: "project/symbiota.png",
+    links: {
+      twitter: "",
+    },
   },
   "0x5c22B3F03b3d8FFf56C9B2e90151512Cb3F3dE0F": {
     name: "Crypto Commons",
     description:
       "Creating research and events on decentralized tech and the commons.",
     logoSrc: "project/cca.png",
+    links: {
+      twitter: "",
+    },
   },
   "0x918dEf5d593F46735f74F9E2B280Fe51AF3A99ad": {
     name: "Breadchain Core",
