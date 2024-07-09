@@ -7,6 +7,7 @@ import { projectsMeta } from "@/app/projectsMeta";
 import type { TConnectedUserState } from "@/app/core/hooks/useConnectedUser";
 import { DecrementIcon, IncrementIcon } from "./Icons";
 import clsx from "clsx";
+import { CardBox } from "@/app/core/components/CardBox";
 
 export function ProjectRow({
   address,
@@ -17,9 +18,9 @@ export function ProjectRow({
 }) {
   const { name, logoSrc, description } = projectsMeta[address];
   return (
-    <>
+    <CardBox>
       {/* small */}
-      <div className="sm:hidden flex flex-col sm:flex-row rounded-lg px-5 py-4 justify-start gap-4 bg-breadgray-ultra-white dark:bg-breadgray-charcoal border dark:border-breadgray-toast">
+      <div className="sm:hidden flex flex-col sm:flex-row rounded-lg px-5 py-4 justify-start gap-4">
         <div className="m-auto flex flex-col gap-3">
           <div className="flex gap-2">
             <Image
@@ -29,16 +30,16 @@ export function ProjectRow({
               width="56"
               height="56"
             />
-            <div className="col-start-2 col-span-11 row-start-1 row-span-1 flex items-center font-bold sm:text-xl sm:font-normal">
+            <div className="col-start-2 col-span-11 row-start-1 row-span-1 flex items-center font-bold sm:text-xl sm:font-normal text-breadgray-grey100 dark:text-breadgray-light-grey">
               {name}
             </div>
           </div>
-          <div>{description}</div>
+          <div className="text-breadgray-rye">{description}</div>
         </div>
         <div className="flex items-center justify-center">{children}</div>
       </div>
       {/* large */}
-      <div className="hidden sm:flex flex-col sm:flex-row rounded-lg px-5 py-4 justify-start gap-4 bg-breadgray-ultra-white dark:bg-breadgray-charcoal border dark:border-breadgray-toast">
+      <div className="hidden sm:flex flex-col sm:flex-row rounded-lg px-5 py-4 justify-start gap-4">
         <div className="flex gap-4">
           <div className="flex items-center">
             <Image
@@ -53,14 +54,14 @@ export function ProjectRow({
             <div className="col-start-2 col-span-11 row-start-1 row-span-1 flex items-center font-bold sm:text-xl sm:font-normal dark:text-breadgray-ultra-white">
               {name}
             </div>
-            <div className="col-start-1 sm:col-start-2 sm:col-span-11 col-span-12 max-w-xs dark:text-breadgray-grey">
+            <div className="col-start-1 sm:col-start-2 sm:col-span-11 col-span-12 max-w-xs text-breadgray-rye dark:text-breadgray-grey">
               {description}
             </div>
           </div>
         </div>
         <div className="flex items-center">{children}</div>
       </div>
-    </>
+    </CardBox>
   );
 }
 

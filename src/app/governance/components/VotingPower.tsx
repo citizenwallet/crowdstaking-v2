@@ -102,7 +102,7 @@ export function VotingPower({
               </defs>
             </svg>
           </span>
-          <span className="font-bold text-2xl leading-none">
+          <span className="font-bold text-2xl leading-none text-breadgray-grey100 dark:text-breadgray-ultra-white">
             Voting power:{" "}
           </span>
           <span className="font-medium text-xl">
@@ -111,7 +111,7 @@ export function VotingPower({
               formatBalance(userVotingPower / cycleLength.data, 2)}
           </span>
         </div>
-        <p className="max-w-96 dark:text-breadgray-light-grey pt-2">
+        <p className="max-w-96 text-breadgray-rye dark:text-breadgray-light-grey pt-2">
           {`Your Voting Power is equal to the average amount of BREAD you held during the ${Math.round(
             days
           )} days up until the current round of voting opened.`}
