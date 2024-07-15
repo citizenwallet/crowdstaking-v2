@@ -91,7 +91,7 @@ export function VoteForm({
   const isDisabled = user.status !== "CONNECTED" || !userCanVote;
 
   return (
-    <div className="w-full flex flex-col gap-2 sm:gap-0 sm:flex-row items-center p-4 sm:px-2 sm:py-0 border-2 border-breadgray-light-grey dark:border-breadgray-rye rounded-lg dark:bg-breadgray-burnt">
+    <div className="w-full flex flex-col gap-2 sm:gap-0 sm:flex-row items-center p-4 sm:px-2 sm:py-0 border-2 border-breadgray-light-grey dark:border-breadgray-rye rounded-lg drop-shadow-[0_4px_8px_rgba(0,0,0,0.08)] bg-breadgray-ultra-white dark:bg-breadgray-burnt">
       <div className="flex items-center justify-between w-full">
         <InputButton onClick={decrement} isDisabled={isDisabled}>
           <div
