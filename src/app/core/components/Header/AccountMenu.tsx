@@ -65,7 +65,7 @@ export function AccountMenu({
                 <div className="flex gap-12">
                   <button
                     onClick={openChainModal}
-                    className="flex gap-2 items-center stroke-breadgray-rye hover:stroke-breadgray-grey"
+                    className="flex gap-2 items-center stroke-breadgray-rye hover:stroke-breadgray-grey group"
                   >
                     {chain.hasIcon ? (
                       <div
@@ -100,9 +100,9 @@ export function AccountMenu({
                         </svg>
                       </div>
                     )}
-                    <div className="h-full flex items-center stroke-inherit">
+                    <div className="h-full flex items-center text-breadgray-rye opacity-50 group-hover:opacity-100">
                       <svg
-                        className="stroke-inherit"
+                        className="stroke-current fill-none"
                         height="7"
                         width="14"
                         xmlns="http://www.w3.org/2000/svg"
