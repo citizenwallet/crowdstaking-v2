@@ -43,16 +43,14 @@ export function CastVotePanel({
           <div className="tracking-wider">Connect to vote</div>
         </AccountMenu>
       ) : user.status === "UNSUPPORTED_CHAIN" ? (
-        <div className="pt-2">
-          <Button
-            fullWidth={true}
-            size="large"
-            variant="danger"
-            onClick={() => openChainModal?.()}
-          >
-            Switch Chain
-          </Button>
-        </div>
+        <Button
+          fullWidth={true}
+          size="large"
+          variant="danger"
+          onClick={() => openChainModal?.()}
+        >
+          Switch Chain
+        </Button>
       ) : user.status === "CONNECTED" ? (
         <CastVote
           vote={userVote}
