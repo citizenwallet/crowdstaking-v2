@@ -37,22 +37,20 @@ export function CastVotePanel({
   const { openChainModal } = useChainModal();
 
   return (
-    <div className="pt-4">
+    <div className="pt-3">
       {user.status === "NOT_CONNECTED" ? (
         <AccountMenu size="large" fullWidth>
           <div className="tracking-wider">Connect to vote</div>
         </AccountMenu>
       ) : user.status === "UNSUPPORTED_CHAIN" ? (
-        <div className="pt-2">
-          <Button
-            fullWidth={true}
-            size="large"
-            variant="danger"
-            onClick={() => openChainModal?.()}
-          >
-            Switch Chain
-          </Button>
-        </div>
+        <Button
+          fullWidth={true}
+          size="large"
+          variant="danger"
+          onClick={() => openChainModal?.()}
+        >
+          Change network
+        </Button>
       ) : user.status === "CONNECTED" ? (
         <CastVote
           vote={userVote}
