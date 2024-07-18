@@ -62,7 +62,7 @@ export function VotingPower({
                   filterUnits="userSpaceOnUse"
                   color-interpolation-filters="sRGB"
                 >
-                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                  <feFlood floodOpacity="0" result="BackgroundImageFix" />
                   <feColorMatrix
                     in="SourceAlpha"
                     type="matrix"
@@ -96,14 +96,14 @@ export function VotingPower({
                   y2="7.81231"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#D04EC5" />
-                  <stop offset="1" stop-color="#ED7BC7" />
+                  <stop stopColor="#D04EC5" />
+                  <stop offset="1" stopColor="#ED7BC7" />
                 </linearGradient>
               </defs>
             </svg>
           </span>
           <span className="font-bold text-2xl leading-none text-breadgray-grey100 dark:text-breadgray-ultra-white">
-            Voting power:{" "}
+            Voting Power:{" "}
           </span>
           <span className="font-medium text-xl">
             {user.status === "CONNECTED" &&
@@ -189,7 +189,7 @@ function DistributeEqually({
 }) {
   return (
     <button
-      className="dis-equally-button-bg text-white dark:text-breadgray-grey100 rounded-xl p-2.5 flex items-center gap-3 border-2 border-breadgray-light-grey hover:border-breadgray-grey dark:border-breadgray-grey100 dark:hover:border-breadgray-ultra-white transform transition-all"
+      className="dis-equally-button-bg text-white dark:text-breadgray-grey100 rounded-xl p-2.5 flex items-center gap-3 border-2 border-breadgray-light-grey hover:border-breadgray-grey dark:border-breadgray-grey100 dark:hover:border-breadgray-ultra-white transform transition-all drop-shadow-[0_4px_10px_rgba(0,0,0,0.10)]"
       onClick={distributeEqually}
     >
       <div className="w-5 h-5 flex items-center text-white">
