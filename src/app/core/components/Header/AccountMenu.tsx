@@ -1,18 +1,18 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 import Button from "../Button";
-import { TButtonVariant } from "../Button/Button";
+import { TButtonSize } from "../Button/Button";
 import Image from "next/image";
 import { WalletMenu } from "./WalletMenu/WalletMenu";
 import { useDisconnect } from "wagmi";
 import { ReactNode } from "react";
 
 export function AccountMenu({
-  variant = "regular",
+  size = "regular",
   fullWidth = false,
   children,
 }: {
-  variant?: TButtonVariant;
+  size?: TButtonSize;
   fullWidth?: boolean;
   children: ReactNode;
 }) {
@@ -52,7 +52,7 @@ export function AccountMenu({
               if (!connected) {
                 return (
                   <Button
-                    variant={variant}
+                    size={size}
                     fullWidth={fullWidth}
                     onClick={openConnectModal}
                   >
@@ -85,7 +85,7 @@ export function AccountMenu({
                         </div>
                       </div>
                     ) : (
-                      <div className="w-5 h-5 flex items-center justify-center stroke-status-danger">
+                      <div className="w-5 h-5 flex items-center justify-center stroke-status-danger-light dark:stroke-status-danger">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="fill-none h-full w-full stroke-inherit"

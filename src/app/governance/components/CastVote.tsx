@@ -38,7 +38,7 @@ export function CastVotePanel({
 
   if (user.status === "NOT_CONNECTED")
     return (
-      <AccountMenu variant="large" fullWidth>
+      <AccountMenu size="large" fullWidth>
         <div className="tracking-wider">Connect to vote</div>
       </AccountMenu>
     );
@@ -47,7 +47,8 @@ export function CastVotePanel({
     return (
       <Button
         fullWidth={true}
-        variant="large"
+        size="large"
+        variant="danger"
         onClick={() => openChainModal?.()}
       >
         Switch Chain
@@ -156,7 +157,7 @@ export function CastVote({
       <DialogPrimitiveTrigger asChild>
         <Button
           fullWidth
-          variant="large"
+          size="large"
           onClick={() => {
             if (!write) return;
             if (prepareConfigStatus !== "success") {
