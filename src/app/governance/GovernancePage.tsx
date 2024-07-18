@@ -17,6 +17,7 @@ import { Spinner } from "../core/components/Icons/Spinner";
 import { useCycleEndDate } from "./useCycleEndDate";
 import { useMinRequiredVotingPower } from "./useMinRequiredVotingPower";
 import { InfoCallout } from "./components/InfoCallout";
+import { useDistributions } from "./useDistributions";
 
 export type Project = {
   address: Hex;
@@ -31,7 +32,7 @@ export function GovernancePage() {
   const { castVote } = useCastVote(user, lastClaimedBlocknumber);
   const { userVotingPower } = useUserVotingPower(user, cycleLength);
   const { minRequiredVotingPower } = useMinRequiredVotingPower();
-  // const distributions = useDistributions();
+  const distributions = useDistributions();
 
   const { cycleEndDate } = useCycleEndDate(cycleLength);
 
@@ -108,7 +109,7 @@ export function GovernancePage() {
     <section className="grow max-w-[44rem] lg:max-w-[67rem] w-full m-auto pb-16">
       <div className="max-w-96 m-auto sm:max-w-none grid w-full grid-cols-12 governance-rows p-4 md:p-8 gap-y-8 sm:gap-8 lg:gap-y-0 ">
         <div className="col-span-12 lg:col-span-8 row-start-1 row-span-1">
-          <h3 className="text-2xl font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white">
+          <h3 className="text-3xl font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white">
             Bread Governance
           </h3>
           <p className="pt-4 text-lg max-w-xl text-breadgray-rye dark:text-breadgray-light-grey">
