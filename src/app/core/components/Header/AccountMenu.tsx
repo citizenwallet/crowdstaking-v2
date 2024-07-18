@@ -85,7 +85,7 @@ export function AccountMenu({
                         </div>
                       </div>
                     ) : (
-                      <div className="w-5 h-5 flex items-center justify-center">
+                      <div className="w-5 h-5 flex items-center justify-center stroke-status-danger">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="fill-none h-full w-full stroke-inherit"
