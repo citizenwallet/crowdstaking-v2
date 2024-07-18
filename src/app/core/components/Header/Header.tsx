@@ -41,7 +41,7 @@ function Header() {
       <DesktopNavigation currentPath={currentPath} />
       <div className="hidden md:flex gap-4">
         <ColorToggle />
-        <AccountMenu variant="regular" fullWidth={false}>
+        <AccountMenu size="regular" fullWidth={false}>
           Connect
         </AccountMenu>
       </div>
