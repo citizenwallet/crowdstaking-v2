@@ -37,7 +37,7 @@ export function CastVotePanel({
   const { openChainModal } = useChainModal();
 
   return (
-    <div className="pt-4">
+    <div className="pt-3">
       {user.status === "NOT_CONNECTED" ? (
         <AccountMenu size="large" fullWidth>
           <div className="tracking-wider">Connect to vote</div>
