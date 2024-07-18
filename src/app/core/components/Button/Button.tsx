@@ -24,7 +24,7 @@ export const ButtonVariants = {
   primary:
     "bg-breadviolet-shaded dark:bg-breadpink-shaded text-breadgray-ultra-white dark:text-breadgray-og-dark disabled:bg-opacity-60",
   danger:
-    "bg-status-danger-light dark:bg-status-danger text-breadgray-ultra-white dark:text-breadgray-grey100",
+    "bg-status-danger-light dark:bg-status-danger text-breadgray-ultra-white dark:text-breadgray-grey100 bg-opacity-85 hover:bg-opacity-100",
 };
 
 const Button = forwardRef(
@@ -44,7 +44,7 @@ const Button = forwardRef(
         ref={ref}
         type="button"
         className={clsx(
-          "rounded-xl inline-block font-bold bg-opacity-85 hover:bg-opacity-100 transition-all",
+          "rounded-xl inline-block font-bold transition-all",
           ButtonSizes[size],
           ButtonVariants[variant],
           fullWidth && "w-full"
