@@ -44,7 +44,7 @@ const Button = forwardRef(
         ref={ref}
         type="button"
         className={clsx(
-          "rounded-xl inline-block font-bold",
+          "rounded-xl inline-block font-bold bg-opacity-85 hover:bg-opacity-100 transition-all",
           ButtonSizes[size],
           ButtonVariants[variant],
           fullWidth && "w-full"
