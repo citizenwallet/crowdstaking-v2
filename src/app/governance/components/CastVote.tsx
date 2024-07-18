@@ -49,7 +49,7 @@ export function CastVotePanel({
           variant="danger"
           onClick={() => openChainModal?.()}
         >
-          Switch Chain
+          Change network
         </Button>
       ) : user.status === "CONNECTED" ? (
         <CastVote

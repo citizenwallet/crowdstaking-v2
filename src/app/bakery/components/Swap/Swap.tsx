@@ -126,7 +126,7 @@ export function Swap() {
                       variant="danger"
                       onClick={() => openChainModal?.()}
                     >
-                      Switch Chain
+                      Change network
                     </Button>
                   );
                 case "CONNECTED":
