@@ -189,10 +189,10 @@ function DistributeEqually({
 }) {
   return (
     <button
-      className="dis-equally-button-bg text-white dark:text-breadgray-grey100 rounded-xl p-2.5 flex items-center gap-3 border-2 border-breadgray-light-grey hover:border-breadgray-grey dark:border-breadgray-grey100 dark:hover:border-breadgray-ultra-white transform transition-all drop-shadow-[0_4px_10px_rgba(0,0,0,0.10)]"
+      className="dis-equally-button-bg text-white dark:text-breadgray-grey100 dark:hover:text-white rounded-xl p-2.5 flex items-center gap-3 border-2 border-breadgray-light-grey hover:border-breadgray-grey dark:border-breadgray-grey100 dark:hover:border-breadgray-ultra-white transform transition-all drop-shadow-[0_4px_10px_rgba(0,0,0,0.10)]"
       onClick={distributeEqually}
     >
-      <div className="w-5 h-5 flex items-center text-white">
+      <div className="w-5 h-5 flex items-center">
         <svg
           className="fill-current"
           viewBox="0 0 22 20"

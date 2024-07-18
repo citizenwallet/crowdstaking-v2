@@ -1,11 +1,11 @@
-import { ButtonVariants } from "@/app/core/components/Button/Button";
+import { ButtonSizes } from "@/app/core/components/Button/Button";
 import clsx from "clsx";
 
 export function InsufficentBalance() {
   return (
     <div
       className={clsx(
-        ButtonVariants["large"],
+        ButtonSizes["large"],
         "flex justify-center items-center gap-4 w-full text-status-danger-light dark:text-status-danger rounded-xl font-bold text-center border-2 border-status-danger-light dark:border-status-danger"
       )}
     >

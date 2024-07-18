@@ -33,7 +33,7 @@ export function InfoCallout() {
         </div>
         <div className="flex flex-col gap-2">
           <h3 className="font-semibold text-2xl">What the BREAD is this?</h3>
-          <p>
+          <p className="dark:text-breadgray-light-grey">
             Discover more about voting power, governance & BREAD distribution.
           </p>
         </div>

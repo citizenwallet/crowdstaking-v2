@@ -36,34 +36,31 @@ export function CastVotePanel({
 }) {
   const { openChainModal } = useChainModal();
 
-  if (user.status === "NOT_CONNECTED")
-    return (
-      <AccountMenu variant="large" fullWidth>
-        <div className="tracking-wider">Connect to vote</div>
-      </AccountMenu>
-    );
-
-  if (user.status === "UNSUPPORTED_CHAIN")
-    return (
-      <Button
-        fullWidth={true}
-        variant="large"
-        onClick={() => openChainModal?.()}
-      >
-        Switch Chain
-      </Button>
-    );
-
   return (
-    <div className="pt-2">
-      {user.status === "CONNECTED" && (
+    <div className="pt-4">
+      {user.status === "NOT_CONNECTED" ? (
+        <AccountMenu size="large" fullWidth>
+          <div className="tracking-wider">Connect to vote</div>
+        </AccountMenu>
+      ) : user.status === "UNSUPPORTED_CHAIN" ? (
+        <div className="pt-2">
+          <Button
+            fullWidth={true}
+            size="large"
+            variant="danger"
+            onClick={() => openChainModal?.()}
+          >
+            Switch Chain
+          </Button>
+        </div>
+      ) : user.status === "CONNECTED" ? (
         <CastVote
           vote={userVote}
           isSafe={isSafe}
           userCanVote={userCanVote}
           userHasVoted={userHasVoted}
         />
-      )}
+      ) : null}
     </div>
   );
 }
@@ -156,7 +153,7 @@ export function CastVote({
       <DialogPrimitiveTrigger asChild>
         <Button
           fullWidth
-          variant="large"
+          size="large"
           onClick={() => {
             if (!write) return;
             if (prepareConfigStatus !== "success") {

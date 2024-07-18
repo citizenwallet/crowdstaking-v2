@@ -119,7 +119,7 @@ export default function Bake({
         <DialogPrimitiveTrigger asChild>
           <Button
             fullWidth={true}
-            variant="xl"
+            size="xl"
             disabled={!buttonIsEnabled || txInProgress}
             onClick={() => {
               if (!write) return;

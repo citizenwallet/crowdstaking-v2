@@ -116,7 +116,7 @@ export default function Burn({
         <DialogPrimitiveTrigger asChild>
           <Button
             fullWidth={true}
-            variant="xl"
+            size="xl"
             disabled={!buttonIsEnabled}
             onClick={() => {
               if (!write) return;

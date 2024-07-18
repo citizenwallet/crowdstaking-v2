@@ -51,7 +51,7 @@ function MobileWalletDisplay({
             {(() => {
               if (!connected) {
                 return (
-                  <Button onClick={openConnectModal} variant="small">
+                  <Button onClick={openConnectModal} size="small">
                     Connect
                   </Button>
                 );

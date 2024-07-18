@@ -114,7 +114,7 @@ export function Swap() {
                   return <ButtonShell />;
                 case "NOT_CONNECTED":
                   return (
-                    <AccountMenu fullWidth={true} variant="large">
+                    <AccountMenu fullWidth={true} size="large">
                       Connect
                     </AccountMenu>
                   );
@@ -122,7 +122,8 @@ export function Swap() {
                   return (
                     <Button
                       fullWidth={true}
-                      variant="large"
+                      size="large"
+                      variant="danger"
                       onClick={() => openChainModal?.()}
                     >
                       Switch Chain
