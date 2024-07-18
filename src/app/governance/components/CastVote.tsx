@@ -38,21 +38,25 @@ export function CastVotePanel({
 
   if (user.status === "NOT_CONNECTED")
     return (
-      <AccountMenu size="large" fullWidth>
-        <div className="tracking-wider">Connect to vote</div>
-      </AccountMenu>
+      <div className="pt-2">
+        <AccountMenu size="large" fullWidth>
+          <div className="tracking-wider">Connect to vote</div>
+        </AccountMenu>
+      </div>
     );
 
   if (user.status === "UNSUPPORTED_CHAIN")
     return (
-      <Button
-        fullWidth={true}
-        size="large"
-        variant="danger"
-        onClick={() => openChainModal?.()}
-      >
-        Switch Chain
-      </Button>
+      <div className="pt-2">
+        <Button
+          fullWidth={true}
+          size="large"
+          variant="danger"
+          onClick={() => openChainModal?.()}
+        >
+          Switch Chain
+        </Button>
+      </div>
     );
 
   return (
