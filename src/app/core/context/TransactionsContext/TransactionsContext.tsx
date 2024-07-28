@@ -21,7 +21,10 @@ const TransactionsContext = createContext<
 >(undefined);
 
 function TransactionsProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(TransactionsReducer, []);
+  const [state, dispatch] = useReducer(TransactionsReducer, {
+    new: null,
+    submitted: [],
+  });
 
   const value = useMemo(
     () => ({ transactionsState: state, transactionsDispatch: dispatch }),
@@ -30,10 +33,10 @@ function TransactionsProvider({ children }: { children: ReactNode }) {
 
   return (
     <TransactionsContext.Provider value={value}>
-      {value.transactionsState.map((transaction) =>
+      {value.transactionsState.submitted.map((transaction) =>
         transaction.status === "SUBMITTED" ? (
           <TransactionWatcher
-            key={`watching_transaction_${transaction.id}`}
+            key={`watching_transaction_${transaction.hash}`}
             transaction={transaction}
             transactionsDispatch={value.transactionsDispatch}
           />

@@ -16,6 +16,7 @@ export function VotingPower({
   cycleLength,
   user,
   distributeEqually,
+  isRecasting,
 }: {
   minRequiredVotingPower: number | null;
   userVotingPower: number | null;
@@ -25,6 +26,7 @@ export function VotingPower({
   cycleLength: CycleLengthSuccess;
   user: TConnectedUserState;
   distributeEqually: () => void;
+  isRecasting: boolean;
 }) {
   const days = (cycleLength.data * 5) / 60 / 60 / 24;
   return (
@@ -118,7 +120,7 @@ export function VotingPower({
         </p>
       </div>
       <div className="pt-6 sm:p-0">
-        {userHasVoted ? (
+        {userHasVoted && !isRecasting ? (
           <UserHasVoted cycleEndDate={cycleEndDate} />
         ) : !userCanVote &&
           minRequiredVotingPower !== null &&

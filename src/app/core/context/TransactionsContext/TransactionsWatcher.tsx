@@ -13,7 +13,7 @@ export function TransactionWatcher({
   transaction: TTransactionSubmitted;
   transactionsDispatch: TTransactionsDispatch;
 }) {
-  const { id, status, hash } = transaction;
+  const { status, hash } = transaction;
   const { toastDispatch } = useToast();
 
   const { data: waitData } = useWaitForTransaction({ hash });
@@ -30,20 +30,20 @@ export function TransactionWatcher({
   useEffect(() => {
     if (!waitData) return;
     if (waitData.status === "success" && status === "SUBMITTED") {
-      transactionsDispatch({ type: "SET_SUCCESS", payload: { id } });
+      transactionsDispatch({ type: "SET_SUCCESS", payload: { hash } });
       toastDispatch({
         type: "NEW",
         payload: { toastType: "CONFIRMED", txHash: hash },
       });
     }
     if (waitData.status === "reverted") {
-      transactionsDispatch({ type: "SET_REVERTED", payload: { id } });
+      transactionsDispatch({ type: "SET_REVERTED", payload: { hash } });
       toastDispatch({
         type: "NEW",
         payload: { toastType: "REVERTED", txHash: hash },
       });
     }
-  }, [id, status, hash, waitData, transactionsDispatch, toastDispatch]);
+  }, [status, hash, waitData, transactionsDispatch, toastDispatch]);
 
   return null;
 }

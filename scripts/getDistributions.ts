@@ -1,4 +1,4 @@
-import { createPublicClient, http } from "viem";
+import { createPublicClient, http, parseAbiItem } from "viem";
 import { foundry, gnosis } from "viem/chains";
 
 import { getConfig } from "../src/chainConfig";
@@ -13,15 +13,27 @@ async function main() {
 
   const config = getConfig(100);
 
-  const logs = await publicClient.getContractEvents({
+  // const logs = await publicClient.getContractEvents({
+  //   address: config.DISBURSER.address,
+  //   abi: DISBURSER_ABI,
+  //   // eventName: "YieldDistributed",
+  //   fromBlock: BigInt(34695057),
+  //   toBlock: "latest",
+  // });
+
+  const logs = await publicClient.getLogs({
     address: config.DISBURSER.address,
-    abi: DISBURSER_ABI,
-    // eventName: "YieldDistributed",
+    event: parseAbiItem("event YieldDistributed(uint256, uint256, uint256[])"),
+    // args: {
+    //   from: "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+    //   to: "0xa5cc3c03994db5b0d9a5eedd10cabab0813678ac",
+    // },
     fromBlock: BigInt(34695057),
     toBlock: "latest",
   });
 
   console.log({ logs });
+  console.log({ logs: logs.map((log) => log.eventName) });
   return logs;
 }
 

@@ -2,7 +2,7 @@ import { forwardRef, Ref, type MouseEvent, type ReactNode } from "react";
 import clsx from "clsx";
 
 export type TButtonSize = "small" | "regular" | "large" | "xl";
-export type TButtonVariant = "primary" | "danger";
+export type TButtonVariant = keyof typeof ButtonVariants;
 
 interface IProps {
   children: ReactNode;
@@ -23,6 +23,8 @@ export const ButtonSizes = {
 export const ButtonVariants = {
   primary:
     "bg-breadviolet-shaded dark:bg-breadpink-shaded text-breadgray-ultra-white dark:text-breadgray-og-dark disabled:bg-opacity-60",
+  secondary:
+    "bg-[#FFCCF1] dark:bg-[#402639] text-breadpink-400 dark:text-breadpink-shaded border-2 border-[#FFCCF1] dark:border-[#402639] hover:border-breadpink-400 dark:hover:border-breadpink-shaded hover:transition-[border]",
   danger:
     "bg-status-danger-light dark:bg-status-danger text-breadgray-ultra-white dark:text-breadgray-grey100 bg-opacity-85 hover:bg-opacity-100",
 };

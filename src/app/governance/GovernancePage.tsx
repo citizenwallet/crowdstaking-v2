@@ -8,7 +8,7 @@ import { ResultsPanel } from "./components/ResultsPanel";
 import { useCurrentVotingDistribution } from "./useCurrentVotingDistribution";
 import { useCastVote } from "./useCastVote";
 import { useUserVotingPower } from "./useUserVotingPower";
-import { ClaimableYield } from "./components/ClaimableYield";
+import { DistributionOverview } from "./components/ClaimableYield";
 import { Hex } from "viem";
 import { VotingPower } from "./components/VotingPower";
 import { useLastClaimedBlockNumber } from "./useLastClaimedBlockNumber";
@@ -18,6 +18,7 @@ import { useCycleEndDate } from "./useCycleEndDate";
 import { useMinRequiredVotingPower } from "./useMinRequiredVotingPower";
 import { InfoCallout } from "./components/InfoCallout";
 import { useDistributions } from "./useDistributions";
+import { useModal } from "../core/context/ModalContext";
 
 export type Project = {
   address: Hex;
@@ -37,6 +38,16 @@ export function GovernancePage() {
   const { cycleEndDate } = useCycleEndDate(cycleLength);
 
   const [projects, setProjects] = useState<Array<Project>>([]);
+  const [isRecasting, setIsRecasting] = useState<boolean>(false);
+
+  const { modalState, setModal } = useModal();
+
+  useEffect(() => {
+    if (modalState?.type === "CONFIRM_RECAST" && modalState.isConfirmed) {
+      setModal(null);
+      setIsRecasting(true);
+    }
+  }, [modalState, setModal]);
 
   useEffect(() => {
     if (currentVotingDistribution.status === "SUCCESS") {
@@ -72,6 +83,17 @@ export function GovernancePage() {
     : 0;
 
   const userHasVoted = castVote && castVote.length > 0 ? true : false;
+
+  useEffect(() => {
+    if (castVote && castVote.length > 0) {
+      setProjects((projects) =>
+        projects.map((p, i) => ({
+          ...p,
+          points: castVote[i],
+        }))
+      );
+    }
+  }, [castVote]);
 
   const userCanVote =
     userVotingPower &&
@@ -120,7 +142,7 @@ export function GovernancePage() {
           </p>
         </div>
 
-        <ClaimableYield cycleEndDate={cycleEndDate} />
+        <DistributionOverview cycleEndDate={cycleEndDate} />
 
         <div className="max-w-md m-auto col-span-12 row-start-3 row-span-1 lg:row-start-3 lg:col-start-9 lg:col-span-4 h-full flex flex-col gap-4">
           <ResultsPanel distribution={currentVotingDistribution} />
@@ -137,20 +159,21 @@ export function GovernancePage() {
             userCanVote={userCanVote}
             user={user}
             distributeEqually={distributeEqually}
+            isRecasting={isRecasting}
           />
         </div>
         <div className="col-span-12 row-start-5 lg:col-start-1 lg:col-span-8 lg:row-start-3 grid grid-cols-1 gap-1">
           {currentVotingDistribution.data[0].map((address, i) => {
             return (
               <ProjectRow key={address} address={address}>
-                {castVote && castVote.length > 0 ? (
+                {!isRecasting && castVote && castVote.length > 0 ? (
                   <VoteDisplay
-                    points={castVote[i]}
+                    points={projects[i].points}
                     percentage={(castVote[i] / castTotalPoints) * 100 || 0}
                   />
                 ) : (
                   <VoteForm
-                    value={projects[i]?.points}
+                    value={projects[i].points}
                     updateValue={updateValue}
                     address={address}
                     totalPoints={totalPoints}
@@ -167,6 +190,7 @@ export function GovernancePage() {
             userHasVoted={userHasVoted}
             userCanVote={userCanVote}
             isSafe={isSafe}
+            isRecasting={isRecasting}
           />
         </div>
       </div>
