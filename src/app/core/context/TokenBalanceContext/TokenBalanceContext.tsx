@@ -79,8 +79,7 @@ function ProviderWithUser({
 
   useEffect(() => {
     if (breadBalanceStatus === "error") {
-      console.log("bread balance error!");
-      console.log({ breadBalanceData });
+      console.error("bread balance error!");
     }
     if (breadBalanceStatus === "success") {
       const value = breadBalanceData
@@ -114,8 +113,7 @@ function ProviderWithUser({
       });
     }
     if (xDAIBalanceStatus === "error") {
-      console.log("xdai balance error!");
-      console.log({ xDAIBalanceError });
+      console.error("xdai balance error!");
     }
   }, [xDAIBalanceData, xDAIBalanceStatus, xDAIBalanceError]);
 

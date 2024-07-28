@@ -88,7 +88,7 @@ function AccountPanel({ accountAddress }: { accountAddress: string }) {
       <button
         onClick={() => {
           navigator.clipboard.writeText(accountAddress).catch((err): void => {
-            console.log(err);
+            console.error(err);
           });
         }}
         title="copy address"

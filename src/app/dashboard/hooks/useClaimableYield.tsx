@@ -1,6 +1,6 @@
 import { BREAD_GNOSIS_ABI } from "@/abi";
 import { BREAD_ADDRESS } from "@/constants";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { formatUnits } from "viem";
 import { useContractRead } from "wagmi";
 
@@ -20,11 +20,6 @@ export default function useClaimableYield() {
       yieldData ? formatUnits(yieldData as bigint, 18).toString() : null
     );
   }, [yieldData]);
-
-  // const claimable = useMemo(() => {
-  //   console.log({ yieldData });
-  //   return ;
-  // }, [yieldData]);
 
   return { claimable, status };
 }

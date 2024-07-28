@@ -155,7 +155,7 @@ export function CastVote({
           onClick={() => {
             if (!write) return;
             if (prepareConfigStatus !== "success") {
-              console.log("castVote tx prepare failed: ", prepareConfigError);
+              console.error("castVote tx prepare failed: ", prepareConfigError);
               return;
             }
             const newId = nanoid();

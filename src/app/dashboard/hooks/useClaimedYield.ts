@@ -31,7 +31,6 @@ export default function useYield() {
         );
 
       const amount = formatUnits(BigInt(totalClaimedYield.amount), 18);
-      console.log("getClaimedYield runnung!", amount);
       return {
         amount,
       };

@@ -6,7 +6,6 @@ export default function Guild() {
     fetch("https://api.guild.xyz/v1/guild/breadchain")
       .then((res) => res.json())
       .then((data) => {
-        console.log({ data });
         setData(data);
       });
   }, []);

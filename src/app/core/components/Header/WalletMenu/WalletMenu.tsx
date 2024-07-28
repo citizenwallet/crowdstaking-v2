@@ -103,7 +103,7 @@ export function WalletMenuContent({
                   navigator.clipboard
                     .writeText(account.address)
                     .catch((err): void => {
-                      console.log(err);
+                      console.error(err);
                     });
                 }}
                 title="copy address"

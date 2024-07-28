@@ -40,16 +40,13 @@ export function useUserVotingPower(
 
   useEffect(() => {
     if (currentVotingPowerStatus === "error" && currentVotingPowerError) {
-      console.log({ currentVotingPowerError });
+      console.error(currentVotingPowerError);
     }
     if (
       currentVotingPowerStatus === "success" &&
       currentVotingPowerData !== null &&
       cycleLength.status === "SUCCESS"
     ) {
-      console.log({
-        vp: Number(formatUnits(currentVotingPowerData as bigint, 18)),
-      });
       const vp = Number(formatUnits(currentVotingPowerData as bigint, 18));
       setUserVotingPower(vp);
     }
