@@ -2,7 +2,6 @@ import { BreadIcon } from "@/app/core/components/Icons/TokenIcons";
 import { formatBalance, formatDate } from "@/app/core/util/formatter";
 import { CycleEndDateState } from "../useCycleEndDate";
 import { useClaimableYield } from "../useClaimableYield";
-import Link from "next/link";
 import { LinkIcon } from "@/app/core/components/Icons/LinkIcon";
 import { CardBox } from "@/app/core/components/CardBox";
 
