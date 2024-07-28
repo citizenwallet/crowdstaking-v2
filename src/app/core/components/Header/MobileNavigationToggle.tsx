@@ -10,7 +10,6 @@ function MobileNavigationToggle({
   return (
     <button
       onClick={() => {
-        console.log("hmmm");
         handleClick();
       }}
       type="button"

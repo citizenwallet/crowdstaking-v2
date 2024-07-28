@@ -25,7 +25,7 @@ export function useClaimableYield() {
       setClaimableYield(parseFloat(formatUnits(data as bigint, 18)));
     }
     if (status === "error") {
-      console.log(error);
+      console.error(error);
     }
   }, [data, status, error, setClaimableYield]);
 

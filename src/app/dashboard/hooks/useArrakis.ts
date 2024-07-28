@@ -9,9 +9,6 @@ export default function useArrakis() {
     )
       .then((res) => res.json())
       .then((jsonData) => {
-        console.log({ jsonData });
-        console.log({ jsonData });
-        console.log({ jsonData });
         setData({
           tvl: jsonData.vaults[0].tvl,
         });

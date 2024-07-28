@@ -59,11 +59,17 @@ export function useCycleEndDate(cycleLength: CycleLengthState) {
         cycleLength.data -
         Number(currentBlockNumberData);
       const cycleSecondsRemaining = cycleBlocksRemaining * 5;
+      const date = add(new Date(), {
+        seconds: cycleSecondsRemaining,
+      });
+      console.log(
+        "cycle end date: ",
+        date.toLocaleTimeString(),
+        date.toLocaleDateString()
+      );
       setCycleEndDate({
         status: "SUCCESS",
-        data: add(new Date(), {
-          seconds: cycleSecondsRemaining,
-        }),
+        data: date,
       });
     }
   }, [

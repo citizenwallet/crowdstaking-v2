@@ -33,7 +33,6 @@ export function useCurrentVotes(lastClaimedBlockNumber: bigint | null) {
         fromBlock: lastClaimedBlockNumber || BigInt(0),
         toBlock: "latest",
       });
-      console.log(logs[0]);
       const parsed = (logs as unknown as Array<VoteLogData>).map(parseVoteLog);
       return parsed;
     },

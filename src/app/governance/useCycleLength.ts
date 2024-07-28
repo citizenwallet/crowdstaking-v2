@@ -46,7 +46,7 @@ export function useCycleLength() {
       });
     }
     if (cycleLengthStatus === "error" && cycleLengthError) {
-      console.log({ cycleLengthError });
+      console.error(cycleLengthError);
       setCycleLength({
         status: "ERROR",
       });

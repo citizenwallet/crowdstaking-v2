@@ -64,7 +64,7 @@ export function useCurrentVotingDistribution() {
       currentVotingDistributionStatus === "error" &&
       currentVotingDistributionError
     ) {
-      console.log({ error: currentVotingDistributionError });
+      console.error({ error: currentVotingDistributionError });
       setCurrentVotingDistribution({
         status: "ERROR",
       });

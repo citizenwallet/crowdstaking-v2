@@ -35,7 +35,7 @@ export function Diagnostics() {
 
   useEffect(() => {
     if (prepareError) {
-      console.log({ prepareError });
+      console.error({ prepareError });
     }
   }, [prepareError]);
 
@@ -44,7 +44,6 @@ export function Diagnostics() {
       <div>
         <Button
           onClick={() => {
-            console.log("distributing yield...");
             write?.();
           }}
         >
