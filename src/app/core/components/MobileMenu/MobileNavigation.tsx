@@ -20,6 +20,13 @@ export function MobileNavigation({ handleNavToggle }: IProps) {
         Bake
       </MobileNavigationLink>
       <MobileNavigationLink
+        isCurrentPage={pathname === "/governance"}
+        href="/governance"
+        onClick={() => handleNavToggle()}
+      >
+        Governance
+      </MobileNavigationLink>
+      <MobileNavigationLink
         isExternal
         href="https://breadchain.mirror.xyz/"
         onClick={handleNavToggle}
