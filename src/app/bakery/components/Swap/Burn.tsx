@@ -23,7 +23,7 @@ export default function Burn({
   clearInputValue: () => void;
   isSafe: boolean;
 }) {
-  const { transactionsDispatch } = useTransactions();
+  const { transactionsState, transactionsDispatch } = useTransactions();
   const [buttonIsEnabled, setButtonIsEnabled] = useState(false);
   const { setModal } = useModal();
 
@@ -67,6 +67,11 @@ export default function Burn({
   useEffect(() => {
     (async () => {
       if (!writeData?.hash) return;
+      if (
+        transactionsState.submitted.find((tx) => tx.hash === writeData.hash)
+      ) {
+        return;
+      }
       if (isSafe) {
         const safeSdk = new SafeAppsSDK();
         const tx = await safeSdk.txs.getBySafeTxHash(writeData.hash);
@@ -89,16 +94,23 @@ export default function Burn({
       });
       setModal({
         type: "BAKERY_TRANSACTION",
-        hash: null,
+        hash: writeData.hash,
       });
       clearInputValue();
     })();
-  }, [writeData, transactionsDispatch, clearInputValue, isSafe, setModal]);
+  }, [
+    writeData,
+    transactionsState,
+    transactionsDispatch,
+    clearInputValue,
+    isSafe,
+    setModal,
+  ]);
 
   useEffect(() => {
     if (!writeIsError && !writeError) return;
-    transactionsDispatch({ type: "CLEAR_NEW" });
-  }, [writeIsError, writeError, transactionsDispatch]);
+    setModal(null);
+  }, [writeIsError, writeError, setModal]);
 
   return (
     <div className="relative">
@@ -116,6 +128,10 @@ export default function Burn({
                 value: debouncedValue,
               },
             },
+          });
+          setModal({
+            type: "BAKERY_TRANSACTION",
+            hash: null,
           });
           write();
         }}

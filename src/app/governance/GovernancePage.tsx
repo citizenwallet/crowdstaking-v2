@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { ProjectRow, VoteDisplay, VoteForm } from "./components/ProjectRow";
 import { CastVotePanel } from "./components/CastVote";
@@ -8,7 +8,7 @@ import { ResultsPanel } from "./components/ResultsPanel";
 import { useCurrentVotingDistribution } from "./useCurrentVotingDistribution";
 import { useCastVote } from "./useCastVote";
 import { useUserVotingPower } from "./useUserVotingPower";
-import { DistributionOverview } from "./components/ClaimableYield";
+import { DistributionOverview } from "./components/DistributionOverview";
 import { Hex } from "viem";
 import { VotingPower } from "./components/VotingPower";
 import { useLastClaimedBlockNumber } from "./useLastClaimedBlockNumber";
@@ -50,6 +50,7 @@ export function GovernancePage() {
   }, [modalState, setModal]);
 
   useEffect(() => {
+    if (projects.length) return;
     if (currentVotingDistribution.status === "SUCCESS") {
       setProjects(
         currentVotingDistribution.data[0].map((address) => ({
@@ -82,10 +83,13 @@ export function GovernancePage() {
     ? castVote.reduce((acc, num) => acc + num, 0)
     : 0;
 
-  const userHasVoted = castVote && castVote.length > 0 ? true : false;
+  const userHasVoted = useMemo(() => {
+    return castVote && castVote.length > 0 ? true : false;
+  }, [castVote]);
 
   useEffect(() => {
     if (castVote && castVote.length > 0) {
+      console.log("here it is:::::::::::", castVote, "\n");
       setProjects((projects) =>
         projects.map((p, i) => ({
           ...p,
@@ -126,6 +130,9 @@ export function GovernancePage() {
         </div>
       </div>
     );
+
+  console.log({ projects });
+  console.log({ projects });
 
   return (
     <section className="grow max-w-[44rem] lg:max-w-[67rem] w-full m-auto pb-16">
@@ -168,7 +175,7 @@ export function GovernancePage() {
               <ProjectRow key={address} address={address}>
                 {!isRecasting && castVote && castVote.length > 0 ? (
                   <VoteDisplay
-                    points={projects[i].points}
+                    points={castVote[i]}
                     percentage={(castVote[i] / castTotalPoints) * 100 || 0}
                   />
                 ) : (
@@ -191,6 +198,7 @@ export function GovernancePage() {
             userCanVote={userCanVote}
             isSafe={isSafe}
             isRecasting={isRecasting}
+            setIsRecasting={setIsRecasting}
           />
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { TConnectedUserState } from "../core/hooks/useConnectedUser";
-import { useCurrentVotes } from "./useCurrentVotes";
+import { ParsedVote, useCurrentVotes } from "./useCurrentVotes";
 
 export function useCastVote(
   user: TConnectedUserState,
@@ -14,8 +14,16 @@ export function useCastVote(
 
   useEffect(() => {
     if (votesData) {
-      const userVote = votesData.find((vote) => vote.account === userAddress);
-      setCastVote(userVote?.points || null);
+      const mostRecentVote = votesData.reduce<null | ParsedVote>(
+        (acc, vote) => {
+          if (!acc) return vote;
+          if ((acc.blockTimestamp = vote.blockTimestamp)) return vote;
+          return vote.blockTimestamp > acc.blockTimestamp ? vote : acc;
+        },
+        null
+      );
+      console.log({ mostRecentVote });
+      setCastVote(mostRecentVote ? mostRecentVote.points : null);
     }
   }, [votesData, userAddress]);
 

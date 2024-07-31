@@ -33,6 +33,7 @@ export function CastVotePanel({
   userCanVote,
   isSafe,
   isRecasting,
+  setIsRecasting,
 }: {
   user: TConnectedUserState;
   userVote: Array<number>;
@@ -40,6 +41,7 @@ export function CastVotePanel({
   userCanVote: boolean;
   isSafe: boolean;
   isRecasting: boolean;
+  setIsRecasting: (val: boolean) => void;
 }) {
   const { openChainModal } = useChainModal();
 
@@ -66,6 +68,7 @@ export function CastVotePanel({
             userCanVote={userCanVote}
             userHasVoted={userHasVoted}
             isRecasting={isRecasting}
+            setIsRecasting={setIsRecasting}
             user={user}
           />
         ) : (
@@ -80,6 +83,7 @@ export function CastVote({
   vote,
   userCanVote,
   isSafe,
+  setIsRecasting,
 }: {
   vote: Array<number>;
   userCanVote: boolean;
@@ -87,10 +91,10 @@ export function CastVote({
   userHasVoted: boolean;
   isRecasting: boolean;
   user: TUserConnected;
+  setIsRecasting: (val: boolean) => void;
 }) {
   const { transactionsState, transactionsDispatch } = useTransactions();
   const { setModal } = useModal();
-  const [txId, setTxId] = useState<string | null>(null);
   const writeIsEnabled = !!(vote.reduce((acc, num) => (acc += num), 0) > 0);
 
   const { chain: activeChain } = useNetwork();
@@ -118,7 +122,12 @@ export function CastVote({
 
   useEffect(() => {
     (async () => {
-      if (!writeData?.hash || !txId) return;
+      if (!writeData?.hash) return;
+      if (
+        transactionsState.submitted.find((tx) => tx.hash === writeData.hash)
+      ) {
+        return;
+      }
       if (isSafe) {
         const safeSdk = new SafeAppsSDK();
         const tx = await safeSdk.txs.getBySafeTxHash(writeData.hash);
@@ -127,6 +136,8 @@ export function CastVote({
             type: "SET_SAFE_SUBMITTED",
             payload: { hash: writeData.hash },
           });
+          setModal({ type: "VOTE_TRANSACTION", hash: writeData.hash });
+          setIsRecasting(false);
           return;
         }
         if (tx.txStatus === TransactionStatus.SUCCESS) {
@@ -134,6 +145,7 @@ export function CastVote({
             type: "SET_SUBMITTED",
             payload: { hash: writeData.hash },
           });
+          setIsRecasting(false);
           return;
         }
       }
@@ -142,16 +154,23 @@ export function CastVote({
         type: "SET_SUBMITTED",
         payload: { hash: writeData.hash },
       });
+      setModal({ type: "VOTE_TRANSACTION", hash: writeData.hash });
+      setIsRecasting(false);
     })();
-  }, [txId, writeData, transactionsDispatch, isSafe]);
+  }, [
+    writeData,
+    transactionsState,
+    transactionsDispatch,
+    isSafe,
+    setModal,
+    setIsRecasting,
+  ]);
 
   useEffect(() => {
     if (!writeIsError && !writeError) return;
-    if (!txId) return;
     // clear transaction closing modal on error including if user rejects the request
-    transactionsDispatch({ type: "CLEAR_NEW" });
-    setTxId(null);
-  }, [writeIsError, writeError, txId, transactionsDispatch]);
+    setModal(null);
+  }, [writeIsError, writeError, transactionsDispatch, setModal]);
 
   return (
     <Button
@@ -163,8 +182,6 @@ export function CastVote({
           console.log("castVote tx prepare failed: ", prepareConfigError);
           return;
         }
-        const newId = nanoid();
-        setTxId(newId);
         transactionsDispatch({
           type: "NEW",
           payload: {
@@ -189,7 +206,7 @@ export function CastVote({
 function VoteIsCast({ children }: { children: ReactNode }) {
   return (
     <div className="flex gap-2">
-      <div className="py-2.5 bg-breadgray-ultra-white dark:bg-breadgray-charcoal rounded-lg grow flex justify-center text-lg font-bold dark:text-status-success">
+      <div className="dark:text-status-success py-2.5 bg-breadgray-ultra-white dark:bg-breadgray-charcoal rounded-lg grow flex justify-center text-lg font-bold ">
         <span className="flex gap-4">
           <div className="w-7 h-7 flex items-center text-status-success">
             <CheckIcon />

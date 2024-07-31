@@ -29,7 +29,8 @@ export function TransactionWatcher({
 
   useEffect(() => {
     if (!waitData) return;
-    if (waitData.status === "success" && status === "SUBMITTED") {
+    if (status !== "SUBMITTED") return;
+    if (waitData.status === "success") {
       transactionsDispatch({ type: "SET_SUCCESS", payload: { hash } });
       toastDispatch({
         type: "NEW",

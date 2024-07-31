@@ -6,8 +6,6 @@ import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 import { GovernancePage } from "./GovernancePage";
-import { ClaimableYield } from "./components/ClaimableYield";
-import { Diagnostics } from "./components/Diagnostics";
 
 const client = new QueryClient();
 

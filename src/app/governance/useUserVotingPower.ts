@@ -47,9 +47,6 @@ export function useUserVotingPower(
       currentVotingPowerData !== null &&
       cycleLength.status === "SUCCESS"
     ) {
-      console.log({
-        vp: Number(formatUnits(currentVotingPowerData as bigint, 18)),
-      });
       const vp = Number(formatUnits(currentVotingPowerData as bigint, 18));
       setUserVotingPower(vp);
     }

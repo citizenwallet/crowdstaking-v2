@@ -27,6 +27,7 @@ import { BreadIcon } from "../../Icons/TokenIcons";
 import { ExplorerLink } from "../../ExplorerLink";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { BakeryTransactionModalState } from "@/app/core/context/ModalContext";
+import { useEffect } from "react";
 
 const modalHeaderText = {
   BAKE: "Baking Bread",
@@ -72,41 +73,34 @@ export function BakeryTransactionModal({
 
   const txStatus = transaction.status as TTransactionStatus;
   return (
-    <DialogPrimitivePortal>
-      <DialogPrimitiveOverlay forceMount asChild>
-        <ModalOverlay />
-      </DialogPrimitiveOverlay>
-      <DialogPrimitiveContent forceMount asChild>
-        <ModalContainer>
-          <ModalHeading>{modalHeaderText[transaction.data.type]}</ModalHeading>
-          <ModalContent>
-            {transactionIcons[txStatus]}
-            <div className="flex gap-2 items-center justify-center">
-              <TransactionValue
-                value={transaction.data.value ? transaction.data.value : "0"}
+    <ModalContainer>
+      <ModalHeading>{modalHeaderText[transaction.data.type]}</ModalHeading>
+      <ModalContent>
+        {transactionIcons[txStatus]}
+        <div className="flex gap-2 items-center justify-center">
+          <TransactionValue
+            value={transaction.data.value ? transaction.data.value : "0"}
+          />
+          <TokenLabelContainer>
+            <BreadIcon />
+            <TokenLabelText>BREAD</TokenLabelText>
+          </TokenLabelContainer>
+        </div>
+        {transaction.status === "PREPARED" ? (
+          <ModalAdviceText>
+            {modalAdviceText[transaction.status]}
+          </ModalAdviceText>
+        ) : (
+          <>
+            <ModalAdviceText>{modalAdviceText[txStatus]}</ModalAdviceText>
+            {transaction.status !== "SAFE_SUBMITTED" && (
+              <ExplorerLink
+                to={`https://gnosisscan.io/tx/${transaction.hash}`}
               />
-              <TokenLabelContainer>
-                <BreadIcon />
-                <TokenLabelText>BREAD</TokenLabelText>
-              </TokenLabelContainer>
-            </div>
-            {transaction.status === "PREPARED" ? (
-              <ModalAdviceText>
-                {modalAdviceText[transaction.status]}
-              </ModalAdviceText>
-            ) : (
-              <>
-                <ModalAdviceText>{modalAdviceText[txStatus]}</ModalAdviceText>
-                {transaction.status !== "SAFE_SUBMITTED" && (
-                  <ExplorerLink
-                    to={`https://gnosisscan.io/tx/${transaction.hash}`}
-                  />
-                )}
-              </>
             )}
-          </ModalContent>
-        </ModalContainer>
-      </DialogPrimitiveContent>
-    </DialogPrimitivePortal>
+          </>
+        )}
+      </ModalContent>
+    </ModalContainer>
   );
 }

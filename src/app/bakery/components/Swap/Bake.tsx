@@ -71,6 +71,11 @@ export default function Bake({
   useEffect(() => {
     (async () => {
       if (!writeData?.hash) return;
+      if (
+        transactionsState.submitted.find((tx) => tx.hash === writeData.hash)
+      ) {
+        return;
+      }
       if (isSafe) {
         const safeSdk = new SafeAppsSDK();
         const tx = await safeSdk.txs.getBySafeTxHash(writeData.hash);
@@ -79,6 +84,7 @@ export default function Bake({
             type: "SET_SAFE_SUBMITTED",
             payload: { hash: writeData.hash },
           });
+          setModal({ type: "VOTE_TRANSACTION", hash: writeData.hash });
           return;
         }
       }
@@ -87,16 +93,23 @@ export default function Bake({
         type: "SET_SUBMITTED",
         payload: { hash: writeData.hash },
       });
+      setModal({ type: "VOTE_TRANSACTION", hash: writeData.hash });
       clearInputValue();
     })();
-  }, [writeData, transactionsDispatch, clearInputValue, isSafe]);
+  }, [
+    writeData,
+    transactionsState,
+    transactionsDispatch,
+    clearInputValue,
+    isSafe,
+    setModal,
+  ]);
 
   useEffect(() => {
     if (!writeIsError && !writeError) return;
     // clear transaction closing modal on error including if user rejects the request
-    transactionsDispatch({ type: "CLEAR_NEW" });
-    setTxId(null);
-  }, [writeIsError, writeError, transactionsDispatch]);
+    setModal(null);
+  }, [writeIsError, writeError, setModal]);
 
   return (
     <div className="relative">

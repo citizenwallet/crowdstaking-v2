@@ -35,8 +35,6 @@ export function useDistributions() {
         toBlock: "latest",
       });
 
-      console.log("logs: ", { logs });
-
       return logs.map((log) => {
         const [totalYield, totalVotes, distributions] = log.args;
         if (!totalYield || !totalVotes || !distributions) {

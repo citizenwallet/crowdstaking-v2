@@ -111,9 +111,6 @@ export function TransactionsReducer(
         ...state,
         submitted: state.submitted.map((tx) => {
           if (tx.hash === action.payload.hash) {
-            if (tx.status !== "SUBMITTED") {
-              throw new Error("can only set CONFIRMED status on SUBMITTED tx!");
-            }
             return {
               ...tx,
               status: "CONFIRMED",
