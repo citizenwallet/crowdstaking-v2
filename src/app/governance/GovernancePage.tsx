@@ -136,7 +136,7 @@ export function GovernancePage() {
 
   return (
     <section className="grow max-w-[44rem] lg:max-w-[67rem] w-full m-auto pb-16">
-      <div className="max-w-96 m-auto sm:max-w-none grid w-full grid-cols-12 governance-rows p-4 md:p-8 gap-y-8 sm:gap-8 lg:gap-y-0 ">
+      <div className="max-w-96 m-auto sm:max-w-none grid w-full grid-cols-12 governance-rows p-4 md:p-8 gap-y-8 sm:gap-8 lg:gap-5 lg:gap-y-3">
         <div className="col-span-12 lg:col-span-8 row-start-1 row-span-1">
           <h3 className="text-3xl font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white">
             Bread Governance
@@ -169,7 +169,7 @@ export function GovernancePage() {
             isRecasting={isRecasting}
           />
         </div>
-        <div className="col-span-12 row-start-5 lg:col-start-1 lg:col-span-8 lg:row-start-3 grid grid-cols-1 gap-1">
+        <div className="col-span-12 row-start-5 lg:col-start-1 lg:col-span-8 lg:row-start-3 grid grid-cols-1 gap-3">
           {currentVotingDistribution.data[0].map((address, i) => {
             return (
               <ProjectRow key={address} address={address}>

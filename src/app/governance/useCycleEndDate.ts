@@ -5,17 +5,21 @@ import { useBlockNumber, useContractRead, useNetwork } from "wagmi";
 import { add } from "date-fns";
 import { CycleLengthState } from "./useCycleLength";
 
+export type CycleEndDateLoading = {
+  status: "LOADING";
+};
+export type CycleEndDateSuccess = {
+  status: "SUCCESS";
+  data: Date;
+};
+export type CycleEndDateError = {
+  status: "ERROR";
+};
+
 export type CycleEndDateState =
-  | {
-      status: "LOADING";
-    }
-  | {
-      status: "SUCCESS";
-      data: Date;
-    }
-  | {
-      status: "ERROR";
-    };
+  | CycleEndDateLoading
+  | CycleEndDateSuccess
+  | CycleEndDateError;
 
 export function useCycleEndDate(cycleLength: CycleLengthState) {
   const [cycleEndDate, setCycleEndDate] = useState<CycleEndDateState>({
