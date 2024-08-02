@@ -1,28 +1,22 @@
 import {
-  Overlay as DialogPrimitiveOverlay,
-  Content as DialogPrimitiveContent,
-  Portal as DialogPrimitivePortal,
-} from "@radix-ui/react-dialog";
-import {
   ModalAdviceText,
   ModalContainer,
   ModalContent,
   ModalHeading,
-  ModalOverlay,
+  transactionIcons,
   TransactionStatusCheck,
   TransactionStatusCross,
   TransactionStatusSpinner,
 } from "../ModalUI";
-import {
-  TTransaction,
-  TTransactionStatus,
-} from "../../../context/TransactionsContext/TransactionsReducer";
+import { TTransactionStatus } from "../../../context/TransactionsContext/TransactionsReducer";
 
 import { ExplorerLink } from "../../ExplorerLink";
+import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
+import { VoteModalState } from "@/app/core/context/ModalContext";
 
 const modalAdviceText: {
   [key in TTransactionStatus]: string;
-} = {
+} & { PREPARED: string } = {
   PREPARED: "Please confirm transaction in your wallet",
   SUBMITTED: "Waiting for on-chain confimation",
   SAFE_SUBMITTED: "Safe Transaction Submitted",
@@ -31,45 +25,46 @@ const modalAdviceText: {
 };
 
 export function VoteTransactionModal({
-  transaction,
+  modalState,
 }: {
-  transaction: TTransaction;
+  modalState: VoteModalState;
 }) {
+  const { transactionsState } = useTransactions();
+
+  const transaction = transactionsState.new
+    ? {
+        status: "PREPARED",
+        hash: null,
+      }
+    : transactionsState.submitted.find(
+        (transaction) => transaction.hash === modalState.hash
+      );
+
+  if (!transaction)
+    throw new Error("Transaction modal requires a transaction!");
+
+  const txStatus = transaction.status as TTransactionStatus;
+
   return (
-    <DialogPrimitivePortal>
-      <DialogPrimitiveOverlay forceMount asChild>
-        <ModalOverlay />
-      </DialogPrimitiveOverlay>
-      <DialogPrimitiveContent forceMount asChild>
-        <ModalContainer>
-          <ModalHeading>Casting Vote</ModalHeading>
-          <ModalContent>
-            {transaction.status === "PREPARED" && <TransactionStatusSpinner />}
-            {transaction.status === "SUBMITTED" && <TransactionStatusSpinner />}
-            {transaction.status === "CONFIRMED" && <TransactionStatusCheck />}
-            {transaction.status === "SAFE_SUBMITTED" && (
-              <TransactionStatusCheck />
+    <ModalContainer>
+      <ModalHeading>Casting Vote</ModalHeading>
+      <ModalContent>
+        {transactionIcons[txStatus]}
+        {transaction.status === "PREPARED" ? (
+          <ModalAdviceText>
+            {modalAdviceText[transaction.status]}
+          </ModalAdviceText>
+        ) : (
+          <>
+            <ModalAdviceText>{modalAdviceText[txStatus]}</ModalAdviceText>
+            {transaction.hash && (
+              <ExplorerLink
+                to={`https://gnosisscan.io/tx/${transaction.hash}`}
+              />
             )}
-            {transaction.status === "REVERTED" && <TransactionStatusCross />}
-            {transaction.status === "PREPARED" ? (
-              <ModalAdviceText>
-                {modalAdviceText[transaction.status]}
-              </ModalAdviceText>
-            ) : (
-              <>
-                <ModalAdviceText>
-                  {modalAdviceText[transaction.status]}
-                </ModalAdviceText>
-                {transaction.status !== "SAFE_SUBMITTED" && (
-                  <ExplorerLink
-                    to={`https://gnosisscan.io/tx/${transaction.hash}`}
-                  />
-                )}
-              </>
-            )}
-          </ModalContent>
-        </ModalContainer>
-      </DialogPrimitiveContent>
-    </DialogPrimitivePortal>
+          </>
+        )}
+      </ModalContent>
+    </ModalContainer>
   );
 }

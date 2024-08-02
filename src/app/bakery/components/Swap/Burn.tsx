@@ -1,10 +1,5 @@
 import { useContractWrite, usePrepareContractWrite } from "wagmi";
 import { parseEther } from "viem";
-import {
-  Root as DialogPrimitiveRoot,
-  Portal as DialogPrimitivePortal,
-  Trigger as DialogPrimitiveTrigger,
-} from "@radix-ui/react-dialog";
 
 import { TUserConnected } from "@/app/core/hooks/useConnectedUser";
 import { BREAD_GNOSIS_ABI } from "@/abi";
@@ -13,11 +8,9 @@ import { getConfig } from "@/chainConfig";
 import useDebounce from "@/app/bakery/hooks/useDebounce";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { useEffect, useState } from "react";
-import { nanoid } from "nanoid";
-import { BakeryTransactionModal } from "@/app/core/components/Modal/TransactionModal/BakeryTransactionModal";
-import { AnimatePresence } from "framer-motion";
 import SafeAppsSDK from "@safe-global/safe-apps-sdk/dist/src/sdk";
 import { TransactionStatus } from "@safe-global/safe-apps-sdk";
+import { useModal } from "@/app/core/context/ModalContext";
 
 export default function Burn({
   user,
@@ -31,9 +24,8 @@ export default function Burn({
   isSafe: boolean;
 }) {
   const { transactionsState, transactionsDispatch } = useTransactions();
-  const [txId, setTxId] = useState<string | null>(null);
   const [buttonIsEnabled, setButtonIsEnabled] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
+  const { setModal } = useModal();
 
   const { BREAD } = getConfig(user.chain.id);
 
@@ -74,14 +66,23 @@ export default function Burn({
 
   useEffect(() => {
     (async () => {
-      if (!writeData?.hash || !txId) return;
+      if (!writeData?.hash) return;
+      if (
+        transactionsState.submitted.find((tx) => tx.hash === writeData.hash)
+      ) {
+        return;
+      }
       if (isSafe) {
         const safeSdk = new SafeAppsSDK();
         const tx = await safeSdk.txs.getBySafeTxHash(writeData.hash);
         if (tx.txStatus === TransactionStatus.AWAITING_CONFIRMATIONS) {
           transactionsDispatch({
             type: "SET_SAFE_SUBMITTED",
-            payload: { id: txId, hash: writeData.hash },
+            payload: { hash: writeData.hash },
+          });
+          setModal({
+            type: "BAKERY_TRANSACTION",
+            hash: null,
           });
           return;
         }
@@ -89,66 +90,54 @@ export default function Burn({
       // not safe
       transactionsDispatch({
         type: "SET_SUBMITTED",
-        payload: { id: txId, hash: writeData.hash },
+        payload: { hash: writeData.hash },
+      });
+      setModal({
+        type: "BAKERY_TRANSACTION",
+        hash: writeData.hash,
       });
       clearInputValue();
     })();
-  }, [txId, writeData, transactionsDispatch, clearInputValue, isSafe]);
+  }, [
+    writeData,
+    transactionsState,
+    transactionsDispatch,
+    clearInputValue,
+    isSafe,
+    setModal,
+  ]);
 
   useEffect(() => {
     if (!writeIsError && !writeError) return;
-    if (!txId) return;
-    transactionsDispatch({ type: "CLEAR", payload: { id: txId } });
-    setTxId(null);
-  }, [writeIsError, writeError, txId, transactionsDispatch]);
-
-  const transaction = transactionsState.find(
-    (transaction) => transaction.id === txId
-  );
-
-  useEffect(() => {
-    if (transaction?.status === "PREPARED") setModalOpen(true);
-  }, [transaction, setModalOpen]);
+    setModal(null);
+  }, [writeIsError, writeError, setModal]);
 
   return (
     <div className="relative">
-      <DialogPrimitiveRoot open={modalOpen} onOpenChange={setModalOpen}>
-        <DialogPrimitiveTrigger asChild>
-          <Button
-            fullWidth={true}
-            size="xl"
-            disabled={!buttonIsEnabled}
-            onClick={() => {
-              if (!write) return;
-              const newId = nanoid();
-              setTxId(newId);
-              transactionsDispatch({
-                type: "NEW",
-                payload: {
-                  id: newId,
-                  data: {
-                    type: "BAKERY",
-                    value: debouncedValue,
-                  },
-                },
-              });
-              write();
-            }}
-          >
-            Burn
-          </Button>
-        </DialogPrimitiveTrigger>
-        <DialogPrimitivePortal forceMount>
-          <AnimatePresence>
-            {transaction && (
-              <BakeryTransactionModal
-                transactionType="BURN"
-                transaction={transaction}
-              />
-            )}
-          </AnimatePresence>
-        </DialogPrimitivePortal>
-      </DialogPrimitiveRoot>
+      <Button
+        fullWidth={true}
+        size="xl"
+        disabled={!buttonIsEnabled}
+        onClick={() => {
+          if (!write) return;
+          transactionsDispatch({
+            type: "NEW",
+            payload: {
+              data: {
+                type: "BURN",
+                value: debouncedValue,
+              },
+            },
+          });
+          setModal({
+            type: "BAKERY_TRANSACTION",
+            hash: null,
+          });
+          write();
+        }}
+      >
+        Burn
+      </Button>
       {prepareStatus === "loading" && (
         <span className="absolute bottom-0 left-0 right-0 transform translate-y-full pt-4">
           Preparing transaction...

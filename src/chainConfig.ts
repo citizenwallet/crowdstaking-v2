@@ -14,6 +14,9 @@ export interface ChainConfiguration {
   DISBURSER: {
     address: Hex;
   };
+  SDAI_ADAPTOR: {
+    address: Hex;
+  };
 }
 
 export const BREAD_ADDRESS = "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3";
@@ -35,6 +38,9 @@ const sepolia: ChainConfiguration = {
   DISBURSER: {
     address: "0x3df19344e31ba689fe1f56b3ef43ef6cfaa13096",
   },
+  SDAI_ADAPTOR: {
+    address: "0x",
+  },
 };
 
 const gnosis: ChainConfiguration = {
@@ -49,6 +55,9 @@ const gnosis: ChainConfiguration = {
   DISBURSER: {
     address: "0xeE95A62b749d8a2520E0128D9b3aCa241269024b",
   },
+  SDAI_ADAPTOR: {
+    address: "0xD499b51fcFc66bd31248ef4b28d656d67E591A94",
+  },
 };
 
 const anvil: ChainConfiguration = {
@@ -62,6 +71,9 @@ const anvil: ChainConfiguration = {
   },
   DISBURSER: {
     address: "0xb19b36b1456E65E3A6D514D3F715f204BD59f431",
+  },
+  SDAI_ADAPTOR: {
+    address: "0xD499b51fcFc66bd31248ef4b28d656d67E591A94",
   },
 };
 
