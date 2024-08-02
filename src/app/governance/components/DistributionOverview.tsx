@@ -1,69 +1,211 @@
 import { BreadIcon } from "@/app/core/components/Icons/TokenIcons";
 import { formatBalance, formatDate } from "@/app/core/util/formatter";
-import { CycleEndDateState, CycleEndDateSuccess } from "../useCycleEndDate";
+import { CycleDatesState, CycleDatesSuccess } from "../useCycleDates";
 import { useClaimableYield } from "../useClaimableYield";
 import { LinkIcon } from "@/app/core/components/Icons/LinkIcon";
 import { CardBox } from "@/app/core/components/CardBox";
-import { useContractRead } from "wagmi";
-import { SDAI_ADAPTOR_ABI } from "@/abi";
-import { useEffect } from "react";
+import { useContractRead, useNetwork } from "wagmi";
+import { ERC20_ABI, SDAI_ADAPTOR_ABI } from "@/abi";
+import { useEffect, useMemo, useState } from "react";
+import { differenceInDays, differenceInSeconds, format } from "date-fns";
+import { getConfig } from "@/chainConfig";
+import { formatUnits } from "viem";
+import clsx from "clsx";
 
 export function DistributionOverview({
-  cycleEndDate,
+  cycleDates,
+  distributions,
 }: {
-  cycleEndDate: CycleEndDateState;
+  cycleDates: CycleDatesState;
+  distributions: void[] | undefined;
 }) {
   const { claimableYield } = useClaimableYield();
+  const { chain: activeChain } = useNetwork();
+  const config = activeChain ? getConfig(activeChain.id) : getConfig("DEFAULT");
+  const [yieldIncrement, setYieldIncrement] = useState(0);
 
-  const { data, error, status } = useContractRead({
+  const {
+    data: apyData,
+    error: apyError,
+    status: apyStatus,
+  } = useContractRead({
+    address: config.SDAI_ADAPTOR.address,
     abi: SDAI_ADAPTOR_ABI,
+    functionName: "vaultAPY",
   });
 
+  const {
+    data: totalSupplyData,
+    status: totalSupplyStatus,
+    error: totalSupplyError,
+  } = useContractRead({
+    address: config.BREAD.address,
+    abi: ERC20_ABI,
+    functionName: "totalSupply",
+    args: [],
+    watch: true,
+  });
+
+  const yieldPerSecond = useMemo(() => {
+    if (
+      apyStatus === "success" &&
+      apyData &&
+      totalSupplyStatus === "success" &&
+      totalSupplyData
+    ) {
+      const dsr = Number(formatUnits(apyData as bigint, 18));
+      const totalSupply = Number(formatUnits(totalSupplyData as bigint, 18));
+      const yieldPerDay = (totalSupply * dsr) / 365;
+      const yieldPerSecond = yieldPerDay / 24 / 60 / 60;
+      console.log("DSR: ", dsr);
+      console.log("yield per day: ", yieldPerDay);
+      console.log("yield per hour: ", yieldPerDay / 24);
+      console.log("yield per minute: ", yieldPerDay / 24 / 60);
+      console.log("yield: ", dsr);
+      return yieldPerSecond;
+    }
+    return null;
+  }, [
+    apyStatus,
+    apyData,
+    apyError,
+    totalSupplyStatus,
+    totalSupplyData,
+    totalSupplyError,
+  ]);
+
+  const estimateTotal = useMemo(() => {
+    if (cycleDates.status === "SUCCESS" && claimableYield && yieldPerSecond) {
+      const difference = differenceInSeconds(cycleDates.end, new Date());
+      console.log({ yieldPerSecond });
+      return difference * yieldPerSecond + claimableYield;
+    }
+  }, [yieldPerSecond, claimableYield, cycleDates]);
+
   useEffect(() => {
-    console.log({ status });
-    console.log({ data });
-  }, [status, data]);
+    let intervalId: NodeJS.Timeout;
+    if (claimableYield && yieldPerSecond) {
+      intervalId = setInterval(() => {
+        setYieldIncrement((val) => (val += yieldPerSecond * 1.5));
+      }, 1500);
+    }
+    return () => clearInterval(intervalId);
+  }, [claimableYield, yieldPerSecond]);
+
+  // console.log("", differenceInDays(cycleDates.end, cycleDates.start))
+
+  const completedDays = useMemo(() => {
+    if (cycleDates.status !== "SUCCESS") return null;
+    const daysRemaining = differenceInDays(cycleDates.end, new Date());
+    const totalDaysCount = differenceInDays(cycleDates.end, cycleDates.start);
+    const days: boolean[] = [];
+    for (let i = 0; i < totalDaysCount; i++) {
+      days.unshift(i >= daysRemaining);
+    }
+    return days;
+  }, [cycleDates]);
 
   return (
     <div className="col-span-12 lg:col-span-4 row-start-2 lg:row-start-1 row-span-2">
       <CardBox>
-        <div className="max-w-96 m-auto lg:max-w-full flex flex-col items-center justify-center gap-6 p-5 shadow-card">
-          <h4 className="text-xl font-medium text-breadgray-rye dark:text-breadgray-light-grey tracking-wide uppercase">
+        <div className="max-w-96 m-auto lg:max-w-full flex flex-col items-center justify-center p-5 shadow-card">
+          <h4 className="text-xl font-medium text-breadgray-rye dark:text-breadgray-light-grey tracking-wide uppercase leading-none">
             Amount to Distribute
           </h4>
-          <div>
-            <div className="flex gap-2 items-center md:justify-end">
+          <div className="pt-4 pb-6">
+            <div className="flex gap-2 items-center md:justify-center">
               <BreadIcon />
               <span className="text-3xl font-bold dark:text-breadgray-ultra-white leading-none">
-                {claimableYield && formatBalance(claimableYield, 2)}
+                {claimableYield &&
+                  formatBalance(claimableYield + yieldIncrement, 4)}
               </span>
             </div>
-            <p>Current accumulated yield</p>
+            <p className="pt-2 font-medium text-xs text-breadgray-grey">
+              Current accumulated yield
+            </p>
           </div>
-          <div className="flex w-full">
-            <p className="grow">estimated after 30 days</p>
-            <span>2204</span>
-          </div>
+          <div className="w-full flex flex-col gap-3 py-3 border-1 border-t border-b border-t-breadgray-rye border-b-breadgray-rye">
+            <div className="flex w-full">
+              <p className="grow dark:text-breadgray-grey">
+                Estimated after 30 days
+              </p>
+              <div className="flex gap-2 items-center md:justify-center">
+                <BreadIcon size="small" />
+                <span className="font-bold dark:text-breadgray-white">
+                  {estimateTotal ? formatBalance(estimateTotal, 2) : "--.--"}
+                </span>
+              </div>
+            </div>
 
-          <div className="flex w-full">
-            <p className="grow">Voting cycle #2</p>
-            <span>1 Aug - 30 Aug</span>
+            <div className="flex w-full">
+              <p className="grow dark:text-breadgray-grey">
+                Voting cycle #
+                {distributions == undefined ? "--" : distributions.length + 1}
+              </p>
+              {cycleDates.status === "LOADING" ? (
+                <span>--</span>
+              ) : cycleDates.status === "ERROR" ? (
+                <span>err</span>
+              ) : (
+                <p className="font-bold dark:text-breadgray-ultra-white">
+                  {format(cycleDates.start, "MMM")}{" "}
+                  {format(cycleDates.start, "do")} -{" "}
+                  {format(cycleDates.end, "MMM")} {format(cycleDates.end, "do")}
+                </p>
+              )}
+            </div>
           </div>
-          {cycleEndDate.status === "LOADING" ? (
-            <span>--/--/--</span>
-          ) : cycleEndDate.status === "ERROR" ? (
-            <span>err </span>
-          ) : (
-            <DaysRemaining cycleEndDate={cycleEndDate} />
-          )}
+          <div className="w-full">
+            {cycleDates.status === "LOADING" ? (
+              <span>--/--/--</span>
+            ) : cycleDates.status === "ERROR" ? (
+              <span>err </span>
+            ) : (
+              <div className="pt-3 flex flex-col gap-3">
+                <p className="font-bold dark:text-breadgray-ultra-white">
+                  Distributing in {differenceInDays(cycleDates.end, new Date())}{" "}
+                  days
+                </p>
+                <div className="flex gap-0.5 bg-black border-2 border-black rounded-full overflow-clip">
+                  {completedDays &&
+                    completedDays.map((isComplete, i) => {
+                      return (
+                        <div
+                          key={`day_${i}`}
+                          className={clsx(
+                            "grow",
+                            isComplete
+                              ? "text-breadpink-500"
+                              : "text-breadgray-rye"
+                          )}
+                        >
+                          <svg
+                            className="w-full"
+                            viewBox="0 0 100 100"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <rect
+                              className="fill-current"
+                              width="100"
+                              height="100"
+                              shapeRendering="geometricPrecision"
+                            />
+                          </svg>
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
+            )}
+          </div>
           <div>
             <a
-              className="flex items-center gap-2 text-xs mt-2"
+              className="flex items-center gap-2 text-sm font-medium pt-4 text-breadgray-ultra-white"
               href="https://breadchain.notion.site/BREAD-Voting-Power-UI-0f2d350320b94e4ba9aeec2ef6fdcb84"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Learn more
+              How does this work?
               <div className="text-breadpink-shaded">
                 <LinkIcon />
               </div>
@@ -72,31 +214,5 @@ export function DistributionOverview({
         </div>
       </CardBox>
     </div>
-  );
-}
-
-function DaysRemaining({
-  cycleEndDate,
-}: {
-  cycleEndDate: CycleEndDateSuccess;
-}) {
-  const daysRemaining =
-    Date.parse(cycleEndDate.data.toDateString()) - Date.now();
-
-  console.log("------------------------------------");
-  console.log(Date.parse(cycleEndDate.data.toDateString()));
-  console.log(Date.now());
-  console.log({ daysRemaining });
-  const secondsRemaining = daysRemaining / 1000;
-  const hoursRemaining = secondsRemaining / 60;
-  console.log("secondsRemaining: ", secondsRemaining);
-  console.log("hoursRemaining: ", hoursRemaining);
-
-  console.log(daysRemaining / (1000 * 360 * 24));
-  return (
-    <span>
-      Distributing in
-      {formatDate(cycleEndDate.data)}
-    </span>
   );
 }

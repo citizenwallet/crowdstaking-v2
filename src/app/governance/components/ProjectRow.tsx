@@ -166,7 +166,6 @@ export function VoteDisplay({
   points: number;
   percentage: number;
 }) {
-  console.log({ points });
   return (
     <div className="flex items-center gap-4 px-4 border-2 border-breadgray-light-grey dark:border-breadgray-rye rounded-lg dark:bg-breadgray-burnt">
       <div className="text-2xl font-medium min-w-[3rem] text-center">

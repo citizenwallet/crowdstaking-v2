@@ -2,9 +2,8 @@ import clsx from "clsx";
 
 import { CheckIcon } from "@/app/core/components/Icons/CheckIcon";
 import { formatBalance, formatDate } from "@/app/core/util/formatter";
-import { PowerIcon } from "@/app/core/components/Icons/PowerIcon";
 import { TConnectedUserState } from "@/app/core/hooks/useConnectedUser";
-import { CycleEndDateState } from "../useCycleEndDate";
+import { CycleDatesState } from "../useCycleDates";
 import { CycleLengthSuccess } from "../useCycleLength";
 
 export function VotingPower({
@@ -12,7 +11,7 @@ export function VotingPower({
   userVotingPower,
   userHasVoted,
   userCanVote,
-  cycleEndDate,
+  cycleDates,
   cycleLength,
   user,
   distributeEqually,
@@ -22,7 +21,7 @@ export function VotingPower({
   userVotingPower: number | null;
   userHasVoted: boolean;
   userCanVote: boolean;
-  cycleEndDate: CycleEndDateState;
+  cycleDates: CycleDatesState;
   cycleLength: CycleLengthSuccess;
   user: TConnectedUserState;
   distributeEqually: () => void;
@@ -121,7 +120,7 @@ export function VotingPower({
       </div>
       <div className="pt-6 sm:p-0">
         {userHasVoted && !isRecasting ? (
-          <UserHasVoted cycleEndDate={cycleEndDate} />
+          <UserHasVoted cycleDates={cycleDates} />
         ) : !userCanVote &&
           minRequiredVotingPower !== null &&
           userVotingPower !== null &&
@@ -155,7 +154,7 @@ function NotEnoughPower() {
   );
 }
 
-function UserHasVoted({ cycleEndDate }: { cycleEndDate: CycleEndDateState }) {
+function UserHasVoted({ cycleDates }: { cycleDates: CycleDatesState }) {
   return (
     <div className={clsx(widgetBaseClasses, "border-status-success")}>
       <div className="flex gap-4">
@@ -169,11 +168,11 @@ function UserHasVoted({ cycleEndDate }: { cycleEndDate: CycleEndDateState }) {
       <div>
         <span className="dark:text-breadgray-grey">Next round: </span>
         {(() => {
-          switch (cycleEndDate.status) {
+          switch (cycleDates.status) {
             case "LOADING":
               return <span>--/--/--</span>;
             case "SUCCESS":
-              return <span>{formatDate(cycleEndDate.data)}</span>;
+              return <span>{formatDate(cycleDates.end)}</span>;
             case "ERROR":
             default:
               throw new Error("Invalid status!");

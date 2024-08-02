@@ -2,27 +2,28 @@ import { DISBURSER_ABI } from "@/abi";
 import { getConfig } from "@/chainConfig";
 import { useEffect, useState } from "react";
 import { useBlockNumber, useContractRead, useNetwork } from "wagmi";
-import { add } from "date-fns";
+import { add, sub } from "date-fns";
 import { CycleLengthState } from "./useCycleLength";
 
-export type CycleEndDateLoading = {
+export type CycleDatesLoading = {
   status: "LOADING";
 };
-export type CycleEndDateSuccess = {
+export type CycleDatesSuccess = {
   status: "SUCCESS";
-  data: Date;
+  start: Date;
+  end: Date;
 };
-export type CycleEndDateError = {
+export type CycleDatesError = {
   status: "ERROR";
 };
 
-export type CycleEndDateState =
-  | CycleEndDateLoading
-  | CycleEndDateSuccess
-  | CycleEndDateError;
+export type CycleDatesState =
+  | CycleDatesLoading
+  | CycleDatesSuccess
+  | CycleDatesError;
 
-export function useCycleEndDate(cycleLength: CycleLengthState) {
-  const [cycleEndDate, setCycleEndDate] = useState<CycleEndDateState>({
+export function useCycleDates(cycleLength: CycleLengthState) {
+  const [cycleDates, setCycleDates] = useState<CycleDatesState>({
     status: "LOADING",
   });
 
@@ -58,14 +59,18 @@ export function useCycleEndDate(cycleLength: CycleLengthState) {
       currentBlockNumberStatus === "success" &&
       currentBlockNumberData
     ) {
+      const secondsSinceStart =
+        (Number(currentBlockNumberData) - Number(lastClaimedBlockNumberData)) *
+        5;
       const cycleBlocksRemaining =
         Number(lastClaimedBlockNumberData) +
         cycleLength.data -
         Number(currentBlockNumberData);
       const cycleSecondsRemaining = cycleBlocksRemaining * 5;
-      setCycleEndDate({
+      setCycleDates({
         status: "SUCCESS",
-        data: add(new Date(), {
+        start: sub(new Date(), { seconds: secondsSinceStart }),
+        end: add(new Date(), {
           seconds: cycleSecondsRemaining,
         }),
       });
@@ -78,5 +83,5 @@ export function useCycleEndDate(cycleLength: CycleLengthState) {
     currentBlockNumberStatus,
   ]);
 
-  return { cycleEndDate };
+  return { cycleDates };
 }

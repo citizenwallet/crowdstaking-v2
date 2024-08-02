@@ -16,13 +16,13 @@ export function useCastVote(
     if (votesData) {
       const mostRecentVote = votesData.reduce<null | ParsedVote>(
         (acc, vote) => {
+          if (vote.account !== userAddress) return acc;
           if (!acc) return vote;
           if ((acc.blockTimestamp = vote.blockTimestamp)) return vote;
           return vote.blockTimestamp > acc.blockTimestamp ? vote : acc;
         },
         null
       );
-      console.log({ mostRecentVote });
       setCastVote(mostRecentVote ? mostRecentVote.points : null);
     }
   }, [votesData, userAddress]);

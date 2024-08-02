@@ -45,15 +45,15 @@ export function useDistributions() {
 
         const baseYield = Number(formatUnits(totalYield, 18)) / 2;
 
-        console.log("yield: ", formatUnits(totalYield, 18));
-        console.log("total votes: ", formatUnits(totalVotes, 18));
+        // console.log("yield: ", formatUnits(totalYield, 18));
+        // console.log("total votes: ", formatUnits(totalVotes, 18));
         distributions.forEach((d) => {
           const percent =
             (Number(formatUnits(d, 18)) / Number(votesTotal)) * 100;
 
           const payment = baseYield * percent;
-          console.log("payment: ", payment);
-          console.log("percent: ", percent);
+          // console.log("payment: ", payment);
+          // console.log("percent: ", percent);
         });
       });
     },

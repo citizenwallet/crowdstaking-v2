@@ -32,8 +32,6 @@ async function main() {
     toBlock: "latest",
   });
 
-  console.log({ logs });
-  console.log({ logs: logs.map((log) => log.eventName) });
   return logs;
 }
 
