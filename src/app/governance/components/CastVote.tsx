@@ -74,6 +74,7 @@ export function CastVote({
   vote,
   userCanVote,
   isSafe,
+  isRecasting,
   setIsRecasting,
 }: {
   vote: Array<number>;
@@ -164,39 +165,72 @@ export function CastVote({
   }, [writeIsError, writeError, transactionsDispatch, setModal]);
 
   return (
-    <Button
-      fullWidth
-      size="large"
-      onClick={() => {
-        if (!write) return;
-        if (prepareConfigStatus !== "success") {
-          console.log("castVote tx prepare failed: ", prepareConfigError);
-          return;
-        }
-        transactionsDispatch({
-          type: "NEW",
-          payload: {
-            data: {
-              type: "VOTE",
-            },
-          },
-        });
-        setModal({
-          type: "VOTE_TRANSACTION",
-          hash: "",
-        });
-        write();
-      }}
-      disabled={!userCanVote || !writeIsEnabled}
-    >
-      Cast Vote
-    </Button>
+    <div className="flex flex-col gap-2 sm:flex-row">
+      <div className="grow">
+        <Button
+          fullWidth
+          size="large"
+          onClick={() => {
+            if (!write) return;
+            if (prepareConfigStatus !== "success") {
+              console.log("castVote tx prepare failed: ", prepareConfigError);
+              return;
+            }
+            transactionsDispatch({
+              type: "NEW",
+              payload: {
+                data: {
+                  type: "VOTE",
+                },
+              },
+            });
+            setModal({
+              type: "VOTE_TRANSACTION",
+              hash: "",
+            });
+            write();
+          }}
+          disabled={!userCanVote || !writeIsEnabled}
+        >
+          Cast Vote
+        </Button>
+      </div>
+      {isRecasting && (
+        <div className="w-full sm:w-auto">
+          <Button
+            onClick={() => setIsRecasting(false)}
+            variant="cancel"
+            size="large"
+            fullWidth
+          >
+            <div className="flex items-center gap-3">
+              <svg
+                width="15"
+                height="14"
+                viewBox="0 0 15 14"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M0.5 0H2.5V2H0.5V0ZM4.5 4H2.5V2H4.5V4ZM6.5 6H4.5V4H6.5V6ZM8.5 6H6.5V8H4.5V10H2.5V12H0.5V14H2.5V12H4.5V10H6.5V8H8.5V10H10.5V12H12.5V14H14.5V12H12.5V10H10.5V8H8.5V6ZM10.5 4V6H8.5V4H10.5ZM12.5 2V4H10.5V2H12.5ZM12.5 2V0H14.5V2H12.5Z"
+                  fill="#D8745C"
+                />
+              </svg>
+
+              <span>Cancel recast</span>
+            </div>
+          </Button>
+        </div>
+      )}
+    </div>
   );
 }
 
 function VoteIsCast({ children }: { children: ReactNode }) {
   return (
-    <div className="flex gap-2">
+    <div className="flex flex-col sm:flex-row gap-2">
       <div className="dark:text-status-success py-2.5 bg-breadgray-ultra-white dark:bg-breadgray-charcoal rounded-lg grow flex justify-center text-lg font-bold ">
         <span className="flex gap-4">
           <div className="w-7 h-7 flex items-center text-status-success">
@@ -215,7 +249,7 @@ function RecastVote({}: {}) {
 
   return (
     <button
-      className="bg-[#FFCCF1] dark:bg-[#402639] px-6 py-2 flex items-center gap-2.5 rounded-lg font-bold text-breadpink-400 dark:text-breadpink-shaded text-lg border-2 border-[#FFCCF1] dark:border-[#402639] hover:border-breadpink-400 dark:hover:border-breadpink-shaded hover:transition-[border]"
+      className="bg-[#FFCCF1] dark:bg-[#402639] px-6 py-2 flex items-center justify-center gap-2.5 rounded-lg font-bold text-breadpink-400 dark:text-breadpink-shaded text-lg border-2 border-[#FFCCF1] dark:border-[#402639] hover:border-breadpink-400 dark:hover:border-breadpink-shaded hover:transition-[border]"
       onClick={() => setModal({ type: "CONFIRM_RECAST", isConfirmed: false })}
     >
       <div className="w-4 h-4">
