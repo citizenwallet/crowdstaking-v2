@@ -103,7 +103,7 @@ export function DistributionOverview({
             <div className="pt-4 pb-6">
               <div className="flex gap-2 items-center md:justify-center">
                 <BreadIcon />
-                <span className="text-3xl font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white leading-none font-mono">
+                <span className="text-3xl font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white leading-none">
                   {claimableYield &&
                     formatBalance(claimableYield + yieldIncrement, 4)}
                 </span>
