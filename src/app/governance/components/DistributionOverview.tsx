@@ -108,7 +108,7 @@ export function DistributionOverview({
                     formatBalance(claimableYield + yieldIncrement, 4)}
                 </span>
               </div>
-              <p className="pt-2 font-medium text-xs text-breadgray-rye">
+              <p className="pt-2 font-medium text-xs text-breadgray-rye dark:text-breadgray-grey">
                 Current accumulated yield
               </p>
             </div>
