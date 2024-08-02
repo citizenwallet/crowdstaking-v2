@@ -100,14 +100,32 @@ export function DistributionOverview({
             <h4 className="text-xl font-medium text-breadgray-rye dark:text-breadgray-light-grey tracking-wide uppercase leading-none">
               Amount to Distribute
             </h4>
-            <div className="pt-4 pb-6">
-              <div className="flex gap-2 items-center md:justify-center">
-                <BreadIcon />
-                <span className="text-3xl font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white leading-none">
-                  {claimableYield &&
-                    formatBalance(claimableYield + yieldIncrement, 4)}
-                </span>
-              </div>
+            <div className="pt-4 pb-6 w-full">
+              {claimableYield ? (
+                <div className="w-full flex text-3xl font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white leading-none">
+                  <div className="w-[45%] flex gap-2 items-center md:justify-end">
+                    <BreadIcon />
+                    <span>
+                      {
+                        formatBalance(claimableYield + yieldIncrement, 4).split(
+                          "."
+                        )[0]
+                      }
+                    </span>
+                  </div>
+                  <div>.</div>
+                  <div className="w-[45%]">
+                    {
+                      formatBalance(claimableYield + yieldIncrement, 4).split(
+                        "."
+                      )[1]
+                    }
+                  </div>
+                </div>
+              ) : (
+                <div>woo</div>
+              )}
+
               <p className=" text-center pt-1 font-medium text-xs text-breadgray-rye dark:text-breadgray-grey">
                 Current accumulated yield
               </p>
