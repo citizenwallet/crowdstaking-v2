@@ -112,7 +112,7 @@ export function DistributionOverview({
                 Current accumulated yield
               </p>
             </div>
-            <div className="w-full flex flex-col gap-3 py-3 border-1 border-t border-b border-t-breadgray-rye border-b-breadgray-rye">
+            <div className="w-full flex flex-col gap-3 py-3 border-1 border-t border-b border-t-breadgray-light-grey border-b-breadgray-light-grey dark:border-t-breadgray-rye dark:border-b-breadgray-rye">
               <div className="flex w-full">
                 <p className="grow text-breadgray-rye dark:text-breadgray-grey">
                   Estimated after 30 days
