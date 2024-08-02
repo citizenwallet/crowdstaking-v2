@@ -65,14 +65,7 @@ export function DistributionOverview({
       return yieldPerSecond;
     }
     return null;
-  }, [
-    apyStatus,
-    apyData,
-    apyError,
-    totalSupplyStatus,
-    totalSupplyData,
-    totalSupplyError,
-  ]);
+  }, [apyStatus, apyData, totalSupplyStatus, totalSupplyData]);
 
   const estimateTotal = useMemo(() => {
     if (cycleDates.status === "SUCCESS" && claimableYield && yieldPerSecond) {
