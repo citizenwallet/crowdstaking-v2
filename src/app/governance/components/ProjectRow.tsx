@@ -8,6 +8,7 @@ import type { TConnectedUserState } from "@/app/core/hooks/useConnectedUser";
 import { DecrementIcon, IncrementIcon } from "./Icons";
 import clsx from "clsx";
 import { CardBox } from "@/app/core/components/CardBox";
+import { LinkIcon } from "@/app/core/components/Icons/LinkIcon";
 
 export function ProjectRow({
   address,
@@ -16,7 +17,12 @@ export function ProjectRow({
   address: Hex;
   children: ReactNode;
 }) {
-  const { name, logoSrc, description } = projectsMeta[address];
+  const {
+    name,
+    logoSrc,
+    description,
+    links: { notion },
+  } = projectsMeta[address];
   return (
     <CardBox>
       {/* small */}
@@ -51,8 +57,16 @@ export function ProjectRow({
             />
           </div>
           <div>
-            <div className="col-start-2 col-span-11 row-start-1 row-span-1 flex items-center font-bold sm:text-xl sm:font-normal dark:text-breadgray-ultra-white">
-              {name}
+            <div className="col-start-2 col-span-11 row-start-1 row-span-1 flex items-center">
+              <a
+                className="flex gap-2 items-center font-bold sm:text-xl sm:font-normal dark:text-breadgray-ultra-white dark:hover:text-breadpink-shaded transition-colors"
+                href={notion}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span>{name}</span>
+                <LinkIcon />
+              </a>
             </div>
             <div className="col-start-1 sm:col-start-2 sm:col-span-11 col-span-12 max-w-xs text-breadgray-rye dark:text-breadgray-grey">
               {description}
