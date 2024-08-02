@@ -45,7 +45,7 @@ const ConnectedUserContext = createContext<{
 }>({
   user: {
     status: "LOADING",
-    features: { governancePage: false, breadCounter: false },
+    features: { governancePage: false, breadCounter: false, recastVote: false },
   },
   isSafe: false,
 });

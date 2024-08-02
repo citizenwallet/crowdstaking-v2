@@ -5,8 +5,6 @@ import { AppProvider } from "./core/hooks/AppProvider";
 
 import "./app.css";
 import "@rainbow-me/rainbowkit/styles.css";
-import { DevTools } from "./core/components/Devtools/DevTools";
-import { Toaster } from "./core/components/Toaster/Toaster";
 
 function parseFeatureVar(feature: string | undefined): boolean {
   return feature === "true" ? true : false;
@@ -15,6 +13,7 @@ function parseFeatureVar(feature: string | undefined): boolean {
 const features = {
   governancePage: parseFeatureVar(process.env.FEATURE_GOVERNANCE),
   breadCounter: parseFeatureVar(process.env.FEATURE_BREAD_COUNTER),
+  recastVote: parseFeatureVar(process.env.FEATURE_RECAST_VOTE),
 };
 
 export type Features = {
@@ -49,7 +48,6 @@ export default function App({ children }: { children: React.ReactNode }) {
         )}
       >
         <AppProvider features={features}>{children}</AppProvider>
-        {/* {process.env.ADMIN_WALLET && <DevTools />} */}
       </body>
     </html>
   );

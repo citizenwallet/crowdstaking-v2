@@ -5,6 +5,7 @@ import CloseIcon from "../Icons/CloseIcon";
 import { formatBalance } from "../../util/formatter";
 import { motion } from "framer-motion";
 import { Spinner } from "../Icons/Spinner";
+import { TTransactionStatus } from "../../context/TransactionsContext/TransactionsReducer";
 
 export const ModalContainer = forwardRef(
   (
@@ -48,7 +49,7 @@ export function ModalHeading({ children }: { children: ReactNode }) {
 
 export function ModalContent({ children }: { children: ReactNode }) {
   return (
-    <div className="px-2 pt-4 flex flex-col gap-2 items-center">{children}</div>
+    <div className="px-2 pt-4 flex flex-col gap-4 items-center">{children}</div>
   );
 }
 
@@ -144,3 +145,13 @@ function StatusIconWrapper({ children }: { children: ReactNode }) {
     </div>
   );
 }
+
+export const transactionIcons: {
+  [key in TTransactionStatus]: JSX.Element;
+} & { PREPARED: JSX.Element } = {
+  PREPARED: <TransactionStatusSpinner />,
+  SUBMITTED: <TransactionStatusSpinner />,
+  CONFIRMED: <TransactionStatusCheck />,
+  SAFE_SUBMITTED: <TransactionStatusCheck />,
+  REVERTED: <TransactionStatusCross />,
+};

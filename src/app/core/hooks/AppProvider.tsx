@@ -11,6 +11,8 @@ import { Footer } from "../components/Footer/Footer";
 import { Features } from "@/app/layout";
 import { useSentry } from "./useSentry";
 import { Toaster } from "../components/Toaster/Toaster";
+import { ModalProvider } from "../context/ModalContext";
+import { ModalPresenter } from "../components/Modal/ModalPresenter";
 
 export function AppProvider({
   children,
@@ -27,7 +29,9 @@ export function AppProvider({
         <TokenBalancesProvider>
           <ToastProvider>
             <TransactionsProvider>
-              <Layout>{children}</Layout>
+              <ModalProvider>
+                <Layout>{children}</Layout>
+              </ModalProvider>
             </TransactionsProvider>
           </ToastProvider>
         </TokenBalancesProvider>
@@ -41,6 +45,7 @@ function Layout({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen flex-col">
       <Header />
       <main className="grow relative">
+        <ModalPresenter />
         <Toaster />
         {children}
       </main>
