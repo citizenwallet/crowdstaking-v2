@@ -12,7 +12,7 @@ export function ModalPresenter() {
   return (
     <Dialog.Root open={!!modalState} onOpenChange={() => setModal(null)}>
       <Dialog.Portal forceMount>
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
           {modalState && (
             <>
               <Dialog.Overlay forceMount asChild>
