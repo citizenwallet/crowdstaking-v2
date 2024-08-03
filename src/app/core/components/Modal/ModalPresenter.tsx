@@ -18,7 +18,7 @@ export function ModalPresenter() {
               <Dialog.Overlay forceMount asChild>
                 <ModalOverlay />
               </Dialog.Overlay>
-              <Dialog.Content forceMount asChild>
+              <Dialog.Content forceMount>
                 {(() => {
                   switch (modalState.type) {
                     case "BAKERY_TRANSACTION":
