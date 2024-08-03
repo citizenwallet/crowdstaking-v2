@@ -28,7 +28,7 @@ export const ButtonVariants = {
   danger:
     "bg-status-danger-light dark:bg-status-danger text-breadgray-ultra-white dark:text-breadgray-grey100 bg-opacity-85 hover:bg-opacity-100",
   cancel:
-    "bg-status-danger-light dark:bg-status-danger dark:bg-opacity-10 text-status-danger-light dark:text-status-danger border border-2 border-status-danger border-opacity-0 hover:border-opacity-100 transition-all",
+    "border border-2 border-status-danger-light dark:border-status-danger hover:bg-status-danger-light dark:bg-status-danger dark:hover:bg-status-danger dark:bg-opacity-10 dark:hover:bg-opacity-10 text-status-danger-light dark:text-status-danger dark:hover:text-status-danger border border-2 border-status-danger dark:border-opacity-0 hover:border-opacity-100 transition-all hover:text-breadgray-ultra-white",
 };
 
 const Button = forwardRef(
