@@ -25,9 +25,8 @@ export default function Bake({
   isSafe: boolean;
 }) {
   const { transactionsState, transactionsDispatch } = useTransactions();
-  const [txId, setTxId] = useState<string | null>(null);
   const [buttonIsEnabled, setButtonIsEnabled] = useState(false);
-  const [txInProgress, setTxInProgress] = useState(false);
+
   const { setModal } = useModal();
 
   const { BREAD } = getConfig(user.chain.id);
@@ -84,7 +83,7 @@ export default function Bake({
             type: "SET_SAFE_SUBMITTED",
             payload: { hash: writeData.hash },
           });
-          setModal({ type: "VOTE_TRANSACTION", hash: writeData.hash });
+          setModal({ type: "BAKERY_TRANSACTION", hash: writeData.hash });
           return;
         }
       }
@@ -93,7 +92,7 @@ export default function Bake({
         type: "SET_SUBMITTED",
         payload: { hash: writeData.hash },
       });
-      setModal({ type: "VOTE_TRANSACTION", hash: writeData.hash });
+      setModal({ type: "BAKERY_TRANSACTION", hash: writeData.hash });
       clearInputValue();
     })();
   }, [

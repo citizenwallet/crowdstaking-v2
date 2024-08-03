@@ -12,13 +12,13 @@ export function ModalPresenter() {
   return (
     <Dialog.Root open={!!modalState} onOpenChange={() => setModal(null)}>
       <Dialog.Portal forceMount>
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
           {modalState && (
             <>
               <Dialog.Overlay forceMount asChild>
                 <ModalOverlay />
               </Dialog.Overlay>
-              <Dialog.Content forceMount asChild>
+              <Dialog.Content forceMount>
                 {(() => {
                   switch (modalState.type) {
                     case "BAKERY_TRANSACTION":

@@ -25,7 +25,7 @@ export function ConfirmRecastModal({
             />
           </svg>
         </div>
-        <p className="text-center text-breadgray-light-grey">
+        <p className="text-center text-breadgray-rye dark:text-breadgray-light-grey">
           You are about to Re-cast your vote. Your previous votes of this cycle
           will be removed.
         </p>
