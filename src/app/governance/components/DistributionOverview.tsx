@@ -7,7 +7,12 @@ import { CardBox } from "@/app/core/components/CardBox";
 import { useContractRead, useNetwork } from "wagmi";
 import { ERC20_ABI, SDAI_ADAPTOR_ABI } from "@/abi";
 import { useEffect, useMemo, useState } from "react";
-import { differenceInDays, differenceInSeconds, format } from "date-fns";
+import {
+  differenceInDays,
+  differenceInHours,
+  differenceInSeconds,
+  format,
+} from "date-fns";
 import { getConfig } from "@/chainConfig";
 import { formatUnits } from "viem";
 import clsx from "clsx";
@@ -46,7 +51,7 @@ export function DistributionOverview({
     watch: true,
   });
 
-  const yieldPerSecond = useMemo(() => {
+  const yieldPerHour = useMemo(() => {
     if (
       apyStatus === "success" &&
       apyData &&
@@ -56,30 +61,30 @@ export function DistributionOverview({
       const dsr = Number(formatUnits(apyData as bigint, 18));
       const totalSupply = Number(formatUnits(totalSupplyData as bigint, 18));
       const yieldPerDay = (totalSupply * dsr) / 365;
-      const yieldPerSecond = yieldPerDay / 24 / 60 / 60;
+      const yieldPerHour = yieldPerDay / 24;
 
-      return yieldPerSecond;
+      return yieldPerHour;
     }
     return null;
   }, [apyStatus, apyData, totalSupplyStatus, totalSupplyData]);
 
   const estimateTotal = useMemo(() => {
-    if (cycleDates.status === "SUCCESS" && claimableYield && yieldPerSecond) {
-      const difference = differenceInSeconds(cycleDates.end, new Date());
-      console.log({ yieldPerSecond });
-      return difference * yieldPerSecond + claimableYield;
+    if (cycleDates.status === "SUCCESS" && claimableYield && yieldPerHour) {
+      const difference = differenceInHours(cycleDates.end, new Date());
+      console.log({ yieldPerHour });
+      return difference * yieldPerHour + claimableYield;
     }
-  }, [yieldPerSecond, claimableYield, cycleDates]);
+  }, [yieldPerHour, claimableYield, cycleDates]);
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
-    if (claimableYield && yieldPerSecond) {
+    if (claimableYield && yieldPerHour) {
       intervalId = setInterval(() => {
-        setYieldIncrement((val) => (val += yieldPerSecond * 1.5));
+        setYieldIncrement((val) => (val += (yieldPerHour / 60 / 60) * 1.5));
       }, 1500);
     }
     return () => clearInterval(intervalId);
-  }, [claimableYield, yieldPerSecond]);
+  }, [claimableYield, yieldPerHour]);
 
   const completedDays = useMemo(() => {
     if (cycleDates.status !== "SUCCESS") return null;
@@ -102,7 +107,7 @@ export function DistributionOverview({
             </h4>
             <div className="pt-4 pb-6 w-full">
               {claimableYield ? (
-                <div className="w-full flex text-3xl font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white leading-none">
+                <div className="w-full flex justify-center text-3xl font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white leading-none">
                   <div className="w-[45%] flex gap-2 items-center md:justify-end">
                     <BreadIcon />
                     <span>
@@ -123,7 +128,7 @@ export function DistributionOverview({
                   </div>
                 </div>
               ) : (
-                <div>woo</div>
+                <div className="text-3xl opacity-0">.</div>
               )}
 
               <p className=" text-center pt-1 font-medium text-xs text-breadgray-rye dark:text-breadgray-grey">
