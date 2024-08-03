@@ -59,7 +59,7 @@ export function ProjectRow({
           <div>
             <div className="col-start-2 col-span-11 row-start-1 row-span-1 flex items-center">
               <a
-                className="flex gap-2 items-center font-bold sm:text-xl sm:font-normal dark:text-breadgray-ultra-white dark:hover:text-breadpink-shaded transition-colors"
+                className="flex gap-2 items-center font-bold sm:text-xl sm:font-normal dark:text-breadgray-ultra-white hover:text-breadpink-shaded transition-colors"
                 href={notion}
                 target="_blank"
                 rel="noopener noreferrer"
