@@ -108,7 +108,7 @@ export function DistributionOverview({
             <div className="pt-4 pb-6 w-full">
               {claimableYield ? (
                 <div className="w-full flex justify-center text-3xl font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white leading-none">
-                  <div className="w-[45%] flex gap-2 items-center md:justify-end">
+                  <div className="w-[45%] flex gap-2 items-center justify-end">
                     <BreadIcon />
                     <span>
                       {
