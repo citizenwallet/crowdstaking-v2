@@ -61,7 +61,7 @@ export function VotingPower({
                   width="19"
                   height="19"
                   filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB"
+                  colorInterpolationFilters="sRGB"
                 >
                   <feFlood floodOpacity="0" result="BackgroundImageFix" />
                   <feColorMatrix
