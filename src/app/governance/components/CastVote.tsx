@@ -190,7 +190,9 @@ export function CastVote({
             });
             write();
           }}
-          disabled={!userCanVote || !writeIsEnabled}
+          disabled={
+            !userCanVote || !writeIsEnabled || prepareConfigStatus !== "success"
+          }
         >
           Cast Vote
         </Button>
