@@ -23,6 +23,7 @@ export type Features = {
 export default function App({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
       <link
         rel="apple-touch-icon"
         sizes="180x180"
@@ -40,6 +41,10 @@ export default function App({ children }: { children: React.ReactNode }) {
         sizes="16x16"
         href="/favicon-16x16.png"
       />
+      <link rel="manifest" href="/site.webmanifest" />
+      <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+      <meta name="msapplication-TileColor" content="#da532c" />
+      <meta name="theme-color" content="#ffffff" />
       <body
         className={clsx(
           "relative bg-[#F0F0F0] dark:bg-breadgray-grey100 dark:text-breadgray-white",
