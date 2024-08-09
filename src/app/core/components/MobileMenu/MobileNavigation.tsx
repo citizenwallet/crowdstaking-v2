@@ -28,10 +28,10 @@ export function MobileNavigation({ handleNavToggle }: IProps) {
       </MobileNavigationLink>
       <MobileNavigationLink
         isExternal
-        href="https://breadchain.mirror.xyz/"
+        href="https://breadchain.notion.site/4d496b311b984bd9841ef9c192b9c1c7?v=2eb1762e6b83440f8b0556c9917f86ca"
         onClick={handleNavToggle}
       >
-        Blog
+        Docs
       </MobileNavigationLink>
     </nav>
   );

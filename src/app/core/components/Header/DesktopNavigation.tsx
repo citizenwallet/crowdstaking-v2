@@ -58,8 +58,11 @@ function DesktopNavigation({ currentPath }: { currentPath: string }) {
           Governance
         </DesktopNavigationLink>
       )}
-      <DesktopNavigationLink href="https://breadchain.mirror.xyz/" isExternal>
-        Blog
+      <DesktopNavigationLink
+        href="https://breadchain.notion.site/4d496b311b984bd9841ef9c192b9c1c7?v=2eb1762e6b83440f8b0556c9917f86ca"
+        isExternal
+      >
+        Docs
       </DesktopNavigationLink>
     </nav>
   );
