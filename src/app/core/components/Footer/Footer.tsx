@@ -93,8 +93,19 @@ export function Footer() {
               <LinkIcon />
             </span>
           </a>
+          <a
+            href="https://breadchain.mailchimpsites.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-row items-center"
+          >
+            <span className="pr-2">Newsletter</span>
+            <span className="text-breadpink-shaded">
+              <LinkIcon />
+            </span>
+          </a>
         </nav>
-        {/* copywright */}
+        {/* copyright */}
         <span className="text-breadgray-grey100 dark:text-breadgray-grey">
           Creative Commons {new Date().getFullYear()}
         </span>
