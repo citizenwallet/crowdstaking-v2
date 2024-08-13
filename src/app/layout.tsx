@@ -5,6 +5,7 @@ import { AppProvider } from "./core/hooks/AppProvider";
 
 import "./app.css";
 import "@rainbow-me/rainbowkit/styles.css";
+import { Metadata } from "next";
 
 function parseFeatureVar(feature: string | undefined): boolean {
   return feature === "true" ? true : false;
@@ -18,6 +19,10 @@ const features = {
 
 export type Features = {
   [K in keyof typeof features]: boolean;
+};
+
+export const metadata: Metadata = {
+  metadataBase: new URL("https://app.breadchain.xyz/"),
 };
 
 export default function App({ children }: { children: React.ReactNode }) {
@@ -45,6 +50,13 @@ export default function App({ children }: { children: React.ReactNode }) {
       <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
       <meta name="msapplication-TileColor" content="#da532c" />
       <meta name="theme-color" content="#ffffff" />
+
+      <script
+        defer
+        data-domain="breadchain.xyz"
+        src="https://analytics.breadchain.xyz/js/script.js"
+      ></script>
+
       <body
         className={clsx(
           "relative bg-[#F0F0F0] dark:bg-breadgray-grey100 dark:text-breadgray-white",
