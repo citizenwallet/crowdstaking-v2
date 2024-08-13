@@ -1,4 +1,3 @@
-"use client";
 import { useRouter } from "next/navigation";
 import { useConnectedUser } from "../core/hooks/useConnectedUser";
 import { useEffect } from "react";
@@ -14,22 +13,6 @@ export const metadata: Metadata = {
   description: "Bake and burn BREAD. Fund post-capitalist web3.",
 };
 
-const client = new QueryClient();
-
 export default function Governance() {
-  const router = useRouter();
-  const {
-    user: { features },
-  } = useConnectedUser();
-  useEffect(() => {
-    if (!features.governancePage) {
-      router.push("/");
-    }
-  }, [features, router]);
-
-  return features.governancePage ? (
-    <QueryClientProvider client={client}>
-      <GovernancePage />
-    </QueryClientProvider>
-  ) : null;
+  return <GovernancePage />;
 }
