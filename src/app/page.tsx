@@ -14,7 +14,6 @@ const FAQ = dynamic(() => import("./bakery/components/FAQ/FAQ"), {
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://app.breadchain.xyz/"),
   title: "Bread Crowdstaking",
   description: "Bake and burn BREAD. Fund post-capitalist web3.",
 };

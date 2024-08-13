@@ -5,6 +5,7 @@ import { AppProvider } from "./core/hooks/AppProvider";
 
 import "./app.css";
 import "@rainbow-me/rainbowkit/styles.css";
+import { Metadata } from "next";
 
 function parseFeatureVar(feature: string | undefined): boolean {
   return feature === "true" ? true : false;
@@ -18,6 +19,10 @@ const features = {
 
 export type Features = {
   [K in keyof typeof features]: boolean;
+};
+
+export const metadata: Metadata = {
+  metadataBase: new URL("https://app.breadchain.xyz/"),
 };
 
 export default function App({ children }: { children: React.ReactNode }) {

@@ -13,6 +13,9 @@ import { useSentry } from "./useSentry";
 import { Toaster } from "../components/Toaster/Toaster";
 import { ModalProvider } from "../context/ModalContext";
 import { ModalPresenter } from "../components/Modal/ModalPresenter";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 export function AppProvider({
   children,
@@ -26,15 +29,17 @@ export function AppProvider({
   return (
     <WagmiProvider>
       <ConnectedUserProvider features={features}>
-        <TokenBalancesProvider>
-          <ToastProvider>
-            <TransactionsProvider>
-              <ModalProvider>
-                <Layout>{children}</Layout>
-              </ModalProvider>
-            </TransactionsProvider>
-          </ToastProvider>
-        </TokenBalancesProvider>
+        <QueryClientProvider client={queryClient}>
+          <TokenBalancesProvider>
+            <ToastProvider>
+              <TransactionsProvider>
+                <ModalProvider>
+                  <Layout>{children}</Layout>
+                </ModalProvider>
+              </TransactionsProvider>
+            </ToastProvider>
+          </TokenBalancesProvider>
+        </QueryClientProvider>
       </ConnectedUserProvider>
     </WagmiProvider>
   );
