@@ -53,7 +53,7 @@ export default function App({ children }: { children: React.ReactNode }) {
 
       <script
         defer
-        data-domain="breadchain.xyz"
+        data-domain="app.breadchain.xyz"
         src="https://analytics.breadchain.xyz/js/script.js"
       ></script>
 
