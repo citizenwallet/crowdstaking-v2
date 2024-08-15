@@ -54,7 +54,7 @@ export default function App({ children }: { children: React.ReactNode }) {
       <script
         defer
         data-domain="app.breadchain.xyz"
-        src="https://analytics.breadchain.xyz/js/script.js"
+        src="https://analytics.breadchain.xyz/js/script.tagged-events.outbound-links.js"
       ></script>
 
       <body
