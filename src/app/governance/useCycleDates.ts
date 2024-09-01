@@ -67,16 +67,13 @@ export function useCycleDates(cycleLength: CycleLengthState) {
         cycleLength.data -
         Number(currentBlockNumberData);
       const cycleSecondsRemaining = cycleBlocksRemaining * 5;
-      const cycleDates = {
-        status: "SUCCESS" as const,
+      setCycleDates({
+        status: "SUCCESS",
         start: sub(new Date(), { seconds: secondsSinceStart }),
         end: add(new Date(), {
           seconds: cycleSecondsRemaining,
         }),
-      };
-      console.log("cycle start: ", cycleDates.start);
-      console.log("cycle end: ", cycleDates.end);
-      setCycleDates(cycleDates);
+      });
     }
   }, [
     lastClaimedBlockNumberData,
