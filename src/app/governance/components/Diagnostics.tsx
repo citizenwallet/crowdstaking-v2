@@ -4,7 +4,7 @@ import Button from "@/app/core/components/Button";
 import { projectsMeta } from "@/app/projectsMeta";
 import { getConfig } from "@/chainConfig";
 import { useEffect } from "react";
-import { formatUnits } from "viem";
+import { formatUnits, Hex } from "viem";
 import {
   useContractRead,
   useContractWrite,
@@ -52,14 +52,14 @@ export function Diagnostics() {
       </div>
       <div className="grid grid-cols-1 gap-2">
         {Object.keys(projectsMeta).map((account) => (
-          <ProjectDisplay key={account} account={account} />
+          <ProjectDisplay key={account} account={account as Hex} />
         ))}
       </div>
     </div>
   );
 }
 
-function ProjectDisplay({ account }: { account: string }) {
+function ProjectDisplay({ account }: { account: Hex }) {
   const { chain: activeChain } = useNetwork();
   const config = activeChain ? getConfig(activeChain.id) : getConfig("DEFAULT");
   const breadAddress = config.BREAD.address;
