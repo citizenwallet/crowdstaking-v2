@@ -71,7 +71,6 @@ export function DistributionOverview({
   const estimateTotal = useMemo(() => {
     if (cycleDates.status === "SUCCESS" && claimableYield && yieldPerHour) {
       const difference = differenceInHours(cycleDates.end, new Date());
-      console.log({ yieldPerHour });
       return difference * yieldPerHour + claimableYield;
     }
   }, [yieldPerHour, claimableYield, cycleDates]);
