@@ -19,31 +19,11 @@ import { useMinRequiredVotingPower } from "./useMinRequiredVotingPower";
 import { InfoCallout } from "./components/InfoCallout";
 import { useDistributions } from "./useDistributions";
 import { useModal } from "../core/context/ModalContext";
-import { ProjectMeta, projectsMeta } from "../projectsMeta";
 
 export type Project = {
   address: Hex;
   points: number;
 };
-
-type ProjectWithMeta = Prettify<
-  ProjectMeta & { account: Hex; currentDistribution: number }
->;
-
-type Prettify<T> = {
-  [K in keyof T]: T[K];
-} & {};
-
-export type CurrentProjectsLoading = { status: "LOADING"; data: null };
-export type CurrentProjectsSuccess = {
-  status: "SUCCESS";
-  data: ProjectWithMeta[];
-};
-export type CurrentProjectsError = { status: "ERROR"; data: null };
-export type CurrentProjectsState =
-  | CurrentProjectsLoading
-  | CurrentProjectsSuccess
-  | CurrentProjectsError;
 
 export function GovernancePage() {
   const { user, isSafe } = useConnectedUser();
@@ -80,38 +60,6 @@ export function GovernancePage() {
       );
     }
   }, [currentVotingDistribution, projects]);
-
-  const currentProjects = useMemo<CurrentProjectsState>(() => {
-    if (currentVotingDistribution.status === "LOADING")
-      return { status: "LOADING", data: null };
-
-    if (currentVotingDistribution.status === "ERROR")
-      return { status: "ERROR", data: null };
-    let data;
-    try {
-      data = currentVotingDistribution.data[0]
-        .map((account, i): ProjectWithMeta => {
-          if (!projectsMeta[account])
-            throw new Error("no metadata found for project!");
-          return {
-            account,
-            ...projectsMeta[account],
-            currentDistribution: currentVotingDistribution.data[1][i],
-          };
-        })
-        .sort((a, b) => a.order - b.order);
-    } catch (err) {
-      console.log(err);
-      return {
-        status: "ERROR",
-        data: null,
-      };
-    }
-    return {
-      status: "SUCCESS",
-      data,
-    };
-  }, [currentVotingDistribution]);
 
   function updateValue(value: number, address: Hex) {
     const updatedProjects = projects.map((project) => {
@@ -158,7 +106,7 @@ export function GovernancePage() {
       : false;
 
   if (
-    currentProjects.status === "ERROR" ||
+    currentVotingDistribution.status === "ERROR" ||
     cycleDates.status === "ERROR" ||
     cycleLength.status === "ERROR"
   )
@@ -169,7 +117,7 @@ export function GovernancePage() {
     );
 
   if (
-    currentProjects.status === "LOADING" ||
+    !projects.length ||
     currentVotingDistribution.status === "LOADING" ||
     cycleDates.status === "LOADING" ||
     cycleLength.status === "LOADING"
@@ -203,7 +151,7 @@ export function GovernancePage() {
         />
 
         <div className="max-w-md m-auto col-span-12 row-start-3 row-span-1 lg:row-start-3 lg:col-start-9 lg:col-span-4 h-full flex flex-col gap-4">
-          <ResultsPanel projects={currentProjects} />
+          <ResultsPanel distribution={currentVotingDistribution} />
           <InfoCallout />
         </div>
 
@@ -221,9 +169,9 @@ export function GovernancePage() {
           />
         </div>
         <div className="col-span-12 row-start-5 lg:col-start-1 lg:col-span-8 lg:row-start-3 grid grid-cols-1 gap-3">
-          {currentProjects.data.map((project, i) => {
+          {currentVotingDistribution.data[0].map((address, i) => {
             return (
-              <ProjectRow key={project.account} address={project.account}>
+              <ProjectRow key={address} address={address}>
                 {!isRecasting && castVote && castVote.length > 0 ? (
                   <VoteDisplay
                     points={castVote[i]}
@@ -233,7 +181,7 @@ export function GovernancePage() {
                   <VoteForm
                     value={projects[i].points}
                     updateValue={updateValue}
-                    address={project.account}
+                    address={address}
                     totalPoints={totalPoints}
                     user={user}
                     userCanVote={userCanVote}
