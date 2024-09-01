@@ -87,8 +87,8 @@ export function TransactionsReducer(
   switch (action.type) {
     case "NEW": {
       return {
+        ...state,
         new: action.payload.data,
-        submitted: [...state.submitted],
       };
     }
     case "SET_SUBMITTED": {

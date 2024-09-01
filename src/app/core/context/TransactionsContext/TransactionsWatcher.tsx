@@ -5,7 +5,6 @@ import {
 } from "./TransactionsReducer";
 import { useWaitForTransaction } from "wagmi";
 import { useToast } from "../ToastContext/ToastContext";
-import { useAudio } from "../../hooks/useAudio/useAudio";
 
 export function TransactionWatcher({
   transaction,
@@ -16,7 +15,6 @@ export function TransactionWatcher({
 }) {
   const { status, hash } = transaction;
   const { toastDispatch } = useToast();
-  const { playSound } = useAudio({ src: "/cookies.mp3" });
 
   const { data: waitData } = useWaitForTransaction({ hash });
 
@@ -32,7 +30,6 @@ export function TransactionWatcher({
     if (status !== "SUBMITTED") return;
     if (waitData.status === "success") {
       transactionsDispatch({ type: "SET_SUCCESS", payload: { hash } });
-      if (transaction.data.type === "BAKE") playSound();
       toastDispatch({
         type: "NEW",
         payload: { toastType: "CONFIRMED", txHash: hash },
