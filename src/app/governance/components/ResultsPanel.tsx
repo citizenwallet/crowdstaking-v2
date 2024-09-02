@@ -2,18 +2,18 @@ import { Hex } from "viem";
 
 import { projectsMeta } from "@/app/projectsMeta";
 import { formatVotePercentage } from "@/app/core/util/formatter";
+import { CurrentVotingDistributionState } from "../useCurrentVotingDistribution";
 import { CardBox } from "@/app/core/components/CardBox";
-import { CurrentProjectsSuccess } from "../GovernancePage";
 
 export function ResultsPanel({
-  projects,
+  distribution,
 }: {
-  projects: CurrentProjectsSuccess;
+  distribution: CurrentVotingDistributionState;
 }) {
-  const totalPoints = projects.sortedData.reduce(
-    (acc, points) => acc + points.currentDistribution,
-    0
-  );
+  const totalPoints =
+    distribution.status === "SUCCESS"
+      ? distribution.data[1].reduce((acc, points) => acc + points, 0)
+      : 0;
 
   return (
     <section className="grid grid-cols-1 gap-4">
@@ -24,14 +24,15 @@ export function ResultsPanel({
               results
             </h3>
             <div className="grid grid-cols-1 gap-4">
-              {projects.sortedData.map((project, i) => (
-                <ResultsProject
-                  key={`project_result_${project.account}`}
-                  address={project.account}
-                  projectPoints={projects.sortedData[i].currentDistribution}
-                  totalPoints={totalPoints}
-                />
-              ))}
+              {distribution.status === "SUCCESS" &&
+                distribution.data[0].map((account, i) => (
+                  <ResultsProject
+                    key={`project_result_${account}`}
+                    address={account}
+                    projectPoints={distribution.data[1][i]}
+                    totalPoints={totalPoints}
+                  />
+                ))}
             </div>
           </div>
         </div>
