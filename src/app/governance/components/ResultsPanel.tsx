@@ -25,14 +25,18 @@ export function ResultsPanel({
             </h3>
             <div className="grid grid-cols-1 gap-4">
               {distribution.status === "SUCCESS" &&
-                distribution.data[0].map((account, i) => (
-                  <ResultsProject
-                    key={`project_result_${account}`}
-                    address={account}
-                    projectPoints={distribution.data[1][i]}
-                    totalPoints={totalPoints}
-                  />
-                ))}
+                distribution.data[0]
+                  .toSorted(
+                    (a, b) => projectsMeta[a].order - projectsMeta[b].order
+                  )
+                  .map((account, i) => (
+                    <ResultsProject
+                      key={`project_result_${account}`}
+                      address={account}
+                      projectPoints={distribution.data[1][i]}
+                      totalPoints={totalPoints}
+                    />
+                  ))}
             </div>
           </div>
         </div>
