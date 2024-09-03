@@ -56,7 +56,7 @@ export function GovernancePage() {
     ) {
       setVoteFormState({
         projects:
-          castVote.data ||
+          { ...castVote.data } ||
           currentVotingDistribution.data[0].reduce<{
             [key: Hex]: number;
           }>((acc, cur, i) => {
@@ -67,6 +67,27 @@ export function GovernancePage() {
       });
     }
   }, [currentVotingDistribution, voteFormState, castVote]);
+
+  function resetFormState() {
+    if (
+      castVote.status !== "SUCCESS" ||
+      currentVotingDistribution.status !== "SUCCESS"
+    )
+      return;
+
+    console.log("setting state!!!");
+    setVoteFormState({
+      projects:
+        { ...castVote.data } ||
+        currentVotingDistribution.data[0].reduce<{
+          [key: Hex]: number;
+        }>((acc, cur, i) => {
+          acc[cur] = 0;
+          return acc;
+        }, {}),
+      totalPoints: 0,
+    });
+  }
 
   function updateValue(value: number, account: Hex) {
     setVoteFormState((state) => {
@@ -227,6 +248,7 @@ export function GovernancePage() {
             isSafe={isSafe}
             isRecasting={isRecasting}
             setIsRecasting={setIsRecasting}
+            resetFormState={resetFormState}
           />
         </div>
       </div>
