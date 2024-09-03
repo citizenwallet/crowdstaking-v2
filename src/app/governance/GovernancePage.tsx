@@ -19,11 +19,7 @@ import { useMinRequiredVotingPower } from "./useMinRequiredVotingPower";
 import { InfoCallout } from "./components/InfoCallout";
 import { useDistributions } from "./useDistributions";
 import { useModal } from "../core/context/ModalContext";
-
-export type Project = {
-  address: Hex;
-  points: number;
-};
+import { projectsMeta } from "../projectsMeta";
 
 export function GovernancePage() {
   const { user, isSafe } = useConnectedUser();
@@ -37,7 +33,10 @@ export function GovernancePage() {
 
   const { cycleDates } = useCycleDates(cycleLength);
 
-  const [projects, setProjects] = useState<Array<Project>>([]);
+  const [voteFormState, setVoteFormState] = useState<null | {
+    projects: { [key: Hex]: number };
+    totalPoints: number;
+  }>(null);
   const [isRecasting, setIsRecasting] = useState<boolean>(false);
 
   const { modalState, setModal } = useModal();
@@ -50,52 +49,63 @@ export function GovernancePage() {
   }, [modalState, setModal]);
 
   useEffect(() => {
-    if (projects.length) return;
-    if (currentVotingDistribution.status === "SUCCESS") {
-      setProjects(
-        currentVotingDistribution.data[0].map((address) => ({
-          address,
-          points: 0,
-        }))
-      );
+    if (voteFormState?.projects) return;
+    if (
+      currentVotingDistribution.status === "SUCCESS" &&
+      castVote.status === "SUCCESS"
+    ) {
+      setVoteFormState({
+        projects:
+          castVote.data ||
+          currentVotingDistribution.data[0].reduce<{
+            [key: Hex]: number;
+          }>((acc, cur, i) => {
+            acc[cur] = 0;
+            return acc;
+          }, {}),
+        totalPoints: 0,
+      });
     }
-  }, [currentVotingDistribution, projects]);
+  }, [currentVotingDistribution, voteFormState, castVote]);
 
-  function updateValue(value: number, address: Hex) {
-    const updatedProjects = projects.map((project) => {
-      if (project.address === address) {
-        return { ...project, points: value };
-      }
-      return project;
+  function updateValue(value: number, account: Hex) {
+    setVoteFormState((state) => {
+      if (!state) return state;
+      const newState = { ...state };
+      newState.projects[account] = value;
+      newState.totalPoints = Object.keys(newState.projects).reduce(
+        (acc, cur) => acc + newState.projects[cur as Hex],
+        0
+      );
+      return newState;
     });
-    setProjects(updatedProjects);
   }
 
   function distributeEqually() {
-    setProjects(projects.map((project) => ({ ...project, points: 1 })));
+    setVoteFormState((state) => {
+      if (!state) return state;
+      const newState = { ...state };
+      newState.projects = Object.keys(newState.projects).reduce<{
+        [key: Hex]: number;
+      }>((acc, cur) => {
+        acc[cur as Hex] = 0;
+        return acc;
+      }, {});
+      newState.totalPoints = 0;
+      return newState;
+    });
   }
 
-  const totalPoints = projects.reduce((acc, project) => {
-    return acc + project.points;
-  }, 0);
-
-  const castTotalPoints = castVote
-    ? castVote.reduce((acc, num) => acc + num, 0)
-    : 0;
+  const castTotalPoints =
+    castVote.status === "SUCCESS" && castVote.data
+      ? Object.keys(castVote.data).reduce(
+          (acc, cur) => acc + castVote.data![cur as Hex],
+          0
+        )
+      : 0;
 
   const userHasVoted = useMemo(() => {
-    return castVote && castVote.length > 0 ? true : false;
-  }, [castVote]);
-
-  useEffect(() => {
-    if (castVote && castVote.length > 0) {
-      setProjects((projects) =>
-        projects.map((p, i) => ({
-          ...p,
-          points: castVote[i],
-        }))
-      );
-    }
+    return castVote.status === "SUCCESS" && castVote.data ? true : false;
   }, [castVote]);
 
   const userCanVote =
@@ -106,6 +116,7 @@ export function GovernancePage() {
       : false;
 
   if (
+    castVote.status === "ERROR" ||
     currentVotingDistribution.status === "ERROR" ||
     cycleDates.status === "ERROR" ||
     cycleLength.status === "ERROR"
@@ -117,7 +128,8 @@ export function GovernancePage() {
     );
 
   if (
-    !projects.length ||
+    !voteFormState ||
+    castVote.status === "LOADING" ||
     currentVotingDistribution.status === "LOADING" ||
     cycleDates.status === "LOADING" ||
     cycleLength.status === "LOADING"
@@ -169,30 +181,47 @@ export function GovernancePage() {
           />
         </div>
         <div className="col-span-12 row-start-5 lg:col-start-1 lg:col-span-8 lg:row-start-3 grid grid-cols-1 gap-3">
-          {currentVotingDistribution.data[0].map((address, i) => {
-            return (
-              <ProjectRow key={address} address={address}>
-                {!isRecasting && castVote && castVote.length > 0 ? (
-                  <VoteDisplay
-                    points={castVote[i]}
-                    percentage={(castVote[i] / castTotalPoints) * 100 || 0}
-                  />
-                ) : (
-                  <VoteForm
-                    value={projects[i].points}
-                    updateValue={updateValue}
-                    address={address}
-                    totalPoints={totalPoints}
-                    user={user}
-                    userCanVote={userCanVote}
-                  />
-                )}
-              </ProjectRow>
-            );
-          })}
+          {currentVotingDistribution.data[0]
+            .map((account, i) => ({
+              account,
+              castPoints: currentVotingDistribution.data[1][i],
+            }))
+            .toSorted(
+              (a, b) =>
+                projectsMeta[a.account].order - projectsMeta[b.account].order
+            )
+            .map((project, i) => {
+              return (
+                <ProjectRow
+                  key={`project_row_${project.account}`}
+                  address={project.account}
+                >
+                  {!isRecasting && castVote.data ? (
+                    <VoteDisplay
+                      points={castVote.data[project.account]}
+                      percentage={
+                        (castVote.data[project.account] / castTotalPoints) *
+                          100 || 0
+                      }
+                    />
+                  ) : (
+                    <VoteForm
+                      value={voteFormState.projects[project.account]}
+                      updateValue={updateValue}
+                      address={project.account}
+                      totalPoints={voteFormState.totalPoints}
+                      user={user}
+                      userCanVote={userCanVote}
+                    />
+                  )}
+                </ProjectRow>
+              );
+            })}
           <CastVotePanel
             user={user}
-            userVote={projects.map((project) => project.points)}
+            userVote={Object.keys(voteFormState.projects).map(
+              (account) => voteFormState.projects[account as Hex]
+            )}
             userHasVoted={userHasVoted}
             userCanVote={userCanVote}
             isSafe={isSafe}
