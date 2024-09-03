@@ -25,6 +25,7 @@ export function CastVotePanel({
   isSafe,
   isRecasting,
   setIsRecasting,
+  resetFormState,
 }: {
   user: TConnectedUserState;
   userVote: Array<number>;
@@ -33,6 +34,7 @@ export function CastVotePanel({
   isSafe: boolean;
   isRecasting: boolean;
   setIsRecasting: (val: boolean) => void;
+  resetFormState: () => void;
 }) {
   const { openChainModal } = useChainModal();
 
@@ -61,6 +63,7 @@ export function CastVotePanel({
             isRecasting={isRecasting}
             setIsRecasting={setIsRecasting}
             user={user}
+            resetFormState={resetFormState}
           />
         ) : (
           <VoteIsCast>{user.features.recastVote && <RecastVote />}</VoteIsCast>
@@ -76,6 +79,7 @@ export function CastVote({
   isSafe,
   isRecasting,
   setIsRecasting,
+  resetFormState,
 }: {
   vote: Array<number>;
   userCanVote: boolean;
@@ -84,6 +88,7 @@ export function CastVote({
   isRecasting: boolean;
   user: TUserConnected;
   setIsRecasting: (val: boolean) => void;
+  resetFormState: () => void;
 }) {
   const { transactionsState, transactionsDispatch } = useTransactions();
   const { setModal } = useModal();
@@ -200,7 +205,10 @@ export function CastVote({
       {isRecasting && (
         <div className="w-full sm:w-auto">
           <Button
-            onClick={() => setIsRecasting(false)}
+            onClick={() => {
+              setIsRecasting(false);
+              resetFormState();
+            }}
             variant="cancel"
             size="large"
             fullWidth
