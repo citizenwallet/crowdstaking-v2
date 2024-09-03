@@ -50,14 +50,19 @@ export function GovernancePage() {
 
   useEffect(() => {
     if (voteFormState?.projects) return;
-    if (currentVotingDistribution.status === "SUCCESS" && castVote) {
+    if (
+      currentVotingDistribution.status === "SUCCESS" &&
+      castVote.status === "SUCCESS"
+    ) {
       setVoteFormState({
-        projects: currentVotingDistribution.data[0].reduce<{
-          [key: Hex]: number;
-        }>((acc, cur, i) => {
-          acc[cur] = castVote.length ? castVote[i] : 0;
-          return acc;
-        }, {}),
+        projects:
+          castVote.data ||
+          currentVotingDistribution.data[0].reduce<{
+            [key: Hex]: number;
+          }>((acc, cur, i) => {
+            acc[cur] = 0;
+            return acc;
+          }, {}),
         totalPoints: 0,
       });
     }
@@ -77,15 +82,30 @@ export function GovernancePage() {
   }
 
   function distributeEqually() {
-    // setProjects(projects.map((project) => ({ ...project, points: 1 })));
+    setVoteFormState((state) => {
+      if (!state) return state;
+      const newState = { ...state };
+      newState.projects = Object.keys(newState.projects).reduce<{
+        [key: Hex]: number;
+      }>((acc, cur) => {
+        acc[cur as Hex] = 0;
+        return acc;
+      }, {});
+      newState.totalPoints = 0;
+      return newState;
+    });
   }
 
-  const castTotalPoints = castVote
-    ? castVote.reduce((acc, num) => acc + num, 0)
-    : 0;
+  const castTotalPoints =
+    castVote.status === "SUCCESS" && castVote.data
+      ? Object.keys(castVote.data).reduce(
+          (acc, cur) => acc + castVote.data![cur as Hex],
+          0
+        )
+      : 0;
 
   const userHasVoted = useMemo(() => {
-    return castVote && castVote.length > 0 ? true : false;
+    return castVote.status === "SUCCESS" && castVote.data ? true : false;
   }, [castVote]);
 
   const userCanVote =
@@ -96,6 +116,7 @@ export function GovernancePage() {
       : false;
 
   if (
+    castVote.status === "ERROR" ||
     currentVotingDistribution.status === "ERROR" ||
     cycleDates.status === "ERROR" ||
     cycleLength.status === "ERROR"
@@ -108,6 +129,7 @@ export function GovernancePage() {
 
   if (
     !voteFormState ||
+    castVote.status === "LOADING" ||
     currentVotingDistribution.status === "LOADING" ||
     cycleDates.status === "LOADING" ||
     cycleLength.status === "LOADING"
@@ -174,10 +196,13 @@ export function GovernancePage() {
                   key={`project_row_${project.account}`}
                   address={project.account}
                 >
-                  {!isRecasting && castVote && castVote.length > 0 ? (
+                  {!isRecasting && castVote.data ? (
                     <VoteDisplay
-                      points={castVote[i]}
-                      percentage={(castVote[i] / castTotalPoints) * 100 || 0}
+                      points={castVote.data[project.account]}
+                      percentage={
+                        (castVote.data[project.account] / castTotalPoints) *
+                          100 || 0
+                      }
                     />
                   ) : (
                     <VoteForm

@@ -1,12 +1,28 @@
 import { useEffect, useState } from "react";
 import { TConnectedUserState } from "../core/hooks/useConnectedUser";
 import { ParsedVote, useCurrentVotes } from "./useCurrentVotes";
+import { Hex } from "viem";
+
+export type CastVoteData = { [key: Hex]: number };
+export type CastVoteStatusLoading = { status: "LOADING" };
+export type CastVoteStatusSuccess = {
+  status: "SUCCESS";
+  data: CastVoteData | null;
+};
+export type CastVoteStatusError = { status: "ERROR" };
+
+export type CastVoteState =
+  | CastVoteStatusLoading
+  | CastVoteStatusSuccess
+  | CastVoteStatusError;
 
 export function useCastVote(
   user: TConnectedUserState,
   lastClaimedBlockNumber: bigint | null
 ) {
-  const [castVote, setCastVote] = useState<null | Array<number>>(null);
+  const [castVote, setCastVote] = useState<CastVoteState>({
+    status: "LOADING",
+  });
 
   const userAddress = user.status === "CONNECTED" ? user.address : "";
 
@@ -23,7 +39,16 @@ export function useCastVote(
         },
         null
       );
-      setCastVote(mostRecentVote ? mostRecentVote.points : null);
+      console.log({ mostRecentVote });
+      setCastVote({
+        status: "SUCCESS",
+        data: mostRecentVote
+          ? mostRecentVote.points.reduce<CastVoteData>((acc, curr, i) => {
+              acc[mostRecentVote.projects[i]] = curr;
+              return acc;
+            }, {})
+          : null,
+      });
     }
   }, [votesData, userAddress]);
 
