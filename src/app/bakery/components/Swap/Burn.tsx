@@ -138,11 +138,6 @@ export default function Burn({
       >
         Burn
       </Button>
-      {prepareStatus === "loading" && (
-        <span className="absolute bottom-0 left-0 right-0 transform translate-y-full pt-4">
-          Preparing transaction...
-        </span>
-      )}
     </div>
   );
 }
