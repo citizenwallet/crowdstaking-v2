@@ -22,8 +22,8 @@ export interface ChainConfiguration {
 export const BREAD_ADDRESS = "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3";
 const ANVIL_DISBURSER_ADDRESS =
   process.env.NEXT_PUBLIC_ANVIL_DISBURSER_ADDRESS || "0x";
-if (ANVIL_DISBURSER_ADDRESS == "0x")
-  throw new Error("must provide disburser address for local development");
+if (process.env.NODE_ENV !== "production" && ANVIL_DISBURSER_ADDRESS == "0x")
+  throw new Error("must provide disburser address");
 
 export interface IConfig {
   [chainId: number]: ChainConfiguration;
