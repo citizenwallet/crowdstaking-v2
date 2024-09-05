@@ -20,6 +20,9 @@ export interface ChainConfiguration {
 }
 
 export const BREAD_ADDRESS = "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3";
+const ANVIL_DISBURSER_ADDRESS = process.env.NEXT_PUBLIC_ANVIL_DISBURSER_ADDRESS;
+if (typeof ANVIL_DISBURSER_ADDRESS !== "string")
+  throw new Error("must provide disburser address for local development");
 
 export interface IConfig {
   [chainId: number]: ChainConfiguration;
@@ -70,7 +73,7 @@ const anvil: ChainConfiguration = {
     address: "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3",
   },
   DISBURSER: {
-    address: "0xb19b36b1456E65E3A6D514D3F715f204BD59f431",
+    address: ANVIL_DISBURSER_ADDRESS as Hex,
   },
   SDAI_ADAPTOR: {
     address: "0xD499b51fcFc66bd31248ef4b28d656d67E591A94",
