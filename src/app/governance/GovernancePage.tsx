@@ -20,6 +20,7 @@ import { InfoCallout } from "./components/InfoCallout";
 import { useDistributions } from "./useDistributions";
 import { useModal } from "../core/context/ModalContext";
 import { projectsMeta } from "../projectsMeta";
+import { PageGrid } from "./components/PageGrid";
 
 export function GovernancePage() {
   const { user, isSafe } = useConnectedUser();
@@ -172,7 +173,7 @@ export function GovernancePage() {
 
   return (
     <section className="grow w-full max-w-[44rem] lg:max-w-[67rem] m-auto pb-16 lg:px-8">
-      <div className="grid w-full grid-cols-12 governance-rows p-4 md:py-8 md:px-2 gap-y-8 sm:gap-8 lg:gap-5 lg:gap-y-3">
+      <PageGrid>
         <div className="col-span-12 lg:col-span-8 row-start-1 row-span-1">
           <h3 className="text-3xl font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white">
             Bread Governance
@@ -258,7 +259,7 @@ export function GovernancePage() {
             resetFormState={resetFormState}
           />
         </div>
-      </div>
+      </PageGrid>
       {/* <Diagnostics /> */}
     </section>
   );

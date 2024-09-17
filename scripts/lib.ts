@@ -9,7 +9,7 @@ import {
 import { foundry } from "viem/chains";
 
 import { BREAD_ADDRESS, getConfig } from "../src/chainConfig";
-import { BREAD_GNOSIS_ABI, DISBURSER_ABI } from "../src/abi";
+import { BREAD_GNOSIS_ABI, DISBURSER_ABI, ERC20_ABI } from "../src/abi";
 
 export const anvilAccounts: Array<Hex> = [
   // mock wallet 2
@@ -82,19 +82,15 @@ export async function bakeBread(anvilAccount: Hex, value?: number) {
   }
 }
 
-export async function balanceOf(anvilAccount: Hex) {
-  await testClient.impersonateAccount({
-    address: anvilAccount,
-  });
-
+export async function balanceOf(account: Hex, tokenAddress: Hex) {
   const res = await publicClient.readContract({
-    address: BREAD_ADDRESS,
-    abi: BREAD_GNOSIS_ABI,
+    address: tokenAddress,
+    abi: ERC20_ABI,
     functionName: "balanceOf",
-    args: [anvilAccount],
+    args: [account],
   });
 
-  console.log(`Bread balance of ${anvilAccount} - ${res}`);
+  console.log(`${tokenAddress} balance of ${account} - ${res}`);
 }
 
 function generateVote() {

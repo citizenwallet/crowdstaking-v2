@@ -1,3 +1,4 @@
+import { TransactionType } from "@/app/governance/lp-vaults/components/VaultPanel";
 import { WriteContractReturnType } from "viem";
 
 export type TTransactionHash = WriteContractReturnType;
@@ -10,6 +11,10 @@ export type TTransactionData =
     }
   | {
       type: "VOTE";
+    }
+  | {
+      type: "LP_VAULT";
+      transactionType: TransactionType;
     };
 
 export type TTransactionSubmitted = {
@@ -93,7 +98,7 @@ export function TransactionsReducer(
     }
     case "SET_SUBMITTED": {
       const tx = state.new;
-      if (!tx) throw new Error("no new tx to submit");
+      if (!tx) return state;
       return {
         new: null,
         submitted: [
@@ -125,9 +130,6 @@ export function TransactionsReducer(
         ...state,
         submitted: state.submitted.map((tx) => {
           if (tx.hash === action.payload.hash) {
-            if (tx.status !== "SUBMITTED") {
-              throw new Error("can only set REVERTED status on SUBMITTED tx!");
-            }
             return {
               ...tx,
               status: "REVERTED",
@@ -138,7 +140,7 @@ export function TransactionsReducer(
       };
     case "SET_SAFE_SUBMITTED":
       const tx = state.new;
-      if (!tx) throw new Error("no new tx to submit");
+      if (!tx) return state;
       return {
         new: null,
         submitted: [

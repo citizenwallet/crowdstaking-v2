@@ -14,6 +14,12 @@ export interface ChainConfiguration {
   DISBURSER: {
     address: Hex;
   };
+  BUTTERED_BREAD: {
+    address: Hex;
+  };
+  LP_TOKEN: {
+    address: Hex;
+  };
   SDAI_ADAPTOR: {
     address: Hex;
   };
@@ -42,6 +48,12 @@ const sepolia: ChainConfiguration = {
   DISBURSER: {
     address: "0x3df19344e31ba689fe1f56b3ef43ef6cfaa13096",
   },
+  BUTTERED_BREAD: {
+    address: "0x",
+  },
+  LP_TOKEN: {
+    address: "0x",
+  },
   SDAI_ADAPTOR: {
     address: "0x",
   },
@@ -59,6 +71,12 @@ const gnosis: ChainConfiguration = {
   DISBURSER: {
     address: "0xeE95A62b749d8a2520E0128D9b3aCa241269024b",
   },
+  BUTTERED_BREAD: {
+    address: "0x",
+  },
+  LP_TOKEN: {
+    address: "0x",
+  },
   SDAI_ADAPTOR: {
     address: "0xD499b51fcFc66bd31248ef4b28d656d67E591A94",
   },
@@ -75,6 +93,12 @@ const anvil: ChainConfiguration = {
   },
   DISBURSER: {
     address: ANVIL_DISBURSER_ADDRESS as Hex,
+  },
+  BUTTERED_BREAD: {
+    address: "0x8ce361602B935680E8DeC218b820ff5056BeB7af",
+  },
+  LP_TOKEN: {
+    address: "0xf3d8f3de71657d342db60dd714c8a2ae37eac6b4",
   },
   SDAI_ADAPTOR: {
     address: "0xD499b51fcFc66bd31248ef4b28d656d67E591A94",
