@@ -1,7 +1,7 @@
-import { formatUnits, Hex } from "viem";
+import { formatUnits, Hex, parseUnits } from "viem";
 import Button from "../../Button";
 import { ModalContent, ModalHeading } from "../ModalUI";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import {
   useContractRead,
   useContractWrite,
@@ -9,84 +9,48 @@ import {
 } from "wagmi";
 import { BUTTERED_BREAD_ABI, ERC20_ABI } from "@/abi";
 import { TUserConnected } from "@/app/core/hooks/useConnectedUser";
-import {
-  LPVaultTransactionModalState,
-  useModal,
-} from "@/app/core/context/ModalContext";
+import { LPVaultTransactionModalState } from "@/app/core/context/ModalContext";
 import { getConfig } from "@/chainConfig";
 import clsx from "clsx";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
-import { TransactionData } from "./LPVaultTransactionModal";
-import { TTransaction } from "@/app/core/context/TransactionsContext/TransactionsReducer";
 
-export type ModalTransactionStatus =
-  | "NOT_CONFIRMED"
-  | "WALLET_OPEN"
-  | "SUBMITTED"
-  | "CONFIRMED";
-
-export type DepositTransactionState =
-  | { type: "INIT" }
-  | {
-      type: "ALLOWANCE";
-      status: ModalTransactionStatus;
-    }
-  | {
-      type: "DEPOSIT";
-      status: ModalTransactionStatus;
-      hash: Hex;
-    };
+import {
+  LpVaultAllowance,
+  LpVaultDeposit,
+  LpVaultEvent,
+  lpVaultReducer,
+} from "./lpVaultReducer";
 
 export function DepositTransaction({
   user,
   modalState,
-  txHash,
-  setTxHash,
-  submittedTransaction,
 }: {
   user: TUserConnected;
   modalState: LPVaultTransactionModalState;
-  setTxHash: (hash: Hex) => void;
-  submittedTransaction: TTransaction | null;
-  txHash: Hex | null;
 }) {
-  const [txState, setTxState] = useState<DepositTransactionState>({
-    type: "INIT",
-  });
-
   const chainConfig = getConfig(user.chain.id);
-
-  const userAllowance = useContractRead({
-    address: chainConfig.LP_TOKEN.address,
-    abi: ERC20_ABI,
-    functionName: "allowance",
-    args: [user.address, chainConfig.BUTTERED_BREAD.address],
-    watch: true,
+  const [lpVaultState, lpVaultDispatch] = useReducer(lpVaultReducer, {
+    depositAmount: modalState.parsedValue,
+    status: "loading",
   });
 
-  const approvalNeeded =
-    userAllowance.status === "success" &&
-    Number(userAllowance.data) < modalState.parsedValue;
+  const { status: userAllowanceStatus, data: userAllowanceData } =
+    useContractRead({
+      address: chainConfig.LP_TOKEN.address,
+      abi: ERC20_ABI,
+      functionName: "allowance",
+      args: [user.address, chainConfig.BUTTERED_BREAD.address],
+      watch: true,
+    });
 
-  const depositIsConfirmed = 
-
-  // useEffect(() => {
-  //   if (userAllowance.status === "success" && userAllowance.data) {
-  //     const isApproved = Number(userAllowance.data) > modalState.parsedValue;
-
-  //     setTxState(
-  //       isApproved
-  //         ? {
-  //             type: "DEPOSIT",
-  //             status: "NOT_CONFIRMED",
-  //           }
-  //         : {
-  //             type: "ALLOWANCE",
-  //             status: "NOT_CONFIRMED",
-  //           }
-  //     );
-  //   }
-  // }, [userAllowance]);
+  useEffect(() => {
+    if (userAllowanceStatus === "success") {
+      lpVaultDispatch({
+        type: "ALLOWANCE_UPDATE",
+        payload: { allowance: userAllowanceData as bigint },
+      });
+    }
+  }, [userAllowanceStatus, userAllowanceData]);
 
   return (
     <>
@@ -98,7 +62,8 @@ export function DepositTransaction({
             <span
               className={clsx(
                 "rounded-full size-4 bg-breadgray-grey",
-                !approvalNeeded && "bg-status-success"
+                !lpVaultState.status.includes("allowance_transaction") &&
+                  "bg-status-success"
               )}
             />
             <div className="grow">1. Token allowance</div>
@@ -107,33 +72,49 @@ export function DepositTransaction({
             <span
               className={clsx(
                 "rounded-full size-4 bg-breadgray-grey",
-                isConfirmed && "bg-status-success"
+                lpVaultState.status === "deposit_transaction_confirmed" &&
+                  "bg-status-success"
               )}
             />
             <div className="grow">2. Token locking</div>
           </div>
         </div>
+        {/* <pre>
+          <p>status: {lpVaultState.status}</p>
+          <p>depositAmount: {lpVaultState.depositAmount.toString()}</p>
+        </pre> */}
+
         {(() => {
+          if (lpVaultState.status === "loading") {
+            return "loading....";
+          }
           if (
-            isConfirmed ||
-            (submittedTransaction && txData?.type === "DEPOSIT") ||
-            (submittedTransaction &&
-              submittedTransaction.status === "SUBMITTED")
-          )
-            return null;
-          return approvalNeeded ? (
-            <IncreaseAllowance
-              user={user}
-              parsedValue={modalState.parsedValue}
-              setTxData={setTxData}
-            />
-          ) : (
-            <Deposit
-              user={user}
-              parsedValue={modalState.parsedValue}
-              setTxData={setTxData}
-            />
-          );
+            lpVaultState.status === "allowance_transaction_idle" ||
+            lpVaultState.status === "allowance_transaction_submitted" ||
+            lpVaultState.status === "allowance_transaction_reverted"
+          ) {
+            return (
+              <IncreaseAllowance
+                user={user}
+                lpVaultState={lpVaultState}
+                lpVaultDispatch={lpVaultDispatch}
+              />
+            );
+          }
+          if (
+            lpVaultState.status === "deposit_transaction_idle" ||
+            lpVaultState.status === "deposit_transaction_submitted" ||
+            lpVaultState.status === "deposit_transaction_confirmed" ||
+            lpVaultState.status === "deposit_transaction_reverted"
+          ) {
+            return (
+              <Deposit
+                user={user}
+                lpVaultState={lpVaultState}
+                lpVaultDispatch={lpVaultDispatch}
+              />
+            );
+          }
         })()}
       </ModalContent>
     </>
@@ -142,70 +123,94 @@ export function DepositTransaction({
 
 function IncreaseAllowance({
   user,
-  parsedValue,
-  setTxData,
+  lpVaultState,
+  lpVaultDispatch,
 }: {
   user: TUserConnected;
-  parsedValue: bigint;
-  setTxData: (data: TransactionData) => void;
+  lpVaultState: LpVaultAllowance;
+  lpVaultDispatch: (value: LpVaultEvent) => void;
 }) {
   const chainConfig = getConfig(
     user.status === "CONNECTED" ? user.chain.id : "DEFAULT"
   );
-  const { transactionsDispatch } = useTransactions();
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const { transactionsDispatch, transactionsState } = useTransactions();
+  const [isWalletOpen, setIsWalletOpen] = useState(false);
 
-  const prepareWrite = usePrepareContractWrite({
+  console.log("allowance: ", lpVaultState.allowance);
+  console.log("depositAmount: ", lpVaultState.depositAmount);
+
+  const {
+    status: prepareWriteStatus,
+    error: prepareWriteError,
+    config: prepareWriteConfig,
+  } = usePrepareContractWrite({
     address: chainConfig.LP_TOKEN.address,
     abi: ERC20_ABI,
     functionName: "approve",
-    args: [chainConfig.BUTTERED_BREAD.address, parsedValue],
+    args: [
+      chainConfig.BUTTERED_BREAD.address,
+      lpVaultState.depositAmount - lpVaultState.allowance,
+    ],
   });
 
   useEffect(() => {
-    transactionsDispatch({
-      type: "NEW",
-      payload: {
-        data: { type: "LP_VAULT", transactionType: "DEPOSIT" },
-      },
-    });
-  }, [transactionsDispatch]);
-
-  useEffect(() => {
-    if (prepareWrite.status === "error") {
-      console.log(prepareWrite.error);
+    if (prepareWriteStatus === "error") {
+      console.log(prepareWriteError);
     }
-  }, [prepareWrite]);
+  }, [prepareWriteStatus, prepareWriteError]);
 
-  const contractWrite = useContractWrite(prepareWrite.config);
+  const {
+    write: contractWriteWrite,
+    status: contractWriteStatus,
+    data: contractWriteData,
+  } = useContractWrite(prepareWriteConfig);
 
   useEffect(() => {
-    if (
-      contractWrite.status === "success" &&
-      contractWrite.data &&
-      !isSubmitted
-    ) {
-      setIsSubmitted(true);
-      setTxData({ type: "ALLOWANCE", hash: contractWrite.data.hash });
+    if (contractWriteStatus === "success" && contractWriteData) {
       transactionsDispatch({
         type: "SET_SUBMITTED",
-        payload: { hash: contractWrite.data.hash },
+        payload: { hash: contractWriteData.hash },
+      });
+      lpVaultDispatch({
+        type: "TRANSACTION_SUBMITTED",
+        payload: { hash: contractWriteData.hash },
       });
     }
+    if (contractWriteStatus === "error") {
+      setIsWalletOpen(false);
+    }
   }, [
-    isSubmitted,
-    setIsSubmitted,
-    setTxData,
     transactionsDispatch,
-    contractWrite,
+    contractWriteStatus,
+    contractWriteData,
+    lpVaultDispatch,
   ]);
+
+  // TODO get tx from hash / transactionsContext
+  // watch and handle confirmed or rejected
+  useEffect(() => {
+    if (lpVaultState.status !== "allowance_transaction_submitted") return;
+    const tx = transactionsState.submitted.find(
+      (t) => t.hash === lpVaultState.txHash
+    );
+    console.log({ tx });
+    if (tx?.status === "REVERTED") {
+      lpVaultDispatch({ type: "TRANSACTION_REVERTED" });
+    }
+  }, [transactionsState, lpVaultState, lpVaultDispatch]);
+
+  if (lpVaultState.status === "allowance_transaction_reverted") {
+    return <div>reverted!</div>;
+  }
 
   return (
     <Button
       onClick={() => {
-        if (!contractWrite.write) return;
-        contractWrite.write();
+        if (!contractWriteWrite) return;
+        contractWriteWrite();
+        setIsWalletOpen(true);
       }}
+      disabled={isWalletOpen}
     >
       Increase Allowance
     </Button>
@@ -214,16 +219,15 @@ function IncreaseAllowance({
 
 function Deposit({
   user,
-  parsedValue,
-  setTxData,
+  lpVaultState,
+  lpVaultDispatch,
 }: {
   user: TUserConnected;
-  parsedValue: bigint;
-  setTxData: (data: TransactionData) => void;
+  lpVaultState: LpVaultDeposit;
+  lpVaultDispatch: (value: LpVaultEvent) => void;
 }) {
-  const { transactionsDispatch } = useTransactions();
+  const { transactionsState, transactionsDispatch } = useTransactions();
   const chainConfig = getConfig(user.chain.id);
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
     transactionsDispatch({
@@ -234,41 +238,82 @@ function Deposit({
     });
   }, [transactionsDispatch]);
 
-  const prepareWrite = usePrepareContractWrite({
+  const {
+    status: prepareWriteStatus,
+    error: prepareWriteError,
+    config: prepareWriteConfig,
+  } = usePrepareContractWrite({
     address: chainConfig.BUTTERED_BREAD.address,
     abi: BUTTERED_BREAD_ABI,
     functionName: "deposit",
-    args: [chainConfig.LP_TOKEN.address, parsedValue],
-    enabled: Number(parsedValue) > 0,
+    args: [chainConfig.LP_TOKEN.address, lpVaultState.depositAmount],
   });
 
   useEffect(() => {
-    if (prepareWrite.status === "error") {
-      console.log({ prepareWrite });
+    if (prepareWriteStatus === "error") {
+      console.log({ prepareWriteError });
     }
-  });
-  const contractWrite = useContractWrite(prepareWrite.config);
+  }, [prepareWriteStatus, prepareWriteError]);
+
+  const {
+    write: contractWriteWrite,
+    status: contractWriteStatus,
+    data: contractWriteData,
+  } = useContractWrite(prepareWriteConfig);
 
   useEffect(() => {
-    if (
-      contractWrite.status === "success" &&
-      contractWrite.data &&
-      !isSubmitted
-    ) {
-      setIsSubmitted(true);
-      setTxData({ type: "DEPOSIT", hash: contractWrite.data.hash });
+    if (contractWriteStatus === "success" && contractWriteData) {
+      console.log("SEtting submitted deposit...");
       transactionsDispatch({
         type: "SET_SUBMITTED",
-        payload: { hash: contractWrite.data.hash },
+        payload: { hash: contractWriteData.hash },
+      });
+      lpVaultDispatch({
+        type: "TRANSACTION_SUBMITTED",
+        payload: { hash: contractWriteData.hash },
       });
     }
-  }, [contractWrite, transactionsDispatch, setTxData, isSubmitted]);
+  }, [
+    contractWriteStatus,
+    contractWriteData,
+    transactionsDispatch,
+    lpVaultDispatch,
+  ]);
+
+  useEffect(() => {
+    console.log({ transactionsState });
+    console.log("lpVaultState.status: ", lpVaultState.status);
+    if (lpVaultState.status !== "deposit_transaction_submitted") return;
+    const tx = transactionsState.submitted.find(
+      (t) => t.hash === lpVaultState.txHash
+    );
+    console.log({ tx });
+    if (tx?.status === "REVERTED") {
+      lpVaultDispatch({ type: "TRANSACTION_REVERTED" });
+    }
+    if (tx?.status === "CONFIRMED") {
+      console.log("deposit transaction confirmed!!");
+      lpVaultDispatch({ type: "TRANSACTION_CONFIRMED" });
+    }
+  }, [transactionsState, lpVaultState, lpVaultDispatch]);
+
+  if (lpVaultState.status === "deposit_transaction_confirmed") {
+    return <div>CONFIRMED!</div>;
+  }
+
+  if (lpVaultState.status === "deposit_transaction_reverted") {
+    return <div>reverted!</div>;
+  }
+
+  if (lpVaultState.status === "deposit_transaction_submitted") {
+    return <div>in progress...</div>;
+  }
 
   return (
     <Button
       onClick={() => {
-        if (!contractWrite.write) return;
-        contractWrite.write();
+        if (!contractWriteWrite) return;
+        contractWriteWrite();
       }}
     >
       Deposit
