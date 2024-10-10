@@ -33,16 +33,14 @@ $ pnpm run chain:setup
 
 We have the bread smart contracts in this repo as a submodule so we can compile and deploy any version we like to our anvil node.
 
-This will run the solidity script in contracts/script/DeployLocal.s.sol to deploy both the yield distributor contract (voting) and the buttered bread contract (lp token locking). Dont' worry about the bread contract itself as it rarely changes.
-
-_todo: write deployed contract addresses to JSON file to import in app config._
-
 ```sh
 $ cd contracts
 $ forge script script/Deploy.s.sol:Deploy --broadcast --rpc-url http://localhost:8545 --private-key 0x2a871d0798f97d79848a013d4936a73bf4cc922c825d33c1cf7073dff6d409c6 --legacy
 ```
 
-The contract addresses will be writted to file as JSON so they can be imported in `src/chainConfig.ts`
+This will run the solidity script in contracts/script/Deploy.s.sol to deploy both the yield distributor contract (voting) and the buttered bread contract (lp token locking). Dont' worry about the bread contract itself as it rarely changes, we can rely on the version available on the fork.
+
+The contract addresses will be written to file as JSON in `contracts/out` so they can be imported in `src/chainConfig.ts`
 
 ### What else?
 
