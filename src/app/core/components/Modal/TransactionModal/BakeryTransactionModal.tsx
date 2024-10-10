@@ -1,24 +1,12 @@
 import {
-  Overlay as DialogPrimitiveOverlay,
-  Content as DialogPrimitiveContent,
-  Portal as DialogPrimitivePortal,
-} from "@radix-ui/react-dialog";
-import {
   ModalAdviceText,
   ModalContainer,
   ModalContent,
   ModalHeading,
-  ModalOverlay,
   transactionIcons,
-  TransactionStatusCheck,
-  TransactionStatusCross,
-  TransactionStatusSpinner,
   TransactionValue,
 } from "../ModalUI";
-import {
-  TTransaction,
-  TTransactionStatus,
-} from "../../../context/TransactionsContext/TransactionsReducer";
+import { TTransactionStatus } from "../../../context/TransactionsContext/TransactionsReducer";
 import {
   TokenLabelContainer,
   TokenLabelText,
@@ -27,7 +15,6 @@ import { BreadIcon } from "../../Icons/TokenIcons";
 import { ExplorerLink } from "../../ExplorerLink";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { BakeryTransactionModalState } from "@/app/core/context/ModalContext";
-import { useEffect } from "react";
 
 const modalHeaderText = {
   BAKE: "Baking Bread",
