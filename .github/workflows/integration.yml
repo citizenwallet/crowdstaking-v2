@@ -58,7 +58,7 @@ jobs:
         run: pnpm install
 
       - name: Run build
-        run: pnpm ci:build
+        run: CI=true pnpm build
 
   test:
     name: Playwright Tests
