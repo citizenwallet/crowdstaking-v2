@@ -2,7 +2,7 @@ import { useContractWrite, usePrepareContractWrite } from "wagmi";
 import { parseEther } from "viem";
 
 import { TUserConnected } from "@/app/core/hooks/useConnectedUser";
-import { BREAD_GNOSIS_ABI } from "@/abi";
+import { BREAD_ABI } from "@/abi";
 import Button from "@/app/core/components/Button";
 import { getConfig } from "@/chainConfig";
 import useDebounce from "@/app/bakery/hooks/useDebounce";
@@ -41,7 +41,7 @@ export default function Burn({
     error: prepareError,
   } = usePrepareContractWrite({
     address: BREAD.address,
-    abi: BREAD_GNOSIS_ABI,
+    abi: BREAD_ABI,
     functionName: "burn",
     args: [parsedValue, user.address],
     enabled: parseFloat(debouncedValue) > 0,

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useContractRead, useNetwork } from "wagmi";
 
-import { DISBURSER_ABI } from "@/abi";
+import { DISTRIBUTOR_ABI } from "@/abi";
 import { getConfig } from "@/chainConfig";
 
 export function useLastClaimedBlockNumber() {
@@ -18,7 +18,7 @@ export function useLastClaimedBlockNumber() {
     status: lastClaimedBlockNumberStatus,
   } = useContractRead({
     address: distributorAddress,
-    abi: DISBURSER_ABI,
+    abi: DISTRIBUTOR_ABI,
     functionName: "lastClaimedBlockNumber",
     watch: true,
     enabled: distributorAddress !== "0x",

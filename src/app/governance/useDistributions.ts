@@ -16,7 +16,7 @@ export function useDistributions() {
     queryFn: async () => {
       // const logs = await publicClient.getContractEvents({
       //   address: distributorAddress,
-      //   abi: DISBURSER_ABI,
+      //   abi: DISTRIBUTOR_ABI,
       //   // eventName: "YieldDistributed",
       //   fromBlock: BigInt(34695057),
       //   toBlock: "latest",

@@ -1,4 +1,4 @@
-import { DISBURSER_ABI } from "@/abi";
+import { DISTRIBUTOR_ABI } from "@/abi";
 import { getConfig } from "@/chainConfig";
 import { useEffect, useState } from "react";
 import { Hex } from "viem";
@@ -36,7 +36,7 @@ export function useCurrentVotingDistribution() {
     error: currentVotingDistributionError,
   } = useContractRead({
     address: distriubutorAddress,
-    abi: DISBURSER_ABI,
+    abi: DISTRIBUTOR_ABI,
     functionName: "getCurrentVotingDistribution",
     watch: true,
     enabled: distriubutorAddress !== "0x",
