@@ -54,8 +54,6 @@ export function GovernancePage() {
       currentVotingDistribution.status === "SUCCESS" &&
       castVote.status === "SUCCESS"
     ) {
-      console.log({ castVote });
-      console.log({ currentVotingDistribution });
       const projects = castVote.data
         ? { ...castVote.data }
         : currentVotingDistribution.data[0].reduce<{
@@ -64,8 +62,6 @@ export function GovernancePage() {
             acc[cur] = 0;
             return acc;
           }, {});
-
-      console.log({ projects });
       setVoteFormState({
         projects,
         totalPoints: 0,
@@ -80,16 +76,15 @@ export function GovernancePage() {
     )
       return;
 
-    console.log("setting state!!!");
     setVoteFormState({
-      projects:
-        { ...castVote.data } ||
-        currentVotingDistribution.data[0].reduce<{
-          [key: Hex]: number;
-        }>((acc, cur, i) => {
-          acc[cur] = 0;
-          return acc;
-        }, {}),
+      projects: castVote.data
+        ? { ...castVote.data }
+        : currentVotingDistribution.data[0].reduce<{
+            [key: Hex]: number;
+          }>((acc, cur, i) => {
+            acc[cur] = 0;
+            return acc;
+          }, {}),
       totalPoints: 0,
     });
   }
@@ -139,9 +134,6 @@ export function GovernancePage() {
     userVotingPower && userVotingPower > Number(minRequiredVotingPower || 0)
       ? true
       : false;
-
-  // console.log("userCanVote...", userCanVote);
-  // console.log(userVotingPower, minRequiredVotingPower);
 
   if (
     castVote.status === "ERROR" ||

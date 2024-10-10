@@ -1,4 +1,4 @@
-import { DISBURSER_ABI } from "@/abi";
+import { DISTRIBUTOR_ABI } from "@/abi";
 import { getConfig } from "@/chainConfig";
 import { useEffect, useState } from "react";
 import { useContractRead, useNetwork } from "wagmi";
@@ -34,7 +34,7 @@ export function useCycleLength() {
     error: cycleLengthError,
   } = useContractRead({
     address: distributorAddress,
-    abi: DISBURSER_ABI,
+    abi: DISTRIBUTOR_ABI,
     functionName: "cycleLength",
   });
 

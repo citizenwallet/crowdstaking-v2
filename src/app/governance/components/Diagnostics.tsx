@@ -1,5 +1,5 @@
 "use client";
-import { BREAD_GNOSIS_ABI, DISBURSER_ABI } from "@/abi";
+import { BREAD_ABI, DISTRIBUTOR_ABI } from "@/abi";
 import Button from "@/app/core/components/Button";
 import { projectsMeta } from "@/app/projectsMeta";
 import { getConfig } from "@/chainConfig";
@@ -23,7 +23,7 @@ export function Diagnostics() {
     error: prepareError,
   } = usePrepareContractWrite({
     address: distributorAddress,
-    abi: DISBURSER_ABI,
+    abi: DISTRIBUTOR_ABI,
     functionName: "distributeYield",
   });
 
@@ -67,7 +67,7 @@ function ProjectDisplay({ account }: { account: Hex }) {
   const { data: breadBalanceData, status: breadBalanceStatus } =
     useContractRead({
       address: breadAddress,
-      abi: BREAD_GNOSIS_ABI,
+      abi: BREAD_ABI,
       functionName: "balanceOf",
       args: [account],
       watch: true,

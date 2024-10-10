@@ -1,5 +1,8 @@
 import { Hex } from "viem";
 
+import DISTRIBUTOR_DEPLOYED from "../contracts/out/DISTRIBUTOR.json";
+import BUTTERED_BREAD_DEPLOYED from "../contracts/out/BUTTERED_BREAD.json";
+
 interface IToken {
   address: Hex;
   symbol: string;
@@ -14,16 +17,16 @@ export interface ChainConfiguration {
   DISBURSER: {
     address: Hex;
   };
+  BUTTERED_BREAD: {
+    address: Hex;
+  };
   SDAI_ADAPTOR: {
     address: Hex;
   };
 }
 
 export const BREAD_ADDRESS = "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3";
-const ANVIL_DISBURSER_ADDRESS =
-  process.env.NEXT_PUBLIC_ANVIL_DISBURSER_ADDRESS || "0x";
-if (process.env.NODE_ENV !== "production" && ANVIL_DISBURSER_ADDRESS == "0x")
-  throw new Error("must provide disburser address");
+const DISBURSER_ADDRESS = "0x8ce361602B935680E8DeC218b820ff5056BeB7af";
 
 export interface IConfig {
   [chainId: number]: ChainConfiguration;
@@ -40,7 +43,10 @@ const sepolia: ChainConfiguration = {
     address: "0x689666145b8e80f705b87f4e4190820d9a4c1646",
   },
   DISBURSER: {
-    address: "0x3df19344e31ba689fe1f56b3ef43ef6cfaa13096",
+    address: "0xeE95A62b749d8a2520E0128D9b3aCa241269024b",
+  },
+  BUTTERED_BREAD: {
+    address: "0x",
   },
   SDAI_ADAPTOR: {
     address: "0x",
@@ -56,8 +62,12 @@ const gnosis: ChainConfiguration = {
     decimals: 18,
     address: "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3",
   },
+
   DISBURSER: {
     address: "0xeE95A62b749d8a2520E0128D9b3aCa241269024b",
+  },
+  BUTTERED_BREAD: {
+    address: "0x",
   },
   SDAI_ADAPTOR: {
     address: "0xD499b51fcFc66bd31248ef4b28d656d67E591A94",
@@ -74,7 +84,12 @@ const anvil: ChainConfiguration = {
     address: "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3",
   },
   DISBURSER: {
-    address: ANVIL_DISBURSER_ADDRESS as Hex,
+    address:
+      (!!DISTRIBUTOR_DEPLOYED && (DISTRIBUTOR_DEPLOYED.ADDRESS as Hex)) || "0x",
+  },
+  BUTTERED_BREAD: {
+    address:
+      (!!DISTRIBUTOR_DEPLOYED && (DISTRIBUTOR_DEPLOYED.ADDRESS as Hex)) || "0x",
   },
   SDAI_ADAPTOR: {
     address: "0xD499b51fcFc66bd31248ef4b28d656d67E591A94",

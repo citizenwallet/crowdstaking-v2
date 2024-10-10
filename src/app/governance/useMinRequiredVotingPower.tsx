@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useContractRead, useNetwork } from "wagmi";
 
-import { DISBURSER_ABI } from "@/abi";
+import { DISTRIBUTOR_ABI } from "@/abi";
 import { getConfig } from "@/chainConfig";
 import { formatUnits } from "viem";
 
@@ -19,7 +19,7 @@ export function useMinRequiredVotingPower() {
     status: minRequiredVotingPowerStatus,
   } = useContractRead({
     address: distributorAddress,
-    abi: DISBURSER_ABI,
+    abi: DISTRIBUTOR_ABI,
     functionName: "minRequiredVotingPower",
     watch: true,
   });

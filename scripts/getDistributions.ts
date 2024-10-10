@@ -3,7 +3,7 @@ import { foundry, gnosis } from "viem/chains";
 
 import { getConfig } from "../src/chainConfig";
 
-import { DISBURSER_ABI } from "../src/abi";
+import { DISTRIBUTOR_ABI } from "../src/abi";
 
 async function main() {
   const publicClient = createPublicClient({
@@ -15,7 +15,7 @@ async function main() {
 
   // const logs = await publicClient.getContractEvents({
   //   address: config.DISBURSER.address,
-  //   abi: DISBURSER_ABI,
+  //   abi: DISTRIBUTOR_ABI,
   //   // eventName: "YieldDistributed",
   //   fromBlock: BigInt(34695057),
   //   toBlock: "latest",
