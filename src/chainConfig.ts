@@ -1,7 +1,12 @@
 import { Hex } from "viem";
 
-import DISTRIBUTOR_DEPLOYED from "../contracts/out/DISTRIBUTOR.json";
-import BUTTERED_BREAD_DEPLOYED from "../contracts/out/BUTTERED_BREAD.json";
+let DISTRIBUTOR_DEPLOYED = { ADDRESS: "0x" };
+let BUTTERED_BREAD_DEPLOYED = { ADDRESS: "0x" };
+
+if (process.env.NODE_ENV === "development") {
+  DISTRIBUTOR_DEPLOYED = require("../contracts/out/DISTRIBUTOR.json");
+  BUTTERED_BREAD_DEPLOYED = require("../contracts/out/BUTTERED_BREAD.json");
+}
 
 interface IToken {
   address: Hex;
