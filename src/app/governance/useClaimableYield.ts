@@ -1,4 +1,4 @@
-import { BREAD_GNOSIS_ABI } from "@/abi";
+import { BREAD_ABI } from "@/abi";
 import { getConfig } from "@/chainConfig";
 import { useEffect, useState } from "react";
 import { formatUnits } from "viem";
@@ -14,7 +14,7 @@ export function useClaimableYield() {
 
   const { data, status, error } = useContractRead({
     address: breadAddress,
-    abi: BREAD_GNOSIS_ABI,
+    abi: BREAD_ABI,
     functionName: "yieldAccrued",
     watch: true,
     enabled: breadAddress !== "0x",
