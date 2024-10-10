@@ -8,6 +8,8 @@ Node modules and foundry dependencies for compiling the smart contracts.
 
 ```sh
 $ pnpm install
+# run forge install from contracts directory
+$ cd contracts
 $ forge install
 ```
 
