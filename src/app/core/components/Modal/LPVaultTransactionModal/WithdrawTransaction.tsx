@@ -1,7 +1,7 @@
 import { formatUnits, Hex } from "viem";
 import Button from "../../Button";
 import { ModalContent, ModalHeading } from "../ModalUI";
-import { useEffect } from "react";
+import { useEffect, useMemo, useReducer, useState } from "react";
 import {
   useContractRead,
   useContractWrite,
@@ -11,25 +11,33 @@ import { BUTTERED_BREAD_ABI } from "@/abi";
 import { TUserConnected } from "@/app/core/hooks/useConnectedUser";
 import { LPVaultTransactionModalState } from "@/app/core/context/ModalContext";
 import { getConfig } from "@/chainConfig";
-import { TransactionData } from "./LPVaultTransactionModal";
 import { TTransaction } from "@/app/core/context/TransactionsContext/TransactionsReducer";
+import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
+import { withdrawReducer } from "./withdrawReducer";
 
 export function WithdrawTransaction({
   user,
   modalState,
-  txData,
-  setTxData,
-  submittedTransaction,
-  isConfirmed,
 }: {
   user: TUserConnected;
   modalState: LPVaultTransactionModalState;
-  txData: TransactionData;
-  setTxData: (data: TransactionData) => void;
-  submittedTransaction: TTransaction | null;
-  isConfirmed: boolean;
 }) {
+  const { transactionsState, transactionsDispatch } = useTransactions();
+  const [isWalletOpen, setIsWalletOpen] = useState(false);
   const chainConfig = getConfig(user.chain.id);
+  const [withdrawState, withdrawDispatch] = useReducer(withdrawReducer, {
+    status: "idle",
+  });
+
+  useEffect(() => {
+    transactionsDispatch({
+      type: "NEW",
+      payload: {
+        data: { type: "LP_VAULT", transactionType: "DEPOSIT" },
+      },
+    });
+  }, [transactionsDispatch]);
+
   const lockedBalance = useContractRead({
     address: chainConfig.BUTTERED_BREAD.address,
     abi: BUTTERED_BREAD_ABI,
@@ -54,30 +62,51 @@ export function WithdrawTransaction({
     }
   }, [prepareWrite]);
 
-  const contractWrite = useContractWrite(prepareWrite.config);
+  const {
+    write: contractWriteWrite,
+    status: contractWriteStatus,
+    data: contractWriteData,
+  } = useContractWrite(prepareWrite.config);
 
   useEffect(() => {
-    console.log(contractWrite);
-    if (contractWrite.status === "success" && contractWrite.data) {
-      setTxData({ type: "WITHDRAW", hash: contractWrite.data.hash });
+    if (contractWriteStatus === "success" && contractWriteData) {
+      transactionsDispatch({
+        type: "SET_SUBMITTED",
+        payload: { hash: contractWriteData.hash },
+      });
+      withdrawDispatch({
+        type: "TRANSACTION_SUBMITTED",
+        payload: { hash: contractWriteData.hash },
+      });
     }
-    if (contractWrite.status === "error") {
-      console.log(contractWrite.error);
+    if (contractWriteStatus === "error") {
+      setIsWalletOpen(false);
     }
-  }, [contractWrite, setTxData]);
+  }, [contractWriteStatus, contractWriteData, transactionsDispatch]);
+
+  const tx = useMemo(() => {
+    if (withdrawState.status === "idle") return;
+    const tx = transactionsState.submitted.find((t) => {
+      return t.hash === withdrawState.hash;
+    });
+    return tx;
+  }, [transactionsState, withdrawState]);
 
   return (
     <>
       <ModalHeading>Unlocking LP Tokens</ModalHeading>
       <div>{formatUnits(modalState.parsedValue, 18)}</div>
       <ModalContent>
-        {!isConfirmed && (
+        {tx ? (
+          <div>{tx.status}</div>
+        ) : (
           <Button
             onClick={() => {
-              if (!contractWrite.write) return;
-              console.log("unlocking...");
-              contractWrite.write();
+              if (!contractWriteWrite) return;
+              setIsWalletOpen(true);
+              contractWriteWrite();
             }}
+            disabled={isWalletOpen}
           >
             Unlock
           </Button>

@@ -80,17 +80,15 @@ export function GovernancePage() {
       currentVotingDistribution.status !== "SUCCESS"
     )
       return;
-
-    console.log("setting state!!!");
     setVoteFormState({
-      projects:
-        { ...castVote.data } ||
-        currentVotingDistribution.data[0].reduce<{
-          [key: Hex]: number;
-        }>((acc, cur, i) => {
-          acc[cur] = 0;
-          return acc;
-        }, {}),
+      projects: castVote.data
+        ? { ...castVote.data }
+        : currentVotingDistribution.data[0].reduce<{
+            [key: Hex]: number;
+          }>((acc, cur, i) => {
+            acc[cur] = 0;
+            return acc;
+          }, {}),
       totalPoints: 0,
     });
   }
@@ -140,9 +138,6 @@ export function GovernancePage() {
     userVotingPower && userVotingPower > Number(minRequiredVotingPower || 0)
       ? true
       : false;
-
-  // console.log("userCanVote...", userCanVote);
-  // console.log(userVotingPower, minRequiredVotingPower);
 
   if (
     castVote.status === "ERROR" ||
@@ -215,10 +210,11 @@ export function GovernancePage() {
               account,
               castPoints: currentVotingDistribution.data[1][i],
             }))
-            .toSorted(
-              (a, b) =>
+            .toSorted((a, b) => {
+              return (
                 projectsMeta[a.account].order - projectsMeta[b.account].order
-            )
+              );
+            })
             .map((project, i) => {
               return (
                 <ProjectRow

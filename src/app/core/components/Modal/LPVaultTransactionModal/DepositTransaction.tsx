@@ -20,6 +20,7 @@ import {
   LpVaultEvent,
   lpVaultReducer,
 } from "./lpVaultReducer";
+import { ButtonSizes } from "../../Button/Button";
 
 export function DepositTransaction({
   user,
@@ -79,10 +80,6 @@ export function DepositTransaction({
             <div className="grow">2. Token locking</div>
           </div>
         </div>
-        {/* <pre>
-          <p>status: {lpVaultState.status}</p>
-          <p>depositAmount: {lpVaultState.depositAmount.toString()}</p>
-        </pre> */}
 
         {(() => {
           if (lpVaultState.status === "loading") {
@@ -135,9 +132,6 @@ function IncreaseAllowance({
   );
   const { transactionsDispatch, transactionsState } = useTransactions();
   const [isWalletOpen, setIsWalletOpen] = useState(false);
-
-  console.log("allowance: ", lpVaultState.allowance);
-  console.log("depositAmount: ", lpVaultState.depositAmount);
 
   const {
     status: prepareWriteStatus,
@@ -199,6 +193,10 @@ function IncreaseAllowance({
     }
   }, [transactionsState, lpVaultState, lpVaultDispatch]);
 
+  if (lpVaultState.status === "allowance_transaction_submitted") {
+    return <div className={clsx(ButtonSizes.regular)}>in progress...</div>;
+  }
+
   if (lpVaultState.status === "allowance_transaction_reverted") {
     return <div>reverted!</div>;
   }
@@ -211,6 +209,7 @@ function IncreaseAllowance({
         setIsWalletOpen(true);
       }}
       disabled={isWalletOpen}
+      fullWidth
     >
       Increase Allowance
     </Button>
@@ -227,6 +226,7 @@ function Deposit({
   lpVaultDispatch: (value: LpVaultEvent) => void;
 }) {
   const { transactionsState, transactionsDispatch } = useTransactions();
+  const [isWalletOpen, setIsWalletOpen] = useState(false);
   const chainConfig = getConfig(user.chain.id);
 
   useEffect(() => {
@@ -263,7 +263,6 @@ function Deposit({
 
   useEffect(() => {
     if (contractWriteStatus === "success" && contractWriteData) {
-      console.log("SEtting submitted deposit...");
       transactionsDispatch({
         type: "SET_SUBMITTED",
         payload: { hash: contractWriteData.hash },
@@ -273,6 +272,9 @@ function Deposit({
         payload: { hash: contractWriteData.hash },
       });
     }
+    if (contractWriteStatus === "error") {
+      setIsWalletOpen(false);
+    }
   }, [
     contractWriteStatus,
     contractWriteData,
@@ -281,8 +283,6 @@ function Deposit({
   ]);
 
   useEffect(() => {
-    console.log({ transactionsState });
-    console.log("lpVaultState.status: ", lpVaultState.status);
     if (lpVaultState.status !== "deposit_transaction_submitted") return;
     const tx = transactionsState.submitted.find(
       (t) => t.hash === lpVaultState.txHash
@@ -306,15 +306,18 @@ function Deposit({
   }
 
   if (lpVaultState.status === "deposit_transaction_submitted") {
-    return <div>in progress...</div>;
+    return <div className={clsx(ButtonSizes.regular)}>in progress...</div>;
   }
 
   return (
     <Button
       onClick={() => {
         if (!contractWriteWrite) return;
+        setIsWalletOpen(true);
         contractWriteWrite();
       }}
+      disabled={isWalletOpen}
+      fullWidth
     >
       Deposit
     </Button>

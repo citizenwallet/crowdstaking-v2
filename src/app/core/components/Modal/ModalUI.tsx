@@ -49,7 +49,9 @@ export function ModalHeading({ children }: { children: ReactNode }) {
 
 export function ModalContent({ children }: { children: ReactNode }) {
   return (
-    <div className="px-2 pt-4 flex flex-col gap-4 items-center">{children}</div>
+    <div className="px-2 pt-4 flex flex-col gap-4 items-center w-full">
+      {children}
+    </div>
   );
 }
 

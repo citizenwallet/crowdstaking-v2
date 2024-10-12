@@ -95,7 +95,7 @@ const anvil: ChainConfiguration = {
     address: ANVIL_DISBURSER_ADDRESS as Hex,
   },
   BUTTERED_BREAD: {
-    address: "0x8ce361602B935680E8DeC218b820ff5056BeB7af",
+    address: "0xA15BB66138824a1c7167f5E85b957d04Dd34E468",
   },
   LP_TOKEN: {
     address: "0xf3d8f3de71657d342db60dd714c8a2ae37eac6b4",

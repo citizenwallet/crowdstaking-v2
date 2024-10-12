@@ -6,6 +6,7 @@ import {
 import { ModalContainer } from "../ModalUI";
 import { useConnectedUser } from "../../../hooks/useConnectedUser";
 import { DepositTransaction } from "./DepositTransaction";
+import { WithdrawTransaction } from "./WithdrawTransaction";
 
 export function LPVaultTransactionModal({
   modalState,
@@ -27,14 +28,9 @@ export function LPVaultTransactionModal({
       {user.status === "CONNECTED" &&
         (modalState.transactionType === "DEPOSIT" ? (
           <DepositTransaction user={user} modalState={modalState} />
-        ) : // <WithdrawTransaction
-        //   user={user}
-        //   modalState={modalState}
-        //   txHash={txHash}
-        //   setTxHash={setTransactionHash}
-        //   submittedTransaction={submittedTransaction || null}
-        // />
-        null)}
+        ) : (
+          <WithdrawTransaction user={user} modalState={modalState} />
+        ))}
     </ModalContainer>
   );
 }
