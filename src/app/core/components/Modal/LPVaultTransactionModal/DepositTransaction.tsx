@@ -127,11 +127,18 @@ function IncreaseAllowance({
   lpVaultState: LpVaultAllowance;
   lpVaultDispatch: (value: LpVaultEvent) => void;
 }) {
-  const chainConfig = getConfig(
-    user.status === "CONNECTED" ? user.chain.id : "DEFAULT"
-  );
   const { transactionsDispatch, transactionsState } = useTransactions();
   const [isWalletOpen, setIsWalletOpen] = useState(false);
+  const chainConfig = getConfig(user.chain.id);
+
+  useEffect(() => {
+    transactionsDispatch({
+      type: "NEW",
+      payload: {
+        data: { type: "LP_VAULT", transactionType: "DEPOSIT" },
+      },
+    });
+  }, [transactionsDispatch]);
 
   const {
     status: prepareWriteStatus,
@@ -187,7 +194,6 @@ function IncreaseAllowance({
     const tx = transactionsState.submitted.find(
       (t) => t.hash === lpVaultState.txHash
     );
-    console.log({ tx });
     if (tx?.status === "REVERTED") {
       lpVaultDispatch({ type: "TRANSACTION_REVERTED" });
     }
