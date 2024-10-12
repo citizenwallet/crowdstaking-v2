@@ -1,4 +1,4 @@
-import { DISBURSER_ABI } from "@/abi";
+import { DISTRIBUTOR_ABI } from "@/abi";
 import { getConfig } from "@/chainConfig";
 import { useEffect, useState } from "react";
 import { useContractRead, useNetwork } from "wagmi";
@@ -33,7 +33,7 @@ export function useUserVotingPower(
   } = useContractRead({
     enabled: user.status === "CONNECTED" && distributorAddress !== "0x",
     address: distributorAddress,
-    abi: DISBURSER_ABI,
+    abi: DISTRIBUTOR_ABI,
     functionName: "getCurrentVotingPower",
     args: [user.status === "CONNECTED" ? user.address : ""],
   });

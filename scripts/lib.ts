@@ -1,15 +1,17 @@
+import { BREAD_ABI, DISTRIBUTOR_ABI, ERC20_ABI } from "../src/abi";
+import { getConfig } from "../src/chainConfig";
 import {
   Hex,
   createPublicClient,
   createTestClient,
   http,
   parseEther,
+  parseUnits,
   walletActions,
 } from "viem";
 import { foundry } from "viem/chains";
 
-import { BREAD_ADDRESS, getConfig } from "../src/chainConfig";
-import { BREAD_GNOSIS_ABI, DISBURSER_ABI, ERC20_ABI } from "../src/abi";
+const config = getConfig(31337);
 
 export const anvilAccounts: Array<Hex> = [
   // mock wallet 2
@@ -25,8 +27,12 @@ export const anvilAccounts: Array<Hex> = [
 ];
 
 export const DEV_ACCOUNT = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
-const config = getConfig(31337);
+const LP_TOKEN_WHALE = "0xc2fB4B3EA53E10c88D193E709A81C4dc7aEC902e" as Hex;
+const LP_TOKEN_CONTRACT = "0xf3d8f3de71657d342db60dd714c8a2ae37eac6b4" as Hex;
 
+// test client is useful as you can use it to send transactions
+// with any wallet without having the private key
+// https://viem.sh/docs/clients/test.html
 export const testClient = createTestClient({
   chain: foundry,
   mode: "anvil",
@@ -37,60 +43,78 @@ export const publicClient = createPublicClient({
   chain: foundry,
   transport: http(),
 });
-export async function setClaimer() {
+
+// bake bread with provided account
+export async function bakeBread(
+  account: Hex = DEV_ACCOUNT,
+  value: number = 5000
+) {
   await testClient.impersonateAccount({
-    address: "0x918def5d593f46735f74f9e2b280fe51af3a99ad",
+    address: account,
   });
-
-  const addresses = await testClient.getAddresses();
-
-  const hash = await testClient.writeContract({
-    account: addresses[addresses.length - 1],
-    address: BREAD_ADDRESS,
-    abi: BREAD_GNOSIS_ABI,
-    functionName: "setYieldClaimer",
-    args: [config.DISBURSER.address],
-  });
-
-  const transaction = await publicClient.waitForTransactionReceipt({ hash });
-
-  console.log("Claimer set: ", transaction.status);
-}
-
-export async function bakeBread(anvilAccount: Hex, value?: number) {
-  await testClient.impersonateAccount({
-    address: anvilAccount,
-  });
-
-  if (!value) value = 5000;
 
   try {
     const hash = await testClient.writeContract({
-      account: anvilAccount,
-      address: BREAD_ADDRESS,
-      abi: BREAD_GNOSIS_ABI,
+      account: account,
+      address: config.BREAD.address,
+      abi: BREAD_ABI,
       functionName: "mint",
+      // mint is a payable function so we pass the value like this
       value: parseEther(value.toString()),
-      args: [anvilAccount],
+      args: [account],
     });
 
+    // get the hash then wait for the tx to complete
     const transaction = await publicClient.waitForTransactionReceipt({ hash });
 
-    console.log(`Bread baked by ${anvilAccount} - ${transaction.status}`);
+    console.log(`Bread baked by ${account} - ${transaction.status}`);
   } catch (err) {
     console.log(err);
   }
 }
 
-export async function balanceOf(account: Hex, tokenAddress: Hex) {
-  const res = await publicClient.readContract({
-    address: tokenAddress,
-    abi: ERC20_ABI,
-    functionName: "balanceOf",
-    args: [account],
+// funds provided account with LP tokens
+export async function fundLpTokens(account: Hex = DEV_ACCOUNT) {
+  await testClient.impersonateAccount({
+    address: account,
   });
 
-  console.log(`${tokenAddress} balance of ${account} - ${res}`);
+  // sending the account with LP tokens some xdai first
+  // so it can pay the gas fees to send the LP tokens
+  await testClient.sendTransaction({
+    account: account,
+    to: LP_TOKEN_WHALE,
+    value: parseUnits("5", 18),
+  });
+
+  // impersonate the account with the LP tokens
+  await testClient.impersonateAccount({
+    address: LP_TOKEN_WHALE,
+  });
+
+  await testClient.writeContract({
+    account: LP_TOKEN_WHALE,
+    address: LP_TOKEN_CONTRACT,
+    abi: ERC20_ABI,
+    functionName: "transfer",
+    // this isn't a payable function so we pass the value as an argument
+    args: [DEV_ACCOUNT, parseUnits("1000", 18)],
+  });
+}
+
+export async function balanceOf(anvilAccount: Hex) {
+  await testClient.impersonateAccount({
+    address: anvilAccount,
+  });
+
+  const res = await publicClient.readContract({
+    address: config.BREAD.address,
+    abi: BREAD_ABI,
+    functionName: "balanceOf",
+    args: [anvilAccount],
+  });
+
+  console.log(`Bread balance of ${anvilAccount} - ${res}`);
 }
 
 function generateVote() {
@@ -107,7 +131,7 @@ export async function submitVote(anvilAccount: Hex) {
   try {
     const hash = await testClient.writeContract({
       address: config.DISBURSER.address,
-      abi: DISBURSER_ABI,
+      abi: DISTRIBUTOR_ABI,
       functionName: "castVote",
       account: anvilAccount,
       args: [
@@ -158,7 +182,7 @@ export async function submitVote(anvilAccount: Hex) {
 export async function getCurrentDistribution() {
   const res = await publicClient.readContract({
     address: config.DISBURSER.address,
-    abi: DISBURSER_ABI,
+    abi: DISTRIBUTOR_ABI,
     functionName: "getCurrentVotingDistribution",
   });
 

@@ -4,7 +4,7 @@ import { parseEther } from "viem";
 import { TUserConnected } from "@/app/core/hooks/useConnectedUser";
 import Button from "@/app/core/components/Button";
 import { getConfig } from "@/chainConfig";
-import { BREAD_GNOSIS_ABI } from "@/abi";
+import { BREAD_ABI } from "@/abi";
 import useDebounce from "@/app/bakery/hooks/useDebounce";
 
 import { useEffect, useState } from "react";
@@ -43,7 +43,7 @@ export default function Bake({
     error: prepareError,
   } = usePrepareContractWrite({
     address: BREAD.address,
-    abi: BREAD_GNOSIS_ABI,
+    abi: BREAD_ABI,
     functionName: "mint",
     args: [user.address],
     value: parsedValue,

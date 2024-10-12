@@ -3,7 +3,7 @@ import { useContractWrite, useNetwork, usePrepareContractWrite } from "wagmi";
 import Button from "@/app/core/components/Button";
 
 import { getConfig } from "@/chainConfig";
-import { DISBURSER_ABI } from "@/abi";
+import { DISTRIBUTOR_ABI } from "@/abi";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { ReactNode, useEffect, useState } from "react";
 import SafeAppsSDK from "@safe-global/safe-apps-sdk/dist/src/sdk";
@@ -104,7 +104,7 @@ export function CastVote({
     error: prepareConfigError,
   } = usePrepareContractWrite({
     address: distributorAddress,
-    abi: DISBURSER_ABI,
+    abi: DISTRIBUTOR_ABI,
     functionName: "castVote",
     args: [vote],
     enabled: writeIsEnabled && distributorAddress !== "0x",

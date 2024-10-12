@@ -55,8 +55,6 @@ export function GovernancePage() {
       currentVotingDistribution.status === "SUCCESS" &&
       castVote.status === "SUCCESS"
     ) {
-      console.log({ castVote });
-      console.log({ currentVotingDistribution });
       const projects = castVote.data
         ? { ...castVote.data }
         : currentVotingDistribution.data[0].reduce<{
@@ -65,8 +63,6 @@ export function GovernancePage() {
             acc[cur] = 0;
             return acc;
           }, {});
-
-      console.log({ projects });
       setVoteFormState({
         projects,
         totalPoints: 0,
@@ -80,6 +76,7 @@ export function GovernancePage() {
       currentVotingDistribution.status !== "SUCCESS"
     )
       return;
+
     setVoteFormState({
       projects: castVote.data
         ? { ...castVote.data }

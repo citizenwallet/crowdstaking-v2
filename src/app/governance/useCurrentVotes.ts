@@ -1,7 +1,7 @@
 import { getPublicClient } from "@wagmi/core";
 
 import { getConfig } from "@/chainConfig";
-import { DISBURSER_ABI } from "@/abi";
+import { DISTRIBUTOR_ABI } from "@/abi";
 import { useQuery } from "react-query";
 import { Hex } from "viem";
 import { useNetwork } from "wagmi";
@@ -21,6 +21,8 @@ export function useCurrentVotes(lastClaimedBlockNumber: bigint | null) {
   const distributorAddress = config.DISBURSER.address;
   const publicClient = getPublicClient();
 
+  console.log({ config });
+
   return useQuery({
     queryKey: "getVotesForCurrentRound",
     refetchInterval: 500,
@@ -28,7 +30,7 @@ export function useCurrentVotes(lastClaimedBlockNumber: bigint | null) {
     queryFn: async () => {
       const logs = await publicClient.getContractEvents({
         address: distributorAddress,
-        abi: DISBURSER_ABI,
+        abi: DISTRIBUTOR_ABI,
         eventName: "BreadHolderVoted",
         fromBlock: lastClaimedBlockNumber || BigInt(0),
         toBlock: "latest",

@@ -1,4 +1,4 @@
-import { DISBURSER_ABI } from "@/abi";
+import { DISTRIBUTOR_ABI } from "@/abi";
 import { getConfig } from "@/chainConfig";
 import { useEffect, useState } from "react";
 import { useBlockNumber, useContractRead, useNetwork } from "wagmi";
@@ -36,7 +36,7 @@ export function useCycleDates(cycleLength: CycleLengthState) {
     status: lastClaimedBlockNumberStatus,
   } = useContractRead({
     address: distributorAddress,
-    abi: DISBURSER_ABI,
+    abi: DISTRIBUTOR_ABI,
     functionName: "lastClaimedBlockNumber",
     watch: true,
   });

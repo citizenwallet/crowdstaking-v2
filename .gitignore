@@ -37,17 +37,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-
-# hardhat
-cache/
-
-# storybook
-storybook-static/
-
-# bundle analyzer
-analyze/
 # Sentry Config File
 .sentryclirc
+
+# playwright
 /test-results/
 /playwright-report/
 /blob-report/

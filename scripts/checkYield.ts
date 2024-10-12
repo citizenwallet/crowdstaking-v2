@@ -1,5 +1,5 @@
 import { createPublicClient, http } from "viem";
-import { BREAD_GNOSIS_ABI } from "../src/abi";
+import { BREAD_ABI } from "../src/abi";
 import { BREAD_ADDRESS } from "../src/chainConfig";
 import fs from "fs";
 import path from "path";
@@ -16,7 +16,7 @@ async function main() {
   setInterval(async () => {
     const res = await publicClient.readContract({
       address: BREAD_ADDRESS,
-      abi: BREAD_GNOSIS_ABI,
+      abi: BREAD_ABI,
       functionName: "yieldAccrued",
     });
     if (res !== lastVal) {

@@ -1,5 +1,13 @@
 import { Hex } from "viem";
 
+let DISTRIBUTOR_DEPLOYED = { ADDRESS: "0x" };
+let BUTTERED_BREAD_DEPLOYED = { ADDRESS: "0x" };
+
+if (process.env.NODE_ENV === "development") {
+  DISTRIBUTOR_DEPLOYED = require("../contracts/out/DISTRIBUTOR.json");
+  BUTTERED_BREAD_DEPLOYED = require("../contracts/out/BUTTERED_BREAD.json");
+}
+
 interface IToken {
   address: Hex;
   symbol: string;
@@ -14,10 +22,10 @@ export interface ChainConfiguration {
   DISBURSER: {
     address: Hex;
   };
-  BUTTERED_BREAD: {
+  LP_TOKEN: {
     address: Hex;
   };
-  LP_TOKEN: {
+  BUTTERED_BREAD: {
     address: Hex;
   };
   SDAI_ADAPTOR: {
@@ -26,10 +34,7 @@ export interface ChainConfiguration {
 }
 
 export const BREAD_ADDRESS = "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3";
-const ANVIL_DISBURSER_ADDRESS =
-  process.env.NEXT_PUBLIC_ANVIL_DISBURSER_ADDRESS || "0x";
-if (process.env.NODE_ENV !== "production" && ANVIL_DISBURSER_ADDRESS == "0x")
-  throw new Error("must provide disburser address");
+const DISBURSER_ADDRESS = "0x8ce361602B935680E8DeC218b820ff5056BeB7af";
 
 export interface IConfig {
   [chainId: number]: ChainConfiguration;
@@ -46,7 +51,7 @@ const sepolia: ChainConfiguration = {
     address: "0x689666145b8e80f705b87f4e4190820d9a4c1646",
   },
   DISBURSER: {
-    address: "0x3df19344e31ba689fe1f56b3ef43ef6cfaa13096",
+    address: "0xeE95A62b749d8a2520E0128D9b3aCa241269024b",
   },
   BUTTERED_BREAD: {
     address: "0x",
@@ -68,6 +73,7 @@ const gnosis: ChainConfiguration = {
     decimals: 18,
     address: "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3",
   },
+
   DISBURSER: {
     address: "0xeE95A62b749d8a2520E0128D9b3aCa241269024b",
   },
@@ -92,10 +98,13 @@ const anvil: ChainConfiguration = {
     address: "0xa555d5344f6FB6c65da19e403Cb4c1eC4a1a5Ee3",
   },
   DISBURSER: {
-    address: ANVIL_DISBURSER_ADDRESS as Hex,
+    address:
+      (!!DISTRIBUTOR_DEPLOYED && (DISTRIBUTOR_DEPLOYED.ADDRESS as Hex)) || "0x",
   },
   BUTTERED_BREAD: {
-    address: "0xA15BB66138824a1c7167f5E85b957d04Dd34E468",
+    address:
+      (!!BUTTERED_BREAD_DEPLOYED && (BUTTERED_BREAD_DEPLOYED.ADDRESS as Hex)) ||
+      "0x",
   },
   LP_TOKEN: {
     address: "0xf3d8f3de71657d342db60dd714c8a2ae37eac6b4",
