@@ -33,7 +33,7 @@ export function WithdrawTransaction({
     transactionsDispatch({
       type: "NEW",
       payload: {
-        data: { type: "LP_VAULT", transactionType: "DEPOSIT" },
+        data: { type: "LP_VAULT", transactionType: "UNLOCK" },
       },
     });
   }, [transactionsDispatch]);

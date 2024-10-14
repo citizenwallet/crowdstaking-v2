@@ -10,29 +10,30 @@ export function XDAIIcon() {
   );
 }
 
-// export function BreadIcon() {
-//   return (
-//     <div className="rounded-full w-6 h-6 bg-breadpink-200 bg-opacity-10 dark:bg-breadgray-rye flex items-center justify-center">
-//       <div className="w-2/3 transform translate-y-[1px]">
-//         <LogoSVG />
-//       </div>
-//     </div>
-//   );
-// }
+export function WXDAIIcon() {
+  return (
+    <div className="rounded-full overflow-hidden w-6 h-6">
+      <Image src={"/wxdai_icon.png"} alt="wxdai icon" width="30" height="30" />
+    </div>
+  );
+}
 
 export function BreadIcon({
   size = "regular",
+  className = "",
 }: {
   size?: "small" | "regular";
+  className?: string;
 }) {
   return (
     <div
       className={clsx(
         "rounded-full bg-breadpink-200 bg-opacity-10 dark:bg-breadgray-rye flex items-center justify-center",
-        size === "small" ? "size-4" : "size-6"
+        size === "small" ? "size-4" : "size-6",
+        className
       )}
     >
-      <div className="w-2/3">
+      <div className="w-6/12">
         <LogoSVG />
       </div>
     </div>

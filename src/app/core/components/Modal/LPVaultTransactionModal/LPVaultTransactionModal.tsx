@@ -26,7 +26,7 @@ export function LPVaultTransactionModal({
   return (
     <ModalContainer>
       {user.status === "CONNECTED" &&
-        (modalState.transactionType === "DEPOSIT" ? (
+        (modalState.transactionType === "LOCK" ? (
           <DepositTransaction user={user} modalState={modalState} />
         ) : (
           <WithdrawTransaction user={user} modalState={modalState} />
