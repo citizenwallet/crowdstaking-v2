@@ -5,7 +5,7 @@ import {
 } from "../../../context/ModalContext";
 import { ModalContainer } from "../ModalUI";
 import { useConnectedUser } from "../../../hooks/useConnectedUser";
-import { DepositTransaction } from "./DepositTransaction";
+import { DepositTransaction } from "./DepositTransaction/DepositTransaction";
 import { WithdrawTransaction } from "./WithdrawTransaction";
 
 export function LPVaultTransactionModal({

@@ -9,11 +9,16 @@ import {
 } from "wagmi";
 import { BUTTERED_BREAD_ABI } from "@/abi";
 import { TUserConnected } from "@/app/core/hooks/useConnectedUser";
-import { LPVaultTransactionModalState } from "@/app/core/context/ModalContext";
+import {
+  LPVaultTransactionModalState,
+  useModal,
+} from "@/app/core/context/ModalContext";
 import { getConfig } from "@/chainConfig";
 import { TTransaction } from "@/app/core/context/TransactionsContext/TransactionsReducer";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { withdrawReducer } from "./withdrawReducer";
+import { VPRate } from "./DepositTransaction/VPRate";
+import { StatusBadge } from "./DepositTransaction/DepositTransaction";
 
 export function WithdrawTransaction({
   user,
@@ -23,6 +28,7 @@ export function WithdrawTransaction({
   modalState: LPVaultTransactionModalState;
 }) {
   const { transactionsState, transactionsDispatch } = useTransactions();
+  const { setModal } = useModal();
   const [isWalletOpen, setIsWalletOpen] = useState(false);
   const chainConfig = getConfig(user.chain.id);
   const [withdrawState, withdrawDispatch] = useReducer(withdrawReducer, {
@@ -78,39 +84,74 @@ export function WithdrawTransaction({
         type: "TRANSACTION_SUBMITTED",
         payload: { hash: contractWriteData.hash },
       });
+      setIsWalletOpen(false);
     }
     if (contractWriteStatus === "error") {
       setIsWalletOpen(false);
     }
   }, [contractWriteStatus, contractWriteData, transactionsDispatch]);
 
-  const tx = useMemo(() => {
+  useEffect(() => {
     if (withdrawState.status === "idle") return;
     const tx = transactionsState.submitted.find((t) => {
       return t.hash === withdrawState.hash;
     });
-    return tx;
+    if (!tx || tx.status === "SUBMITTED") return;
+    withdrawDispatch({
+      type:
+        tx.status === "CONFIRMED"
+          ? "TRANSACTION_CONFIRMED"
+          : "TRANSACTION_REVERTED",
+    });
   }, [transactionsState, withdrawState]);
 
   return (
     <>
       <ModalHeading>Unlocking LP Tokens</ModalHeading>
-      <div>{formatUnits(modalState.parsedValue, 18)}</div>
       <ModalContent>
-        {tx ? (
-          <div>{tx.status}</div>
-        ) : (
-          <Button
-            onClick={() => {
-              if (!contractWriteWrite) return;
-              setIsWalletOpen(true);
-              contractWriteWrite();
-            }}
-            disabled={isWalletOpen}
-          >
-            Unlock
-          </Button>
-        )}
+        <StatusBadge
+          variant={
+            withdrawState.status === "confirmed" ? "complete" : "in-progress"
+          }
+        />
+        <VPRate value={modalState.parsedValue} />
+        <p className="p-4 rounded-xl border-2 border-status-warning text-center">
+          By unlocking your LP tokens you will not be eligible to receive voting
+          power within the Breadchain cooperative network in future voting
+          cycles.
+        </p>
+        {(() => {
+          if (withdrawState.status === "confirmed")
+            return (
+              <Button
+                onClick={() => {
+                  setModal(null);
+                }}
+                fullWidth
+              >
+                Return to vault page
+              </Button>
+            );
+          if (withdrawState.status === "submitted")
+            return (
+              <Button onClick={() => {}} fullWidth disabled>
+                Unlocking...
+              </Button>
+            );
+          return (
+            <Button
+              onClick={() => {
+                if (!contractWriteWrite) return;
+                setIsWalletOpen(true);
+                contractWriteWrite();
+              }}
+              disabled={isWalletOpen}
+              fullWidth
+            >
+              Unlock LP tokens
+            </Button>
+          );
+        })()}
       </ModalContent>
     </>
   );

@@ -51,7 +51,7 @@ export function withdrawReducer(
       if (event.type === "TRANSACTION_SUBMITTED") {
         return {
           ...state,
-          status: "confirmed",
+          status: "submitted",
           hash: event.payload.hash,
         };
       }
