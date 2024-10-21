@@ -1,23 +1,30 @@
-export function LogoSVG() {
+export function LogoSVG({ size = "regular" }: { size?: "small" | "regular" }) {
   return (
-    <svg viewBox="0 0 60 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="21"
+      viewBox="0 0 20 21"
+      fill="none"
+      className={size === "small" ? "w-3 h-3" : ""}
+    >
       <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M10.4348 0.5C4.67181 0.5 0 5.17181 0 10.9348C0 16.3448 4.11705 20.7932 9.38895 21.3178V44.8476C9.38895 52.0514 15.2287 57.8911 22.4324 57.8911H37.0408C44.2445 57.8911 50.0842 52.0514 50.0842 44.8477V21.3569C55.6061 21.0864 60 16.5237 60 10.9348C60 5.17181 55.3282 0.5 49.5652 0.5L10.4348 0.5Z"
-        fill="url(#paint0_linear_2974_31682)"
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M5.1087 3.625C3.66795 3.625 2.5 4.79295 2.5 6.2337C2.5 7.58604 3.52903 8.69805 4.8468 8.82941V14.7119C4.8468 16.5128 6.30674 17.9727 8.10767 17.9727H11.7598C13.5607 17.9727 15.0206 16.5128 15.0206 14.7119V8.83924C16.4013 8.77184 17.5 7.63108 17.5 6.2337C17.5 4.79295 16.332 3.625 14.8913 3.625H5.1087Z"
+        fill="url(#paint0_linear_6729_165920)"
       />
       <defs>
         <linearGradient
-          id="paint0_linear_2974_31682"
-          x1="8.25"
-          y1="45.6955"
-          x2="49.412"
-          y2="9.45708"
+          id="paint0_linear_6729_165920"
+          x1="4.5625"
+          y1="14.9238"
+          x2="14.8529"
+          y2="5.8642"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#D04EC5" />
-          <stop offset="1" stopColor="#ED7BC7" />
+          <stop stop-color="#D04EC5" />
+          <stop offset="1" stop-color="#ED7BC7" />
         </linearGradient>
       </defs>
     </svg>

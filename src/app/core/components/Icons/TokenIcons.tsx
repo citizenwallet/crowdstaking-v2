@@ -32,8 +32,8 @@ export function BreadIcon({
         size === "small" ? "size-4" : "size-6"
       )}
     >
-      <div className="w-2/3">
-        <LogoSVG />
+      <div>
+        <LogoSVG size={size} />
       </div>
     </div>
   );

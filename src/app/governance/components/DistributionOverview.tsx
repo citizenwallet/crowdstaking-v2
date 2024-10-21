@@ -104,11 +104,13 @@ export function DistributionOverview({
             <h4 className="text-xl font-medium text-breadgray-rye dark:text-breadgray-light-grey tracking-wide uppercase leading-none">
               Amount to Distribute
             </h4>
-            <div className="pt-4 pb-6 w-full">
+            <div className="pt-4 pb-6 w-full items-center">
               {claimableYield ? (
-                <div className="w-full flex justify-center text-3xl font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white leading-none">
-                  <div className="w-[45%] flex gap-2 items-center justify-end">
-                    <BreadIcon />
+                <div className="w-full flex justify-center tracking-wider text-3xl font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white leading-none">
+                  <div className=" flex gap-2  justify-end">
+                    <div className="mt-1">
+                      <BreadIcon />
+                    </div>
                     <span>
                       {
                         formatBalance(claimableYield + yieldIncrement, 4).split(
@@ -118,7 +120,7 @@ export function DistributionOverview({
                     </span>
                   </div>
                   <div>.</div>
-                  <div className="w-[45%]">
+                  <div className="text-xl leading-[1.1] w-[56px] self-end">
                     {
                       formatBalance(claimableYield + yieldIncrement, 4).split(
                         "."
