@@ -10,7 +10,7 @@ import { useModal } from "@/app/core/context/ModalContext";
 import { formatUnits } from "viem";
 
 import { LinkIcon } from "../../../Icons/LinkIcon";
-import { VPRate } from "./VPRate";
+import { DepositVPRate } from "./VPRate";
 import { ExternalLink } from "@/app/bakery/components/FAQ/ExternalLink";
 
 export function Lock({
@@ -99,7 +99,10 @@ export function Lock({
   if (lpVaultState.status === "deposit_transaction_confirmed") {
     return (
       <>
-        <DepositSuccess value={lpVaultState.depositAmount} explorerLink="" />
+        <DepositSuccess
+          value={lpVaultState.depositAmount}
+          explorerLink={`${chainConfig.EXPLORER}/tx/${lpVaultState.txHash}`}
+        />
         <Button
           onClick={() => {
             setModal(null);
@@ -158,7 +161,7 @@ function DepositSuccess({
         next voting cycles you will have a{" "}
         <strong>voting power of {vpAmount}</strong>.
       </p>
-      <VPRate value={value} />
+      <DepositVPRate value={value} />
       <p className="text-status-warning text-xs text-center">
         You can unlock your LP tokens anytime.
       </p>

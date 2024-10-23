@@ -23,9 +23,9 @@ export const ModalContainer = forwardRef(
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 8, opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="max-w-[26rem] flex flex-col items-center rounded dark:bg-opacity-100 p-4 bg-breadgray-ultra-white border border-breadgray-light-grey dark:border-none dark:bg-breadgray-charcoal relative pointer-events-auto"
+          className="max-w-[25rem] sm:w-[22rem] flex flex-col items-center rounded-t-2xl dark:bg-opacity-100 p-6 bg-breadgray-ultra-white dark:bg-breadgray-charcoal relative pointer-events-auto"
         >
-          <DialogPrimitiveClose className="absolute top-0 right-0 w-10 h-10 p-3">
+          <DialogPrimitiveClose className="absolute top-0 right-0 size-16 p-4 pt-5">
             <CloseIcon />
           </DialogPrimitiveClose>
           {children}
@@ -35,12 +35,12 @@ export const ModalContainer = forwardRef(
   }
 );
 
-ModalContainer.displayName = "ModalContainer";
+ModalContainer.displayName = "LPModalContainer";
 
 export function ModalHeading({ children }: { children: ReactNode }) {
   return (
-    <div className="w-full flex flex-row items-center justify-center border-b-[0.075rem] border-b-breadviolet-shaded dark:border-b-breadpink-shaded">
-      <h2 className="text-2xl px-2 pb-3 leading-normal text-breadgray-burnt dark:text-breadgray-light-grey font-medium">
+    <div className="w-full flex items-center">
+      <h2 className="pr-2 pb-3 leading-normal text-breadgray-burnt dark:text-breadgray-light-grey font-bold">
         {children}
       </h2>
     </div>
@@ -49,7 +49,7 @@ export function ModalHeading({ children }: { children: ReactNode }) {
 
 export function ModalContent({ children }: { children: ReactNode }) {
   return (
-    <div className="px-2 pt-4 flex flex-col gap-4 items-center w-full">
+    <div className="pt-2 flex flex-col gap-6 items-center w-full">
       {children}
     </div>
   );
@@ -157,3 +157,13 @@ export const transactionIcons: {
   SAFE_SUBMITTED: <TransactionStatusCheck />,
   REVERTED: <TransactionStatusCross />,
 };
+
+export function StatusMessage({ children }: { children: ReactNode }) {
+  return <p className="dark:text-breadgray-grey text-center">{children}</p>;
+}
+
+export function StatusMessageSmall({ children }: { children: ReactNode }) {
+  return (
+    <p className="dark:text-breadgray-grey text-center text-xs">{children}</p>
+  );
+}

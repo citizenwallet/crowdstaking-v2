@@ -110,7 +110,7 @@ export function IncreaseAllowance({
       disabled={isWalletOpen}
       fullWidth
     >
-      Increase Allowance
+      Confirm transaction
     </Button>
   );
 }

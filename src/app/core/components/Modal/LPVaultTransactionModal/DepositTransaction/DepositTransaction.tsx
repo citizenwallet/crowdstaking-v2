@@ -1,26 +1,23 @@
-import { formatUnits, Hex, parseUnits } from "viem";
-import { ModalContent, ModalHeading } from "../../ModalUI";
-import { ReactNode, useEffect, useReducer, useState } from "react";
-import {
-  useContractRead,
-  useContractWrite,
-  usePrepareContractWrite,
-} from "wagmi";
-import { BUTTERED_BREAD_ABI, ERC20_ABI } from "@/abi";
+import { ReactNode, useEffect, useReducer } from "react";
+import { useContractRead } from "wagmi";
+import clsx from "clsx";
+
+import { getConfig } from "@/chainConfig";
+import { ERC20_ABI } from "@/abi";
 import { TUserConnected } from "@/app/core/hooks/useConnectedUser";
 import { LPVaultTransactionModalState } from "@/app/core/context/ModalContext";
-import { getConfig } from "@/chainConfig";
-import clsx from "clsx";
-import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
-
+import {
+  ModalContent,
+  ModalHeading,
+  StatusMessage,
+  StatusMessageSmall,
+} from "../../LPModalUI";
 import { lpVaultReducer } from "../lpVaultReducer";
 import { CheckIcon } from "../../../Icons/CheckIcon";
-
-import { FistIcon } from "../../../Icons/FistIcon";
-import { LinkIcon } from "../../../Icons/LinkIcon";
-import { ExternalLink } from "@/app/bakery/components/FAQ/ExternalLink";
 import { IncreaseAllowance } from "./IncreaseAllowance";
 import { Lock } from "./Lock";
+import { formatUnits } from "viem";
+import { DepositVPRate } from "./VPRate";
 
 export function DepositTransaction({
   user,
@@ -65,29 +62,62 @@ export function DepositTransaction({
           }
         />
 
-        <TransactionStage
-          status={
-            !lpVaultState.status.includes("allowance_transaction")
-              ? "success"
-              : "pending"
-          }
-        >
-          1. Token allowance
-        </TransactionStage>
-        <TransactionStage
-          status={
-            !lpVaultState.status.includes("deposit_transaction")
-              ? "disabled"
-              : lpVaultState.status === "deposit_transaction_confirmed"
-              ? "success"
-              : "pending"
-          }
-        >
-          2. Token locking
-        </TransactionStage>
+        {lpVaultState.status === "allowance_transaction_idle" && (
+          <StatusMessage>
+            Press ‘Confirm transaction’ to allow LP tokens to be locked.
+          </StatusMessage>
+        )}
+        <div className="flex flex-col gap-2">
+          <TransactionStage
+            status={
+              !lpVaultState.status.includes("allowance_transaction")
+                ? "success"
+                : "pending"
+            }
+          >
+            1. Token allowance
+          </TransactionStage>
+          {lpVaultState.status === "allowance_transaction_idle" && (
+            <StatusMessageSmall>
+              Please confirm the transaction
+            </StatusMessageSmall>
+          )}
+          {lpVaultState.status.includes("deposit") && (
+            <StatusMessageSmall>Token allowance granted!</StatusMessageSmall>
+          )}
+        </div>
 
-        {/* <DepositSuccess value={modalState.parsedValue} explorerLink="" /> */}
-
+        <div className="flex flex-col gap-2">
+          <TransactionStage
+            status={
+              !lpVaultState.status.includes("deposit_transaction")
+                ? "disabled"
+                : lpVaultState.status === "deposit_transaction_confirmed"
+                ? "success"
+                : "pending"
+            }
+          >
+            2. Token locking
+          </TransactionStage>
+          {lpVaultState.status.includes("allowance") && (
+            <StatusMessageSmall>Waiting for next action...</StatusMessageSmall>
+          )}
+          {lpVaultState.status === "deposit_transaction_idle" && (
+            <StatusMessageSmall>Lock your LP tokens</StatusMessageSmall>
+          )}
+          {lpVaultState.status === "deposit_transaction_submitted" && (
+            <StatusMessageSmall>Lock your LP tokens</StatusMessageSmall>
+          )}
+          {lpVaultState.status === "deposit_transaction_confirmed" && (
+            <StatusMessageSmall>
+              {formatUnits(lpVaultState.depositAmount, 18)} LP tokens
+              successfully locked!
+            </StatusMessageSmall>
+          )}
+        </div>
+        {lpVaultState.status !== "deposit_transaction_confirmed" && (
+          <DepositVPRate value={lpVaultState.depositAmount} />
+        )}
         {(() => {
           if (lpVaultState.status === "loading") {
             return "loading....";

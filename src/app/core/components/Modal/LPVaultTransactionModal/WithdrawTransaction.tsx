@@ -1,7 +1,7 @@
 import { formatUnits, Hex } from "viem";
 import Button from "../../Button";
-import { ModalContent, ModalHeading } from "../ModalUI";
-import { useEffect, useMemo, useReducer, useState } from "react";
+import { ModalContent, ModalHeading, StatusMessage } from "../LPModalUI";
+import { ReactNode, useEffect, useMemo, useReducer, useState } from "react";
 import {
   useContractRead,
   useContractWrite,
@@ -17,7 +17,7 @@ import { getConfig } from "@/chainConfig";
 import { TTransaction } from "@/app/core/context/TransactionsContext/TransactionsReducer";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { withdrawReducer } from "./withdrawReducer";
-import { VPRate } from "./DepositTransaction/VPRate";
+import { WithdrawVPRate } from "./DepositTransaction/VPRate";
 import { StatusBadge } from "./DepositTransaction/DepositTransaction";
 
 export function WithdrawTransaction({
@@ -114,12 +114,20 @@ export function WithdrawTransaction({
             withdrawState.status === "confirmed" ? "complete" : "in-progress"
           }
         />
-        <VPRate value={modalState.parsedValue} />
+        <WithdrawVPRate value={modalState.parsedValue} />
         <p className="p-4 rounded-xl border-2 border-status-warning text-center">
           By unlocking your LP tokens you will not be eligible to receive voting
           power within the Breadchain cooperative network in future voting
           cycles.
         </p>
+        {withdrawState.status === "idle" && (
+          <StatusMessage>
+            Press ‘Unlock LP tokens’ to execute the transaction
+          </StatusMessage>
+        )}
+        {withdrawState.status === "submitted" && (
+          <StatusMessage>Awaiting on-chain confirmation...</StatusMessage>
+        )}
         {(() => {
           if (withdrawState.status === "confirmed")
             return (

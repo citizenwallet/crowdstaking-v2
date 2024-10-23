@@ -3,7 +3,7 @@ import {
   LPVaultTransactionModalState,
   useModal,
 } from "../../../context/ModalContext";
-import { ModalContainer } from "../ModalUI";
+import { ModalContainer } from "../LPModalUI";
 import { useConnectedUser } from "../../../hooks/useConnectedUser";
 import { DepositTransaction } from "./DepositTransaction/DepositTransaction";
 import { WithdrawTransaction } from "./WithdrawTransaction";
