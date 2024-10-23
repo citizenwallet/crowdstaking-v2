@@ -91,7 +91,7 @@ const gnosis: ChainConfiguration = {
 const anvil: ChainConfiguration = {
   ID: 31337,
   NETWORK_STRING: "Anvil",
-  EXPLORER: "NONE",
+  EXPLORER: "https://gnosisscan.io",
   BREAD: {
     symbol: "BREAD",
     decimals: 18,
