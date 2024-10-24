@@ -12,12 +12,12 @@ import {
   StatusMessage,
   StatusMessageSmall,
 } from "../../LPModalUI";
-import { lpVaultReducer } from "../lpVaultReducer";
+import { lockingReducer } from "./lockingReducer";
 import { CheckIcon } from "../../../Icons/CheckIcon";
 import { IncreaseAllowance } from "./IncreaseAllowance";
 import { Lock } from "./Lock";
 import { formatUnits } from "viem";
-import { DepositVPRate } from "./VPRate";
+import { LockVPRate } from "../VPRate";
 
 export function DepositTransaction({
   user,
@@ -27,7 +27,7 @@ export function DepositTransaction({
   modalState: LPVaultTransactionModalState;
 }) {
   const chainConfig = getConfig(user.chain.id);
-  const [lpVaultState, lpVaultDispatch] = useReducer(lpVaultReducer, {
+  const [lockingState, lockingDispatch] = useReducer(lockingReducer, {
     depositAmount: modalState.parsedValue,
     status: "loading",
   });
@@ -43,7 +43,7 @@ export function DepositTransaction({
 
   useEffect(() => {
     if (userAllowanceStatus === "success") {
-      lpVaultDispatch({
+      lockingDispatch({
         type: "ALLOWANCE_UPDATE",
         payload: { allowance: userAllowanceData as bigint },
       });
@@ -56,13 +56,13 @@ export function DepositTransaction({
       <ModalContent>
         <StatusBadge
           variant={
-            lpVaultState.status !== "deposit_transaction_confirmed"
+            lockingState.status !== "deposit_transaction_confirmed"
               ? "in-progress"
               : "complete"
           }
         />
 
-        {lpVaultState.status === "allowance_transaction_idle" && (
+        {lockingState.status === "allowance_transaction_idle" && (
           <StatusMessage>
             Press ‘Confirm transaction’ to allow LP tokens to be locked.
           </StatusMessage>
@@ -70,82 +70,78 @@ export function DepositTransaction({
         <div className="flex flex-col gap-2">
           <TransactionStage
             status={
-              !lpVaultState.status.includes("allowance_transaction")
+              !lockingState.status.includes("allowance_transaction")
                 ? "success"
                 : "pending"
             }
           >
             1. Token allowance
           </TransactionStage>
-          {lpVaultState.status === "allowance_transaction_idle" && (
-            <StatusMessageSmall>
-              Please confirm the transaction
-            </StatusMessageSmall>
-          )}
-          {lpVaultState.status.includes("deposit") && (
-            <StatusMessageSmall>Token allowance granted!</StatusMessageSmall>
-          )}
+          <StatusMessageSmall>
+            {lockingState.status === "allowance_transaction_idle" &&
+              "Please confirm the transaction"}
+            {lockingState.status === "allowance_transaction_submitted" &&
+              "Confirm the transaction..."}
+            {lockingState.status.includes("deposit") &&
+              "Token allowance granted!"}
+          </StatusMessageSmall>
         </div>
 
         <div className="flex flex-col gap-2">
           <TransactionStage
             status={
-              !lpVaultState.status.includes("deposit_transaction")
+              !lockingState.status.includes("deposit_transaction")
                 ? "disabled"
-                : lpVaultState.status === "deposit_transaction_confirmed"
+                : lockingState.status === "deposit_transaction_confirmed"
                 ? "success"
                 : "pending"
             }
           >
             2. Token locking
           </TransactionStage>
-          {lpVaultState.status.includes("allowance") && (
-            <StatusMessageSmall>Waiting for next action...</StatusMessageSmall>
-          )}
-          {lpVaultState.status === "deposit_transaction_idle" && (
-            <StatusMessageSmall>Lock your LP tokens</StatusMessageSmall>
-          )}
-          {lpVaultState.status === "deposit_transaction_submitted" && (
-            <StatusMessageSmall>Lock your LP tokens</StatusMessageSmall>
-          )}
-          {lpVaultState.status === "deposit_transaction_confirmed" && (
-            <StatusMessageSmall>
-              {formatUnits(lpVaultState.depositAmount, 18)} LP tokens
-              successfully locked!
-            </StatusMessageSmall>
-          )}
+          <StatusMessageSmall>
+            {lockingState.status.includes("allowance") &&
+              "Waiting for next action..."}
+            {lockingState.status === "deposit_transaction_idle" &&
+              "Lock your LP tokens"}
+            {lockingState.status === "deposit_transaction_submitted" &&
+              "Locking your LP tokens..."}
+            {lockingState.status === "deposit_transaction_confirmed" &&
+              formatUnits(lockingState.depositAmount, 18) +
+                "LP tokens successfully locked!"}
+          </StatusMessageSmall>
         </div>
-        {lpVaultState.status !== "deposit_transaction_confirmed" && (
-          <DepositVPRate value={lpVaultState.depositAmount} />
+        {lockingState.status !== "deposit_transaction_confirmed" && (
+          <LockVPRate value={lockingState.depositAmount} />
         )}
         {(() => {
-          if (lpVaultState.status === "loading") {
+          if (lockingState.status === "loading") {
             return "loading....";
           }
           if (
-            lpVaultState.status === "allowance_transaction_idle" ||
-            lpVaultState.status === "allowance_transaction_submitted" ||
-            lpVaultState.status === "allowance_transaction_reverted"
+            lockingState.status === "allowance_transaction_idle" ||
+            lockingState.status === "allowance_transaction_submitted" ||
+            lockingState.status === "allowance_transaction_reverted"
           ) {
             return (
               <IncreaseAllowance
                 user={user}
-                lpVaultState={lpVaultState}
-                lpVaultDispatch={lpVaultDispatch}
+                lockingState={lockingState}
+                lockingDispatch={lockingDispatch}
               />
             );
           }
           if (
-            lpVaultState.status === "deposit_transaction_idle" ||
-            lpVaultState.status === "deposit_transaction_submitted" ||
-            lpVaultState.status === "deposit_transaction_confirmed" ||
-            lpVaultState.status === "deposit_transaction_reverted"
+            lockingState.status === "deposit_transaction_idle" ||
+            lockingState.status === "deposit_transaction_submitted" ||
+            lockingState.status === "deposit_transaction_confirmed" ||
+            lockingState.status === "deposit_transaction_reverted"
           ) {
             return (
               <Lock
                 user={user}
-                lpVaultState={lpVaultState}
-                lpVaultDispatch={lpVaultDispatch}
+                lockingState={lockingState}
+                lockingDispatch={lockingDispatch}
               />
             );
           }

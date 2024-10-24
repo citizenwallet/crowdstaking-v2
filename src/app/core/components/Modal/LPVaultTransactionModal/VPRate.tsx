@@ -1,9 +1,9 @@
 import { formatUnits } from "viem";
-import { FistIcon } from "../../../Icons/FistIcon";
+import { FistIcon } from "../../Icons/FistIcon";
 import clsx from "clsx";
 import { ReactNode } from "react";
 
-export function DepositVPRate({ value }: { value: bigint }) {
+export function LockVPRate({ value }: { value: bigint }) {
   const tokenAmount = formatUnits(value, 18);
   const vpAmount = tokenAmount;
 
@@ -40,7 +40,7 @@ export function DepositVPRate({ value }: { value: bigint }) {
   );
 }
 
-export function WithdrawVPRate({ value }: { value: bigint }) {
+export function UnlockVPRate({ value }: { value: bigint }) {
   const tokenAmount = formatUnits(value, 18);
   const vpAmount = tokenAmount;
 

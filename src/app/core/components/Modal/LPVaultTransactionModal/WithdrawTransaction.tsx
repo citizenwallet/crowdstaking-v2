@@ -17,8 +17,8 @@ import { getConfig } from "@/chainConfig";
 import { TTransaction } from "@/app/core/context/TransactionsContext/TransactionsReducer";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { withdrawReducer } from "./withdrawReducer";
-import { WithdrawVPRate } from "./DepositTransaction/VPRate";
-import { StatusBadge } from "./DepositTransaction/DepositTransaction";
+import { WithdrawVPRate } from "./VPRate";
+import { StatusBadge } from "./Locking/Locking";
 
 export function WithdrawTransaction({
   user,

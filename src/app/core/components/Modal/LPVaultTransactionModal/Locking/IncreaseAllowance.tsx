@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react";
+import { useContractWrite, usePrepareContractWrite } from "wagmi";
+
 import Button from "@/app/core/components/Button";
 import { TUserConnected } from "@/app/core/hooks/useConnectedUser";
-import { LpVaultAllowance, LpVaultEvent } from "../lpVaultReducer";
+import { LockingAllowance, LockingEvent } from "./lockingReducer";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { getConfig } from "@/chainConfig";
-import { useContractWrite, usePrepareContractWrite } from "wagmi";
 import { ERC20_ABI } from "@/abi";
 
 export function IncreaseAllowance({
   user,
-  lpVaultState,
-  lpVaultDispatch,
+  lockingState,
+  lockingDispatch,
 }: {
   user: TUserConnected;
-  lpVaultState: LpVaultAllowance;
-  lpVaultDispatch: (value: LpVaultEvent) => void;
+  lockingState: LockingAllowance;
+  lockingDispatch: (value: LockingEvent) => void;
 }) {
   const { transactionsDispatch, transactionsState } = useTransactions();
   const [isWalletOpen, setIsWalletOpen] = useState(false);
@@ -39,7 +40,7 @@ export function IncreaseAllowance({
     functionName: "approve",
     args: [
       chainConfig.BUTTERED_BREAD.address,
-      lpVaultState.depositAmount - lpVaultState.allowance,
+      lockingState.depositAmount - lockingState.allowance,
     ],
   });
 
@@ -61,7 +62,7 @@ export function IncreaseAllowance({
         type: "SET_SUBMITTED",
         payload: { hash: contractWriteData.hash },
       });
-      lpVaultDispatch({
+      lockingDispatch({
         type: "TRANSACTION_SUBMITTED",
         payload: { hash: contractWriteData.hash },
       });
@@ -73,22 +74,20 @@ export function IncreaseAllowance({
     transactionsDispatch,
     contractWriteStatus,
     contractWriteData,
-    lpVaultDispatch,
+    lockingDispatch,
   ]);
 
-  // TODO get tx from hash / transactionsContext
-  // watch and handle confirmed or rejected
   useEffect(() => {
-    if (lpVaultState.status !== "allowance_transaction_submitted") return;
+    if (lockingState.status !== "allowance_transaction_submitted") return;
     const tx = transactionsState.submitted.find(
-      (t) => t.hash === lpVaultState.txHash
+      (t) => t.hash === lockingState.txHash
     );
     if (tx?.status === "REVERTED") {
-      lpVaultDispatch({ type: "TRANSACTION_REVERTED" });
+      lockingDispatch({ type: "TRANSACTION_REVERTED" });
     }
-  }, [transactionsState, lpVaultState, lpVaultDispatch]);
+  }, [transactionsState, lockingState, lockingDispatch]);
 
-  if (lpVaultState.status === "allowance_transaction_submitted") {
+  if (lockingState.status === "allowance_transaction_submitted") {
     return (
       <Button onClick={() => {}} fullWidth disabled>
         Confirming...
@@ -96,7 +95,7 @@ export function IncreaseAllowance({
     );
   }
 
-  if (lpVaultState.status === "allowance_transaction_reverted") {
+  if (lockingState.status === "allowance_transaction_reverted") {
     return <div>reverted!</div>;
   }
 

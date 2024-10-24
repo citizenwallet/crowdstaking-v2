@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Button from "@/app/core/components/Button";
 import { TUserConnected } from "@/app/core/hooks/useConnectedUser";
-import { LpVaultDeposit, LpVaultEvent } from "../lpVaultReducer";
+import { LockingDeposit, LockingEvent } from "./lockingReducer";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { getConfig } from "@/chainConfig";
 import { useContractWrite, usePrepareContractWrite } from "wagmi";
@@ -10,17 +10,17 @@ import { useModal } from "@/app/core/context/ModalContext";
 import { formatUnits } from "viem";
 
 import { LinkIcon } from "../../../Icons/LinkIcon";
-import { DepositVPRate } from "./VPRate";
+import { LockVPRate } from "../VPRate";
 import { ExternalLink } from "@/app/bakery/components/FAQ/ExternalLink";
 
 export function Lock({
   user,
-  lpVaultState,
-  lpVaultDispatch,
+  lockingState,
+  lockingDispatch,
 }: {
   user: TUserConnected;
-  lpVaultState: LpVaultDeposit;
-  lpVaultDispatch: (value: LpVaultEvent) => void;
+  lockingState: LockingDeposit;
+  lockingDispatch: (value: LockingEvent) => void;
 }) {
   const { transactionsState, transactionsDispatch } = useTransactions();
   const [isWalletOpen, setIsWalletOpen] = useState(false);
@@ -44,7 +44,7 @@ export function Lock({
     address: chainConfig.BUTTERED_BREAD.address,
     abi: BUTTERED_BREAD_ABI,
     functionName: "deposit",
-    args: [chainConfig.LP_TOKEN.address, lpVaultState.depositAmount],
+    args: [chainConfig.LP_TOKEN.address, lockingState.depositAmount],
   });
 
   useEffect(() => {
@@ -65,7 +65,7 @@ export function Lock({
         type: "SET_SUBMITTED",
         payload: { hash: contractWriteData.hash },
       });
-      lpVaultDispatch({
+      lockingDispatch({
         type: "TRANSACTION_SUBMITTED",
         payload: { hash: contractWriteData.hash },
       });
@@ -78,30 +78,30 @@ export function Lock({
     contractWriteStatus,
     contractWriteData,
     transactionsDispatch,
-    lpVaultDispatch,
+    lockingDispatch,
   ]);
 
   useEffect(() => {
-    if (lpVaultState.status !== "deposit_transaction_submitted") return;
+    if (lockingState.status !== "deposit_transaction_submitted") return;
     const tx = transactionsState.submitted.find(
-      (t) => t.hash === lpVaultState.txHash
+      (t) => t.hash === lockingState.txHash
     );
     console.log({ tx });
     if (tx?.status === "REVERTED") {
-      lpVaultDispatch({ type: "TRANSACTION_REVERTED" });
+      lockingDispatch({ type: "TRANSACTION_REVERTED" });
     }
     if (tx?.status === "CONFIRMED") {
       console.log("deposit transaction confirmed!!");
-      lpVaultDispatch({ type: "TRANSACTION_CONFIRMED" });
+      lockingDispatch({ type: "TRANSACTION_CONFIRMED" });
     }
-  }, [transactionsState, lpVaultState, lpVaultDispatch]);
+  }, [transactionsState, lockingState, lockingDispatch]);
 
-  if (lpVaultState.status === "deposit_transaction_confirmed") {
+  if (lockingState.status === "deposit_transaction_confirmed") {
     return (
       <>
-        <DepositSuccess
-          value={lpVaultState.depositAmount}
-          explorerLink={`${chainConfig.EXPLORER}/tx/${lpVaultState.txHash}`}
+        <LockSuccess
+          value={lockingState.depositAmount}
+          explorerLink={`${chainConfig.EXPLORER}/tx/${lockingState.txHash}`}
         />
         <Button
           onClick={() => {
@@ -116,11 +116,11 @@ export function Lock({
     );
   }
 
-  if (lpVaultState.status === "deposit_transaction_reverted") {
+  if (lockingState.status === "deposit_transaction_reverted") {
     return <div>reverted!</div>;
   }
 
-  if (lpVaultState.status === "deposit_transaction_submitted") {
+  if (lockingState.status === "deposit_transaction_submitted") {
     return (
       <Button onClick={() => {}} disabled fullWidth>
         Locking...
@@ -143,8 +143,7 @@ export function Lock({
   );
 }
 
-// TODO value should have a better name, indicate its' the amount of LP tokens being locked
-function DepositSuccess({
+function LockSuccess({
   value,
   explorerLink,
 }: {
@@ -161,7 +160,7 @@ function DepositSuccess({
         next voting cycles you will have a{" "}
         <strong>voting power of {vpAmount}</strong>.
       </p>
-      <DepositVPRate value={value} />
+      <LockVPRate value={value} />
       <p className="text-status-warning text-xs text-center">
         You can unlock your LP tokens anytime.
       </p>

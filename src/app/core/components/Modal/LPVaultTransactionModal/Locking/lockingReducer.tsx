@@ -3,102 +3,100 @@ import { Hex } from "viem";
 /**
  * STATES
  */
-export type LpVaultLoading = {
+export type LockingLoading = {
   depositAmount: bigint;
   status: "loading";
 };
 
-export type LpVaultAllowanceIdle = {
+export type LockingAllowanceIdle = {
   depositAmount: bigint;
   allowance: bigint;
   status: "allowance_transaction_idle";
 };
 
-export type LpVaultAllowanceSubmitted = {
+export type LockingAllowanceSubmitted = {
   depositAmount: bigint;
   allowance: bigint;
   status: "allowance_transaction_submitted";
   txHash: Hex;
 };
 
-export type LpVaultAllowanceReverted = {
+export type LockingAllowanceReverted = {
   depositAmount: bigint;
   allowance: bigint;
   status: "allowance_transaction_reverted";
   txHash: Hex;
 };
 
-export type LpVaultAllowance =
-  | LpVaultAllowanceIdle
-  | LpVaultAllowanceSubmitted
-  | LpVaultAllowanceReverted;
+export type LockingAllowance =
+  | LockingAllowanceIdle
+  | LockingAllowanceSubmitted
+  | LockingAllowanceReverted;
 
-export type LpVaultDepositIdle = {
+export type LockingDepositIdle = {
   depositAmount: bigint;
   status: "deposit_transaction_idle";
 };
 
-export type LpVaultDepositSubmitted = {
+export type LockingDepositSubmitted = {
   depositAmount: bigint;
   status: "deposit_transaction_submitted";
   txHash: Hex;
 };
 
-export type LpVaultDepositConfirmed = {
+export type LockingDepositConfirmed = {
   depositAmount: bigint;
   status: "deposit_transaction_confirmed";
   txHash: Hex;
 };
 
-export type LpVaultDepositReverted = {
+export type LockingDepositReverted = {
   depositAmount: bigint;
   status: "deposit_transaction_reverted";
   txHash: Hex;
 };
 
-export type LpVaultDeposit =
-  | LpVaultDepositIdle
-  | LpVaultDepositSubmitted
-  | LpVaultDepositConfirmed
-  | LpVaultDepositReverted;
+export type LockingDeposit =
+  | LockingDepositIdle
+  | LockingDepositSubmitted
+  | LockingDepositConfirmed
+  | LockingDepositReverted;
 
-export type LpVaultState = LpVaultLoading | LpVaultAllowance | LpVaultDeposit;
+export type LockingState = LockingLoading | LockingAllowance | LockingDeposit;
 
 /**
  * EVENTS
  */
-export type LpVaultAllowanceUpdate = {
+export type LockingAllowanceUpdate = {
   type: "ALLOWANCE_UPDATE";
   payload: {
     allowance: bigint;
   };
 };
 
-export type LpVaultTransactionSubmitted = {
+export type LockingTransactionSubmitted = {
   type: "TRANSACTION_SUBMITTED";
   payload: { hash: Hex };
 };
 
-export type LpVaultTransactionReverted = {
+export type LockingTransactionReverted = {
   type: "TRANSACTION_REVERTED";
 };
 
-export type LpVaultTransactionConfirmed = {
+export type LockingTransactionConfirmed = {
   type: "TRANSACTION_CONFIRMED";
 };
 
-export type LpVaultEvent =
-  | LpVaultAllowanceUpdate
-  | LpVaultTransactionSubmitted
-  | LpVaultTransactionReverted
-  | LpVaultTransactionConfirmed;
+export type LockingEvent =
+  | LockingAllowanceUpdate
+  | LockingTransactionSubmitted
+  | LockingTransactionReverted
+  | LockingTransactionConfirmed;
 
-export function lpVaultReducer(
-  state: LpVaultState,
-  event: LpVaultEvent
-): LpVaultState {
-  console.log(`\nSTATE: ${state.status}`);
-  console.log(`EVENT: ${event.type}\n\n`);
+export function lockingReducer(
+  state: LockingState,
+  event: LockingEvent
+): LockingState {
   switch (state.status) {
     case "loading":
       if (event.type === "ALLOWANCE_UPDATE") {
