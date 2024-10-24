@@ -1,7 +1,7 @@
 import { formatUnits, Hex } from "viem";
 import Button from "../../Button";
 import { ModalContent, ModalHeading, StatusMessage } from "../LPModalUI";
-import { ReactNode, useEffect, useMemo, useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import {
   useContractRead,
   useContractWrite,
@@ -14,11 +14,18 @@ import {
   useModal,
 } from "@/app/core/context/ModalContext";
 import { getConfig } from "@/chainConfig";
-import { TTransaction } from "@/app/core/context/TransactionsContext/TransactionsReducer";
+
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { withdrawReducer } from "./withdrawReducer";
-import { WithdrawVPRate } from "./VPRate";
-import { StatusBadge } from "./Locking/Locking";
+import {
+  PillContainer,
+  UnlockVPRate,
+  ValueText,
+  WXDaiBreadIcon,
+} from "./VPRate";
+import { StatusBadge } from "./Locking/LockingTransaction";
+import { LinkIcon } from "../../Icons/LinkIcon";
+import { ExternalLink } from "@/app/bakery/components/FAQ/ExternalLink";
 
 export function WithdrawTransaction({
   user,
@@ -94,7 +101,7 @@ export function WithdrawTransaction({
   useEffect(() => {
     if (withdrawState.status === "idle") return;
     const tx = transactionsState.submitted.find((t) => {
-      return t.hash === withdrawState.hash;
+      return t.hash === withdrawState.txHash;
     });
     if (!tx || tx.status === "SUBMITTED") return;
     withdrawDispatch({
@@ -114,12 +121,16 @@ export function WithdrawTransaction({
             withdrawState.status === "confirmed" ? "complete" : "in-progress"
           }
         />
-        <WithdrawVPRate value={modalState.parsedValue} />
-        <p className="p-4 rounded-xl border-2 border-status-warning text-center">
-          By unlocking your LP tokens you will not be eligible to receive voting
-          power within the Breadchain cooperative network in future voting
-          cycles.
-        </p>
+        {withdrawState.status !== "confirmed" && (
+          <>
+            <UnlockVPRate value={modalState.parsedValue} />
+            <p className="p-4 rounded-xl border-2 border-status-warning text-center">
+              By unlocking your LP tokens you will not be eligible to receive
+              voting power within the Breadchain cooperative network in future
+              voting cycles.
+            </p>
+          </>
+        )}
         {withdrawState.status === "idle" && (
           <StatusMessage>
             Press ‘Unlock LP tokens’ to execute the transaction
@@ -131,14 +142,20 @@ export function WithdrawTransaction({
         {(() => {
           if (withdrawState.status === "confirmed")
             return (
-              <Button
-                onClick={() => {
-                  setModal(null);
-                }}
-                fullWidth
-              >
-                Return to vault page
-              </Button>
+              <>
+                <UnlockingSuccess
+                  value={modalState.parsedValue}
+                  explorerLink={`${chainConfig.EXPLORER}/tx/${withdrawState.txHash}`}
+                />
+                <Button
+                  onClick={() => {
+                    setModal(null);
+                  }}
+                  fullWidth
+                >
+                  Return to vault page
+                </Button>
+              </>
             );
           if (withdrawState.status === "submitted")
             return (
@@ -162,5 +179,31 @@ export function WithdrawTransaction({
         })()}
       </ModalContent>
     </>
+  );
+}
+
+function UnlockingSuccess({
+  value,
+  explorerLink,
+}: {
+  value: bigint;
+  explorerLink: string;
+}) {
+  const tokenAmount = formatUnits(value, 18);
+
+  return (
+    <div className="w-full rounded-xl border-2 border-status-success p-6 flex flex-col items-center gap-4">
+      <PillContainer>
+        <WXDaiBreadIcon />
+        <ValueText>{tokenAmount} LP TOKENS</ValueText>
+      </PillContainer>
+      <p className="text-center">Successfully unlocked!</p>
+      <ExternalLink href={explorerLink}>
+        <div className="text-breadpink-shaded font-medium text-sm flex items-center gap-2">
+          View on Explorer
+          <LinkIcon />
+        </div>
+      </ExternalLink>
+    </div>
   );
 }

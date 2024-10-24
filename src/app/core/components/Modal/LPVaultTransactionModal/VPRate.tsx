@@ -19,9 +19,7 @@ export function LockVPRate({ value }: { value: bigint }) {
       <LeftValueDisplay>
         <div className="bg-breadgray-burnt rounded-full flex gap-2 items-center px-2 py-1">
           <img src="/wxdai_bread_lp_icon.png" alt="wxdai bread lp token icon" />
-          <div className="text-xl font-semibold text-breadgray-ultra-white">
-            {tokenAmount}
-          </div>
+          <ValueText>{tokenAmount}</ValueText>
         </div>
       </LeftValueDisplay>
       <EqualityIcon />
@@ -31,9 +29,7 @@ export function LockVPRate({ value }: { value: bigint }) {
           <div className="size-6 rounded-full dark:bg-breadgray-toast">
             <FistIcon />
           </div>
-          <div className="text-xl font-semibold text-breadgray-ultra-white">
-            ~ {vpAmount}
-          </div>
+          <ValueText>~ {vpAmount}</ValueText>
         </div>
       </RightValueDisplay>
     </VPRateGrid>
@@ -54,24 +50,20 @@ export function UnlockVPRate({ value }: { value: bigint }) {
       </RightLabel>
 
       <LeftValueDisplay>
-        <div className="bg-breadgray-burnt rounded-full flex gap-2 items-center px-2 py-1">
+        <PillContainer>
           <div className="size-6 rounded-full dark:bg-breadgray-toast">
             <FistIcon />
           </div>
-          <div className="text-xl font-semibold text-breadgray-ultra-white">
-            ~ {vpAmount}
-          </div>
-        </div>
+          <ValueText>~ {vpAmount}</ValueText>
+        </PillContainer>
       </LeftValueDisplay>
       <EqualityIcon />
 
       <RightValueDisplay>
-        <div className="bg-breadgray-burnt rounded-full flex gap-2 items-center px-2 py-1">
-          <img src="/wxdai_bread_lp_icon.png" alt="wxdai bread lp token icon" />
-          <div className="text-xl font-semibold text-breadgray-ultra-white">
-            {tokenAmount}
-          </div>
-        </div>
+        <PillContainer>
+          <WXDaiBreadIcon />
+          <ValueText>{tokenAmount}</ValueText>
+        </PillContainer>
       </RightValueDisplay>
     </VPRateGrid>
   );
@@ -92,7 +84,7 @@ function TextLabel({ children }: { children: ReactNode }) {
 
 function LeftLabel({ children }: { children: ReactNode }) {
   return (
-    <div className={clsx("col-span-1 row-span-1 row-start-1 flex justify-end")}>
+    <div className="col-span-1 row-span-1 row-start-1 flex justify-end">
       <TextLabel>{children}</TextLabel>
     </div>
   );
@@ -120,4 +112,24 @@ function LeftValueDisplay({ children }: { children: ReactNode }) {
 
 function RightValueDisplay({ children }: { children: ReactNode }) {
   return <div className="row-start-2 col-start-3 flex">{children}</div>;
+}
+
+export function WXDaiBreadIcon() {
+  return <img src="/wxdai_bread_lp_icon.png" alt="wxdai bread lp token icon" />;
+}
+
+export function PillContainer({ children }: { children: ReactNode }) {
+  return (
+    <div className="bg-breadgray-burnt rounded-full flex gap-2 items-center px-2 py-1">
+      {children}
+    </div>
+  );
+}
+
+export function ValueText({ children }: { children: ReactNode }) {
+  return (
+    <div className="text-xl font-semibold text-breadgray-ultra-white">
+      {children}
+    </div>
+  );
 }

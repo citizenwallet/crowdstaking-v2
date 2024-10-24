@@ -12,16 +12,16 @@ export type WithdrawStateIdle = {
 
 export type WithdrawStateSubmitted = {
   status: "submitted";
-  hash: Hex;
+  txHash: Hex;
 };
 
 export type WithdrawStateConfirmed = {
   status: "confirmed";
-  hash: Hex;
+  txHash: Hex;
 };
 export type WithdrawStateReverted = {
   status: "reverted";
-  hash: Hex;
+  txHash: Hex;
 };
 
 export type WithdrawEvent =
@@ -52,7 +52,7 @@ export function withdrawReducer(
         return {
           ...state,
           status: "submitted",
-          hash: event.payload.hash,
+          txHash: event.payload.hash,
         };
       }
       return state;

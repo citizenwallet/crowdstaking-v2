@@ -5,7 +5,7 @@ import {
 } from "../../../context/ModalContext";
 import { ModalContainer } from "../LPModalUI";
 import { useConnectedUser } from "../../../hooks/useConnectedUser";
-import { DepositTransaction } from "./Locking/Locking";
+import { LockingTransaction } from "./Locking/LockingTransaction";
 import { WithdrawTransaction } from "./WithdrawTransaction";
 
 export function LPVaultTransactionModal({
@@ -27,7 +27,7 @@ export function LPVaultTransactionModal({
     <ModalContainer>
       {user.status === "CONNECTED" &&
         (modalState.transactionType === "LOCK" ? (
-          <DepositTransaction user={user} modalState={modalState} />
+          <LockingTransaction user={user} modalState={modalState} />
         ) : (
           <WithdrawTransaction user={user} modalState={modalState} />
         ))}

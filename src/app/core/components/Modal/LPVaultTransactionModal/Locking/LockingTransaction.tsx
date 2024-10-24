@@ -19,7 +19,7 @@ import { Lock } from "./Lock";
 import { formatUnits } from "viem";
 import { LockVPRate } from "../VPRate";
 
-export function DepositTransaction({
+export function LockingTransaction({
   user,
   modalState,
 }: {
