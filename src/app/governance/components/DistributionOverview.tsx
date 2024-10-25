@@ -26,6 +26,7 @@ export function DistributionOverview({
 }) {
   const { claimableYield } = useClaimableYield();
   const { chain: activeChain } = useNetwork();
+  const [dsrAPY, setDsrAPY] = useState("");
   const config = activeChain ? getConfig(activeChain.id) : getConfig("DEFAULT");
   const [yieldIncrement, setYieldIncrement] = useState(0);
 
@@ -62,6 +63,8 @@ export function DistributionOverview({
       const totalSupply = Number(formatUnits(totalSupplyData as bigint, 18));
       const yieldPerDay = (totalSupply * dsr) / 365;
       const yieldPerHour = yieldPerDay / 24;
+
+      setDsrAPY((dsr * 100).toFixed(2));
 
       return yieldPerHour;
     }
@@ -148,7 +151,16 @@ export function DistributionOverview({
                   </span>
                 </div>
               </div>
-
+              <div className="flex w-full">
+                <p className="grow text-breadgray-rye dark:text-breadgray-grey">
+                  DAI savings rate (APY)
+                </p>
+                <div className="flex gap-2 items-center md:justify-center">
+                  <span className="font-bold text-breadgray-grey100 dark:text-breadgray-white">
+                    {dsrAPY + "%"}
+                  </span>
+                </div>
+              </div>
               <div className="flex w-full">
                 <p className="grow text-breadgray-rye dark:text-breadgray-grey">
                   Voting cycle #
