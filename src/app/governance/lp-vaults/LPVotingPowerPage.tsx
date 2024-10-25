@@ -13,7 +13,7 @@ export function LPVotingPowerPage() {
             <TitleSection />
           </div>
           <div className="col-span-12 md:col-span-4">
-            {/* <VotingPowerPanel /> */}
+            <VotingPowerPanel />
           </div>
           <div className="col-span-12">
             <Accordion type="single" collapsible>
