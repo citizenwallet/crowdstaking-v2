@@ -1,29 +1,39 @@
+import { useId } from "react";
 export function PowerIcon() {
+  const gradientId = useId();
+
   return (
-    <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M9.99935 0.833374H11.666V7.50004H18.3327V9.16671V10.8334H16.666V9.16671H11.666H9.99935V7.50004V4.16671L8.33268 4.16671V2.50004H9.99935V0.833374ZM6.66602 5.83337V4.16671H8.33268V5.83337L6.66602 5.83337ZM4.99935 7.50004L4.99935 5.83337H6.66602V7.50004L4.99935 7.50004ZM3.33268 9.16671V7.50004H4.99935V9.16671H3.33268ZM11.666 15.8334L11.666 17.5H9.99935V19.1667H8.33268V12.5H1.66602V10.8334V9.16671H3.33268V10.8334H8.33268H9.99935V12.5V15.8334H11.666ZM13.3327 14.1667V15.8334H11.666V14.1667L13.3327 14.1667ZM14.9993 12.5V14.1667H13.3327V12.5H14.9993ZM14.9993 12.5H16.666L16.666 10.8334H14.9993V12.5Z"
-        fill="url(#paint0_linear_5808_7123)"
-      />
-      <defs>
-        <linearGradient
-          id="paint0_linear_5808_7123"
-          x1="20.7344"
-          y1="19.1667"
-          x2="3.42141"
-          y2="22.8591"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop offset="0.0208333" stopColor="#B72085" />
-          <stop offset="0.28125" stopColor="#CD19AA" />
-          <stop offset="0.546875" stopColor="#C463CA" />
-          <stop offset="0.71875" stopColor="#F5AC37" />
-          <stop offset="0.864583" stopColor="#F9C625" />
-          <stop offset="1" stopColor="#FFE70F" />
-        </linearGradient>
-      </defs>
-    </svg>
+    <div
+      className={
+        "rounded-full size-5 bg-breadpink-200 bg-opacity-10 dark:bg-breadgray-rye flex items-center justify-center"
+      }
+    >
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 20 20"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M7.99951 3H6.99854V5V7V9H7.99951V9.00002H9.99951V7.00002H8.99854V7V6.99997H9.99951V5V4.99997V3H8.99854H7.99951ZM2.99951 4.99997H3.99805H4.99951H5.99805V6.99997H4.99951H3.99805H2.99951V4.99997ZM5.99805 7.00002H4.99951H3.99854V7H1.99854V9H2.99951V9.00002H3.99805H4.99951H5.99805V7.00002ZM4.99902 9.99997H2.99951V12H4.99902V12H3.99805V14H5.99756V15V15V16V16V17V18H7.99756V17V16V16V15V15V14H7.99951V15V16V16V17V18H9.99902H9.99951H10.9976H11.999H12.9976V17V16V15H13.9985V14H14.9995V13H15.998V11H13.9985V11H14.999H14.9995H16.999V9.00002V8.99998V7.00002H14.9995H14.999H12.9995V8.99998V9.00002V10H11.9985V11H10.9976V12H9.99902V14H8.99854V12V12H9.99951V9.99997H7.99951V10H6.99902V9.99997H4.99951H4.99902ZM1.99854 10H2.99854V11H1.99854V10ZM12.9976 12V13H12.9995V12H13.998V12H12.9976ZM10.9976 7.00002H12.9976V9.00002H10.9976V7.00002ZM10.9976 3H11.9985H12.9976H13.9985V4V5V6H11.9985V5.99998H10.9976V5V3.99998V3Z"
+          fill={`url(#${gradientId})`}
+        />
+        <defs>
+          <linearGradient
+            id={gradientId}
+            x1="4.0611"
+            y1="14.8125"
+            x2="14.7487"
+            y2="5.81218"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stop-color="#D04EC5" />
+            <stop offset="1" stop-color="#ED7BC7" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
   );
 }

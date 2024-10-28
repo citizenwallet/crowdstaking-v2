@@ -104,7 +104,7 @@ export function VotingPower({
             </svg>
           </span>
           <span className="font-bold text-2xl leading-none text-breadgray-grey100 dark:text-breadgray-ultra-white">
-            Voting Power:{" "}
+            My voting power:{" "}
           </span>
           <span className="font-medium text-xl">
             {user.status === "CONNECTED" &&
