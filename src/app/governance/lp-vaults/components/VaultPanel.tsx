@@ -1,6 +1,5 @@
-import { ReactNode, useState } from "react";
-import { formatUnits, parseEther } from "viem";
-import { useContractRead } from "wagmi";
+import { useState } from "react";
+import { formatUnits, Hex, parseEther } from "viem";
 import {
   AccordionItem,
   AccordionHeader,
@@ -8,25 +7,31 @@ import {
   AccordionContent,
 } from "@radix-ui/react-accordion";
 
-import { BUTTERED_BREAD_ABI } from "@/abi";
 import useDebounce from "@/app/bakery/hooks/useDebounce";
 import Button from "@/app/core/components/Button";
 import { useModal } from "@/app/core/context/ModalContext";
-import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
+
 import {
   TUserConnected,
   useConnectedUser,
 } from "@/app/core/hooks/useConnectedUser";
-import { useTokenBalance } from "@/app/core/hooks/useTokenBalance";
-import { getConfig } from "@/chainConfig";
-import clsx from "clsx";
 import { SelectTransaction } from "./SelectTransaction";
 import { sanitizeInputValue } from "@/app/core/util/sanitizeInput";
 import { WXDAIIcon, BreadIcon } from "@/app/core/components/Icons/TokenIcons";
+import { ExternalLink } from "@/app/bakery/components/FAQ/ExternalLink";
+import { LinkIcon } from "@/app/core/components/Icons/LinkIcon";
+import { getConfig } from "@/chainConfig";
+import { useTokenBalance } from "@/app/core/hooks/useTokenBalance";
+import { useContractRead } from "wagmi";
+import { BUTTERED_BREAD_ABI } from "@/abi";
+import { lpTokenMeta } from "@/app/lpTokenMeta";
+import { GradientBorder } from "@/app/core/components/GradientBorder";
+import { WXDaiBreadIcon } from "@/app/core/components/Modal/LPVaultTransactionModal/VPRate";
+import { MaxButton } from "@/app/core/components/MaxButton";
 
 export type TransactionType = "LOCK" | "UNLOCK";
 
-export function VaultPanel() {
+export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
   const [inputValue, setInputValue] = useState("");
   const [transactionType, setTransactionType] =
     useState<TransactionType>("LOCK");
@@ -43,9 +48,9 @@ export function VaultPanel() {
   return (
     <AccordionItem
       value="first"
-      className="flex w-full flex-col dark:bg-breadgray-grey200 border-2 rounded-xl dark:border-breadgray-burnt"
+      className="grid w-full flex-col dark:bg-breadgray-grey200 border-2 rounded-xl dark:border-breadgray-burnt"
     >
-      <AccordionHeader className="p-4">
+      <AccordionHeader className="p-4 flex flex-col gap-6 md:gap-2">
         <AccordionTrigger className="flex w-full group">
           <div className="flex pr-4">
             <BreadIcon />
@@ -53,7 +58,38 @@ export function VaultPanel() {
               <WXDAIIcon />
             </div>
           </div>
-          <h2 className="grow text-left font-medium text-xl">BREAD / WXDAI</h2>
+          <h2 className="grow text-left font-medium text-xl">
+            {lpTokenMeta[tokenAddress].poolName}
+          </h2>
+
+          {/* desktop token balances */}
+          <div className="hidden md:flex pr-2 gap-4 items-center">
+            <div className="flex gap-2">
+              Unlocked LP tokens:
+              {user.status === "CONNECTED" ? (
+                <span className="font-bold text-breadgray-ultra-white">
+                  <LPTokenBalance user={user} tokenAddress={tokenAddress} />
+                </span>
+              ) : (
+                "-"
+              )}
+            </div>
+            <GradientBorder>
+              <div className="rounded-full px-4 bg-[#30252E] text-breadgray-grey flex gap-2">
+                Locked tokens:
+                {user.status === "CONNECTED" ? (
+                  <span className="font-bold text-breadgray-ultra-white">
+                    <LockedTokenBalance
+                      user={user}
+                      tokenAddress={tokenAddress}
+                    />
+                  </span>
+                ) : (
+                  "-"
+                )}
+              </div>
+            </GradientBorder>
+          </div>
           <div className="size-6 text-breadgray-grey100 dark:text-breadgray-ultra-white">
             <svg
               className="w-full h-full fill-current group-data-[state=open]:rotate-180"
@@ -71,17 +107,74 @@ export function VaultPanel() {
             </svg>
           </div>
         </AccordionTrigger>
+        <div className="flex gap-4 md:pl-16">
+          <ExternalLink href="">
+            <div className="flex gap-2 items-center">
+              <span className="text-sm font-medium dark:text-breadgray-ultra-white">
+                Visit pool on Curve
+              </span>
+              <div className="text-breadpink-shaded">
+                <LinkIcon />
+              </div>
+            </div>
+          </ExternalLink>
+
+          <ExternalLink href={lpTokenMeta[tokenAddress].inspectContract}>
+            <div className="flex gap-2 items-center">
+              <span className="text-sm font-medium dark:text-breadgray-ultra-white">
+                Inspect vault contract
+              </span>
+              <div className="text-breadpink-shaded">
+                <LinkIcon />
+              </div>
+            </div>
+          </ExternalLink>
+        </div>
+
+        {/* token balances mobile */}
+        <div className="flex flex-col md:hidden pr-2 gap-4 items-center">
+          <div className="w-full flex px-3">
+            <div className="grow">Unlocked LP tokens:</div>
+            {user.status === "CONNECTED" ? (
+              <span className="font-bold text-breadgray-ultra-white">
+                <LPTokenBalance user={user} tokenAddress={tokenAddress} />
+              </span>
+            ) : (
+              "-"
+            )}
+          </div>
+          <div className="w-full">
+            <GradientBorder>
+              <div className="flex rounded-full px-3 bg-[#30252E] text-breadgray-grey">
+                <div className="grow">Locked tokens:</div>
+                {user.status === "CONNECTED" ? (
+                  <span className="font-bold text-breadgray-ultra-white">
+                    <LockedTokenBalance
+                      user={user}
+                      tokenAddress={tokenAddress}
+                    />
+                  </span>
+                ) : (
+                  "-"
+                )}
+              </div>
+            </GradientBorder>
+          </div>
+        </div>
       </AccordionHeader>
-      <AccordionContent className="p-4">
-        <div className="grid grid-cols-2 gap-4">
+      <AccordionContent className="p-4 pt-4 md:px-20">
+        <div className="grid grid-cols-2 gap-5">
           <section className="col-span-2 lg:col-span-1 flex flex-col gap-4">
             <h2 className="font-bold text-xl">
               Lock LP tokens, get voting power
             </h2>
             <p>
               Enter a desired amount of LP tokens to lock to receive voting
-              power. The amount you choose to lock can always be retrieved by
-              selecting the unlock button.
+              power.
+              <p className="pt-4">
+                The amount you choose to lock can always be retrieved by
+                selecting the unlock button.
+              </p>
             </p>
           </section>
           <div className="col-span-2 lg:col-span-1">
@@ -94,22 +187,39 @@ export function VaultPanel() {
             <div className="text-xs text-breadgray-grey pb-2">You deposit</div>
             <form className="flex flex-col gap-4">
               <div className="p-4 bg-breadgray-charcoal rounded-md border border-breadgray-rye">
-                <input
-                  type="text"
-                  value={inputValue}
-                  className="text-breadgray-ultra-lightgrey bg-[#00000000] text-4xl placeholder-breadgray-grey100 dark:placeholder-neutral-200 max-w-full"
-                  onChange={(event) => {
-                    setInputValue(sanitizeInputValue(event.target.value));
-                  }}
-                  placeholder="00.00"
-                  inputMode="decimal"
-                  autoComplete="off"
-                  autoCorrect="off"
-                  pattern="^[0-9]*[.,]?[0-9]*$"
-                  minLength={1}
-                  maxLength={79}
-                  spellCheck="false"
-                />
+                <div className="flex gap-4 items-center">
+                  <input
+                    type="text"
+                    value={inputValue}
+                    className="text-breadgray-ultra-lightgrey bg-[#00000000] font-bold text-4xl placeholder-breadgray-grey100 dark:placeholder-neutral-200 w-0 grow shrink"
+                    onChange={(event) => {
+                      setInputValue(sanitizeInputValue(event.target.value));
+                    }}
+                    placeholder="0"
+                    inputMode="decimal"
+                    autoComplete="off"
+                    autoCorrect="off"
+                    pattern="^[0-9]*[.,]?[0-9]*$"
+                    minLength={1}
+                    maxLength={79}
+                    spellCheck="false"
+                  />
+                  <div className="rounded-full flex gap-2 items-center px-1.5 py-[0.15625rem] dark:bg-white/[0.05]">
+                    <WXDaiBreadIcon />
+                    <div className="font-semibold text-breadgray-ultra-white md:text-2xl">
+                      {lpTokenMeta[tokenAddress].tokenName}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-end gap-2.5 text-xs dark:text-breadgray-grey md:pt-2">
+                  <span>Unlocked LP tokens: </span>
+                  {user.status === "CONNECTED" ? (
+                    <LPTokenBalance user={user} tokenAddress={tokenAddress} />
+                  ) : (
+                    "-"
+                  )}
+                  <MaxButton onClick={() => {}}>Max.</MaxButton>
+                </div>
               </div>
               {user.status === "CONNECTED" ? (
                 <Button
@@ -136,46 +246,35 @@ export function VaultPanel() {
   );
 }
 
-// function LPTokenBalance({
-//   user,
-// }: // tokenAddress,
-// {
-//   user: TUserConnected;
-//   // tokenAddress: Hex;
-// }) {
-//   const chainConfig = getConfig(user.chain.id);
-//   const tokenBalance = useTokenBalance(user, chainConfig.LP_TOKEN.address);
-//   return tokenBalance.status === "success" ? (
-//     <div>LP Token Balance: {formatUnits(tokenBalance.data as bigint, 18)}</div>
-//   ) : null;
-// }
+function LPTokenBalance({
+  user,
+  tokenAddress,
+}: {
+  user: TUserConnected;
+  tokenAddress: Hex;
+}) {
+  const tokenBalance = useTokenBalance(user, tokenAddress);
+  return tokenBalance.status === "success"
+    ? formatUnits(tokenBalance.data as bigint, 18)
+    : null;
+}
 
-// function LockedTokenBalance({
-//   user,
-// }: // tokenAddress,
-// {
-//   user: TUserConnected;
-//   // tokenAddress: Hex;
-// }) {
-//   const chainConfig = getConfig(user.chain.id);
-//   const lockedBalance = useContractRead({
-//     address: chainConfig.BUTTERED_BREAD.address,
-//     abi: BUTTERED_BREAD_ABI,
-//     functionName: "accountToLPBalance",
-//     args: [user.address, chainConfig.LP_TOKEN.address],
-//     watch: true,
-//   });
-//   return lockedBalance.status === "success" ? (
-//     <div>Locked Tokens: {formatUnits(lockedBalance.data as bigint, 18)}</div>
-//   ) : null;
-// }
-
-// function Toggle({
-//   children,
-//   onClick,
-// }: {
-//   children: ReactNode;
-//   onClick: () => void;
-// }) {
-//   return <button onClick={onClick}>{children}</button>;
-// }
+function LockedTokenBalance({
+  user,
+  tokenAddress,
+}: {
+  user: TUserConnected;
+  tokenAddress: Hex;
+}) {
+  const chainConfig = getConfig(user.chain.id);
+  const lockedBalance = useContractRead({
+    address: chainConfig.BUTTERED_BREAD.address,
+    abi: BUTTERED_BREAD_ABI,
+    functionName: "accountToLPBalance",
+    args: [user.address, tokenAddress],
+    watch: true,
+  });
+  return lockedBalance.status === "success"
+    ? formatUnits(lockedBalance.data as bigint, 18)
+    : null;
+}

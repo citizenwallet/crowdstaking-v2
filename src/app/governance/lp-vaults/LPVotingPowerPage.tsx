@@ -17,7 +17,7 @@ export function LPVotingPowerPage() {
           </div>
           <div className="col-span-12">
             <Accordion type="single" collapsible>
-              <VaultPanel />
+              <VaultPanel tokenAddress="0xf3d8f3de71657d342db60dd714c8a2ae37eac6b4" />
             </Accordion>
           </div>
         </PageGrid>
