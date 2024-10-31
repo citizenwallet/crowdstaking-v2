@@ -10,7 +10,7 @@ export function MaxButton({
   return (
     <button
       type="button"
-      className="px-2 font-bold text-breadviolet-violet dark:text-breadpink-pink text-sm"
+      className="px-2 font-bold text-breadviolet-violet dark:text-breadpink-pink text-xs"
       onClick={onClick}
     >
       {children}
