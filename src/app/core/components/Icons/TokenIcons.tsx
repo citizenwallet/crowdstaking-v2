@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { LogoSVG } from "./Logo";
+import { BreadSVG } from "./Bread";
 import clsx from "clsx";
 
 export function XDAIIcon() {
@@ -32,8 +32,8 @@ export function BreadIcon({
         size === "small" ? "size-4" : "size-6"
       )}
     >
-      <div className="w-2/3">
-        <LogoSVG />
+      <div>
+        <BreadSVG size={size} />
       </div>
     </div>
   );
