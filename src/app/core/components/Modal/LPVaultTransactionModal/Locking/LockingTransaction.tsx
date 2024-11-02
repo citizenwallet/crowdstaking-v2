@@ -108,7 +108,7 @@ export function LockingTransaction({
               "Locking your LP tokens..."}
             {lockingState.status === "deposit_transaction_confirmed" &&
               formatUnits(lockingState.depositAmount, 18) +
-                "LP tokens successfully locked!"}
+                " LP tokens successfully locked!"}
           </StatusMessageSmall>
         </div>
         {lockingState.status !== "deposit_transaction_confirmed" && (

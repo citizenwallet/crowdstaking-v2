@@ -13,7 +13,15 @@ export type TTransactionData =
       type: "VOTE";
     }
   | {
-      type: "LP_VAULT";
+      type: "LP_VAULT_ALLOWANCE";
+      transactionType: TransactionType;
+    }
+  | {
+      type: "LP_VAULT_DEPOSIT";
+      transactionType: TransactionType;
+    }
+  | {
+      type: "LP_VAULT_WITHDRAW";
       transactionType: TransactionType;
     };
 

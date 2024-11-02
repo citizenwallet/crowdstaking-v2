@@ -31,7 +31,7 @@ export function Lock({
     transactionsDispatch({
       type: "NEW",
       payload: {
-        data: { type: "LP_VAULT", transactionType: "LOCK" },
+        data: { type: "LP_VAULT_DEPOSIT", transactionType: "LOCK" },
       },
     });
   }, [transactionsDispatch]);

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { formatUnits, Hex, parseEther } from "viem";
 import {
   AccordionItem,
@@ -12,7 +12,7 @@ import Button from "@/app/core/components/Button";
 import { useModal } from "@/app/core/context/ModalContext";
 
 import {
-  TUserConnected,
+  TConnectedUserState,
   useConnectedUser,
 } from "@/app/core/hooks/useConnectedUser";
 import { SelectTransaction } from "./SelectTransaction";
@@ -22,12 +22,13 @@ import { ExternalLink } from "@/app/bakery/components/FAQ/ExternalLink";
 import { LinkIcon } from "@/app/core/components/Icons/LinkIcon";
 import { getConfig } from "@/chainConfig";
 import { useTokenBalance } from "@/app/core/hooks/useTokenBalance";
-import { useContractRead } from "wagmi";
+import { useContractRead, useNetwork } from "wagmi";
 import { BUTTERED_BREAD_ABI } from "@/abi";
 import { lpTokenMeta } from "@/app/lpTokenMeta";
 import { GradientBorder } from "@/app/core/components/GradientBorder";
 import { WXDaiBreadIcon } from "@/app/core/components/Modal/LPVaultTransactionModal/VPRate";
 import { MaxButton } from "@/app/core/components/MaxButton";
+import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 
 export type TransactionType = "LOCK" | "UNLOCK";
 
@@ -36,6 +37,17 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
   const [transactionType, setTransactionType] =
     useState<TransactionType>("LOCK");
   const { user } = useConnectedUser();
+  const { transactionsState } = useTransactions();
+
+  const lpTokenBalance = useTokenBalance(user, tokenAddress);
+  const lockedTokenBalance = useLockedTokenBalance(user, tokenAddress);
+
+  useEffect(() => {
+    const lpVaultTransaction = transactionsState.submitted.filter(
+      (tx) => tx.data.type === "LP_VAULT_DEPOSIT" && tx.status === "CONFIRMED"
+    );
+    if (lpVaultTransaction.length > 0) setInputValue("");
+  }, [transactionsState, setInputValue]);
 
   const debouncedValue = useDebounce(inputValue, 500);
 
@@ -66,9 +78,9 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
           <div className="hidden md:flex pr-2 gap-4 items-center">
             <div className="flex gap-2">
               Unlocked LP tokens:
-              {user.status === "CONNECTED" ? (
+              {lpTokenBalance.status === "success" ? (
                 <span className="font-bold text-breadgray-ultra-white">
-                  <LPTokenBalance user={user} tokenAddress={tokenAddress} />
+                  {formatUnits(lpTokenBalance.data as bigint, 18)}
                 </span>
               ) : (
                 "-"
@@ -79,10 +91,9 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
                 Locked tokens:
                 {user.status === "CONNECTED" ? (
                   <span className="font-bold text-breadgray-ultra-white">
-                    <LockedTokenBalance
-                      user={user}
-                      tokenAddress={tokenAddress}
-                    />
+                    {lockedTokenBalance.status === "success"
+                      ? formatUnits(lockedTokenBalance.data as bigint, 18)
+                      : "-"}
                   </span>
                 ) : (
                   "-"
@@ -135,9 +146,9 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
         <div className="flex flex-col md:hidden pr-2 gap-4 items-center">
           <div className="w-full flex px-3">
             <div className="grow">Unlocked LP tokens:</div>
-            {user.status === "CONNECTED" ? (
+            {lpTokenBalance.status === "success" ? (
               <span className="font-bold text-breadgray-ultra-white">
-                <LPTokenBalance user={user} tokenAddress={tokenAddress} />
+                {formatUnits(lpTokenBalance.data as bigint, 18)}
               </span>
             ) : (
               "-"
@@ -149,10 +160,9 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
                 <div className="grow">Locked tokens:</div>
                 {user.status === "CONNECTED" ? (
                   <span className="font-bold text-breadgray-ultra-white">
-                    <LockedTokenBalance
-                      user={user}
-                      tokenAddress={tokenAddress}
-                    />
+                    {lockedTokenBalance.status === "success"
+                      ? formatUnits(lockedTokenBalance.data as bigint, 18)
+                      : "-"}
                   </span>
                 ) : (
                   "-"
@@ -188,22 +198,32 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
             <form className="flex flex-col gap-4">
               <div className="p-4 bg-breadgray-charcoal rounded-md border border-breadgray-rye">
                 <div className="flex gap-4 items-center">
-                  <input
-                    type="text"
-                    value={inputValue}
-                    className="text-breadgray-ultra-lightgrey bg-[#00000000] font-bold text-4xl placeholder-breadgray-grey100 dark:placeholder-neutral-200 w-0 grow shrink"
-                    onChange={(event) => {
-                      setInputValue(sanitizeInputValue(event.target.value));
-                    }}
-                    placeholder="0"
-                    inputMode="decimal"
-                    autoComplete="off"
-                    autoCorrect="off"
-                    pattern="^[0-9]*[.,]?[0-9]*$"
-                    minLength={1}
-                    maxLength={79}
-                    spellCheck="false"
-                  />
+                  {transactionType === "LOCK" ? (
+                    <input
+                      type="text"
+                      value={inputValue}
+                      className="text-breadgray-ultra-lightgrey bg-[#00000000] font-bold text-4xl placeholder-breadgray-grey100 dark:placeholder-neutral-200 w-0 grow shrink"
+                      onChange={(event) => {
+                        setInputValue(sanitizeInputValue(event.target.value));
+                      }}
+                      placeholder="0"
+                      inputMode="decimal"
+                      autoComplete="off"
+                      autoCorrect="off"
+                      pattern="^[0-9]*[.,]?[0-9]*$"
+                      minLength={1}
+                      maxLength={79}
+                      spellCheck="false"
+                    />
+                  ) : (
+                    <div className="font-bold text-4xl grow">
+                      <div className="truncate">
+                        {lockedTokenBalance.status === "success"
+                          ? formatUnits(lockedTokenBalance.data as bigint, 18)
+                          : "-"}
+                      </div>
+                    </div>
+                  )}
                   <div className="rounded-full flex gap-2 items-center px-1.5 py-[0.15625rem] dark:bg-white/[0.05]">
                     <WXDaiBreadIcon />
                     <div className="font-semibold text-breadgray-ultra-white md:text-2xl">
@@ -212,13 +232,26 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
                   </div>
                 </div>
                 <div className="flex items-center justify-end gap-2.5 text-xs dark:text-breadgray-grey md:pt-2">
-                  <span>Unlocked LP tokens: </span>
-                  {user.status === "CONNECTED" ? (
-                    <LPTokenBalance user={user} tokenAddress={tokenAddress} />
+                  {transactionType === "LOCK" ? (
+                    <>
+                      <span>Unlocked LP tokens: </span>
+                      {lpTokenBalance.status === "success"
+                        ? formatUnits(lpTokenBalance.data as bigint, 18)
+                        : "-"}
+                      <MaxButton
+                        onClick={() => {
+                          if (lpTokenBalance.status !== "success") return;
+                          setInputValue(
+                            formatUnits(lpTokenBalance.data as bigint, 18)
+                          );
+                        }}
+                      >
+                        Max.
+                      </MaxButton>
+                    </>
                   ) : (
-                    "-"
+                    <span className="h-4"> </span>
                   )}
-                  <MaxButton onClick={() => {}}>Max.</MaxButton>
                 </div>
               </div>
               {user.status === "CONNECTED" ? (
@@ -229,9 +262,15 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
                     setModal({
                       type: "LP_VAULT_TRANSACTION",
                       transactionType: transactionType,
-                      parsedValue,
+                      parsedValue:
+                        transactionType === "LOCK"
+                          ? parsedValue
+                          : (lockedTokenBalance.data as bigint),
                     });
                   }}
+                  disabled={
+                    transactionType === "LOCK" && !(Number(inputValue) > 0)
+                  }
                 >
                   {transactionType === "UNLOCK" ? "Unlock" : "Lock"} LP Tokens
                 </Button>
@@ -246,35 +285,15 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
   );
 }
 
-function LPTokenBalance({
-  user,
-  tokenAddress,
-}: {
-  user: TUserConnected;
-  tokenAddress: Hex;
-}) {
-  const tokenBalance = useTokenBalance(user, tokenAddress);
-  return tokenBalance.status === "success"
-    ? formatUnits(tokenBalance.data as bigint, 18)
-    : null;
-}
-
-function LockedTokenBalance({
-  user,
-  tokenAddress,
-}: {
-  user: TUserConnected;
-  tokenAddress: Hex;
-}) {
-  const chainConfig = getConfig(user.chain.id);
-  const lockedBalance = useContractRead({
+function useLockedTokenBalance(user: TConnectedUserState, tokenAddress: Hex) {
+  const network = useNetwork();
+  const chainConfig = getConfig(network.chain ? network.chain.id : "DEFAULT");
+  return useContractRead({
     address: chainConfig.BUTTERED_BREAD.address,
     abi: BUTTERED_BREAD_ABI,
     functionName: "accountToLPBalance",
-    args: [user.address, tokenAddress],
+    args: [user.status === "CONNECTED" ? user.address : null, tokenAddress],
     watch: true,
+    enabled: user.status === "CONNECTED",
   });
-  return lockedBalance.status === "success"
-    ? formatUnits(lockedBalance.data as bigint, 18)
-    : null;
 }

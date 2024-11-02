@@ -25,7 +25,7 @@ export function IncreaseAllowance({
     transactionsDispatch({
       type: "NEW",
       payload: {
-        data: { type: "LP_VAULT", transactionType: "LOCK" },
+        data: { type: "LP_VAULT_ALLOWANCE", transactionType: "LOCK" },
       },
     });
   }, [transactionsDispatch]);

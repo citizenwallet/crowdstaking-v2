@@ -1,14 +1,15 @@
 import { Hex } from "viem";
-import { TUserConnected } from "./useConnectedUser";
+import { TConnectedUserState, TUserConnected } from "./useConnectedUser";
 import { useContractRead } from "wagmi";
 import { ERC20_ABI } from "@/abi";
 
-export function useTokenBalance(user: TUserConnected, tokenAddress: Hex) {
+export function useTokenBalance(user: TConnectedUserState, tokenAddress: Hex) {
   return useContractRead({
     address: tokenAddress,
     abi: ERC20_ABI,
     functionName: "balanceOf",
-    args: [user.address],
+    args: [user.status === "CONNECTED" ? user.address : null],
     watch: true,
+    enabled: user.status === "CONNECTED",
   });
 }
