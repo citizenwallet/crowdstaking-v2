@@ -72,7 +72,11 @@ export function DistributionOverview({
   }, [apyStatus, apyData, totalSupplyStatus, totalSupplyData]);
 
   const estimateTotal = useMemo(() => {
-    if (cycleDates.status === "SUCCESS" && claimableYield && yieldPerHour) {
+    if (
+      cycleDates.status === "SUCCESS" &&
+      claimableYield !== null &&
+      yieldPerHour
+    ) {
       const difference = differenceInHours(cycleDates.end, new Date());
       return difference * yieldPerHour + claimableYield;
     }
@@ -80,7 +84,7 @@ export function DistributionOverview({
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
-    if (claimableYield && yieldPerHour) {
+    if (claimableYield !== null && yieldPerHour) {
       intervalId = setInterval(() => {
         setYieldIncrement((val) => (val += (yieldPerHour / 60 / 60) * 1.5));
       }, 1500);
@@ -108,7 +112,7 @@ export function DistributionOverview({
               Amount to Distribute
             </h4>
             <div className="pt-4 pb-6 w-full items-center">
-              {claimableYield ? (
+              {claimableYield !== null ? (
                 <div className="w-full flex justify-center tracking-wider text-3xl font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white leading-none">
                   <div className=" flex gap-2  justify-end">
                     <div className="mt-1">
