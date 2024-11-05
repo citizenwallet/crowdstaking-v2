@@ -26,6 +26,7 @@ export function DistributionOverview({
 }) {
   const { claimableYield } = useClaimableYield();
   const { chain: activeChain } = useNetwork();
+  const [dsrAPY, setDsrAPY] = useState("");
   const config = activeChain ? getConfig(activeChain.id) : getConfig("DEFAULT");
   const [yieldIncrement, setYieldIncrement] = useState(0);
 
@@ -63,13 +64,19 @@ export function DistributionOverview({
       const yieldPerDay = (totalSupply * dsr) / 365;
       const yieldPerHour = yieldPerDay / 24;
 
+      setDsrAPY((dsr * 100).toFixed(2));
+
       return yieldPerHour;
     }
     return null;
   }, [apyStatus, apyData, totalSupplyStatus, totalSupplyData]);
 
   const estimateTotal = useMemo(() => {
-    if (cycleDates.status === "SUCCESS" && claimableYield && yieldPerHour) {
+    if (
+      cycleDates.status === "SUCCESS" &&
+      claimableYield !== null &&
+      yieldPerHour
+    ) {
       const difference = differenceInHours(cycleDates.end, new Date());
       return difference * yieldPerHour + claimableYield;
     }
@@ -77,7 +84,7 @@ export function DistributionOverview({
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
-    if (claimableYield && yieldPerHour) {
+    if (claimableYield !== null && yieldPerHour) {
       intervalId = setInterval(() => {
         setYieldIncrement((val) => (val += (yieldPerHour / 60 / 60) * 1.5));
       }, 1500);
@@ -104,11 +111,13 @@ export function DistributionOverview({
             <h4 className="text-xl font-medium text-breadgray-rye dark:text-breadgray-light-grey tracking-wide uppercase leading-none">
               Amount to Distribute
             </h4>
-            <div className="pt-4 pb-6 w-full">
-              {claimableYield ? (
-                <div className="w-full flex justify-center text-3xl font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white leading-none">
-                  <div className="w-[45%] flex gap-2 items-center justify-end">
-                    <BreadIcon />
+            <div className="pt-4 pb-6 w-full items-center">
+              {claimableYield !== null ? (
+                <div className="w-full flex justify-center tracking-wider text-3xl font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white leading-none">
+                  <div className=" flex gap-2  justify-end">
+                    <div className="mt-1">
+                      <BreadIcon />
+                    </div>
                     <span>
                       {
                         formatBalance(claimableYield + yieldIncrement, 4).split(
@@ -118,7 +127,7 @@ export function DistributionOverview({
                     </span>
                   </div>
                   <div>.</div>
-                  <div className="w-[45%]">
+                  <div className="text-xl leading-[1.1] w-[56px] self-end">
                     {
                       formatBalance(claimableYield + yieldIncrement, 4).split(
                         "."
@@ -146,7 +155,16 @@ export function DistributionOverview({
                   </span>
                 </div>
               </div>
-
+              <div className="flex w-full">
+                <p className="grow text-breadgray-rye dark:text-breadgray-grey">
+                  DAI savings rate (APY)
+                </p>
+                <div className="flex gap-2 items-center md:justify-center">
+                  <span className="font-bold text-breadgray-grey100 dark:text-breadgray-white">
+                    {dsrAPY + "%"}
+                  </span>
+                </div>
+              </div>
               <div className="flex w-full">
                 <p className="grow text-breadgray-rye dark:text-breadgray-grey">
                   Voting cycle #

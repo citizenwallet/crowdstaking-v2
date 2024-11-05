@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { LogoSVG } from "./Logo";
+import { BreadSVG } from "./Bread";
 import clsx from "clsx";
 
 export function XDAIIcon() {
@@ -26,23 +26,18 @@ export function WXDAIIcon({ size = "regular" }: { size?: "regular" | "full" }) {
 
 export function BreadIcon({
   size = "regular",
-  className = "",
 }: {
-  size?: "small" | "regular" | "full";
-  className?: string;
+  size?: "small" | "regular";
 }) {
   return (
     <div
       className={clsx(
         "rounded-full bg-breadpink-200 bg-opacity-10 dark:bg-breadgray-rye flex items-center justify-center",
-        size === "small" && "size-4",
-        size === "regular" && "size-6",
-        size === "full" && "size-full",
-        className
+        size === "small" ? "size-4" : "size-6"
       )}
     >
-      <div className="w-6/12">
-        <LogoSVG />
+      <div>
+        <BreadSVG size={size} />
       </div>
     </div>
   );
