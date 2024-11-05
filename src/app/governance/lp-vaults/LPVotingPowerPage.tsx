@@ -7,7 +7,7 @@ import { Accordion } from "@radix-ui/react-accordion";
 export function LPVotingPowerPage() {
   return (
     <div>
-      <div className="grow w-full max-w-[44rem] lg:max-w-[67rem] m-auto pb-16 lg:px-8">
+      <div className="grow w-full lg:max-w-[67rem] m-auto p-4 md:py-8 md:px-8">
         <PageGrid>
           <div className="col-span-12 md:col-span-8">
             <TitleSection />

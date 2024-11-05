@@ -12,7 +12,7 @@ export default function GovernanceLayout({
 }) {
   return (
     <>
-      <section className="max-w-[44rem] lg:max-w-[67rem] m-auto px-4 md:px-2 lg:px-8">
+      <section className="lg:max-w-[67rem] m-auto px-4 md:px-8">
         <div className="rounded-lg p-4 dark:bg-breadgray-grey200 border-2 border-breadpink-300 border-opacity-30">
           <nav className="px-4 flex flex-row gap-4">
             <NavLink href="/governance">
