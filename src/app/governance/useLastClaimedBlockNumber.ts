@@ -20,7 +20,6 @@ export function useLastClaimedBlockNumber() {
     address: distributorAddress,
     abi: DISTRIBUTOR_ABI,
     functionName: "lastClaimedBlockNumber",
-    watch: true,
     enabled: distributorAddress !== "0x",
   });
 

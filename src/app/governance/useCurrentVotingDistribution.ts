@@ -40,6 +40,7 @@ export function useCurrentVotingDistribution() {
     functionName: "getCurrentVotingDistribution",
     watch: true,
     enabled: distriubutorAddress !== "0x",
+    cacheTime: 2_000,
   });
 
   useEffect(() => {

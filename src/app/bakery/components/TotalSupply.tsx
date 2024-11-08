@@ -12,6 +12,7 @@ export function TotalSupply() {
     functionName: "totalSupply",
     args: [],
     watch: true,
+    cacheTime: 6_000,
   });
 
   return (
