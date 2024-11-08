@@ -23,7 +23,7 @@ export const ModalContainer = forwardRef(
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 8, opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="max-w-[25rem] sm:w-[22rem] flex flex-col items-center rounded-t-2xl dark:bg-opacity-100 p-6 bg-breadgray-ultra-white dark:bg-breadgray-charcoal relative pointer-events-auto"
+          className="max-w-[28rem] flex flex-col items-center rounded-t-2xl dark:bg-opacity-100 p-6 bg-breadgray-ultra-white dark:bg-breadgray-charcoal relative pointer-events-auto"
         >
           <DialogPrimitiveClose className="absolute top-0 right-0 size-16 p-4 pt-5">
             <CloseIcon />

@@ -199,7 +199,7 @@ function TransactionStage({
           </div>
         )}
       </span>
-      <div className="grow dark:text-white font-bold">{children}</div>
+      <div className="dark:text-white font-bold">{children}</div>
     </div>
   );
 }
