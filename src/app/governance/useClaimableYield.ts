@@ -18,6 +18,7 @@ export function useClaimableYield() {
     functionName: "yieldAccrued",
     watch: true,
     enabled: breadAddress !== "0x",
+    cacheTime: 2_000,
   });
 
   useEffect(() => {

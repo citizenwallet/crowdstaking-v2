@@ -50,6 +50,7 @@ export function DistributionOverview({
     functionName: "totalSupply",
     args: [],
     watch: true,
+    cacheTime: 6_000,
   });
 
   const yieldPerHour = useMemo(() => {
