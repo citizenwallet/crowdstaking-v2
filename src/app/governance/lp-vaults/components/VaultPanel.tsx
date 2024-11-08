@@ -29,6 +29,7 @@ import { GradientBorder } from "@/app/core/components/GradientBorder";
 import { WXDaiBreadIcon } from "@/app/core/components/Modal/LPVaultTransactionModal/VPRate";
 import { MaxButton } from "@/app/core/components/MaxButton";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
+import { formatBalance } from "@/app/core/util/formatter";
 
 export type TransactionType = "LOCK" | "UNLOCK";
 
@@ -80,7 +81,10 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
               Unlocked LP tokens:
               {lpTokenBalance.status === "success" ? (
                 <span className="font-bold text-breadgray-ultra-white">
-                  {formatUnits(lpTokenBalance.data as bigint, 18)}
+                  {formatBalance(
+                    Number(formatUnits(lpTokenBalance.data as bigint, 18)),
+                    3
+                  )}
                 </span>
               ) : (
                 "-"
@@ -92,7 +96,12 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
                 {user.status === "CONNECTED" ? (
                   <span className="font-bold text-breadgray-ultra-white">
                     {lockedTokenBalance.status === "success"
-                      ? formatUnits(lockedTokenBalance.data as bigint, 18)
+                      ? formatBalance(
+                          Number(
+                            formatUnits(lockedTokenBalance.data as bigint, 18)
+                          ),
+                          3
+                        )
                       : "-"}
                   </span>
                 ) : (
@@ -148,7 +157,10 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
             <div className="grow">Unlocked LP tokens:</div>
             {lpTokenBalance.status === "success" ? (
               <span className="font-bold text-breadgray-ultra-white">
-                {formatUnits(lpTokenBalance.data as bigint, 18)}
+                {formatBalance(
+                  Number(formatUnits(lpTokenBalance.data as bigint, 18)),
+                  3
+                )}
               </span>
             ) : (
               "-"
@@ -161,7 +173,12 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
                 {user.status === "CONNECTED" ? (
                   <span className="font-bold text-breadgray-ultra-white">
                     {lockedTokenBalance.status === "success"
-                      ? formatUnits(lockedTokenBalance.data as bigint, 18)
+                      ? formatBalance(
+                          Number(
+                            formatUnits(lockedTokenBalance.data as bigint, 18)
+                          ),
+                          3
+                        )
                       : "-"}
                   </span>
                 ) : (
@@ -236,7 +253,12 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
                     <>
                       <span>Unlocked LP tokens: </span>
                       {lpTokenBalance.status === "success"
-                        ? formatUnits(lpTokenBalance.data as bigint, 18)
+                        ? formatBalance(
+                            Number(
+                              formatUnits(lpTokenBalance.data as bigint, 18)
+                            ),
+                            3
+                          )
                         : "-"}
                       <MaxButton
                         onClick={() => {

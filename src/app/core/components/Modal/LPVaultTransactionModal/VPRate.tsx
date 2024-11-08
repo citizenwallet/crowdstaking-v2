@@ -2,9 +2,10 @@ import { formatUnits } from "viem";
 import { FistIcon } from "../../Icons/FistIcon";
 import clsx from "clsx";
 import { ReactNode } from "react";
+import { formatBalance } from "@/app/core/util/formatter";
 
 export function LockVPRate({ value }: { value: bigint }) {
-  const tokenAmount = formatUnits(value, 18);
+  const tokenAmount = formatBalance(Number(formatUnits(value, 18)), 3);
   const vpAmount = tokenAmount;
 
   return (
@@ -37,7 +38,7 @@ export function LockVPRate({ value }: { value: bigint }) {
 }
 
 export function UnlockVPRate({ value }: { value: bigint }) {
-  const tokenAmount = formatUnits(value, 18);
+  const tokenAmount = formatBalance(Number(formatUnits(value, 18)), 3);
   const vpAmount = tokenAmount;
 
   return (
