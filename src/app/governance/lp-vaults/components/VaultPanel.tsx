@@ -233,10 +233,18 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
                       spellCheck="false"
                     />
                   ) : (
-                    <div className="font-bold text-4xl grow">
+                    <div className="font-bold text-2xl grow">
                       <div className="truncate">
                         {lockedTokenBalance.status === "success"
-                          ? formatUnits(lockedTokenBalance.data as bigint, 18)
+                          ? formatBalance(
+                              Number(
+                                formatUnits(
+                                  lockedTokenBalance.data as bigint,
+                                  18
+                                )
+                              ),
+                              3
+                            )
                           : "-"}
                       </div>
                     </div>
