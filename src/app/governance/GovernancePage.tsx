@@ -50,6 +50,27 @@ export function GovernancePage() {
   }, [modalState, setModal]);
 
   useEffect(() => {
+    if (
+      castVote.status === "ERROR" ||
+      currentVotingDistribution.status === "ERROR" ||
+      cycleDates.status === "ERROR" ||
+      cycleLength.status === "ERROR"
+    ) {
+      const errorVars = [];
+
+      if (castVote.status === "ERROR") errorVars.push("castVote");
+      if (currentVotingDistribution.status === "ERROR")
+        errorVars.push("currentVotingDistribution");
+      if (cycleDates.status === "ERROR") errorVars.push("cycleDates");
+      if (cycleLength.status === "ERROR") errorVars.push("cycleLength");
+
+      if (errorVars.length > 0) {
+        console.log("Error status in: ", errorVars.join(", "));
+      }
+    }
+  }, [castVote, currentVotingDistribution, cycleDates, cycleLength]);
+
+  useEffect(() => {
     if (voteFormState?.projects) return;
     if (
       currentVotingDistribution.status === "SUCCESS" &&
@@ -143,8 +164,11 @@ export function GovernancePage() {
     cycleLength.status === "ERROR"
   )
     return (
-      <div className="w-full flex justify-center pt-32">
-        <h1>ERROR</h1>
+      <div className="w-full flex flex-col items-center pt-32">
+        <h1>Please wait...</h1>
+        <div className="mt-6 size-10 text-breadgray-grey">
+          <Spinner />
+        </div>
       </div>
     );
 

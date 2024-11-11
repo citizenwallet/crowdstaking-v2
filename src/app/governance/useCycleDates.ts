@@ -39,6 +39,7 @@ export function useCycleDates(cycleLength: CycleLengthState) {
     abi: DISTRIBUTOR_ABI,
     functionName: "lastClaimedBlockNumber",
     watch: true,
+    cacheTime: 3_000,
   });
 
   const { data: currentBlockNumberData, status: currentBlockNumberStatus } =
