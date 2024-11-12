@@ -9,8 +9,8 @@ import { useNetwork } from "wagmi";
 type VoteLogData = {
   blockTimestamp: Hex;
   args: {
-    holder: Hex;
-    percentages: Array<bigint>;
+    account: Hex;
+    points: Array<bigint>;
     projects: Array<Hex>;
   };
 };
@@ -50,9 +50,9 @@ export type ParsedVote = {
 
 function parseVoteLog(log: VoteLogData): ParsedVote {
   return {
-    account: log.args.holder,
+    account: log.args.account,
     blockTimestamp: 1000,
-    points: log.args.percentages.map((bigPoints) => Number(bigPoints)),
+    points: log.args.points.map((bigPoints) => Number(bigPoints)),
     projects: log.args.projects,
   };
 }
