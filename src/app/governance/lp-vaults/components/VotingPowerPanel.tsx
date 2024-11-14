@@ -41,65 +41,55 @@ export function VotingPowerPanel() {
             </span>
           </p>
         </div>
-        <div className="w-full flex flex-col gap-3 py-3 border-1 border-t border-t-breadgray-light-grey dark:border-t-breadgray-rye">
-          <div className="flex w-full">
-            <p className="grow text-breadgray-rye dark:text-breadgray-grey">
-              Voting power from locked LP
-            </p>
-            <div className="flex gap-2 items-center md:justify-center">
-              <span className="font-bold text-breadgray-grey100 dark:text-breadgray-white">
-                {/* TODO: add dynamic value */}
-                {renderAsConnected("1000")}
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className="w-full flex flex-col gap-3 py-3 border-1 border-b border-b-breadgray-light-grey dark:border-b-breadgray-rye">
-          <div className="flex w-full">
-            <p className="grow text-breadgray-rye dark:text-breadgray-grey">
-              Voting power from $BREAD
-            </p>
-            <div className="flex gap-2 items-center md:justify-center">
-              <span className="font-bold text-breadgray-grey100 dark:text-breadgray-white">
+
+        {/* voting power grid */}
+        <div className="grid grid-cols-[repeat(2, max-content)] gap-3 py-3 border-1 border-t border-t-breadgray-light-grey dark:border-t-breadgray-rye">
+          <p className="text-breadgray-rye dark:text-breadgray-grey">
+            Voting power from locked LP
+          </p>
+
+          <span className="font-bold text-breadgray-grey100 dark:text-breadgray-white">
+            {/* TODO: add dynamic value */}
+            {renderAsConnected("1000")}
+          </span>
+
+          <p className="text-breadgray-rye dark:text-breadgray-grey">
+            Voting power from $BREAD
+          </p>
+          <span className="text-right font-bold text-breadgray-grey100 dark:text-breadgray-white">
+            {/* TODO: add dynamic value */}
+            {renderAsConnected("500")}
+          </span>
+
+          <div className="col-span-2 h-[1px] bg-breadgray-rye" />
+
+          <p className="text-breadgray-rye dark:text-breadgray-grey">
+            Total locked LP tokens
+          </p>
+
+          <span className="text-right font-bold text-breadpink-100">
+            {/* TODO: add dynamic value */}
+            {renderAsConnected("100")}
+          </span>
+
+          {userIsConnected && (
+            <>
+              <p className="text-breadgray-rye dark:text-breadgray-grey">
+                Pending voting power
+              </p>
+
+              <span className="text-right font-bold text-breadgray-rye dark:text-breadgray-grey">
                 {/* TODO: add dynamic value */}
                 {renderAsConnected("500")}
               </span>
-            </div>
-          </div>
+            </>
+          )}
+          {!userIsConnected && (
+            <AccountMenu fullWidth={true} size="large">
+              Connect
+            </AccountMenu>
+          )}
         </div>
-        <div className="w-full flex flex-col gap-3 py-3">
-          <div className="flex w-full">
-            <p className="grow text-breadgray-rye dark:text-breadgray-grey">
-              Total locked LP tokens
-            </p>
-            <div className="flex gap-2 items-center md:justify-center">
-              <span className="font-bold text-breadgray-grey100 text-breadpink-100">
-                {/* TODO: add dynamic value */}
-                {renderAsConnected("100")}
-              </span>
-            </div>
-          </div>
-        </div>
-        {userIsConnected && (
-          <div className="w-full flex flex-col gap-3 py-3">
-            <div className="flex w-full">
-              <p className="grow text-breadgray-rye dark:text-breadgray-grey">
-                Pending voting power
-              </p>
-              <div className="flex gap-2 items-center md:justify-center">
-                <span className="font-bold text-breadgray-rye dark:text-breadgray-grey">
-                  {/* TODO: add dynamic value */}
-                  {renderAsConnected("500")}
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
-        {!userIsConnected && (
-          <AccountMenu fullWidth={true} size="large">
-            Connect
-          </AccountMenu>
-        )}
         <a
           className="flex items-center gap-2 text-sm font-medium pt-4 text-breadgray-grey100 hover:text-breadpink-shaded dark:text-breadgray-ultra-white"
           href="https://breadchain.notion.site/BREAD-Voting-Power-UI-0f2d350320b94e4ba9aeec2ef6fdcb84"

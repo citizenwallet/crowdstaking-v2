@@ -1,26 +1,23 @@
 "use client";
-import { PageGrid } from "../components/PageGrid";
 import { VaultPanel } from "./components/VaultPanel";
 import { VotingPowerPanel } from "./components/VotingPowerPanel";
 import { Accordion } from "@radix-ui/react-accordion";
 
 export function LPVotingPowerPage() {
   return (
-    <div>
-      <div className="grow w-full lg:max-w-[67rem] m-auto p-4 md:py-8 md:px-8">
-        <PageGrid>
-          <div className="col-span-12 md:col-span-8">
-            <TitleSection />
-          </div>
-          <div className="col-span-12 md:col-span-4">
-            <VotingPowerPanel />
-          </div>
-          <div className="col-span-12">
-            <Accordion type="single" collapsible>
-              <VaultPanel tokenAddress="0xf3d8f3de71657d342db60dd714c8a2ae37eac6b4" />
-            </Accordion>
-          </div>
-        </PageGrid>
+    <div className="lg:max-w-[67rem] m-auto p-4 md:py-8 md:px-8">
+      <div className="grid grid-cols[repeat(2, minmax(min-content, 1fr))] gap-4 md:gap-8">
+        <div className="col-span-12 md:col-span-8">
+          <TitleSection />
+        </div>
+        <div className="col-span-12 md:col-span-4">
+          <VotingPowerPanel />
+        </div>
+        <div className="col-span-12">
+          <Accordion type="single" collapsible>
+            <VaultPanel tokenAddress="0xf3d8f3de71657d342db60dd714c8a2ae37eac6b4" />
+          </Accordion>
+        </div>
       </div>
     </div>
   );
