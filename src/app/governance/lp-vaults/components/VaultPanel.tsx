@@ -129,7 +129,7 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
             </div>
           </div>
           <div className="flex gap-4 md:pl-16">
-            <ExternalLink href="">
+            <ExternalLink href="#" onClick={(event) => event.stopPropagation()}>
               <div className="flex gap-2 items-center">
                 <span className="text-sm font-medium dark:text-breadgray-ultra-white">
                   Visit pool on Curve
@@ -140,7 +140,10 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
               </div>
             </ExternalLink>
 
-            <ExternalLink href={lpTokenMeta[tokenAddress].inspectContract}>
+            <ExternalLink
+              href={lpTokenMeta[tokenAddress].inspectContract}
+              onClick={(event) => event.stopPropagation()}
+            >
               <div className="flex gap-2 items-center">
                 <span className="text-sm font-medium dark:text-breadgray-ultra-white">
                   Inspect vault contract
