@@ -64,7 +64,7 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
       className="grid w-full flex-col dark:bg-breadgray-grey200 border-2 rounded-xl dark:border-breadgray-burnt hover:border-breadgray-light-grey"
     >
       <AccordionHeader className="p-4 flex flex-col gap-6 md:gap-2">
-        <AccordionTrigger className="flex flex-col gap-2 group">
+        <AccordionTrigger className="flex flex-col gap-6 group">
           <div className="flex w-full">
             <div className="flex pr-4">
               <BreadIcon />
@@ -128,70 +128,68 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
               </svg>
             </div>
           </div>
-          <div className="flex gap-4 md:pl-16">
-            <ExternalLink href="#" onClick={(event) => event.stopPropagation()}>
-              <div className="flex gap-2 items-center">
-                <span className="text-sm font-medium dark:text-breadgray-ultra-white">
-                  Visit pool on Curve
-                </span>
-                <div className="text-breadpink-shaded">
-                  <LinkIcon />
-                </div>
-              </div>
-            </ExternalLink>
-
-            <ExternalLink
-              href={lpTokenMeta[tokenAddress].inspectContract}
-              onClick={(event) => event.stopPropagation()}
-            >
-              <div className="flex gap-2 items-center">
-                <span className="text-sm font-medium dark:text-breadgray-ultra-white">
-                  Inspect vault contract
-                </span>
-                <div className="text-breadpink-shaded">
-                  <LinkIcon />
-                </div>
-              </div>
-            </ExternalLink>
-          </div>
-          {/* token balances mobile */}
-          <div className="flex flex-col md:hidden pr-2 gap-4 items-center">
-            <div className="w-full flex px-3">
-              <div className="grow">Unlocked LP tokens:</div>
-              {lpTokenBalance.status === "success" ? (
-                <span className="font-bold text-breadgray-ultra-white">
-                  {formatBalance(
-                    Number(formatUnits(lpTokenBalance.data as bigint, 18)),
-                    3
-                  )}
-                </span>
-              ) : (
-                "-"
-              )}
-            </div>
-            <div className="w-full">
-              <GradientBorder>
-                <div className="flex rounded-full px-3 bg-[#30252E] text-breadgray-grey">
-                  <div className="grow">Locked tokens:</div>
-                  {user.status === "CONNECTED" ? (
-                    <span className="font-bold text-breadgray-ultra-white">
-                      {lockedTokenBalance.status === "success"
-                        ? formatBalance(
-                            Number(
-                              formatUnits(lockedTokenBalance.data as bigint, 18)
-                            ),
-                            3
-                          )
-                        : "-"}
-                    </span>
-                  ) : (
-                    "-"
-                  )}
-                </div>
-              </GradientBorder>
-            </div>
-          </div>
         </AccordionTrigger>
+        <div className="flex gap-4 md:pl-16">
+          <ExternalLink href="#">
+            <div className="flex gap-2 items-center">
+              <span className="text-sm font-medium dark:text-breadgray-ultra-white">
+                Visit pool on Curve
+              </span>
+              <div className="text-breadpink-shaded">
+                <LinkIcon />
+              </div>
+            </div>
+          </ExternalLink>
+
+          <ExternalLink href={lpTokenMeta[tokenAddress].inspectContract}>
+            <div className="flex gap-2 items-center">
+              <span className="text-sm font-medium dark:text-breadgray-ultra-white">
+                Inspect vault contract
+              </span>
+              <div className="text-breadpink-shaded">
+                <LinkIcon />
+              </div>
+            </div>
+          </ExternalLink>
+        </div>
+
+        {/* mobile token balances */}
+        <div className="w-full flex flex-col md:hidden pr-2 gap-4 items-center">
+          <div className="w-full flex px-3">
+            <div className="grow text-left">Unlocked LP tokens:</div>
+            {lpTokenBalance.status === "success" ? (
+              <span className="font-bold text-breadgray-ultra-white">
+                {formatBalance(
+                  Number(formatUnits(lpTokenBalance.data as bigint, 18)),
+                  3
+                )}
+              </span>
+            ) : (
+              "-"
+            )}
+          </div>
+          <div className="w-full">
+            <GradientBorder>
+              <div className="flex rounded-full px-3 bg-[#30252E] text-breadgray-grey">
+                <div className="grow text-left">Locked tokens:</div>
+                {user.status === "CONNECTED" ? (
+                  <span className="font-bold text-breadgray-ultra-white">
+                    {lockedTokenBalance.status === "success"
+                      ? formatBalance(
+                          Number(
+                            formatUnits(lockedTokenBalance.data as bigint, 18)
+                          ),
+                          3
+                        )
+                      : "-"}
+                  </span>
+                ) : (
+                  "-"
+                )}
+              </div>
+            </GradientBorder>
+          </div>
+        </div>
       </AccordionHeader>
       <AccordionContent className="p-4 pt-4 md:px-20">
         <div className="grid grid-cols-2 gap-5">
@@ -217,7 +215,7 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
             </div>
             <div className="text-xs text-breadgray-grey pb-2">You deposit</div>
             <form className="flex flex-col gap-4">
-              <div className="px-[10px] py-4 bg-breadgray-charcoal rounded-md border border-breadgray-rye">
+              <div className="flex flex-col gap-3 px-[10px] py-4 bg-breadgray-charcoal rounded-md border border-breadgray-rye">
                 <div className="flex gap-4 items-center">
                   {transactionType === "LOCK" ? (
                     <input
@@ -260,7 +258,7 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center justify-end gap-2.5 text-xs dark:text-breadgray-grey md:pt-2">
+                <div className="flex items-center justify-end gap-2.5 text-xs dark:text-breadgray-grey">
                   {transactionType === "LOCK" ? (
                     <>
                       <span>Unlocked LP tokens: </span>
