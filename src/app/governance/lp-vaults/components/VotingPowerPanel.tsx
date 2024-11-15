@@ -34,12 +34,12 @@ export function VotingPowerPanel() {
           </div>
         </div>
         <div className="pb-4">
-          <p className="font-medium text-xs text-breadgray-rye dark:text-breadgray-grey">
+          <span className="font-medium text-xs text-breadgray-rye dark:text-breadgray-grey">
             Accessible voting power
-            <span className=" ">
+            <span>
               <TooltipIcon />
             </span>
-          </p>
+          </span>
         </div>
 
         {/* voting power grid */}
