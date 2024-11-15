@@ -130,7 +130,7 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
           </div>
         </AccordionTrigger>
         <div className="flex gap-4 md:pl-16">
-          <ExternalLink href="#">
+          <ExternalLink href={lpTokenMeta[tokenAddress].visitPool}>
             <div className="flex gap-2 items-center">
               <span className="text-sm font-medium dark:text-breadgray-ultra-white">
                 Visit pool on Curve

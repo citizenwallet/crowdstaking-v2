@@ -15,6 +15,6 @@ export const lpTokenMeta: {
     poolName: "BREAD/WXDAI",
     inspectContract:
       "https://gnosisscan.io/address/DEPLOYED_CONTRACT_ADDRESS#code",
-    visitPool: "https://gnosisscan.io/address/DEPLOYED_CONTRACT_ADDRESS#code",
+    visitPool: "https://curve.fi/#/xdai/pools/factory-stable-ng-15",
   },
 };
