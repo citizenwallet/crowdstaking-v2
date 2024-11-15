@@ -21,8 +21,8 @@ export function SelectTransaction({
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
+              fillRule="evenodd"
+              clipRule="evenodd"
               d="M11.75 0H5.75V2H3.75V6H2.75H0.75V8V18V20H2.75H14.75H16.75V18V8V6H14.75H13.75V2H11.75V0ZM11.75 2V6H5.75V2H11.75ZM5.75 8H11.75H13.75H14.75V18H2.75V8H3.75H5.75ZM9.75 11H7.75V15H9.75V11Z"
             />
           </svg>
@@ -41,8 +41,8 @@ export function SelectTransaction({
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
+              fillRule="evenodd"
+              clipRule="evenodd"
               d="M11.75 0H5.75V2H3.75V4H5.75V2H11.75V6H2.75H0.75V8V18V20H2.75H14.75H16.75V18V8V6H14.75H13.75V2H11.75V0ZM11.75 8H13.75H14.75V18H2.75V8H11.75ZM9.75 11H7.75V15H9.75V11Z"
             />
           </svg>
