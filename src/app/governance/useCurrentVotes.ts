@@ -21,8 +21,6 @@ export function useCurrentVotes(lastClaimedBlockNumber: bigint | null) {
   const distributorAddress = config.DISBURSER.address;
   const publicClient = getPublicClient();
 
-  console.log({ config });
-
   return useQuery({
     queryKey: "getVotesForCurrentRound",
     refetchInterval: 500,
