@@ -18,6 +18,7 @@ import { IncreaseAllowance } from "./IncreaseAllowance";
 import { Lock } from "./Lock";
 import { formatUnits } from "viem";
 import { LockVPRate } from "../VPRate";
+import { Spinner } from "../../../Icons/Spinner";
 
 export function LockingTransaction({
   user,
@@ -170,14 +171,23 @@ export function StatusBadge({
   );
 }
 
+type TransactionStatus = "disabled" | "pending" | "success";
+
+const stageIcons: {
+  [key in TransactionStatus]: ReactNode;
+} = {
+  disabled: <DisabledIcon />,
+  pending: <PendingIcon />,
+  success: <SuccessIcon />,
+};
+
 function TransactionStage({
   status,
   children,
 }: {
-  status: "disabled" | "pending" | "success";
+  status: TransactionStatus;
   children: ReactNode;
 }) {
-  console.log({ children, status });
   return (
     <div
       className={clsx(
@@ -185,21 +195,32 @@ function TransactionStage({
         status === "disabled" && "opacity-50"
       )}
     >
-      <span
-        className={clsx(
-          "rounded-full p-[3.5px] border-[3px] transform size-6 flex items-center",
-          status === "success"
-            ? "border-status-success"
-            : "border-breadgray-toast"
-        )}
-      >
-        {status === "success" && (
-          <div className="size-full translate-y-0.5 text-status-success">
-            <CheckIcon />
-          </div>
-        )}
-      </span>
+      {stageIcons[status]}
       <div className="dark:text-white font-bold">{children}</div>
+    </div>
+  );
+}
+
+function SuccessIcon() {
+  return (
+    <span className="rounded-full p-[3.5px] border-[3px] transform size-6 flex items-center border-status-success">
+      <div className="size-full translate-y-0.5 text-status-success">
+        <CheckIcon />
+      </div>
+    </span>
+  );
+}
+
+function DisabledIcon() {
+  return (
+    <span className="rounded-full p-[3.5px] border-[3px] transform size-6 flex items-center border-breadgray-toast" />
+  );
+}
+
+function PendingIcon() {
+  return (
+    <div className="size-6 text-breadpink-shaded">
+      <Spinner />
     </div>
   );
 }
