@@ -26,10 +26,10 @@ export function LPVotingPowerPage() {
 function TitleSection() {
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="font-bold text-2xl text-breadgray-ultra-white">
+      <h1 className="font-bold text-2xl text-breadgray-grey100 dark:text-breadgray-ultra-white">
         Voting Power LP Vaults
       </h1>
-      <p className="text-breadgray-grey max-w-xl">
+      <p className="text-breadgray-rye dark:text-breadgray-grey max-w-xl">
         Lock your LP tokens in the vault(s) below to receive voting power and
         participate in Breadchain Cooperative governance voting cycles. When
         locking your LP tokens you receive voting power for the next voting

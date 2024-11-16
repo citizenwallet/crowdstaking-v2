@@ -28,7 +28,7 @@ export function VotingPowerPanel() {
           <span className="size-6 flex rounded-full bg-white dark:bg-breadgray-charcoal">
             <FistIcon />
           </span>
-          <div className="font-bold text-3xl text-breadgray-rye dark:text-breadgray-ultra-white">
+          <div className="font-bold text-3xl text-breadgray-grey100 dark:text-breadgray-ultra-white">
             {/* TODO: add dynamic value */}
             5000
           </div>
@@ -43,7 +43,9 @@ export function VotingPowerPanel() {
         </div>
 
         {/* voting power grid */}
-        <div className="grid grid-cols-[repeat(2, max-content)] gap-3 py-3 border-1 border-t border-t-breadgray-light-grey dark:border-t-breadgray-rye">
+        <div className="grid grid-cols-[repeat(2, max-content)] gap-3">
+          <Divider />
+
           <p className="text-breadgray-rye dark:text-breadgray-grey">
             Voting power from locked LP
           </p>
@@ -61,7 +63,7 @@ export function VotingPowerPanel() {
             {renderAsConnected("500")}
           </span>
 
-          <div className="col-span-2 h-[1px] bg-breadgray-rye" />
+          <Divider />
 
           <p className="text-breadgray-rye dark:text-breadgray-grey">
             Total locked LP tokens
@@ -103,5 +105,11 @@ export function VotingPowerPanel() {
         </a>
       </div>
     </CardBox>
+  );
+}
+
+function Divider() {
+  return (
+    <div className="col-span-2 h-[1px]  bg-breadgray-light-grey dark:bg-breadgray-rye" />
   );
 }

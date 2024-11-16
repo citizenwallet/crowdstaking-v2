@@ -23,6 +23,7 @@ const colors = {
     300: "#E873D3",
     400: "#A416AD",
     500: "#D04EC5",
+    600: "#F5E8F6",
   },
   status: {
     danger: "#D8745C",

@@ -13,7 +13,7 @@ export default function GovernanceLayout({
   return (
     <>
       <section className="lg:max-w-[67rem] m-auto px-4 md:px-8">
-        <div className="rounded-lg p-4 dark:bg-breadgray-grey200 border-2 border-breadpink-300 border-opacity-30">
+        <div className="rounded-lg p-4 bg-breadgray-ultra-white dark:bg-breadgray-grey200 border-2 border-breadpink-300 border-opacity-30">
           <nav className="px-4 flex flex-row gap-4">
             <NavLink href="/governance">
               <div className="w-5 h-5">
@@ -70,9 +70,8 @@ function NavLink({
   return (
     <Link
       {...props}
-      // href={`/governance`}
       className={clsx(
-        "flex flex-row items-center gap-2 text-breadgray-ultra-white transition-opacity font-semibold",
+        "flex flex-row items-center gap-2 dark:text-breadgray-ultra-white transition-opacity font-semibold",
         currentPath !== props.href && "opacity-50"
       )}
     >

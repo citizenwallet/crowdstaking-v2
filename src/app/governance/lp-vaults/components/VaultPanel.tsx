@@ -58,6 +58,17 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
 
   const { setModal } = useModal();
 
+  function submitTransaction() {
+    setModal({
+      type: "LP_VAULT_TRANSACTION",
+      transactionType: transactionType,
+      parsedValue:
+        transactionType === "LOCK"
+          ? parsedValue
+          : (lockedTokenBalance.data as bigint),
+    });
+  }
+
   return (
     <AccordionItem
       value="first"
@@ -81,7 +92,7 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
               <div className="flex gap-2">
                 Unlocked LP tokens:
                 {lpTokenBalance.status === "success" ? (
-                  <span className="font-bold text-breadgray-ultra-white">
+                  <span className="font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white">
                     {formatBalance(
                       Number(formatUnits(lpTokenBalance.data as bigint, 18)),
                       3
@@ -92,10 +103,10 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
                 )}
               </div>
               <GradientBorder>
-                <div className="rounded-full px-4 bg-[#30252E] text-breadgray-grey flex gap-2">
+                <div className="rounded-full px-4 bg-breadpink-600 dark:bg-[#30252E] dark:bg-opacity-100 text-breadgray-rye dark:text-breadgray-grey flex gap-2">
                   Locked tokens:
                   {user.status === "CONNECTED" ? (
-                    <span className="font-bold text-breadgray-ultra-white">
+                    <span className="font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white">
                       {lockedTokenBalance.status === "success"
                         ? formatBalance(
                             Number(
@@ -158,7 +169,7 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
           <div className="w-full flex px-3">
             <div className="grow text-left">Unlocked LP tokens:</div>
             {lpTokenBalance.status === "success" ? (
-              <span className="font-bold text-breadgray-ultra-white">
+              <span className="font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white">
                 {formatBalance(
                   Number(formatUnits(lpTokenBalance.data as bigint, 18)),
                   3
@@ -170,22 +181,22 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
           </div>
           <div className="w-full">
             <GradientBorder>
-              <div className="flex rounded-full px-3 bg-[#30252E] text-breadgray-grey">
-                <div className="grow text-left">Locked tokens:</div>
-                {user.status === "CONNECTED" ? (
-                  <span className="font-bold text-breadgray-ultra-white">
-                    {lockedTokenBalance.status === "success"
+              <div className="flex rounded-full px-3 bg-breadpink-600 dark:bg-[#30252E] dark:bg-opacity-100 text-breadgray-grey">
+                <div className="grow text-left text-breadgray-rye dark:text-breadgray-grey">
+                  Locked tokens:
+                </div>
+                <span className="font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white">
+                  {user.status === "CONNECTED"
+                    ? lockedTokenBalance.status === "success"
                       ? formatBalance(
                           Number(
                             formatUnits(lockedTokenBalance.data as bigint, 18)
                           ),
                           3
                         )
-                      : "-"}
-                  </span>
-                ) : (
-                  "-"
-                )}
+                      : "-"
+                    : "-"}
+                </span>
               </div>
             </GradientBorder>
           </div>
@@ -213,9 +224,17 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
                 setTransactionType={setTransactionType}
               />
             </div>
-            <div className="text-xs text-breadgray-grey pb-2">You deposit</div>
-            <form className="flex flex-col gap-4">
-              <div className="flex flex-col gap-3 px-[10px] py-4 bg-breadgray-charcoal rounded-md border border-breadgray-rye">
+            <div className="text-xs text-breadgray-rye dark:text-breadgray-grey pb-2">
+              {transactionType === "LOCK" ? "You deposit" : "You withdraw"}
+            </div>
+            <form
+              className="flex flex-col gap-4"
+              onSubmit={(event) => {
+                event.preventDefault();
+                submitTransaction();
+              }}
+            >
+              <div className="flex flex-col gap-3 px-[10px] py-4 dark:bg-breadgray-charcoal rounded-md border border-breadgray-lightgrey dark:border-breadgray-rye">
                 <div className="flex gap-4 items-center">
                   {transactionType === "LOCK" ? (
                     <input
@@ -251,9 +270,9 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
                       </div>
                     </div>
                   )}
-                  <div className="rounded-full flex gap-2 items-center px-1.5 py-[0.15625rem] dark:bg-white/[0.05]">
+                  <div className="rounded-full flex gap-2 items-center px-1.5 py-[0.15625rem] dark:bg-white/[0.05] shadow-[0_4px_10px_0px_#0000001A] text-breadgray-grey100 dark:shadow-none">
                     <WXDaiBreadIcon />
-                    <div className="font-semibold text-breadgray-ultra-white md:text-xl">
+                    <div className="font-semibold dark:text-breadgray-ultra-white md:text-xl">
                       {lpTokenMeta[tokenAddress].tokenName}
                     </div>
                   </div>
@@ -290,18 +309,12 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
                 <Button
                   size="large"
                   onClick={() => {
-                    console.log({ transactionType });
-                    setModal({
-                      type: "LP_VAULT_TRANSACTION",
-                      transactionType: transactionType,
-                      parsedValue:
-                        transactionType === "LOCK"
-                          ? parsedValue
-                          : (lockedTokenBalance.data as bigint),
-                    });
+                    submitTransaction();
                   }}
                   disabled={
-                    transactionType === "LOCK" && !(Number(inputValue) > 0)
+                    (transactionType === "LOCK" && !(Number(inputValue) > 0)) ||
+                    (transactionType === "UNLOCK" &&
+                      !(Number(lockedTokenBalance.data as bigint) > 0))
                   }
                 >
                   {transactionType === "UNLOCK" ? "Unlock" : "Lock"} LP Tokens
