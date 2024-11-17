@@ -29,6 +29,7 @@ export const anvilAccounts: Array<Hex> = [
 export const DEV_ACCOUNT = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
 const LP_TOKEN_WHALE = "0xc2fB4B3EA53E10c88D193E709A81C4dc7aEC902e" as Hex;
 const LP_TOKEN_CONTRACT = "0xf3d8f3de71657d342db60dd714c8a2ae37eac6b4" as Hex;
+const BREAD_OWNER = "0x918dEf5d593F46735f74F9E2B280Fe51AF3A99ad" as Hex;
 
 // test client is useful as you can use it to send transactions
 // with any wallet without having the private key
@@ -187,4 +188,30 @@ export async function getCurrentDistribution() {
   });
 
   console.log(`Current distribution: - ${res}`);
+}
+
+export async function setClaimer(newClaimer: Hex) {
+  await testClient.impersonateAccount({
+    address: BREAD_OWNER,
+  });
+
+  const txConfig = {
+    address: config.BREAD.address,
+    abi: BREAD_ABI,
+    functionName: "setYieldClaimer",
+    account: BREAD_OWNER,
+    args: [newClaimer],
+  };
+
+  try {
+    const hash = await testClient.writeContract(txConfig);
+
+    const receipt = await publicClient.waitForTransactionReceipt({ hash });
+    if (receipt.status === "reverted") {
+      console.log("setYieldClaimer reverted: ", receipt);
+    }
+    console.log("setYieldClaimer: ", receipt.status);
+  } catch (err) {
+    console.log("failed to set claimer: ", err);
+  }
 }
