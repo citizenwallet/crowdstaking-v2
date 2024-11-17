@@ -5,7 +5,7 @@ import { Accordion } from "@radix-ui/react-accordion";
 
 export function LPVotingPowerPage() {
   return (
-    <div className="lg:max-w-[67rem] m-auto p-4 md:py-8 md:px-8">
+    <div className="w-full lg:max-w-[67rem] m-auto px-4 md:px-8">
       <div className="grid grid-cols[repeat(2, minmax(min-content, 1fr))] gap-4 md:gap-8">
         <div className="col-span-12 lg:col-span-8">
           <TitleSection />

@@ -106,7 +106,7 @@ export function DistributionOverview({
 
   return (
     <div className="col-span-12 lg:col-span-4 row-start-2 lg:row-start-1 lg:row-span-2">
-      <div className="flex justify-center">
+      <div className="flex justify-center lg:justify-end">
         <CardBox>
           <div className="max-w-96 m-auto lg:max-w-full flex flex-col items-center justify-center p-5 shadow-card">
             <h4 className="text-xl font-medium text-breadgray-rye dark:text-breadgray-light-grey tracking-wide uppercase leading-none">
