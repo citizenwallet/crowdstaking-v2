@@ -1,21 +1,19 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { CardBox } from "@/app/core/components/CardBox";
 import { FistIcon } from "@/app/core/components/Icons/FistIcon";
 import { AccountMenu } from "@/app/core/components/Header/AccountMenu";
 import { LinkIcon } from "@/app/core/components/Icons/LinkIcon";
 import TooltipIcon from "@/app/core/components/Icons/TooltipIcon";
 import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
+import { formatUnits, Hex } from "viem";
+import { useCurrentBreadVotingPower } from "../useCurrentBreadVotingPower";
+import { useCycleLength } from "../../useCycleLength";
 
 export function VotingPowerPanel() {
   const { user } = useConnectedUser();
-  const [userIsConnected, setUserIsConnected] = useState(false);
-
-  useEffect(() => {
-    setUserIsConnected(user.status === "CONNECTED");
-  }, [user]);
 
   const renderAsConnected = (value: String) => {
-    return userIsConnected ? <span>{value}</span> : "-";
+    return user.status === "CONNECTED" ? <span>{value}</span> : "-";
   };
 
   return (
@@ -59,8 +57,11 @@ export function VotingPowerPanel() {
             Voting power from $BREAD
           </p>
           <span className="text-right font-bold text-breadgray-grey100 dark:text-breadgray-white">
-            {/* TODO: add dynamic value */}
-            {renderAsConnected("500")}
+            {user.status === "CONNECTED" ? (
+              <CurrentBreadVotingPowerDisplay account={user.address} />
+            ) : (
+              "-"
+            )}
           </span>
 
           <Divider />
@@ -74,7 +75,7 @@ export function VotingPowerPanel() {
             {renderAsConnected("100")}
           </span>
 
-          {userIsConnected && (
+          {user.status === "CONNECTED" ? (
             <>
               <p className="text-breadgray-rye dark:text-breadgray-grey">
                 Pending voting power
@@ -85,8 +86,7 @@ export function VotingPowerPanel() {
                 {renderAsConnected("500")}
               </span>
             </>
-          )}
-          {!userIsConnected && (
+          ) : (
             <AccountMenu fullWidth={true} size="large">
               Connect
             </AccountMenu>
@@ -112,4 +112,14 @@ function Divider() {
   return (
     <div className="col-span-2 h-[1px]  bg-breadgray-light-grey dark:bg-breadgray-rye" />
   );
+}
+
+function CurrentBreadVotingPowerDisplay({ account }: { account: Hex }) {
+  const { data, status } = useCurrentBreadVotingPower(account);
+  console.log(data, status);
+  const { cycleLength } = useCycleLength();
+
+  return status === "success" && cycleLength.status === "SUCCESS"
+    ? Number(formatUnits(data as bigint, 18)) / cycleLength.data
+    : "err";
 }
