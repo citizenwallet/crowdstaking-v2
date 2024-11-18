@@ -102,7 +102,7 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
                   "-"
                 )}
               </div>
-              <GradientBorder>
+              <GradientBorder borderWidth={2}>
                 <div className="rounded-full px-4 bg-breadpink-600 dark:bg-[#30252E] dark:bg-opacity-100 text-breadgray-rye dark:text-breadgray-grey flex gap-2">
                   Locked tokens:
                   {user.status === "CONNECTED" ? (
@@ -180,7 +180,7 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
             )}
           </div>
           <div className="w-full">
-            <GradientBorder>
+            <GradientBorder borderWidth={2}>
               <div className="flex rounded-full px-3 bg-breadpink-600 dark:bg-[#30252E] dark:bg-opacity-100 text-breadgray-grey">
                 <div className="grow text-left text-breadgray-rye dark:text-breadgray-grey">
                   Locked tokens:
