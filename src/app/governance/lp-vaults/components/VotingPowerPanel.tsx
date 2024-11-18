@@ -6,8 +6,11 @@ import { LinkIcon } from "@/app/core/components/Icons/LinkIcon";
 import TooltipIcon from "@/app/core/components/Icons/TooltipIcon";
 import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
 import { formatUnits, Hex } from "viem";
-import { useCurrentBreadVotingPower } from "../useCurrentBreadVotingPower";
+import { useCurrentVotingPower } from "../useCurrentVotingPower";
 import { useCycleLength } from "../../useCycleLength";
+import { LP_TOKEN_ADDRESS } from "../LPVotingPowerPage";
+import { useNetwork } from "wagmi";
+import { getConfig } from "@/chainConfig";
 
 export function VotingPowerPanel() {
   const { user } = useConnectedUser();
@@ -115,10 +118,26 @@ function Divider() {
 }
 
 function CurrentBreadVotingPowerDisplay({ account }: { account: Hex }) {
-  const { data, status } = useCurrentBreadVotingPower(account);
+  const { chain: activeChain } = useNetwork();
+  const config = activeChain ? getConfig(activeChain.id) : getConfig("DEFAULT");
+
+  const { data: breadVotingPowerData, status: breadVotingPowerStatus } =
+    useCurrentVotingPower(account, config.BREAD.address);
+  console.log(breadVotingPowerData, breadVotingPowerStatus);
+  const { cycleLength } = useCycleLength();
+
+  return breadVotingPowerStatus === "success" &&
+    cycleLength.status === "SUCCESS"
+    ? Number(formatUnits(breadVotingPowerData as bigint, 18)) / cycleLength.data
+    : "err";
+}
+
+function CurrentLPVotingPowerDisplay({ account }: { account: Hex }) {
+  const { data, status } = useCurrentVotingPower(account, LP_TOKEN_ADDRESS);
   console.log(data, status);
   const { cycleLength } = useCycleLength();
 
+  // TODO handle loading and error states properly
   return status === "success" && cycleLength.status === "SUCCESS"
     ? Number(formatUnits(data as bigint, 18)) / cycleLength.data
     : "err";
