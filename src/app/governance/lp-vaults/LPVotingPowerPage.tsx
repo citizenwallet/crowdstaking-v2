@@ -3,6 +3,8 @@ import { VaultPanel } from "./components/VaultPanel";
 import { VotingPowerPanel } from "./components/VotingPowerPanel";
 import { Accordion } from "@radix-ui/react-accordion";
 
+export const LP_TOKEN_ADDRESS = "0xf3d8f3de71657d342db60dd714c8a2ae37eac6b4";
+
 export function LPVotingPowerPage() {
   return (
     <div className="w-full lg:max-w-[67rem] m-auto px-4 md:px-8">
@@ -15,7 +17,7 @@ export function LPVotingPowerPage() {
         </div>
         <div className="col-span-12">
           <Accordion type="single" collapsible>
-            <VaultPanel tokenAddress="0xf3d8f3de71657d342db60dd714c8a2ae37eac6b4" />
+            <VaultPanel tokenAddress={LP_TOKEN_ADDRESS} />
           </Accordion>
         </div>
       </div>
