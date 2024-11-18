@@ -4,8 +4,8 @@ import { ReactNode } from "react";
 const borderWidths: {
   [key: number]: string;
 } = {
-  1: "p-[0.062rem]",
-  2: "p-[0.125rem]",
+  1: "p-[1px]",
+  2: "p-[2px]",
 };
 
 export function GradientBorder({
