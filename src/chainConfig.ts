@@ -78,10 +78,10 @@ const gnosis: ChainConfiguration = {
     address: "0xeE95A62b749d8a2520E0128D9b3aCa241269024b",
   },
   BUTTERED_BREAD: {
-    address: "0x",
+    address: "0x680B581605DC0A6902735a80dE35Cb0Ef6E90865",
   },
   LP_TOKEN: {
-    address: "0x",
+    address: "0xf3d8f3de71657d342db60dd714c8a2ae37eac6b4",
   },
   SDAI_ADAPTOR: {
     address: "0xD499b51fcFc66bd31248ef4b28d656d67E591A94",
