@@ -1,4 +1,9 @@
-import { BREAD_ABI, DISTRIBUTOR_ABI, ERC20_ABI } from "../src/abi";
+import {
+  BREAD_ABI,
+  BUTTERED_BREAD_ABI,
+  DISTRIBUTOR_ABI,
+  ERC20_ABI,
+} from "../src/abi";
 import { getConfig } from "../src/chainConfig";
 import {
   Hex,
@@ -99,7 +104,7 @@ export async function fundLpTokens(account: Hex = DEV_ACCOUNT) {
     abi: ERC20_ABI,
     functionName: "transfer",
     // this isn't a payable function so we pass the value as an argument
-    args: [DEV_ACCOUNT, parseUnits("1000", 18)],
+    args: [DEV_ACCOUNT, parseUnits("10000", 18)],
   });
 }
 
@@ -150,18 +155,10 @@ export async function submitVote(anvilAccount: Hex) {
 
     if (receipt.status !== "success") {
       console.log(`Failed to vote: ${anvilAccount} - `, Object.keys(receipt));
-      // console.log({ receipt });
 
       const transaction = await publicClient.getTransaction({ hash });
 
       console.log({ transaction });
-
-      // const callData = {
-      //   to: receipt.to,
-      //   data: transaction.input,
-      //   from: receipt.from,
-      //   gas: receipt.gasUsed,
-      // };
 
       await publicClient
         .call({ data: transaction.input, blockNumber: receipt.blockNumber })
@@ -213,5 +210,31 @@ export async function setClaimer(newClaimer: Hex) {
     console.log("setYieldClaimer: ", receipt.status);
   } catch (err) {
     console.log("failed to set claimer: ", err);
+  }
+}
+
+export async function lockLpTokens(account: Hex = DEV_ACCOUNT) {
+  await testClient.impersonateAccount({
+    address: account,
+  });
+
+  try {
+    const hash = await testClient.writeContract({
+      account: account,
+      address: config.BUTTERED_BREAD.address,
+      abi: BUTTERED_BREAD_ABI,
+      functionName: "deposit",
+      args: [LP_TOKEN_CONTRACT, parseUnits("5000", 18)],
+    });
+
+    const receipt = await publicClient.waitForTransactionReceipt({ hash });
+
+    if (receipt.status !== "success") {
+      console.log("deposit transaction reverted");
+      return;
+    }
+    console.log("deposit transaction: ", receipt.status);
+  } catch (err) {
+    console.log("deposit transaction failed: ", err);
   }
 }

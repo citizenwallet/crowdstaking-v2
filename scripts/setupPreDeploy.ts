@@ -1,4 +1,4 @@
-import { bakeBread, fundLpTokens } from "./lib";
+import { bakeBread, fundLpTokens, lockLpTokens } from "./lib";
 
 /*
   This script sets a dev wallet up with bread and lp tokens
@@ -18,6 +18,8 @@ async function main() {
   // then transfer some lp tokens to the same wallet so we can use the
   // lp token locking feature
   await fundLpTokens();
+
+  await lockLpTokens();
 }
 
 main();
