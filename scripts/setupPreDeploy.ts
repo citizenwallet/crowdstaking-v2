@@ -18,8 +18,6 @@ async function main() {
   // then transfer some lp tokens to the same wallet so we can use the
   // lp token locking feature
   await fundLpTokens();
-
-  await lockLpTokens();
 }
 
 main();
