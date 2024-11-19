@@ -208,18 +208,34 @@ export async function lockLpTokens(account: Hex = DEV_ACCOUNT) {
     address: account,
   });
 
-  const txConfig = {
-    account: account,
-    address: config.BUTTERED_BREAD.address,
-    abi: BUTTERED_BREAD_ABI,
-    functionName: "deposit",
-    args: [config.LP_TOKEN.address, parseUnits("5000", 18)],
-  };
+  try {
+    const hash = await testClient.writeContract({
+      account: account,
+      address: config.LP_TOKEN.address,
+      abi: ERC20_ABI,
+      functionName: "approve",
+      args: [config.BUTTERED_BREAD.address, parseUnits("5000", 18)],
+    });
 
-  console.log({ txConfig });
+    const receipt = await publicClient.waitForTransactionReceipt({ hash });
+
+    if (receipt.status !== "success") {
+      await logRevertReason(receipt);
+      return;
+    }
+    console.log("allowance transaction: ", receipt.status);
+  } catch (err) {
+    console.log("allowance transaction failed: ", err);
+  }
 
   try {
-    const hash = await testClient.writeContract(txConfig);
+    const hash = await testClient.writeContract({
+      account: account,
+      address: config.BUTTERED_BREAD.address,
+      abi: BUTTERED_BREAD_ABI,
+      functionName: "deposit",
+      args: [config.LP_TOKEN.address, parseUnits("5000", 18)],
+    });
 
     const receipt = await publicClient.waitForTransactionReceipt({ hash });
 
