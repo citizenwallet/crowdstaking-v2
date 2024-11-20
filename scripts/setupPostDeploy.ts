@@ -1,9 +1,9 @@
 import {
   setClaimer,
   castVote,
-  distributeYield,
   lockLpTokens,
   anvilConfig,
+  distributeYield,
 } from "./lib";
 
 async function main() {
@@ -16,6 +16,8 @@ async function main() {
   await setClaimer(DISTRIBUTOR_ADDRESS);
 
   await castVote();
+
+  await distributeYield();
 }
 
 main();
