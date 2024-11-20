@@ -17,7 +17,7 @@ import {
 } from "viem";
 import { foundry } from "viem/chains";
 
-const config = getConfig(31337);
+export const anvilConfig = getConfig(31337);
 
 export const anvilAccounts: Array<Hex> = [
   // mock wallet 2
@@ -62,7 +62,7 @@ export async function bakeBread(
   try {
     const hash = await testClient.writeContract({
       account: account,
-      address: config.BREAD.address,
+      address: anvilConfig.BREAD.address,
       abi: BREAD_ABI,
       functionName: "mint",
       // mint is a payable function so we pass the value like this
@@ -100,7 +100,7 @@ export async function fundLpTokens(account: Hex = DEV_ACCOUNT) {
 
   await testClient.writeContract({
     account: LP_TOKEN_WHALE,
-    address: config.LP_TOKEN.address,
+    address: anvilConfig.LP_TOKEN.address,
     abi: ERC20_ABI,
     functionName: "transfer",
     // this isn't a payable function so we pass the value as an argument
@@ -114,7 +114,7 @@ export async function balanceOf(anvilAccount: Hex) {
   });
 
   const res = await publicClient.readContract({
-    address: config.BREAD.address,
+    address: anvilConfig.BREAD.address,
     abi: BREAD_ABI,
     functionName: "balanceOf",
     args: [anvilAccount],
@@ -136,7 +136,7 @@ export async function castVote(account: Hex = DEV_ACCOUNT) {
 
   try {
     const hash = await testClient.writeContract({
-      address: config.DISBURSER.address,
+      address: anvilConfig.DISBURSER.address,
       abi: DISTRIBUTOR_ABI,
       functionName: "castVote",
       account: account,
@@ -169,7 +169,7 @@ export async function castVote(account: Hex = DEV_ACCOUNT) {
 
 export async function getCurrentDistribution() {
   const res = await publicClient.readContract({
-    address: config.DISBURSER.address,
+    address: anvilConfig.DISBURSER.address,
     abi: DISTRIBUTOR_ABI,
     functionName: "getCurrentVotingDistribution",
   });
@@ -183,7 +183,7 @@ export async function setClaimer(newClaimer: Hex) {
   });
 
   const txConfig = {
-    address: config.BREAD.address,
+    address: anvilConfig.BREAD.address,
     abi: BREAD_ABI,
     functionName: "setYieldClaimer",
     account: BREAD_OWNER,
@@ -211,10 +211,10 @@ export async function lockLpTokens(account: Hex = DEV_ACCOUNT) {
   try {
     const hash = await testClient.writeContract({
       account: account,
-      address: config.LP_TOKEN.address,
+      address: anvilConfig.LP_TOKEN.address,
       abi: ERC20_ABI,
       functionName: "approve",
-      args: [config.BUTTERED_BREAD.address, parseUnits("5000", 18)],
+      args: [anvilConfig.BUTTERED_BREAD.address, parseUnits("5000", 18)],
     });
 
     const receipt = await publicClient.waitForTransactionReceipt({ hash });
@@ -231,10 +231,10 @@ export async function lockLpTokens(account: Hex = DEV_ACCOUNT) {
   try {
     const hash = await testClient.writeContract({
       account: account,
-      address: config.BUTTERED_BREAD.address,
+      address: anvilConfig.BUTTERED_BREAD.address,
       abi: BUTTERED_BREAD_ABI,
       functionName: "deposit",
-      args: [config.LP_TOKEN.address, parseUnits("5000", 18)],
+      args: [anvilConfig.LP_TOKEN.address, parseUnits("5000", 18)],
     });
 
     const receipt = await publicClient.waitForTransactionReceipt({ hash });
@@ -257,7 +257,7 @@ export async function distributeYield(account: Hex = DEV_ACCOUNT) {
   try {
     const hash = await testClient.writeContract({
       account: account,
-      address: config.DISBURSER.address,
+      address: anvilConfig.DISBURSER.address,
       abi: DISTRIBUTOR_ABI,
       functionName: "distributeYield",
     });

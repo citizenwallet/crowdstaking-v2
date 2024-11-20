@@ -1,19 +1,21 @@
-import { setClaimer, castVote, distributeYield, lockLpTokens } from "./lib";
+import {
+  setClaimer,
+  castVote,
+  distributeYield,
+  lockLpTokens,
+  anvilConfig,
+} from "./lib";
 
 async function main() {
-  //   if (DISTRIBUTOR_DEPLOYED === null)
-  //     throw new Error("DISTRIBUTOR_DEPLOYED is null!");
+  const DISTRIBUTOR_ADDRESS = anvilConfig.DISBURSER.address;
+  if (DISTRIBUTOR_ADDRESS === "0x")
+    throw new Error("invalid DISTRIBUTOR_ADDRESS");
 
-  // need to lock some LP tokens so that dev wallet gets some LP voting power
   await lockLpTokens();
 
-  await setClaimer("0x8ce361602B935680E8DeC218b820ff5056BeB7af");
+  await setClaimer(DISTRIBUTOR_ADDRESS);
 
-  // cast a vote
   await castVote();
-
-  // claim the yield
-  await distributeYield();
 }
 
 main();
