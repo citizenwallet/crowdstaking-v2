@@ -14,6 +14,7 @@ import { ModalProvider } from "../context/ModalContext";
 
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { MSWProvider } from "../context/MswProvider";
 
 const queryClient = new QueryClient();
 
@@ -27,19 +28,21 @@ export function AppProvider({
   useSentry();
 
   return (
-    <WagmiProvider>
-      <ConnectedUserProvider features={features}>
-        <QueryClientProvider client={queryClient}>
-          <TokenBalancesProvider>
-            <ToastProvider>
-              <TransactionsProvider>
-                <ModalProvider>{children}</ModalProvider>
-              </TransactionsProvider>
-            </ToastProvider>
-          </TokenBalancesProvider>
-          <ReactQueryDevtools initialIsOpen={true} />
-        </QueryClientProvider>
-      </ConnectedUserProvider>
-    </WagmiProvider>
+    <MSWProvider>
+      <WagmiProvider>
+        <ConnectedUserProvider features={features}>
+          <QueryClientProvider client={queryClient}>
+            <TokenBalancesProvider>
+              <ToastProvider>
+                <TransactionsProvider>
+                  <ModalProvider>{children}</ModalProvider>
+                </TransactionsProvider>
+              </ToastProvider>
+            </TokenBalancesProvider>
+            <ReactQueryDevtools initialIsOpen={true} />
+          </QueryClientProvider>
+        </ConnectedUserProvider>
+      </WagmiProvider>
+    </MSWProvider>
   );
 }
