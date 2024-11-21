@@ -14,11 +14,11 @@ export function useCurrentVotingPower(account: Hex, tokenAddress: Hex) {
     usePreviousCycleStartingBlock();
 
   return useContractRead({
-    address: tokenAddress,
+    address: config.DISBURSER.address,
     abi: DISTRIBUTOR_ABI,
     functionName: "getVotingPowerForPeriod",
     args: [
-      config.LP_TOKEN.address,
+      tokenAddress,
       previousCycleStartingBlockData,
       lastClaimedBlocknumber,
       account,

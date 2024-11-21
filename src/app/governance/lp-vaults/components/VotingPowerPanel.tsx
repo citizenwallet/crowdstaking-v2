@@ -1,15 +1,17 @@
-import { use, useEffect, useState } from "react";
+import { formatUnits } from "viem";
+
 import { CardBox } from "@/app/core/components/CardBox";
 import { FistIcon } from "@/app/core/components/Icons/FistIcon";
 import { AccountMenu } from "@/app/core/components/Header/AccountMenu";
 import { LinkIcon } from "@/app/core/components/Icons/LinkIcon";
 import TooltipIcon from "@/app/core/components/Icons/TooltipIcon";
-import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
-import { formatUnits, Hex } from "viem";
+import {
+  TUserConnected,
+  useConnectedUser,
+} from "@/app/core/hooks/useConnectedUser";
 import { useCurrentVotingPower } from "../useCurrentVotingPower";
 import { useCycleLength } from "../../useCycleLength";
 import { LP_TOKEN_ADDRESS } from "../LPVotingPowerPage";
-import { useNetwork } from "wagmi";
 import { getConfig } from "@/chainConfig";
 
 export function VotingPowerPanel() {
@@ -52,8 +54,11 @@ export function VotingPowerPanel() {
           </p>
 
           <span className="font-bold text-breadgray-grey100 dark:text-breadgray-white">
-            {/* TODO: add dynamic value */}
-            {renderAsConnected("1000")}
+            {user.status === "CONNECTED" ? (
+              <CurrentLPVotingPowerDisplay user={user} />
+            ) : (
+              "-"
+            )}
           </span>
 
           <p className="text-breadgray-rye dark:text-breadgray-grey">
@@ -61,7 +66,7 @@ export function VotingPowerPanel() {
           </p>
           <span className="text-right font-bold text-breadgray-grey100 dark:text-breadgray-white">
             {user.status === "CONNECTED" ? (
-              <CurrentBreadVotingPowerDisplay account={user.address} />
+              <CurrentBreadVotingPowerDisplay user={user} />
             ) : (
               "-"
             )}
@@ -75,7 +80,7 @@ export function VotingPowerPanel() {
 
           <span className="text-right font-bold text-breadpink-100">
             {/* TODO: add dynamic value */}
-            {renderAsConnected("100")}
+            {renderAsConnected("stub")}
           </span>
 
           {user.status === "CONNECTED" ? (
@@ -86,7 +91,7 @@ export function VotingPowerPanel() {
 
               <span className="text-right font-bold text-breadgray-rye dark:text-breadgray-grey">
                 {/* TODO: add dynamic value */}
-                {renderAsConnected("500")}
+                {renderAsConnected("stub")}
               </span>
             </>
           ) : (
@@ -117,24 +122,28 @@ function Divider() {
   );
 }
 
-function CurrentBreadVotingPowerDisplay({ account }: { account: Hex }) {
-  const { chain: activeChain } = useNetwork();
-  const config = activeChain ? getConfig(activeChain.id) : getConfig("DEFAULT");
+function CurrentBreadVotingPowerDisplay({ user }: { user: TUserConnected }) {
+  const config = getConfig(user.chain.id);
 
-  const { data: breadVotingPowerData, status: breadVotingPowerStatus } =
-    useCurrentVotingPower(account, config.BREAD.address);
-  console.log(breadVotingPowerData, breadVotingPowerStatus);
   const { cycleLength } = useCycleLength();
+  const currentVotingPower = useCurrentVotingPower(
+    user.address,
+    config.BREAD.address
+  );
 
-  return breadVotingPowerStatus === "success" &&
+  return currentVotingPower.status === "success" &&
     cycleLength.status === "SUCCESS"
-    ? Number(formatUnits(breadVotingPowerData as bigint, 18)) / cycleLength.data
+    ? Number(formatUnits(currentVotingPower.data as bigint, 18)) /
+        cycleLength.data
     : "err";
 }
 
-function CurrentLPVotingPowerDisplay({ account }: { account: Hex }) {
-  const { data, status } = useCurrentVotingPower(account, LP_TOKEN_ADDRESS);
-  console.log(data, status);
+function CurrentLPVotingPowerDisplay({ user }: { user: TUserConnected }) {
+  const config = getConfig(user.chain.id);
+  const { data, status } = useCurrentVotingPower(
+    user.address,
+    LP_TOKEN_ADDRESS
+  );
   const { cycleLength } = useCycleLength();
 
   // TODO handle loading and error states properly

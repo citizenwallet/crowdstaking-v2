@@ -3,6 +3,7 @@ import {
   decodeFunctionData,
   encodeFunctionResult,
   formatUnits,
+  Hex,
   parseUnits,
   toHex,
 } from "viem";
@@ -32,16 +33,23 @@ export const handlers = [
       if (fnData.functionName !== "getVotingPowerForPeriod")
         return passthrough();
 
+      const lpTokenAddress = (fnData.args as Array<any>)[0] as Hex;
+
+      /* calculate vp value returned from contract by multiplying average
+       balance by the number of blocks per cycle */
+      const averageBalance =
+        lpTokenAddress === anvilConfig.BREAD.address ? 800 : 1200;
+
       const votingPower = toHex(
-        parseUnits((1000 * BLOCKS_PER_CYCLE).toString(), 18)
+        parseUnits((averageBalance * BLOCKS_PER_CYCLE).toString(), 18)
       );
 
       const data = encodeFunctionResult({
         abi: DISTRIBUTOR_ABI,
         functionName: "getVotingPowerForPeriod",
-
         result: [votingPower],
       });
+
       return HttpResponse.json({
         jsonrpc: "2.0",
         result: data,
