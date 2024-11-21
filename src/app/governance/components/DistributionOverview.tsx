@@ -3,8 +3,10 @@ import { formatBalance } from "@/app/core/util/formatter";
 import { CycleDatesState } from "../useCycleDates";
 import { useClaimableYield } from "../useClaimableYield";
 import { LinkIcon } from "@/app/core/components/Icons/LinkIcon";
+import Tooltip from "@/app/core/components/Tooltip";
 import { CardBox } from "@/app/core/components/CardBox";
 import { useContractRead, useNetwork } from "wagmi";
+
 import { ERC20_ABI, SDAI_ADAPTOR_ABI } from "@/abi";
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -140,8 +142,12 @@ export function DistributionOverview({
                 <div className="text-3xl opacity-0">.</div>
               )}
 
-              <p className=" text-center pt-1 font-medium text-xs text-breadgray-rye dark:text-breadgray-grey">
-                Current accumulated yield
+              <p className="flex justify-center pt-1 font-medium text-xs text-breadgray-rye dark:text-breadgray-grey">
+                <span className="me-1">Current accumulated yield</span>
+                <Tooltip>
+                  Based on the current DAI savings rate of {dsrAPY + "% "}
+                  applied on the total baked $BREAD on Gnosis chain.
+                </Tooltip>
               </p>
             </div>
             <div className="w-full flex flex-col gap-3 py-3 border-1 border-t border-b border-t-breadgray-light-grey border-b-breadgray-light-grey dark:border-t-breadgray-rye dark:border-b-breadgray-rye">
