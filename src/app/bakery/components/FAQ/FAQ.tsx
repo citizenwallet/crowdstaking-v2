@@ -2,7 +2,7 @@
 
 import * as Accordion from "@radix-ui/react-accordion";
 import { ReactNode } from "react";
-import { ExternalLink } from "./ExternalLink";
+import { ExternalLink } from "@/app/core/components/ExternalLink";
 
 function AccordionItem({
   children,

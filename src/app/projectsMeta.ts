@@ -36,7 +36,7 @@ export const projectsMeta: {
     },
   },
   "0x5c22B3F03b3d8FFf56C9B2e90151512Cb3F3dE0F": {
-    name: "Crypto Commons",
+    name: "Crypto Commons Acc",
     order: 3,
     description:
       "Creating research and events on decentralized tech and the commons.",

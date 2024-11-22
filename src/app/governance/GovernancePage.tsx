@@ -21,6 +21,7 @@ import { useDistributions } from "./useDistributions";
 import { useModal } from "../core/context/ModalContext";
 import { projectsMeta } from "../projectsMeta";
 import { PageGrid } from "./components/PageGrid";
+import { ProjectsProvider } from "@/app/core/context/ProjectContext/ProjectContext";
 
 export function GovernancePage() {
   const { user, isSafe } = useConnectedUser();
@@ -238,29 +239,33 @@ export function GovernancePage() {
             })
             .map((project, i) => {
               return (
-                <ProjectRow
-                  key={`project_row_${project.account}`}
-                  address={project.account}
-                >
-                  {!isRecasting && castVote.data ? (
-                    <VoteDisplay
-                      points={castVote.data[project.account]}
-                      percentage={
-                        (castVote.data[project.account] / castTotalPoints) *
-                          100 || 0
-                      }
-                    />
-                  ) : (
-                    <VoteForm
-                      value={voteFormState.projects[project.account]}
-                      updateValue={updateValue}
-                      address={project.account}
-                      totalPoints={voteFormState.totalPoints}
-                      user={user}
-                      userCanVote={userCanVote}
-                    />
-                  )}
-                </ProjectRow>
+                <div key={`project_row_${project.account}`}>
+                  <ProjectsProvider
+                    cycleLength={cycleLength.data}
+                    address={project.account}
+                  >
+                    <ProjectRow address={project.account}>
+                      {!isRecasting && castVote.data ? (
+                        <VoteDisplay
+                          points={castVote.data[project.account]}
+                          percentage={
+                            (castVote.data[project.account] / castTotalPoints) *
+                              100 || 0
+                          }
+                        />
+                      ) : (
+                        <VoteForm
+                          value={voteFormState.projects[project.account]}
+                          updateValue={updateValue}
+                          address={project.account}
+                          totalPoints={voteFormState.totalPoints}
+                          user={user}
+                          userCanVote={userCanVote}
+                        />
+                      )}
+                    </ProjectRow>
+                  </ProjectsProvider>
+                </div>
               );
             })}
           <CastVotePanel

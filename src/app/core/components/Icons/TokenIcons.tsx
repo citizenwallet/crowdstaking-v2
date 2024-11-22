@@ -33,7 +33,7 @@ export function BreadIcon({
     <div
       className={clsx(
         "rounded-full bg-breadpink-200 bg-opacity-10 dark:bg-breadgray-rye flex items-center justify-center",
-        size === "small" ? "size-4" : "size-6"
+        size === "small" ? "size-5" : "size-6"
       )}
     >
       <div>
