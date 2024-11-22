@@ -25,7 +25,7 @@ import {
 } from "./VPRate";
 import { StatusBadge } from "./Locking/LockingTransaction";
 import { LinkIcon } from "../../Icons/LinkIcon";
-import { ExternalLink } from "@/app/bakery/components/FAQ/ExternalLink";
+import { ExternalLink } from "@/app/core/components/ExternalLink";
 
 export function WithdrawTransaction({
   user,

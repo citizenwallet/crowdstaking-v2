@@ -11,7 +11,7 @@ import { formatUnits } from "viem";
 
 import { LinkIcon } from "../../../Icons/LinkIcon";
 import { LockVPRate } from "../VPRate";
-import { ExternalLink } from "@/app/bakery/components/FAQ/ExternalLink";
+import { ExternalLink } from "@/app/core/components/ExternalLink";
 
 export function Lock({
   user,
