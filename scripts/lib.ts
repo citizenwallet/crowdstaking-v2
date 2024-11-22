@@ -142,11 +142,11 @@ export async function castVote(account: Hex = DEV_ACCOUNT) {
       account: account,
       args: [
         [
-          generateVote(),
-          generateVote(),
-          generateVote(),
-          generateVote(),
-          generateVote(),
+          BigInt(generateVote()),
+          BigInt(generateVote()),
+          BigInt(generateVote()),
+          BigInt(generateVote()),
+          BigInt(generateVote()),
         ],
       ],
     });
@@ -182,16 +182,14 @@ export async function setClaimer(newClaimer: Hex) {
     address: BREAD_OWNER,
   });
 
-  const txConfig = {
-    address: anvilConfig.BREAD.address,
-    abi: BREAD_ABI,
-    functionName: "setYieldClaimer",
-    account: BREAD_OWNER,
-    args: [newClaimer],
-  };
-
   try {
-    const hash = await testClient.writeContract(txConfig);
+    const hash = await testClient.writeContract({
+      address: anvilConfig.BREAD.address,
+      abi: BREAD_ABI,
+      functionName: "setYieldClaimer",
+      account: BREAD_OWNER,
+      args: [newClaimer],
+    });
 
     const receipt = await publicClient.waitForTransactionReceipt({ hash });
     if (receipt.status === "reverted") {

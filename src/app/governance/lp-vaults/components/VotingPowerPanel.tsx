@@ -1,25 +1,16 @@
-import { formatUnits } from "viem";
-
 import { CardBox } from "@/app/core/components/CardBox";
 import { FistIcon } from "@/app/core/components/Icons/FistIcon";
 import { AccountMenu } from "@/app/core/components/Header/AccountMenu";
 import { LinkIcon } from "@/app/core/components/Icons/LinkIcon";
 import TooltipIcon from "@/app/core/components/Icons/TooltipIcon";
-import {
-  TUserConnected,
-  useConnectedUser,
-} from "@/app/core/hooks/useConnectedUser";
-import { useCurrentVotingPower } from "../useCurrentVotingPower";
-import { useCycleLength } from "../../useCycleLength";
-import { LP_TOKEN_ADDRESS } from "../LPVotingPowerPage";
-import { getConfig } from "@/chainConfig";
+import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
+import { useVotingPower } from "../../context/VotingPowerContext";
+import { formatUnits } from "viem";
 
 export function VotingPowerPanel() {
   const { user } = useConnectedUser();
 
-  const renderAsConnected = (value: String) => {
-    return user.status === "CONNECTED" ? <span>{value}</span> : "-";
-  };
+  const votingPower = useVotingPower();
 
   return (
     <CardBox>
@@ -32,8 +23,14 @@ export function VotingPowerPanel() {
             <FistIcon />
           </span>
           <div className="font-bold text-3xl text-breadgray-grey100 dark:text-breadgray-ultra-white">
-            {/* TODO: add dynamic value */}
-            5000
+            {votingPower &&
+            votingPower.bread.status === "success" &&
+            votingPower.butteredBread.status === "success"
+              ? formatUnits(
+                  votingPower.bread.value + votingPower.butteredBread.value,
+                  18
+                )
+              : "-"}
           </div>
         </div>
         <div className="pb-4">
@@ -54,22 +51,18 @@ export function VotingPowerPanel() {
           </p>
 
           <span className="font-bold text-breadgray-grey100 dark:text-breadgray-white">
-            {user.status === "CONNECTED" ? (
-              <CurrentLPVotingPowerDisplay user={user} />
-            ) : (
-              "-"
-            )}
+            {votingPower && votingPower.butteredBread.status === "success"
+              ? formatUnits(votingPower.butteredBread.value, 18)
+              : "-"}
           </span>
 
           <p className="text-breadgray-rye dark:text-breadgray-grey">
             Voting power from $BREAD
           </p>
           <span className="text-right font-bold text-breadgray-grey100 dark:text-breadgray-white">
-            {user.status === "CONNECTED" ? (
-              <CurrentBreadVotingPowerDisplay user={user} />
-            ) : (
-              "-"
-            )}
+            {votingPower && votingPower.bread.status === "success"
+              ? formatUnits(votingPower.bread.value, 18)
+              : "-"}
           </span>
 
           <Divider />
@@ -80,7 +73,7 @@ export function VotingPowerPanel() {
 
           <span className="text-right font-bold text-breadpink-100">
             {/* TODO: add dynamic value */}
-            {renderAsConnected("stub")}
+            stub
           </span>
 
           {user.status === "CONNECTED" ? (
@@ -91,7 +84,7 @@ export function VotingPowerPanel() {
 
               <span className="text-right font-bold text-breadgray-rye dark:text-breadgray-grey">
                 {/* TODO: add dynamic value */}
-                {renderAsConnected("stub")}
+                stub
               </span>
             </>
           ) : (
@@ -120,34 +113,4 @@ function Divider() {
   return (
     <div className="col-span-2 h-[1px]  bg-breadgray-light-grey dark:bg-breadgray-rye" />
   );
-}
-
-function CurrentBreadVotingPowerDisplay({ user }: { user: TUserConnected }) {
-  const config = getConfig(user.chain.id);
-
-  const { cycleLength } = useCycleLength();
-  const currentVotingPower = useCurrentVotingPower(
-    user.address,
-    config.BREAD.address
-  );
-
-  return currentVotingPower.status === "success" &&
-    cycleLength.status === "SUCCESS"
-    ? Number(formatUnits(currentVotingPower.data as bigint, 18)) /
-        cycleLength.data
-    : "err";
-}
-
-function CurrentLPVotingPowerDisplay({ user }: { user: TUserConnected }) {
-  const config = getConfig(user.chain.id);
-  const { data, status } = useCurrentVotingPower(
-    user.address,
-    LP_TOKEN_ADDRESS
-  );
-  const { cycleLength } = useCycleLength();
-
-  // TODO handle loading and error states properly
-  return status === "success" && cycleLength.status === "SUCCESS"
-    ? Number(formatUnits(data as bigint, 18)) / cycleLength.data
-    : "err";
 }

@@ -7,12 +7,17 @@ const mockingEnabledPromise =
     ? import("@/mocks/browser").then(async ({ worker }) => {
         await worker.start({
           quiet: true,
-          // onUnhandledRequest(request, print) {
-          //   if (request.url.includes("_next")) {
-          //     return;
-          //   }
-          //   print.warning();
-          // },
+          onUnhandledRequest(request, print) {
+            return;
+            if (
+              request.url.includes("_next") ||
+              request.url.includes("eth-mainnet") ||
+              request.url.includes("walletconnect")
+            ) {
+              return;
+            }
+            print.warning();
+          },
         });
       })
     : Promise.resolve();

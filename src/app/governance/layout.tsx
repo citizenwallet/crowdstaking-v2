@@ -4,6 +4,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
+import { VotingPowerProvider } from "./context/VotingPowerContext";
 
 export default function GovernanceLayout({
   children,
@@ -15,7 +16,7 @@ export default function GovernanceLayout({
       <section className="hidden md:block w-full lg:max-w-[67rem] m-auto px-4 md:px-8">
         <GovernanceNavigation />
       </section>
-      {children}
+      <VotingPowerProvider>{children}</VotingPowerProvider>
     </div>
   );
 }

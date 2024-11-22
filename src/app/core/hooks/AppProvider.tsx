@@ -28,21 +28,21 @@ export function AppProvider({
   useSentry();
 
   return (
-    <MSWProvider>
-      <WagmiProvider>
-        <ConnectedUserProvider features={features}>
-          <QueryClientProvider client={queryClient}>
-            <TokenBalancesProvider>
-              <ToastProvider>
-                <TransactionsProvider>
-                  <ModalProvider>{children}</ModalProvider>
-                </TransactionsProvider>
-              </ToastProvider>
-            </TokenBalancesProvider>
-            <ReactQueryDevtools initialIsOpen={true} />
-          </QueryClientProvider>
-        </ConnectedUserProvider>
-      </WagmiProvider>
-    </MSWProvider>
+    // <MSWProvider>
+    <WagmiProvider>
+      <ConnectedUserProvider features={features}>
+        <QueryClientProvider client={queryClient}>
+          <TokenBalancesProvider>
+            <ToastProvider>
+              <TransactionsProvider>
+                <ModalProvider>{children}</ModalProvider>
+              </TransactionsProvider>
+            </ToastProvider>
+          </TokenBalancesProvider>
+          <ReactQueryDevtools initialIsOpen={true} />
+        </QueryClientProvider>
+      </ConnectedUserProvider>
+    </WagmiProvider>
+    // </MSWProvider>
   );
 }
