@@ -15,14 +15,16 @@ export default function GovernanceLayout({
   const { user } = useConnectedUser();
 
   return (
-    <div className="grid gap-8">
+    <>
       {user.features.lpVaults && (
         <section className="hidden md:block w-full lg:max-w-[67rem] m-auto px-4 md:px-8">
           <GovernanceNavigation />
         </section>
       )}
-      <VotingPowerProvider>{children}</VotingPowerProvider>
-    </div>
+      <VotingPowerProvider>
+        <div className="py-4 md:py-8">{children}</div>
+      </VotingPowerProvider>
+    </>
   );
 }
 

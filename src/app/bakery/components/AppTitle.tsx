@@ -1,6 +1,6 @@
 export function AppTitle() {
   return (
-    <div className="pb-2 md:pb-8">
+    <div className="py-2 md:py-8">
       <h1 className="hidden md:flex justify-center text-[2.5rem] font-pressstart uppercase leading-tight">
         <span>Bread</span>
       </h1>
