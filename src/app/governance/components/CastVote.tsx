@@ -106,7 +106,7 @@ export function CastVote({
     address: distributorAddress,
     abi: DISTRIBUTOR_ABI,
     functionName: "castVote",
-    args: [vote],
+    args: [vote.map((num) => BigInt(num))],
     enabled: writeIsEnabled && distributorAddress !== "0x",
   });
 

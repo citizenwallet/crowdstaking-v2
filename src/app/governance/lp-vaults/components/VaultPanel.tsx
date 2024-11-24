@@ -18,7 +18,7 @@ import {
 import { SelectTransaction } from "./SelectTransaction";
 import { sanitizeInputValue } from "@/app/core/util/sanitizeInput";
 import { WXDAIIcon, BreadIcon } from "@/app/core/components/Icons/TokenIcons";
-import { ExternalLink } from "@/app/bakery/components/FAQ/ExternalLink";
+import { ExternalLink } from "@/app/core/components/ExternalLink";
 import { LinkIcon } from "@/app/core/components/Icons/LinkIcon";
 import { getConfig } from "@/chainConfig";
 import { useTokenBalance } from "@/app/core/hooks/useTokenBalance";
@@ -337,7 +337,7 @@ function useLockedTokenBalance(user: TConnectedUserState, tokenAddress: Hex) {
     address: chainConfig.BUTTERED_BREAD.address,
     abi: BUTTERED_BREAD_ABI,
     functionName: "accountToLPBalance",
-    args: [user.status === "CONNECTED" ? user.address : null, tokenAddress],
+    args: [user.status === "CONNECTED" ? user.address : `0x`, tokenAddress],
     watch: true,
     enabled: user.status === "CONNECTED",
   });

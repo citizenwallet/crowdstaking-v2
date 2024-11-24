@@ -8,7 +8,7 @@ export function useTokenBalance(user: TConnectedUserState, tokenAddress: Hex) {
     address: tokenAddress,
     abi: ERC20_ABI,
     functionName: "balanceOf",
-    args: [user.status === "CONNECTED" ? user.address : null],
+    args: [user.status === "CONNECTED" ? user.address : "0x"],
     watch: true,
     enabled: user.status === "CONNECTED",
   });

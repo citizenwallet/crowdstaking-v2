@@ -9,12 +9,7 @@ import { useContractRead, useNetwork } from "wagmi";
 
 import { ERC20_ABI, SDAI_ADAPTOR_ABI } from "@/abi";
 import { useEffect, useMemo, useState } from "react";
-import {
-  differenceInDays,
-  differenceInHours,
-  differenceInSeconds,
-  format,
-} from "date-fns";
+import { differenceInDays, differenceInHours, format } from "date-fns";
 import { getConfig } from "@/chainConfig";
 import { formatUnits } from "viem";
 import clsx from "clsx";
@@ -50,7 +45,6 @@ export function DistributionOverview({
     address: config.BREAD.address,
     abi: ERC20_ABI,
     functionName: "totalSupply",
-    args: [],
     watch: true,
     cacheTime: 6_000,
   });

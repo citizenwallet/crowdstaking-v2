@@ -4,17 +4,7 @@ import { useEffect, useState } from "react";
 import { useContractRead, useNetwork } from "wagmi";
 import { TConnectedUserState } from "../core/hooks/useConnectedUser";
 import { formatUnits } from "viem";
-import { CycleLengthState, useCycleLength } from "./useCycleLength";
-
-type UserVotingPowerState =
-  | {
-      status: "ACTUAL";
-      value: number;
-    }
-  | {
-      status: "NOMINAL";
-      value: number;
-    };
+import { CycleLengthState } from "./useCycleLength";
 
 export function useUserVotingPower(
   user: TConnectedUserState,
@@ -35,7 +25,7 @@ export function useUserVotingPower(
     address: distributorAddress,
     abi: DISTRIBUTOR_ABI,
     functionName: "getCurrentVotingPower",
-    args: [user.status === "CONNECTED" ? user.address : ""],
+    args: [user.status === "CONNECTED" ? user.address : "0x"],
   });
 
   useEffect(() => {
