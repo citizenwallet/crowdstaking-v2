@@ -14,7 +14,6 @@ import { ModalProvider } from "../context/ModalContext";
 
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import { MSWProvider } from "../context/MswProvider";
 
 const queryClient = new QueryClient();
 
@@ -28,7 +27,6 @@ export function AppProvider({
   useSentry();
 
   return (
-    // <MSWProvider>
     <WagmiProvider>
       <ConnectedUserProvider features={features}>
         <QueryClientProvider client={queryClient}>
@@ -43,6 +41,5 @@ export function AppProvider({
         </QueryClientProvider>
       </ConnectedUserProvider>
     </WagmiProvider>
-    // </MSWProvider>
   );
 }
