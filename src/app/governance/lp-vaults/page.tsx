@@ -1,5 +1,7 @@
+import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { LPVotingPowerPage } from "./LPVotingPowerPage";
+import { parseFeatureVar } from "@/app/core/util/parseFeatureVar";
 
 export const metadata: Metadata = {
   title: "Bread Governance",
@@ -7,5 +9,9 @@ export const metadata: Metadata = {
 };
 
 export default function LPVotingPower() {
+  if (!parseFeatureVar(process.env.FEATURE_LP_VAULTS)) {
+    notFound();
+  }
+
   return <LPVotingPowerPage />;
 }

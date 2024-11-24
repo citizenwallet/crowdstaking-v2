@@ -12,15 +12,13 @@ import Header from "./core/components/Header/Header";
 import { ModalPresenter } from "./core/components/Modal/ModalPresenter";
 import { Toaster } from "./core/components/Toaster/Toaster";
 import { Footer } from "./core/components/Footer/Footer";
-
-function parseFeatureVar(feature: string | undefined): boolean {
-  return feature === "true" ? true : false;
-}
+import { parseFeatureVar } from "./core/util/parseFeatureVar";
 
 const features = {
   governancePage: parseFeatureVar(process.env.FEATURE_GOVERNANCE),
   breadCounter: parseFeatureVar(process.env.FEATURE_BREAD_COUNTER),
   recastVote: parseFeatureVar(process.env.FEATURE_RECAST_VOTE),
+  lpVaults: parseFeatureVar(process.env.FEATURE_LP_VAULTS),
 };
 
 export type Features = {

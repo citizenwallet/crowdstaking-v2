@@ -1,21 +1,26 @@
 "use client";
-
+import { ReactNode } from "react";
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ReactNode } from "react";
+
 import { VotingPowerProvider } from "./context/VotingPowerContext";
+import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
 
 export default function GovernanceLayout({
   children,
 }: {
   children: ReactNode;
 }) {
+  const { user } = useConnectedUser();
+
   return (
     <div className="grid gap-8">
-      <section className="hidden md:block w-full lg:max-w-[67rem] m-auto px-4 md:px-8">
-        <GovernanceNavigation />
-      </section>
+      {user.features.lpVaults && (
+        <section className="hidden md:block w-full lg:max-w-[67rem] m-auto px-4 md:px-8">
+          <GovernanceNavigation />
+        </section>
+      )}
       <VotingPowerProvider>{children}</VotingPowerProvider>
     </div>
   );
