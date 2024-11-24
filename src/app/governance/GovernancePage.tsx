@@ -202,7 +202,7 @@ export function GovernancePage() {
     );
 
   return (
-    <section className="grow w-full max-w-[44rem] lg:max-w-[67rem] m-auto pb-16 lg:px-8">
+    <section className="grow w-full max-w-[44rem] lg:max-w-[67rem] m-auto pb-16 px-4 lg:px-8">
       <PageGrid>
         <div className="col-span-12 lg:col-span-8 row-start-1 row-span-1">
           <h3 className="text-3xl font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white">

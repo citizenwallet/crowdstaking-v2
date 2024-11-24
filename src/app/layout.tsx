@@ -80,7 +80,7 @@ function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="grow relative">
+      <main className="grow relative py-4 md:py-8">
         <ModalPresenter />
         <Toaster />
         {children}
