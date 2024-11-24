@@ -16,7 +16,6 @@ import { getConfig } from "@/chainConfig";
 import { DISTRIBUTOR_ABI } from "@/abi";
 import { useLastClaimedBlockNumber } from "../useLastClaimedBlockNumber";
 import { usePreviousCycleStartingBlock } from "../usePreviousCycleStartingBlock";
-import { useCycleLength } from "../useCycleLength";
 
 type VpTokenLoading = {
   status: "loading";
@@ -138,8 +137,6 @@ function ProviderWithUser({
       const breadResult = data[0].result / cycleLength;
       const butteredBreadResult = data[1].result / cycleLength;
 
-      console.log({ cycleLength });
-      console.log({ breadResult, butteredBreadResult });
       setVotingPowerState(() => ({
         bread: { status: "success", value: breadResult },
         butteredBread: { status: "success", value: butteredBreadResult },

@@ -6,6 +6,7 @@ import { TConnectedUserState } from "@/app/core/hooks/useConnectedUser";
 import { CycleDatesState } from "../useCycleDates";
 import { CycleLengthSuccess } from "../useCycleLength";
 import { FistIcon } from "@/app/core/components/Icons/FistIcon";
+import { formatUnits } from "viem";
 
 export function VotingPower({
   minRequiredVotingPower,
@@ -19,7 +20,7 @@ export function VotingPower({
   isRecasting,
 }: {
   minRequiredVotingPower: number | null;
-  userVotingPower: number | null;
+  userVotingPower: bigint | null;
   userHasVoted: boolean;
   userCanVote: boolean;
   cycleDates: CycleDatesState;
@@ -40,9 +41,8 @@ export function VotingPower({
             My voting power:{" "}
           </span>
           <span className="font-medium text-xl">
-            {user.status === "CONNECTED" &&
-              userVotingPower &&
-              formatBalance(userVotingPower / cycleLength.data, 2)}
+            {userVotingPower !== null &&
+              formatBalance(Number(formatUnits(userVotingPower, 18)), 2)}
           </span>
         </div>
         <p className="max-w-96 text-breadgray-rye dark:text-breadgray-light-grey pt-2">

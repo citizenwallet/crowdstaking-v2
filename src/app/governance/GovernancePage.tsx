@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
+import { Hex } from "viem";
 
 import { ProjectRow, VoteDisplay, VoteForm } from "./components/ProjectRow";
 import { CastVotePanel } from "./components/CastVote";
@@ -7,9 +8,7 @@ import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
 import { ResultsPanel } from "./components/ResultsPanel";
 import { useCurrentVotingDistribution } from "./useCurrentVotingDistribution";
 import { useCastVote } from "./useCastVote";
-import { useUserVotingPower } from "./useUserVotingPower";
 import { DistributionOverview } from "./components/DistributionOverview";
-import { Hex } from "viem";
 import { VotingPower } from "./components/VotingPower";
 import { useLastClaimedBlockNumber } from "./useLastClaimedBlockNumber";
 import { useCycleLength } from "./useCycleLength";
@@ -22,6 +21,7 @@ import { useModal } from "../core/context/ModalContext";
 import { projectsMeta } from "../projectsMeta";
 import { PageGrid } from "./components/PageGrid";
 import { ProjectsProvider } from "@/app/core/context/ProjectContext/ProjectContext";
+import { useVotingPower } from "./context/VotingPowerContext";
 
 export function GovernancePage() {
   const { user, isSafe } = useConnectedUser();
@@ -29,9 +29,10 @@ export function GovernancePage() {
   const { lastClaimedBlocknumber } = useLastClaimedBlockNumber();
   const { cycleLength } = useCycleLength();
   const { castVote } = useCastVote(user, lastClaimedBlocknumber);
-  const { userVotingPower } = useUserVotingPower(user, cycleLength);
   const { minRequiredVotingPower } = useMinRequiredVotingPower();
   const { data: distributionsData } = useDistributions();
+
+  const userVotingPower = useVotingPower();
 
   const { cycleDates } = useCycleDates(cycleLength);
 
@@ -153,10 +154,22 @@ export function GovernancePage() {
     return castVote.status === "SUCCESS" && castVote.data ? true : false;
   }, [castVote]);
 
-  const userCanVote =
-    userVotingPower && userVotingPower > Number(minRequiredVotingPower || 0)
-      ? true
-      : false;
+  const { userCanVote, totalUserVotingPower } = useMemo(() => {
+    const totalUserVotingPower =
+      userVotingPower &&
+      userVotingPower.bread.status === "success" &&
+      userVotingPower.butteredBread.status === "success"
+        ? userVotingPower.bread.value + userVotingPower.butteredBread.value
+        : null;
+
+    const userCanVote =
+      totalUserVotingPower &&
+      totalUserVotingPower > Number(minRequiredVotingPower || 0)
+        ? true
+        : false;
+
+    return { userCanVote, totalUserVotingPower };
+  }, [minRequiredVotingPower, userVotingPower]);
 
   if (
     castVote.status === "ERROR" ||
@@ -216,7 +229,7 @@ export function GovernancePage() {
         <div className="col-span-12 row-start-4 lg:col-start-1 lg:col-span-8 lg:row-start-2">
           <VotingPower
             minRequiredVotingPower={minRequiredVotingPower}
-            userVotingPower={userVotingPower}
+            userVotingPower={totalUserVotingPower}
             userHasVoted={userHasVoted}
             cycleDates={cycleDates}
             cycleLength={cycleLength}
