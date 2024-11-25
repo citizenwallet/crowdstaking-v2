@@ -29,8 +29,8 @@ export function PowerIcon() {
             y2="5.81218"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#D04EC5" />
-            <stop offset="1" stop-color="#ED7BC7" />
+            <stop stopColor="#D04EC5" />
+            <stop offset="1" stopColor="#ED7BC7" />
           </linearGradient>
         </defs>
       </svg>
