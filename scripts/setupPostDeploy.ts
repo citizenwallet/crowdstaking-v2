@@ -17,6 +17,13 @@ async function main() {
 
   await castVote();
 
+  // wait for one extra block to pass before ending the cycle
+  await new Promise<void>((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, 5_000);
+  });
+
   await distributeYield();
 }
 

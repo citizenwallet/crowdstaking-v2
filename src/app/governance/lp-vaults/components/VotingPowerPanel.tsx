@@ -3,9 +3,14 @@ import { FistIcon } from "@/app/core/components/Icons/FistIcon";
 import { AccountMenu } from "@/app/core/components/Header/AccountMenu";
 import { LinkIcon } from "@/app/core/components/Icons/LinkIcon";
 import TooltipIcon from "@/app/core/components/Icons/TooltipIcon";
-import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
+import {
+  TUserConnected,
+  useConnectedUser,
+} from "@/app/core/hooks/useConnectedUser";
 import { useVotingPower } from "../../context/VotingPowerContext";
-import { formatUnits } from "viem";
+import { formatBalance } from "@/app/core/util/formatter";
+import { useCurrentAccumulatedVotingPower } from "../../useCurrentAccumulatedVotingPower";
+import Elipsis from "@/app/core/components/Elipsis";
 
 export function VotingPowerPanel() {
   const { user } = useConnectedUser();
@@ -26,9 +31,12 @@ export function VotingPowerPanel() {
             {votingPower &&
             votingPower.bread.status === "success" &&
             votingPower.butteredBread.status === "success"
-              ? formatUnits(
-                  votingPower.bread.value + votingPower.butteredBread.value,
-                  18
+              ? formatBalance(
+                  Number(
+                    votingPower.bread.value + votingPower.butteredBread.value
+                  ) /
+                    10 ** 18,
+                  3
                 )
               : "-"}
           </div>
@@ -50,9 +58,12 @@ export function VotingPowerPanel() {
             Voting power from locked LP
           </p>
 
-          <span className="font-bold text-breadgray-grey100 dark:text-breadgray-white">
+          <span className="font-bold text-breadgray-grey100 dark:text-breadgray-white text-right">
             {votingPower && votingPower.butteredBread.status === "success"
-              ? formatUnits(votingPower.butteredBread.value, 18)
+              ? formatBalance(
+                  Number(votingPower.butteredBread.value) / 10 ** 18,
+                  3
+                )
               : "-"}
           </span>
 
@@ -61,7 +72,7 @@ export function VotingPowerPanel() {
           </p>
           <span className="text-right font-bold text-breadgray-grey100 dark:text-breadgray-white">
             {votingPower && votingPower.bread.status === "success"
-              ? formatUnits(votingPower.bread.value, 18)
+              ? formatBalance(Number(votingPower.bread.value) / 10 ** 18, 3)
               : "-"}
           </span>
 
@@ -83,8 +94,7 @@ export function VotingPowerPanel() {
               </p>
 
               <span className="text-right font-bold text-breadgray-rye dark:text-breadgray-grey">
-                {/* TODO: add dynamic value */}
-                stub
+                <PendingVotingPowerDisplay user={user} />
               </span>
             </>
           ) : (
@@ -112,5 +122,15 @@ export function VotingPowerPanel() {
 function Divider() {
   return (
     <div className="col-span-2 h-[1px]  bg-breadgray-light-grey dark:bg-breadgray-rye" />
+  );
+}
+
+function PendingVotingPowerDisplay({ user }: { user: TUserConnected }) {
+  const { status, data } = useCurrentAccumulatedVotingPower(user);
+
+  return status === "success" && data ? (
+    formatBalance(Number(data) / 10 ** 18, 3)
+  ) : (
+    <Elipsis />
   );
 }
