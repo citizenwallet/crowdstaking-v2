@@ -272,12 +272,14 @@ export async function distributeYield(account: Hex = DEV_ACCOUNT) {
   }
 }
 
+export async function mineBlocks(blocks: number) {
+  await testClient.mine({ blocks });
+}
+
 async function logRevertReason(receipt: TransactionReceipt) {
   const transaction = await publicClient.getTransaction({
     hash: receipt.transactionHash,
   });
-
-  console.log({ transaction });
 
   await publicClient
     .call({ data: transaction.input, blockNumber: receipt.blockNumber })
