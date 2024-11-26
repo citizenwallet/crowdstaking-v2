@@ -89,11 +89,7 @@ export function ProjectRow({
               </LinkBadge>
             </div>
           )}
-          {projectPower?.status === "SUCCESS" && (
-            <div className="inline-block tracking-wide">
-              <Badge icon={<PowerIcon />}>{projectPower.value}</Badge>
-            </div>
-          )}
+          {/* TODO: Add Voting Power (ref #146) */}
         </div>
         <div className="flex items-center justify-center">{children}</div>
       </div>
@@ -132,14 +128,7 @@ export function ProjectRow({
                   </LinkBadge>
                 </div>
               )}
-              {projectPower?.status === "SUCCESS" && (
-                <div className="inline-block tracking-wide">
-                  <Badge icon={<PowerIcon />}>
-                    {projectPower.value}
-                    {/* TODO #134 <span className="ms-3">Not voted</span> */}
-                  </Badge>
-                </div>
-              )}
+              {/* TODO: Add Voting Power (ref #146) */}
             </div>
           </div>
           <div className="max-w-xs text-breadgray-rye dark:text-breadgray-grey">
