@@ -56,7 +56,7 @@ const sepolia: ChainConfiguration = {
     address: "0x",
   },
   BUTTER: {
-    address: "0x",
+    address: "0xf3d8f3de71657d342db60dd714c8a2ae37eac6b4",
   },
   SDAI_ADAPTOR: {
     address: "0x",
