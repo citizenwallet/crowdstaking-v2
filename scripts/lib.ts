@@ -33,7 +33,7 @@ export const anvilAccounts: Array<Hex> = [
 ];
 
 export const DEV_ACCOUNT = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
-const LP_TOKEN_WHALE = "0xc2fB4B3EA53E10c88D193E709A81C4dc7aEC902e" as Hex;
+const BUTTER_WHALE = "0xc2fB4B3EA53E10c88D193E709A81C4dc7aEC902e" as Hex;
 const BREAD_OWNER = "0x918dEf5d593F46735f74F9E2B280Fe51AF3A99ad" as Hex;
 
 // test client is useful as you can use it to send transactions
@@ -89,18 +89,18 @@ export async function fundLpTokens(account: Hex = DEV_ACCOUNT) {
   // so it can pay the gas fees to send the LP tokens
   await testClient.sendTransaction({
     account: account,
-    to: LP_TOKEN_WHALE,
+    to: BUTTER_WHALE,
     value: parseUnits("5", 18),
   });
 
   // impersonate the account with the LP tokens
   await testClient.impersonateAccount({
-    address: LP_TOKEN_WHALE,
+    address: BUTTER_WHALE,
   });
 
   await testClient.writeContract({
-    account: LP_TOKEN_WHALE,
-    address: anvilConfig.LP_TOKEN.address,
+    account: BUTTER_WHALE,
+    address: anvilConfig.BUTTER.address,
     abi: ERC20_ABI,
     functionName: "transfer",
     // this isn't a payable function so we pass the value as an argument
@@ -209,7 +209,7 @@ export async function lockLpTokens(account: Hex = DEV_ACCOUNT) {
   try {
     const hash = await testClient.writeContract({
       account: account,
-      address: anvilConfig.LP_TOKEN.address,
+      address: anvilConfig.BUTTER.address,
       abi: ERC20_ABI,
       functionName: "approve",
       args: [anvilConfig.BUTTERED_BREAD.address, parseUnits("5000", 18)],
@@ -232,7 +232,7 @@ export async function lockLpTokens(account: Hex = DEV_ACCOUNT) {
       address: anvilConfig.BUTTERED_BREAD.address,
       abi: BUTTERED_BREAD_ABI,
       functionName: "deposit",
-      args: [anvilConfig.LP_TOKEN.address, parseUnits("5000", 18)],
+      args: [anvilConfig.BUTTER.address, parseUnits("5000", 18)],
     });
 
     const receipt = await publicClient.waitForTransactionReceipt({ hash });
