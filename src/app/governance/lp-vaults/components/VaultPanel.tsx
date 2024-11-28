@@ -17,17 +17,13 @@ import { sanitizeInputValue } from "@/app/core/util/sanitizeInput";
 import { WXDAIIcon, BreadIcon } from "@/app/core/components/Icons/TokenIcons";
 import { ExternalLink } from "@/app/core/components/ExternalLink";
 import { LinkIcon } from "@/app/core/components/Icons/LinkIcon";
-import { getConfig } from "@/chainConfig";
 import { useTokenBalance } from "@/app/core/hooks/useTokenBalance";
-import { useContractRead, useNetwork } from "wagmi";
-import { BUTTERED_BREAD_ABI } from "@/abi";
 import { lpTokenMeta } from "@/app/lpTokenMeta";
 import { GradientBorder } from "@/app/core/components/GradientBorder";
 import { WXDaiBreadIcon } from "@/app/core/components/Modal/LPVaultTransactionModal/VPRate";
 import { MaxButton } from "@/app/core/components/MaxButton";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { formatBalance } from "@/app/core/util/formatter";
-import { UseQueryResult } from "react-query/types/react";
 import { useVaultTokenBalance } from "../context/VaultTokenBalanceContext";
 import { AccountMenu } from "@/app/core/components/Header/AccountMenu";
 

@@ -16,7 +16,7 @@ export default function LPVotingPower() {
 
   return (
     <VaultTokenBalanceProvider>
-      <LPVotingPowerPage />;
+      <LPVotingPowerPage />
     </VaultTokenBalanceProvider>
   );
 }
