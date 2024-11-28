@@ -44,7 +44,7 @@ export function Lock({
     address: chainConfig.BUTTERED_BREAD.address,
     abi: BUTTERED_BREAD_ABI,
     functionName: "deposit",
-    args: [chainConfig.LP_TOKEN.address, lockingState.depositAmount],
+    args: [chainConfig.BUTTER.address, lockingState.depositAmount],
   });
 
   useEffect(() => {
@@ -86,7 +86,6 @@ export function Lock({
     const tx = transactionsState.submitted.find(
       (t) => t.hash === lockingState.txHash
     );
-    console.log({ tx });
     if (tx?.status === "REVERTED") {
       lockingDispatch({ type: "TRANSACTION_REVERTED" });
     }

@@ -55,7 +55,7 @@ export function WithdrawTransaction({
     address: chainConfig.BUTTERED_BREAD.address,
     abi: BUTTERED_BREAD_ABI,
     functionName: "accountToLPBalance",
-    args: [user.address, chainConfig.LP_TOKEN.address],
+    args: [user.address, chainConfig.BUTTER.address],
     watch: true,
   });
 
@@ -63,7 +63,7 @@ export function WithdrawTransaction({
     address: chainConfig.BUTTERED_BREAD.address,
     abi: BUTTERED_BREAD_ABI,
     functionName: "withdraw",
-    args: [chainConfig.LP_TOKEN.address, modalState.parsedValue],
+    args: [chainConfig.BUTTER.address, modalState.parsedValue],
     enabled:
       lockedBalance.status === "success" &&
       modalState.parsedValue <= (lockedBalance.data as bigint),

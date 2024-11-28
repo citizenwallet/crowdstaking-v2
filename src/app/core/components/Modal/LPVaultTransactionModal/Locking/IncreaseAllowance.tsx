@@ -35,7 +35,7 @@ export function IncreaseAllowance({
     error: prepareWriteError,
     config: prepareWriteConfig,
   } = usePrepareContractWrite({
-    address: chainConfig.LP_TOKEN.address,
+    address: chainConfig.BUTTER.address,
     abi: ERC20_ABI,
     functionName: "approve",
     args: [

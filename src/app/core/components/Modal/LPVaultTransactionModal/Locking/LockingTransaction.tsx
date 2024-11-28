@@ -35,7 +35,7 @@ export function LockingTransaction({
 
   const { status: userAllowanceStatus, data: userAllowanceData } =
     useContractRead({
-      address: chainConfig.LP_TOKEN.address,
+      address: chainConfig.BUTTER.address,
       abi: ERC20_ABI,
       functionName: "allowance",
       args: [user.address, chainConfig.BUTTERED_BREAD.address],
