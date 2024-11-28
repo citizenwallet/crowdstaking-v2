@@ -11,10 +11,7 @@ import useDebounce from "@/app/bakery/hooks/useDebounce";
 import Button from "@/app/core/components/Button";
 import { useModal } from "@/app/core/context/ModalContext";
 
-import {
-  TConnectedUserState,
-  useConnectedUser,
-} from "@/app/core/hooks/useConnectedUser";
+import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
 import { SelectTransaction } from "./SelectTransaction";
 import { sanitizeInputValue } from "@/app/core/util/sanitizeInput";
 import { WXDAIIcon, BreadIcon } from "@/app/core/components/Icons/TokenIcons";
@@ -30,6 +27,9 @@ import { WXDaiBreadIcon } from "@/app/core/components/Modal/LPVaultTransactionMo
 import { MaxButton } from "@/app/core/components/MaxButton";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { formatBalance } from "@/app/core/util/formatter";
+import { UseQueryResult } from "react-query/types/react";
+import { useVaultTokenBalance } from "../context/VaultTokenBalanceContext";
+import { AccountMenu } from "@/app/core/components/Header/AccountMenu";
 
 export type TransactionType = "LOCK" | "UNLOCK";
 
@@ -41,7 +41,7 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
   const { transactionsState } = useTransactions();
 
   const lpTokenBalance = useTokenBalance(user, tokenAddress);
-  const lockedTokenBalance = useLockedTokenBalance(user, tokenAddress);
+  const vaultTokenBalance = useVaultTokenBalance();
 
   useEffect(() => {
     const lpVaultTransaction = transactionsState.submitted.filter(
@@ -59,13 +59,21 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
   const { setModal } = useModal();
 
   function submitTransaction() {
+    if (transactionType === "LOCK") {
+      setModal({
+        type: "LP_VAULT_TRANSACTION",
+        transactionType: "LOCK",
+        parsedValue,
+      });
+      return;
+    }
+    if (vaultTokenBalance?.butter.status !== "success") {
+      return;
+    }
     setModal({
       type: "LP_VAULT_TRANSACTION",
-      transactionType: transactionType,
-      parsedValue:
-        transactionType === "LOCK"
-          ? parsedValue
-          : (lockedTokenBalance.data as bigint),
+      transactionType: "UNLOCK",
+      parsedValue: vaultTokenBalance.butter.value,
     });
   }
 
@@ -107,10 +115,10 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
                   Locked tokens:
                   {user.status === "CONNECTED" ? (
                     <span className="font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white">
-                      {lockedTokenBalance.status === "success"
+                      {vaultTokenBalance?.butter.status === "success"
                         ? formatBalance(
                             Number(
-                              formatUnits(lockedTokenBalance.data as bigint, 18)
+                              formatUnits(vaultTokenBalance.butter.value, 18)
                             ),
                             3
                           )
@@ -187,10 +195,10 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
                 </div>
                 <span className="font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white">
                   {user.status === "CONNECTED"
-                    ? lockedTokenBalance.status === "success"
+                    ? vaultTokenBalance?.butter.status === "success"
                       ? formatBalance(
                           Number(
-                            formatUnits(lockedTokenBalance.data as bigint, 18)
+                            formatUnits(vaultTokenBalance.butter.value, 18)
                           ),
                           3
                         )
@@ -256,13 +264,10 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
                   ) : (
                     <div className="font-bold text-2xl grow">
                       <div className="truncate">
-                        {lockedTokenBalance.status === "success"
+                        {vaultTokenBalance?.butter.status === "success"
                           ? formatBalance(
                               Number(
-                                formatUnits(
-                                  lockedTokenBalance.data as bigint,
-                                  18
-                                )
+                                formatUnits(vaultTokenBalance.butter.value, 18)
                               ),
                               3
                             )
@@ -314,13 +319,16 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
                   disabled={
                     (transactionType === "LOCK" && !(Number(inputValue) > 0)) ||
                     (transactionType === "UNLOCK" &&
-                      !(Number(lockedTokenBalance.data as bigint) > 0))
+                      vaultTokenBalance?.butter.status === "success" &&
+                      !(Number(vaultTokenBalance?.butter.value) > 0))
                   }
                 >
                   {transactionType === "UNLOCK" ? "Unlock" : "Lock"} LP Tokens
                 </Button>
               ) : (
-                <div>Connect Wallet</div>
+                <AccountMenu fullWidth={true} size="large">
+                  Connect
+                </AccountMenu>
               )}
             </form>
           </div>
@@ -328,17 +336,4 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
       </AccordionContent>
     </AccordionItem>
   );
-}
-
-function useLockedTokenBalance(user: TConnectedUserState, tokenAddress: Hex) {
-  const network = useNetwork();
-  const chainConfig = getConfig(network.chain ? network.chain.id : "DEFAULT");
-  return useContractRead({
-    address: chainConfig.BUTTERED_BREAD.address,
-    abi: BUTTERED_BREAD_ABI,
-    functionName: "accountToLPBalance",
-    args: [user.status === "CONNECTED" ? user.address : `0x`, tokenAddress],
-    watch: true,
-    enabled: user.status === "CONNECTED",
-  });
 }

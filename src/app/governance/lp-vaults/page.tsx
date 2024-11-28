@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { LPVotingPowerPage } from "./LPVotingPowerPage";
 import { parseFeatureVar } from "@/app/core/util/parseFeatureVar";
+import { VaultTokenBalanceProvider } from "./context/VaultTokenBalanceContext";
 
 export const metadata: Metadata = {
   title: "Bread Governance",
@@ -13,5 +14,9 @@ export default function LPVotingPower() {
     notFound();
   }
 
-  return <LPVotingPowerPage />;
+  return (
+    <VaultTokenBalanceProvider>
+      <LPVotingPowerPage />;
+    </VaultTokenBalanceProvider>
+  );
 }

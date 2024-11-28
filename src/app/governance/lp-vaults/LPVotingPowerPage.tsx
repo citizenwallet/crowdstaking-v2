@@ -1,11 +1,17 @@
 "use client";
+import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
 import { VaultPanel } from "./components/VaultPanel";
 import { VotingPowerPanel } from "./components/VotingPowerPanel";
 import { Accordion } from "@radix-ui/react-accordion";
 
-export const LP_TOKEN_ADDRESS = "0xf3d8f3de71657d342db60dd714c8a2ae37eac6b4";
+import { getConfig } from "@/chainConfig";
 
 export function LPVotingPowerPage() {
+  const { user } = useConnectedUser();
+  const config = getConfig(
+    user.status === "CONNECTED" ? user.chain.id : "DEFAULT"
+  );
+
   return (
     <div className="w-full lg:max-w-[67rem] m-auto px-4 md:px-8">
       <div className="grid grid-cols[repeat(2, minmax(min-content, 1fr))] gap-4 md:gap-8">
@@ -17,7 +23,7 @@ export function LPVotingPowerPage() {
         </div>
         <div className="col-span-12">
           <Accordion type="single" collapsible>
-            <VaultPanel tokenAddress={LP_TOKEN_ADDRESS} />
+            <VaultPanel tokenAddress={config.BUTTER.address} />
           </Accordion>
         </div>
       </div>
