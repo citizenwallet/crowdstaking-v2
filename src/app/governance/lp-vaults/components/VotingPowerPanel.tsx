@@ -12,10 +12,14 @@ import { formatBalance } from "@/app/core/util/formatter";
 import { useCurrentAccumulatedVotingPower } from "../../useCurrentAccumulatedVotingPower";
 import Elipsis from "@/app/core/components/Elipsis";
 
+import { useCycleLength } from "../../useCycleLength";
+import { useVaultTokenBalance } from "../context/VaultTokenBalanceContext";
+
 export function VotingPowerPanel() {
   const { user } = useConnectedUser();
 
   const votingPower = useVotingPower();
+  const vaultTokenBalance = useVaultTokenBalance();
 
   return (
     <CardBox>
@@ -83,8 +87,12 @@ export function VotingPowerPanel() {
           </p>
 
           <span className="text-right font-bold text-breadpink-100">
-            {/* TODO: add dynamic value */}
-            stub
+            {vaultTokenBalance && vaultTokenBalance.butter.status === "success"
+              ? formatBalance(
+                  Number(vaultTokenBalance.butter.value) / 10 ** 18,
+                  3
+                )
+              : "-"}
           </span>
 
           {user.status === "CONNECTED" ? (
@@ -126,10 +134,20 @@ function Divider() {
 }
 
 function PendingVotingPowerDisplay({ user }: { user: TUserConnected }) {
-  const { status, data } = useCurrentAccumulatedVotingPower(user);
+  const {
+    status: currentAccumulatedVotingPowerStatus,
+    data: currentAccumulatedVotingPowerData,
+  } = useCurrentAccumulatedVotingPower(user);
 
-  return status === "success" && data ? (
-    formatBalance(Number(data) / 10 ** 18, 3)
+  const { cycleLength } = useCycleLength();
+
+  return currentAccumulatedVotingPowerStatus === "success" &&
+    cycleLength.status === "SUCCESS" &&
+    currentAccumulatedVotingPowerData ? (
+    formatBalance(
+      Number(currentAccumulatedVotingPowerData) / 10 ** 18 / cycleLength.data,
+      3
+    )
   ) : (
     <Elipsis />
   );
