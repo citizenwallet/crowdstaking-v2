@@ -4,7 +4,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { VotingPowerProvider } from "./context/VotingPowerContext";
+import { UserVotingPowerProvider } from "./context/UserVotingPowerContext";
 import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
 
 export default function GovernanceLayout({
@@ -21,9 +21,9 @@ export default function GovernanceLayout({
           <GovernanceNavigation />
         </section>
       )}
-      <VotingPowerProvider>
+      <UserVotingPowerProvider>
         <div className="py-4 md:py-8">{children}</div>
-      </VotingPowerProvider>
+      </UserVotingPowerProvider>
     </>
   );
 }

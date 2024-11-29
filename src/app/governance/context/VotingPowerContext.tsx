@@ -1,9 +1,3 @@
-import { multicall } from "@wagmi/core";
-
-import {
-  TUserConnected,
-  useConnectedUser,
-} from "@/app/core/hooks/useConnectedUser";
 import {
   type ReactNode,
   createContext,
@@ -11,78 +5,41 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useQuery } from "wagmi";
+import { useNetwork, useQuery } from "wagmi";
+import { multicall } from "@wagmi/core";
+import { Hex } from "viem";
+
 import { getConfig } from "@/chainConfig";
 import { DISTRIBUTOR_ABI } from "@/abi";
-import { useLastClaimedBlockNumber } from "../useLastClaimedBlockNumber";
-import { usePreviousCycleStartingBlock } from "../usePreviousCycleStartingBlock";
 
-type VpTokenLoading = {
+export type VpTokenLoading = {
   status: "loading";
 };
 
-type VpTokenError = {
+export type VpTokenError = {
   status: "error";
 };
 
-type VpTokenSuccess = {
+export type VpTokenSuccess = {
   status: "success";
   value: bigint;
 };
 
-type TVotingPowerState = null | {
+export type TVotingPowerState = null | {
   bread: VpTokenLoading | VpTokenSuccess | VpTokenError;
   butteredBread: VpTokenLoading | VpTokenSuccess | VpTokenError;
 };
 
-const VotingPowerContext = createContext<TVotingPowerState>(null);
+export const VotingPowerContext = createContext<TVotingPowerState>(null);
 
-function VotingPowerProvider({ children }: { children: ReactNode }) {
-  const { user } = useConnectedUser();
-
-  const { lastClaimedBlocknumber } = useLastClaimedBlockNumber();
-  const { data: previousCycleStartingBlockData } =
-    usePreviousCycleStartingBlock();
-
-  if (
-    user.status === "CONNECTED" &&
-    previousCycleStartingBlockData &&
-    lastClaimedBlocknumber
-  ) {
-    return (
-      <ProviderWithUser
-        user={user}
-        previousCycleStartingBlock={previousCycleStartingBlockData}
-        lastClaimedBlocknumber={lastClaimedBlocknumber}
-      >
-        {children}
-      </ProviderWithUser>
-    );
-  }
-
-  return (
-    <VotingPowerContext.Provider value={null}>
-      {children}
-    </VotingPowerContext.Provider>
-  );
-}
-
-function useVotingPower() {
-  const context = useContext(VotingPowerContext);
-  if (context === undefined) {
-    throw new Error("useVotingPower must be used within a VotingPowerProvider");
-  }
-  return context;
-}
-
-function ProviderWithUser({
-  user,
+export function VotingPowerProvider({
+  account,
   previousCycleStartingBlock,
   lastClaimedBlocknumber,
 
   children,
 }: {
-  user: TUserConnected;
+  account: Hex;
   previousCycleStartingBlock: bigint;
   lastClaimedBlocknumber: bigint;
 
@@ -92,8 +49,8 @@ function ProviderWithUser({
     bread: { status: "loading" },
     butteredBread: { status: "loading" },
   });
-
-  const config = getConfig(user.chain.id);
+  const network = useNetwork();
+  const config = getConfig(network.chain?.id || "DEFAULT");
 
   const { data, status, error } = useQuery(["vpMulticall"], async () => {
     return await multicall({
@@ -106,7 +63,7 @@ function ProviderWithUser({
             config.BREAD.address,
             previousCycleStartingBlock,
             lastClaimedBlocknumber,
-            user.address,
+            account,
           ],
         },
         {
@@ -117,7 +74,7 @@ function ProviderWithUser({
             config.BUTTERED_BREAD.address,
             previousCycleStartingBlock,
             lastClaimedBlocknumber,
-            user.address,
+            account,
           ],
         },
       ],
@@ -151,4 +108,10 @@ function ProviderWithUser({
   );
 }
 
-export { VotingPowerProvider, useVotingPower };
+export function useVotingPower() {
+  const context = useContext(VotingPowerContext);
+  if (context === undefined) {
+    throw new Error("useVotingPower must be used within a VotingPowerProvider");
+  }
+  return context;
+}
