@@ -5,7 +5,7 @@ import { parseFeatureVar } from "@/app/core/util/parseFeatureVar";
 import { VaultTokenBalanceProvider } from "./context/VaultTokenBalanceContext";
 
 export const metadata: Metadata = {
-  title: "Bread Governance",
+  title: "LP Vaults",
   description: "Bake and burn BREAD. Fund post-capitalist web3.",
 };
 
