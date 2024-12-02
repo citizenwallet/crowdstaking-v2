@@ -10,6 +10,7 @@ const colors = {
     "og-dark": "#2E2E2E",
     charcoal: "#242424",
     darkest: "#272727",
+    pitchblack: "#181818",
     "cta-bg": "#2c2c2c",
     grey300: "#222222",
     grey200: "#1c1c1c",

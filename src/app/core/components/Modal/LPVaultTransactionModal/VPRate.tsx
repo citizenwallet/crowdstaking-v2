@@ -18,7 +18,7 @@ export function LockVPRate({ value }: { value: bigint }) {
       </RightLabel>
 
       <LeftValueDisplay>
-        <div className="bg-breadgray-burnt rounded-full flex gap-2 items-center px-2 py-1">
+        <div className="dark:bg-breadgray-burnt rounded-full flex gap-2 items-center px-2 py-1">
           <img src="/wxdai_bread_lp_icon.png" alt="wxdai bread lp token icon" />
           <ValueText>{tokenAmount}</ValueText>
         </div>
@@ -26,7 +26,7 @@ export function LockVPRate({ value }: { value: bigint }) {
       <EqualityIcon />
 
       <RightValueDisplay>
-        <div className="bg-breadgray-burnt rounded-full flex gap-2 items-center px-2 py-1">
+        <div className="dark:bg-breadgray-burnt rounded-full flex gap-2 items-center px-2 py-1">
           <div className="size-6 rounded-full dark:bg-breadgray-toast">
             <FistIcon />
           </div>
@@ -79,7 +79,9 @@ function VPRateGrid({ children }: { children: ReactNode }) {
 }
 function TextLabel({ children }: { children: ReactNode }) {
   return (
-    <p className="text-xs font-medium dark:text-breadgray-grey">{children}</p>
+    <p className="text-xs font-medium dark:text-breadgray-grey text-breadgray-natural text-breadgray-grey">
+      {children}
+    </p>
   );
 }
 
@@ -129,7 +131,7 @@ export function PillContainer({ children }: { children: ReactNode }) {
 
 export function ValueText({ children }: { children: ReactNode }) {
   return (
-    <div className="text-xl font-semibold text-breadgray-ultra-white">
+    <div className="text-xl font-semibold dark:text-breadgray-ultra-white">
       {children}
     </div>
   );
