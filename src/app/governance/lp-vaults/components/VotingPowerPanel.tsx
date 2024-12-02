@@ -14,12 +14,15 @@ import Elipsis from "@/app/core/components/Elipsis";
 
 import { useCycleLength } from "../../useCycleLength";
 import { useVaultTokenBalance } from "../context/VaultTokenBalanceContext";
+import Tooltip from "@/app/core/components/Tooltip";
+import { useDistributions } from "../../useDistributions";
 
 export function VotingPowerPanel() {
   const { user } = useConnectedUser();
 
   const votingPower = useVotingPower();
   const vaultTokenBalance = useVaultTokenBalance();
+  const { data: distributions } = useDistributions();
 
   return (
     <CardBox>
@@ -46,11 +49,12 @@ export function VotingPowerPanel() {
           </div>
         </div>
         <div className="pb-4">
-          <span className="font-medium text-xs text-breadgray-rye dark:text-breadgray-grey">
-            Accessible voting power
-            <span>
-              <TooltipIcon />
-            </span>
+          <span className="flex items-center gap-2 font-medium text-xs text-breadgray-rye dark:text-breadgray-grey">
+            <span className="pb-1">Accessible voting power</span>
+            <Tooltip>
+              Your total available voting power for voting cycle #
+              {distributions ? distributions.length + 1 + "." : "-"}
+            </Tooltip>
           </span>
         </div>
 
