@@ -26,36 +26,37 @@ export function VotingPowerPanel() {
   return (
     <div className="w-full max-w-[24rem] m-auto">
       <CardBox>
-        <div className="p-4 flex flex-col items-center">
-          <h2 className="font-medium text-xl dark:text-breadgray-light-grey">
+        <div className="p-4 flex flex-col items-center gap-4">
+          <h2 className="font-medium text-xl leading-none dark:text-breadgray-light-grey">
             MY VOTING POWER
           </h2>
-          <div className="flex gap-2 items-center mb-2">
-            <span className="size-6 flex rounded-full bg-white dark:bg-breadgray-charcoal">
-              <FistIcon />
-            </span>
-            <div className="font-bold text-3xl text-breadgray-grey100 dark:text-breadgray-ultra-white">
-              {votingPower &&
-              votingPower.bread.status === "success" &&
-              votingPower.butteredBread.status === "success"
-                ? formatBalance(
-                    Number(
-                      votingPower.bread.value + votingPower.butteredBread.value
-                    ) /
-                      10 ** 18,
-                    3
-                  )
-                : "-"}
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-2 items-center">
+              <span className="size-6 flex rounded-full bg-white dark:bg-breadgray-charcoal">
+                <FistIcon />
+              </span>
+              <div className="font-bold text-3xl leading-none text-breadgray-grey100 dark:text-breadgray-ultra-white">
+                {votingPower &&
+                votingPower.bread.status === "success" &&
+                votingPower.butteredBread.status === "success"
+                  ? formatBalance(
+                      Number(
+                        votingPower.bread.value +
+                          votingPower.butteredBread.value
+                      ) /
+                        10 ** 18,
+                      3
+                    )
+                  : "-"}
+              </div>
             </div>
-          </div>
-          <div className="pb-4">
-            <span className="flex items-center gap-2 font-medium text-xs text-breadgray-rye dark:text-breadgray-grey">
+            <div className="flex items-center gap-2 font-medium text-xs text-breadgray-rye dark:text-breadgray-grey">
               <span className="pb-1">Accessible voting power</span>
               <Tooltip>
                 Your total available voting power for voting cycle #
                 {distributions ? distributions.length + 1 + "." : "-"}
               </Tooltip>
-            </span>
+            </div>
           </div>
 
           {/* voting power grid */}
