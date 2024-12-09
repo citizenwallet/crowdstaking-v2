@@ -31,7 +31,7 @@ export function VotingPowerPanel() {
         </h2>
         <div className="flex gap-2 items-center mb-2">
           <span className="size-6 flex rounded-full bg-white dark:bg-breadgray-charcoal">
-            <FistIcon />
+            <FistIcon bg="burnt" />
           </span>
           <div className="font-bold text-3xl text-breadgray-grey100 dark:text-breadgray-ultra-white">
             {votingPower &&

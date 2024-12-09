@@ -1,8 +1,9 @@
 import { ReactNode } from "react";
 import { Hex } from "viem";
 import Image from "next/image";
-import { LinkBadge } from "@/app/core/components/Badge/Badge";
+import { Badge, LinkBadge } from "@/app/core/components/Badge/Badge";
 import { BreadIcon } from "@/app/core/components/Icons/TokenIcons";
+import { FistIcon } from "@/app/core/components/Icons/FistIcon";
 import { formatVotePercentage } from "@/app/core/util/formatter";
 import { projectsMeta } from "@/app/projectsMeta";
 import type { TConnectedUserState } from "@/app/core/hooks/useConnectedUser";
@@ -88,7 +89,13 @@ export function ProjectRow({
               </LinkBadge>
             </div>
           )}
-          {/* TODO: Add Voting Power (ref #146) */}
+          {projectPower?.status === "SUCCESS" && (
+            <div className="inline-block tracking-wide">
+              <Badge icon={<FistIcon size="small" bg="burnt" />}>
+                {projectPower.value}
+              </Badge>
+            </div>
+          )}
         </div>
         <div className="flex items-center justify-center">{children}</div>
       </div>
@@ -120,14 +127,21 @@ export function ProjectRow({
               {projectBread?.status === "SUCCESS" && (
                 <div className="inline-block tracking-wide me-2">
                   <LinkBadge
-                    icon={<BreadIcon size="small" />}
+                    icon={<BreadIcon size="small" bg="burnt" />}
                     href={explorerLink()}
                   >
                     {renderBreadHolding(projectBread.value)}
                   </LinkBadge>
                 </div>
               )}
-              {/* TODO: Add Voting Power (ref #146) */}
+              {projectPower?.status === "SUCCESS" && (
+                <div className="inline-block tracking-wide">
+                  <Badge icon={<FistIcon size="small" bg="burnt" />}>
+                    {projectPower.value}
+                    {/* TODO #134 <span className="ms-3">Not voted</span> */}
+                  </Badge>
+                </div>
+              )}
             </div>
           </div>
           <div className="max-w-xs text-breadgray-rye dark:text-breadgray-grey">
