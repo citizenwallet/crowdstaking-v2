@@ -44,14 +44,17 @@ export function GnosisIcon({
 
 export function BreadIcon({
   size = "regular",
+  bg = "rye",
 }: {
   size?: "small" | "regular";
+  bg?: "burnt" | "rye";
 }) {
   return (
     <div
       className={clsx(
-        "rounded-full bg-breadpink-200 bg-opacity-10 dark:bg-breadgray-rye flex items-center justify-center",
-        size === "small" ? "size-5" : "size-6"
+        "rounded-full bg-breadpink-200 bg-opacity-10 flex items-center justify-center",
+        size === "small" ? "size-5" : "size-6",
+        "dark:bg-breadgray-" + bg
       )}
     >
       <div>
