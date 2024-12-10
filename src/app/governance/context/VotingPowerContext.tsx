@@ -89,7 +89,12 @@ export function VotingPowerProvider({
       }));
       return;
     }
-    if (status === "success" && data && data[0].result && data[1].result) {
+    if (
+      status === "success" &&
+      data &&
+      data[0].result !== undefined &&
+      data[1].result !== undefined
+    ) {
       const cycleLength = lastClaimedBlocknumber - previousCycleStartingBlock;
       const breadResult = data[0].result / cycleLength;
       const butteredBreadResult = data[1].result / cycleLength;
