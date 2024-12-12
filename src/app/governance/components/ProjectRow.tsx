@@ -194,8 +194,8 @@ export function VoteForm({
           </InputButton>
           <input
             className={clsx(
-              "min-w-12 max-w-0 p-1 bg-breadgray-ultra-white dark:bg-breadgray-burnt border-neutral-300 text-4xl sm:text-2xl font-medium text-center",
-              !userCanVote && "opacity-50"
+              "min-w-12 max-w-0 p-1 dark:text-breadgray-ultra-white bg-breadgray-ultra-white dark:bg-breadgray-burnt border-neutral-300 text-4xl sm:text-2xl font-medium text-center",
+              !userCanVote && "opacity-50 "
             )}
             type="text"
             placeholder="00"
@@ -226,7 +226,7 @@ export function VoteForm({
       </div>
       <div
         className={clsx(
-          "w-full text-center pb-2 pt-2 border-t border-breadgray-light-grey dark:border-gray-400 bg-breadpink-shaded bg-opacity-10",
+          "w-full text-center pb-2 pt-2 border-t dark:text-breadgray-light-grey border-breadgray-light-grey dark:border-gray-400 bg-breadpink-shaded bg-opacity-10",
           !userCanVote && "opacity-50"
         )}
       >
