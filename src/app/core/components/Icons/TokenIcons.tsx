@@ -24,16 +24,37 @@ export function WXDAIIcon({ size = "regular" }: { size?: "regular" | "full" }) {
   );
 }
 
-export function BreadIcon({
+export function GnosisIcon({
   size = "regular",
 }: {
   size?: "small" | "regular";
 }) {
   return (
+    <div className={clsx("rounded-full overflow-hidden")}>
+      <Image
+        src={"/gnosis_icon.svg"}
+        alt="Gnosis icon"
+        className={size === "small" ? "size-6" : "size-10"}
+        width="30"
+        height="30"
+      />
+    </div>
+  );
+}
+
+export function BreadIcon({
+  size = "regular",
+  bg = "rye",
+}: {
+  size?: "small" | "regular";
+  bg?: "burnt" | "rye";
+}) {
+  return (
     <div
       className={clsx(
-        "rounded-full bg-breadpink-200 bg-opacity-10 dark:bg-breadgray-rye flex items-center justify-center",
-        size === "small" ? "size-5" : "size-6"
+        "rounded-full bg-breadpink-200 bg-opacity-10 flex items-center justify-center",
+        size === "small" ? "size-5" : "size-6",
+        "dark:bg-breadgray-" + bg
       )}
     >
       <div>

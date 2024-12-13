@@ -1,8 +1,9 @@
 import { ReactNode } from "react";
 import { Hex } from "viem";
 import Image from "next/image";
-import { LinkBadge } from "@/app/core/components/Badge/Badge";
+import { Badge, LinkBadge } from "@/app/core/components/Badge/Badge";
 import { BreadIcon } from "@/app/core/components/Icons/TokenIcons";
+import { FistIcon } from "@/app/core/components/Icons/FistIcon";
 import { formatVotePercentage } from "@/app/core/util/formatter";
 import { projectsMeta } from "@/app/projectsMeta";
 import type { TConnectedUserState } from "@/app/core/hooks/useConnectedUser";
@@ -88,7 +89,13 @@ export function ProjectRow({
               </LinkBadge>
             </div>
           )}
-          {/* TODO: Add Voting Power (ref #146) */}
+          {projectPower?.status === "SUCCESS" && (
+            <div className="inline-block tracking-wide">
+              <Badge icon={<FistIcon size="small" bg="burnt" />}>
+                {projectPower.value}
+              </Badge>
+            </div>
+          )}
         </div>
         <div className="flex items-center justify-center">{children}</div>
       </div>
@@ -120,14 +127,21 @@ export function ProjectRow({
               {projectBread?.status === "SUCCESS" && (
                 <div className="inline-block tracking-wide me-2">
                   <LinkBadge
-                    icon={<BreadIcon size="small" />}
+                    icon={<BreadIcon size="small" bg="burnt" />}
                     href={explorerLink()}
                   >
                     {renderBreadHolding(projectBread.value)}
                   </LinkBadge>
                 </div>
               )}
-              {/* TODO: Add Voting Power (ref #146) */}
+              {projectPower?.status === "SUCCESS" && (
+                <div className="inline-block tracking-wide">
+                  <Badge icon={<FistIcon size="small" bg="burnt" />}>
+                    {projectPower.value}
+                    {/* TODO #134 <span className="ms-3">Not voted</span> */}
+                  </Badge>
+                </div>
+              )}
             </div>
           </div>
           <div className="max-w-xs text-breadgray-rye dark:text-breadgray-grey">
@@ -180,8 +194,8 @@ export function VoteForm({
           </InputButton>
           <input
             className={clsx(
-              "min-w-12 max-w-0 p-1 bg-breadgray-ultra-white dark:bg-breadgray-burnt border-neutral-300 text-4xl sm:text-2xl font-medium text-center",
-              !userCanVote && "opacity-50"
+              "min-w-12 max-w-0 p-1 dark:text-breadgray-ultra-white bg-breadgray-ultra-white dark:bg-breadgray-burnt border-neutral-300 text-4xl sm:text-2xl font-medium text-center",
+              !userCanVote && "opacity-50 "
             )}
             type="text"
             placeholder="00"
@@ -212,7 +226,7 @@ export function VoteForm({
       </div>
       <div
         className={clsx(
-          "w-full text-center pb-2 pt-2 border-t border-breadgray-light-grey dark:border-gray-400 bg-breadpink-shaded bg-opacity-10",
+          "w-full text-center pb-2 pt-2 border-t dark:text-breadgray-light-grey border-breadgray-light-grey dark:border-gray-400 bg-breadpink-shaded bg-opacity-10",
           !userCanVote && "opacity-50"
         )}
       >
