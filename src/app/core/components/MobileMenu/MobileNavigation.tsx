@@ -38,7 +38,7 @@ export function MobileNavigation({ handleNavToggle }: IProps) {
       {user.user.features.lpVaults && (
         <>
           <Link
-            href="/vote"
+            href="/governance"
             onClick={() => handleNavToggle()}
             className="text-neutral-900 dark:text-breadgray-rye dark:hover:text-breadgray-light-grey flex gap-2 items-center justify-end px-2"
           >
@@ -60,7 +60,7 @@ export function MobileNavigation({ handleNavToggle }: IProps) {
             <span>Vote</span>
           </Link>
           <Link
-            href="/vaults"
+            href="/governance/lp-vaults"
             onClick={() => handleNavToggle()}
             className="text-neutral-900 dark:text-breadgray-rye dark:hover:text-breadgray-light-grey flex gap-2 items-center justify-end px-2"
           >
