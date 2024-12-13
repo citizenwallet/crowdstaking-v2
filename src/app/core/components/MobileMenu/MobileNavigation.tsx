@@ -28,13 +28,6 @@ export function MobileNavigation({ handleNavToggle }: IProps) {
       >
         Governance
       </MobileNavigationLink>
-      <MobileNavigationLink
-        isExternal
-        href="https://breadchain.notion.site/4d496b311b984bd9841ef9c192b9c1c7?v=2eb1762e6b83440f8b0556c9917f86ca"
-        onClick={handleNavToggle}
-      >
-        Docs
-      </MobileNavigationLink>
       {user.user.features.lpVaults && (
         <>
           <Link
@@ -84,6 +77,13 @@ export function MobileNavigation({ handleNavToggle }: IProps) {
           </Link>
         </>
       )}
+      <MobileNavigationLink
+        isExternal
+        href="https://breadchain.notion.site/4d496b311b984bd9841ef9c192b9c1c7?v=2eb1762e6b83440f8b0556c9917f86ca"
+        onClick={handleNavToggle}
+      >
+        Docs
+      </MobileNavigationLink>
     </nav>
   );
 }
