@@ -1,3 +1,4 @@
+import { ReactElement } from "react";
 import { CardBox } from "@/app/core/components/CardBox";
 import { FistIcon } from "@/app/core/components/Icons/FistIcon";
 import { AccountMenu } from "@/app/core/components/Header/AccountMenu";
@@ -23,6 +24,25 @@ export function VotingPowerPanel() {
   const vaultTokenBalance = useVaultTokenBalance();
   const { data: distributions } = useDistributions();
 
+  const renderFormattedDecimalNumber = (
+    number: string,
+    icon?: ReactElement
+  ) => {
+    const part1 = number.split(".")[0];
+    const part2 = number.split(".")[1];
+
+    return (
+      <div className="w-full flex justify-center tracking-wider text-3xl font-bold text-breadgray-grey100 dark:text-breadgray-ultra-white leading-none">
+        <div className=" flex gap-2  justify-end">
+          {icon && <div className="mt-1">{icon}</div>}
+          <span>{part1}</span>
+        </div>
+        <div>.</div>
+        <div className="text-xl leading-[1.1] w-[56px] self-end">{part2}</div>
+      </div>
+    );
+  };
+
   return (
     <div className="w-full max-w-[24rem] m-auto">
       <CardBox>
@@ -38,16 +58,24 @@ export function VotingPowerPanel() {
               <div className="font-bold text-3xl leading-none text-breadgray-grey100 dark:text-breadgray-ultra-white">
                 {votingPower &&
                 votingPower.bread.status === "success" &&
-                votingPower.butteredBread.status === "success"
-                  ? formatBalance(
+                votingPower.butteredBread.status === "success" ? (
+                  renderFormattedDecimalNumber(
+                    formatBalance(
                       Number(
                         votingPower.bread.value +
                           votingPower.butteredBread.value
                       ) /
                         10 ** 18,
-                      3
-                    )
-                  : "-"}
+                      1
+                    ),
+                    <FistIcon bg="burnt" />
+                  )
+                ) : (
+                  <div className="flex items-center">
+                    <FistIcon bg="burnt" />
+                    <span className="ms-2">-</span>
+                  </div>
+                )}
               </div>
             </div>
             <div className="flex items-center gap-2 font-medium text-xs text-breadgray-rye dark:text-breadgray-grey">
@@ -71,7 +99,7 @@ export function VotingPowerPanel() {
               {votingPower && votingPower.butteredBread.status === "success"
                 ? formatBalance(
                     Number(votingPower.butteredBread.value) / 10 ** 18,
-                    3
+                    1
                   )
                 : "-"}
             </span>
@@ -81,7 +109,7 @@ export function VotingPowerPanel() {
             </p>
             <span className="text-right font-bold text-breadgray-grey100 dark:text-breadgray-white">
               {votingPower && votingPower.bread.status === "success"
-                ? formatBalance(Number(votingPower.bread.value) / 10 ** 18, 3)
+                ? formatBalance(Number(votingPower.bread.value) / 10 ** 18, 1)
                 : "-"}
             </span>
 
@@ -96,7 +124,7 @@ export function VotingPowerPanel() {
               vaultTokenBalance.butter.status === "success"
                 ? formatBalance(
                     Number(vaultTokenBalance.butter.value) / 10 ** 18,
-                    3
+                    0
                   )
                 : "-"}
             </span>
@@ -155,7 +183,7 @@ function PendingVotingPowerDisplay({ user }: { user: TUserConnected }) {
     currentAccumulatedVotingPowerData ? (
     formatBalance(
       Number(currentAccumulatedVotingPowerData) / 10 ** 18 / cycleLength.data,
-      3
+      1
     )
   ) : (
     <Elipsis />
