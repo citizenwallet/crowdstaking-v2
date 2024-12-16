@@ -1,17 +1,27 @@
 "use client";
+import { useEffect, useState } from "react";
 import { useConnectedUser } from "@/app/core/hooks/useConnectedUser";
 import { VaultPanel } from "./components/VaultPanel";
 import { VotingPowerPanel } from "./components/VotingPowerPanel";
 import { Accordion } from "@radix-ui/react-accordion";
-
 import { getConfig } from "@/chainConfig";
-import { PageGrid } from "../components/PageGrid";
+import useLocalStorage from "@/app/core/hooks/useLocalStorage";
 
 export function LPVotingPowerPage() {
   const { user } = useConnectedUser();
   const config = getConfig(
     user.status === "CONNECTED" ? user.chain.id : "DEFAULT"
   );
+  const [setLocalStorage, getLocalStorage] = useLocalStorage();
+
+  const [accordionState, setAccordionState] = useState(
+    getLocalStorage("lpAccordionValue")
+  );
+
+  // Update localStorage to persist the accordion state between renders
+  useEffect(() => {
+    setLocalStorage("lpAccordionValue", accordionState);
+  }, [accordionState]);
 
   return (
     <div className="w-full lg:max-w-[67rem] m-auto px-4 md:px-8 grid gap-4">
@@ -20,11 +30,16 @@ export function LPVotingPowerPage() {
           <TitleSection />
         </div>
         <VotingPowerPanel />
-      </div>
-      <div>
-        <Accordion type="single" collapsible>
-          <VaultPanel tokenAddress={config.BUTTER.address} />
-        </Accordion>
+        <div className="col-span-12">
+          <Accordion
+            value={accordionState}
+            onValueChange={setAccordionState}
+            type="single"
+            collapsible
+          >
+            <VaultPanel tokenAddress={config.BUTTER.address} />
+          </Accordion>
+        </div>
       </div>
     </div>
   );
