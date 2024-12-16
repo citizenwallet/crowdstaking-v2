@@ -52,10 +52,7 @@ export function VotingPowerPanel() {
           </h2>
           <div className="flex flex-col gap-2">
             <div className="flex gap-2 items-center">
-              <span className="size-6 flex rounded-full bg-white dark:bg-breadgray-charcoal">
-                <FistIcon />
-              </span>
-              <div className="font-bold text-3xl leading-none text-breadgray-grey100 dark:text-breadgray-ultra-white">
+              <div className="font-bold text-3xl w-full leading-none text-breadgray-grey100 dark:text-breadgray-ultra-white">
                 {votingPower &&
                 votingPower.bread.status === "success" &&
                 votingPower.butteredBread.status === "success" ? (
@@ -71,13 +68,14 @@ export function VotingPowerPanel() {
                     <FistIcon bg="burnt" />
                   )
                 ) : (
-                  <div className="flex items-center">
+                  <div className="flex justify-center items-center">
                     <FistIcon bg="burnt" />
                     <span className="ms-2">-</span>
                   </div>
                 )}
               </div>
             </div>
+
             <div className="flex items-center gap-2 font-medium text-xs text-breadgray-rye dark:text-breadgray-grey">
               <span className="pb-1">Accessible voting power</span>
               <Tooltip>

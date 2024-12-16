@@ -25,21 +25,23 @@ export function LPVotingPowerPage() {
 
   return (
     <div className="w-full lg:max-w-[67rem] m-auto px-4 md:px-8 grid gap-4">
-      <div className="flex gap-6 flex-col lg:flex-row">
+      <div className="flex flex-wrap gap-6">
         <div className="grow">
           <TitleSection />
         </div>
-        <VotingPowerPanel />
-        <div className="col-span-12">
-          <Accordion
-            value={accordionState}
-            onValueChange={setAccordionState}
-            type="single"
-            collapsible
-          >
-            <VaultPanel tokenAddress={config.BUTTER.address} />
-          </Accordion>
+        <div className="grow">
+          <VotingPowerPanel />
         </div>
+      </div>
+      <div className="w-full">
+        <Accordion
+          value={accordionState}
+          onValueChange={setAccordionState}
+          type="single"
+          collapsible
+        >
+          <VaultPanel tokenAddress={config.BUTTER.address} />
+        </Accordion>
       </div>
     </div>
   );
