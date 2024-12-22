@@ -11,6 +11,7 @@ import { useVotingPower } from "../../context/VotingPowerContext";
 import { formatBalance } from "@/app/core/util/formatter";
 import { useCurrentAccumulatedVotingPower } from "../../useCurrentAccumulatedVotingPower";
 import Elipsis from "@/app/core/components/Elipsis";
+import { useTokenBalances } from "@/app/core/context/TokenBalanceContext/TokenBalanceContext";
 
 import { useCycleLength } from "../../useCycleLength";
 import { useVaultTokenBalance } from "../context/VaultTokenBalanceContext";
@@ -23,6 +24,7 @@ export function VotingPowerPanel() {
   const votingPower = useVotingPower();
   const vaultTokenBalance = useVaultTokenBalance();
   const { data: distributions } = useDistributions();
+  const { BREAD } = useTokenBalances();
 
   const renderFormattedDecimalNumber = (
     number: string,
@@ -87,7 +89,11 @@ export function VotingPowerPanel() {
 
           {/* voting power grid */}
           <div className="w-full grid grid-cols-[repeat(2, max-content)] gap-3">
-            <Divider />
+            {user.status === "CONNECTED" ? (
+              <DividerWithText text="Breakdown" />
+            ) : (
+              <Divider />
+            )}
 
             <p className="text-breadgray-rye dark:text-breadgray-grey">
               Voting power from locked LP
@@ -110,8 +116,11 @@ export function VotingPowerPanel() {
                 ? formatBalance(Number(votingPower.bread.value) / 10 ** 18, 1)
                 : "-"}
             </span>
-
-            <Divider />
+            {user.status === "CONNECTED" ? (
+              <DividerWithText text="Source(s)" />
+            ) : (
+              <Divider />
+            )}
 
             <p className="text-breadgray-rye dark:text-breadgray-grey">
               Total locked LP tokens
@@ -127,18 +136,40 @@ export function VotingPowerPanel() {
                 : "-"}
             </span>
 
-            {user.status === "CONNECTED" ? (
+            {user.status === "CONNECTED" && (
               <>
                 <p className="text-breadgray-rye dark:text-breadgray-grey">
-                  Pending voting power
+                  Total $BREAD baked
                 </p>
 
-                <span className="text-right font-bold text-breadgray-rye dark:text-breadgray-grey">
+                <span className="font-bold text-breadgray-grey100 dark:text-breadgray-white text-right">
+                  {BREAD && BREAD.status === "SUCCESS"
+                    ? formatBalance(parseFloat(BREAD.value), 2)
+                    : "-"}
+                </span>
+              </>
+            )}
+
+            {user.status === "CONNECTED" ? (
+              <>
+                <DividerWithText text="Future voting power" />
+
+                <p className="text-breadgray-rye dark:text-breadgray-grey">
+                  <div className="flex items-center gap-2">
+                    <span className="pb-1">Pending voting power</span>
+                    <Tooltip>
+                      The voting power you will receive in the next voting
+                      cycle.
+                    </Tooltip>
+                  </div>
+                </p>
+
+                <span className="text-right w-10 font-bold text-breadgray-rye dark:text-breadgray-grey">
                   <PendingVotingPowerDisplay user={user} />
                 </span>
               </>
             ) : (
-              <div className="col-span-2">
+              <div className="col-span-2 pt-3">
                 <AccountMenu size="large" fullWidth>
                   Connect
                 </AccountMenu>
@@ -158,6 +189,18 @@ export function VotingPowerPanel() {
           </a>
         </div>
       </CardBox>
+    </div>
+  );
+}
+
+function DividerWithText({ text }: { text: string }) {
+  return (
+    <div className="flex col-span-2 py-2 h-[1px] items-center">
+      <div className="flex-1 border-t border-breadgray-light-grey dark:border-breadgray-rye"></div>
+      <span className="px-2 whitespace-nowrap font-medium text-xs text-breadgray-grey dark:text-breadgray-rye">
+        {text}
+      </span>
+      <div className="flex-1 border-t border-breadgray-light-grey dark:border-breadgray-rye"></div>
     </div>
   );
 }
