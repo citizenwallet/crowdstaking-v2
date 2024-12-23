@@ -71,7 +71,7 @@ function RadioInput({
       <label
         htmlFor={name}
         className={clsx(
-          "col-start-1 row-start-1 rounded-full text-lg border dark:border-[#00000000] font-bold py-2 flex gap-4 px-8 items-end justify-center leading-none text-breadgray-rye transition-colors",
+          "col-start-1 row-start-1 rounded-full text-lg border dark:border-[#00000000] font-bold py-2 flex gap-4 px-8 items-end justify-center leading-none text-breadgray-rye cursor-pointer transition-colors",
           isSelected
             ? "border-breadviolet-shaded dark:border-breadpink-300 text-breadpink-300 bg-breadpink-700 bg-opacity-10"
             : "z-30 bg-breadgray-light-grey dark:text-breadgray-light-grey hover:bg-breadpink-700/10 hover:border-breadpink-700/10 hover:text-breadpink-300 bg-opacity-30"
@@ -85,7 +85,7 @@ function RadioInput({
         id={name}
         name="vault-transaction-type"
         value={name}
-        className="col-start-1 row-start-1 opacity-0 cursor-pointer"
+        className="col-start-1 row-start-1 opacity-0"
         onChange={setTransactionType}
       />
     </div>

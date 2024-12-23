@@ -46,7 +46,7 @@ export function VotingPowerPanel() {
   };
 
   return (
-    <div className="w-full md:max-w-[24rem] m-auto">
+    <div className="w-full md:w-[380px] m-auto">
       <CardBox>
         <div className="p-4 flex flex-col items-center gap-4">
           <h2 className="font-medium text-xl leading-none dark:text-breadgray-light-grey">
@@ -81,7 +81,7 @@ export function VotingPowerPanel() {
             <div className="flex items-center gap-2 font-medium text-xs text-breadgray-rye dark:text-breadgray-grey">
               <span className="pb-1">Accessible voting power</span>
               <Tooltip>
-                Your total available voting power for voting cycle #
+                Your total available voting power for the current voting cycle #
                 {distributions ? distributions.length + 1 + "." : "-"}
               </Tooltip>
             </div>
@@ -89,11 +89,7 @@ export function VotingPowerPanel() {
 
           {/* voting power grid */}
           <div className="w-full grid grid-cols-[repeat(2, max-content)] gap-3">
-            {user.status === "CONNECTED" ? (
-              <DividerWithText text="Breakdown" />
-            ) : (
-              <Divider />
-            )}
+            <DividerWithText text="Breakdown" />
 
             <p className="text-breadgray-rye dark:text-breadgray-grey">
               Voting power from locked LP
@@ -116,11 +112,7 @@ export function VotingPowerPanel() {
                 ? formatBalance(Number(votingPower.bread.value) / 10 ** 18, 1)
                 : "-"}
             </span>
-            {user.status === "CONNECTED" ? (
-              <DividerWithText text="Source(s)" />
-            ) : (
-              <Divider />
-            )}
+            <DividerWithText text="Source(s)" />
 
             <p className="text-breadgray-rye dark:text-breadgray-grey">
               Total locked LP tokens
@@ -168,6 +160,12 @@ export function VotingPowerPanel() {
                   <PendingVotingPowerDisplay user={user} />
                 </span>
               </>
+            ) : (
+              <></>
+            )}
+
+            {user.status === "CONNECTED" ? (
+              <></>
             ) : (
               <div className="col-span-2 pt-3">
                 <AccountMenu size="large" fullWidth>
