@@ -4,35 +4,39 @@ import clsx from "clsx";
 import { ReactNode } from "react";
 import { formatBalance } from "@/app/core/util/formatter";
 
-export function LockVPRate({ value }: { value: bigint }) {
+export function LockVPRate({
+  value,
+  status,
+}: {
+  value: bigint;
+  status: string;
+}) {
   const tokenAmount = formatBalance(Number(formatUnits(value, 18)), 0);
   const vpAmount = tokenAmount;
 
   return (
     <VPRateGrid>
-      <LeftLabel>
-        <TextLabel>Locked LP tokens</TextLabel>
-      </LeftLabel>
-      <RightLabel>
-        <TextLabel>Voting Power</TextLabel>
-      </RightLabel>
-
-      <LeftValueDisplay>
-        <div className="dark:bg-breadgray-burnt rounded-full flex gap-2 items-center px-2 py-1">
-          <img src="/wxdai_bread_lp_icon.png" alt="wxdai bread lp token icon" />
+      {status !== "success" && (
+        <>
+          <LpLabel />
+          {/* empty div for column spacing */}
+          <div className="w-12"></div>
+          <VpLabel />
+        </>
+      )}
+      <ValueDisplay>
+        <PillContainer>
+          <WXDaiBreadIcon />
           <ValueText>{tokenAmount}</ValueText>
-        </div>
-      </LeftValueDisplay>
+        </PillContainer>
+      </ValueDisplay>
       <EqualityIcon />
-
-      <RightValueDisplay>
-        <div className="dark:bg-breadgray-burnt rounded-full flex gap-2 items-center px-2 py-1">
-          <div className="size-6 rounded-full dark:bg-breadgray-toast">
-            <FistIcon />
-          </div>
-          <ValueText>~ {vpAmount}</ValueText>
-        </div>
-      </RightValueDisplay>
+      <ValueDisplay>
+        <PillContainer>
+          <FistIcon />
+          <ValueText>{vpAmount}</ValueText>
+        </PillContainer>
+      </ValueDisplay>
     </VPRateGrid>
   );
 }
@@ -43,36 +47,30 @@ export function UnlockVPRate({ value }: { value: bigint }) {
 
   return (
     <VPRateGrid>
-      <LeftLabel>
-        <TextLabel>Voting Power</TextLabel>
-      </LeftLabel>
-      <RightLabel>
-        <TextLabel>Locked LP tokens</TextLabel>
-      </RightLabel>
-
-      <LeftValueDisplay>
+      <VpLabel />
+      {/* empty div for column spacing */}
+      <div className="w-12"></div>
+      <LpLabel />
+      <ValueDisplay>
         <PillContainer>
-          <div className="size-6 rounded-full dark:bg-breadgray-toast">
-            <FistIcon />
-          </div>
-          <ValueText>~ {vpAmount}</ValueText>
+          <FistIcon />
+          <ValueText>{vpAmount}</ValueText>
         </PillContainer>
-      </LeftValueDisplay>
+      </ValueDisplay>
       <EqualityIcon />
-
-      <RightValueDisplay>
+      <ValueDisplay>
         <PillContainer>
           <WXDaiBreadIcon />
           <ValueText>{tokenAmount}</ValueText>
         </PillContainer>
-      </RightValueDisplay>
+      </ValueDisplay>
     </VPRateGrid>
   );
 }
 
 function VPRateGrid({ children }: { children: ReactNode }) {
   return (
-    <div className="w-full grid gap-y-1 grid-cols-[1fr_2rem_1fr] grid-rows-[auto_1fr]">
+    <div className="grid grid-cols-3 gap-2 items-center justify-center">
       {children}
     </div>
   );
@@ -85,36 +83,34 @@ function TextLabel({ children }: { children: ReactNode }) {
   );
 }
 
-function LeftLabel({ children }: { children: ReactNode }) {
+function LpLabel() {
   return (
-    <div className="col-span-1 row-span-1 row-start-1 flex justify-end">
-      <TextLabel>{children}</TextLabel>
+    <div className="col-span-1 row-span-1 row-start-1 justify-center flex">
+      <TextLabel>Locked LP tokens</TextLabel>
     </div>
   );
 }
 
-function RightLabel({ children }: { children: ReactNode }) {
+function VpLabel() {
   return (
-    <div className={clsx("col-span-1 row-span-1 col-start-3 row-start-1 flex")}>
-      <TextLabel>{children}</TextLabel>
+    <div className="col-span-1 row-span-1 col-start-3 row-start-1 justify-center flex">
+      <TextLabel>Voting Power</TextLabel>
     </div>
   );
 }
 
 function EqualityIcon() {
   return (
-    <div className="row-start-2 col-start-2 flex items-center justify-center">
-      =
+    <div className="m-auto">
+      <div className="mx-auto text-breadgray-grey text-3xl">=</div>
     </div>
   );
 }
 
-function LeftValueDisplay({ children }: { children: ReactNode }) {
-  return <div className="row-start-2 flex justify-end">{children}</div>;
-}
-
-function RightValueDisplay({ children }: { children: ReactNode }) {
-  return <div className="row-start-2 col-start-3 flex">{children}</div>;
+function ValueDisplay({ children }: { children: ReactNode }) {
+  return (
+    <div className="inline-flex w-full  gap-2 items-center">{children}</div>
+  );
 }
 
 export function WXDaiBreadIcon() {
@@ -136,7 +132,7 @@ export function WXDaiBreadIcon() {
 
 export function PillContainer({ children }: { children: ReactNode }) {
   return (
-    <div className="dark:bg-breadgray-burnt rounded-full flex gap-2 items-center px-2 py-1">
+    <div className="dark:bg-breadgray-burnt rounded-full w-full flex gap-2 items-center px-2 py-1">
       {children}
     </div>
   );
@@ -144,7 +140,7 @@ export function PillContainer({ children }: { children: ReactNode }) {
 
 export function ValueText({ children }: { children: ReactNode }) {
   return (
-    <div className="text-xl font-semibold dark:text-breadgray-ultra-white">
+    <div className="text-xl m-auto font-semibold dark:text-breadgray-ultra-white">
       {children}
     </div>
   );

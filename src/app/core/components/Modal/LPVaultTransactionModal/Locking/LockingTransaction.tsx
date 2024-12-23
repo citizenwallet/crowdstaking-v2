@@ -68,52 +68,57 @@ export function LockingTransaction({
             Press ‘Confirm transaction’ to allow LP tokens to be locked.
           </StatusMessage>
         )}
-        <div className="flex flex-col gap-2">
-          <TransactionStage
-            status={
-              !lockingState.status.includes("allowance_transaction")
-                ? "success"
-                : "pending"
-            }
-          >
-            1. Token allowance
-          </TransactionStage>
-          <StatusMessageSmall>
-            {lockingState.status === "allowance_transaction_idle" &&
-              "Please confirm the transaction"}
-            {lockingState.status === "allowance_transaction_submitted" &&
-              "Confirm the transaction..."}
-            {lockingState.status.includes("deposit") &&
-              "Token allowance granted!"}
-          </StatusMessageSmall>
+        <div className="flex flex-col md:flex-row gap-4 md:gap-20">
+          <div className="flex flex-col gap-2 flex-1">
+            <TransactionStage
+              status={
+                !lockingState.status.includes("allowance_transaction")
+                  ? "success"
+                  : "pending"
+              }
+            >
+              <span className="whitespace-nowrap">1. Token allowance</span>
+            </TransactionStage>
+            <StatusMessageSmall>
+              {lockingState.status === "allowance_transaction_idle" &&
+                "Please confirm the transaction"}
+              {lockingState.status === "allowance_transaction_submitted" &&
+                "Confirm the transaction..."}
+              {lockingState.status.includes("deposit") &&
+                "Token allowance granted!"}
+            </StatusMessageSmall>
+          </div>
+          <div className="flex flex-col gap-2 flex-1">
+            <TransactionStage
+              status={
+                !lockingState.status.includes("deposit_transaction")
+                  ? "disabled"
+                  : lockingState.status === "deposit_transaction_confirmed"
+                  ? "success"
+                  : "pending"
+              }
+            >
+              2. Token locking
+            </TransactionStage>
+            <StatusMessageSmall>
+              {lockingState.status.includes("allowance") &&
+                "Waiting for next action..."}
+              {lockingState.status === "deposit_transaction_idle" &&
+                "Lock your LP tokens"}
+              {lockingState.status === "deposit_transaction_submitted" &&
+                "Locking your LP tokens..."}
+              {lockingState.status === "deposit_transaction_confirmed" &&
+                formatUnits(lockingState.depositAmount, 18) +
+                  " LP tokens successfully locked!"}
+            </StatusMessageSmall>
+          </div>
         </div>
 
-        <div className="flex flex-col gap-2 justify-center items-center">
-          <TransactionStage
-            status={
-              !lockingState.status.includes("deposit_transaction")
-                ? "disabled"
-                : lockingState.status === "deposit_transaction_confirmed"
-                ? "success"
-                : "pending"
-            }
-          >
-            2. Token locking
-          </TransactionStage>
-          <StatusMessageSmall>
-            {lockingState.status.includes("allowance") &&
-              "Waiting for next action..."}
-            {lockingState.status === "deposit_transaction_idle" &&
-              "Lock your LP tokens"}
-            {lockingState.status === "deposit_transaction_submitted" &&
-              "Locking your LP tokens..."}
-            {lockingState.status === "deposit_transaction_confirmed" &&
-              formatUnits(lockingState.depositAmount, 18) +
-                " LP tokens successfully locked!"}
-          </StatusMessageSmall>
-        </div>
         {lockingState.status !== "deposit_transaction_confirmed" && (
-          <LockVPRate value={lockingState.depositAmount} />
+          <LockVPRate
+            value={lockingState.depositAmount}
+            status={lockingState.status}
+          />
         )}
         {(() => {
           if (lockingState.status === "loading") {
