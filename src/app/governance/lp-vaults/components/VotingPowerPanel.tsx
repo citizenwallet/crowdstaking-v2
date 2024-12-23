@@ -164,7 +164,7 @@ export function VotingPowerPanel() {
                   </div>
                 </p>
 
-                <span className="text-right w-10 font-bold text-breadgray-rye dark:text-breadgray-grey">
+                <span className="text-right w-32 font-bold text-breadgray-rye dark:text-breadgray-grey">
                   <PendingVotingPowerDisplay user={user} />
                 </span>
               </>
@@ -207,7 +207,7 @@ function DividerWithText({ text }: { text: string }) {
 
 function Divider() {
   return (
-    <div className="col-span-2 h-[1px]  bg-breadgray-light-grey dark:bg-breadgray-rye" />
+    <div className="col-span-2 h-[1px] bg-breadgray-light-grey dark:bg-breadgray-rye" />
   );
 }
 
