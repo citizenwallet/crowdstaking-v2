@@ -60,22 +60,16 @@ export function GradientLinkBadge({
 }) {
   return (
     <GradientBorder borderWidth={2}>
-      <div
-        className="hover:text-breadviolet-shaded dark:hover:text-breadpink-shaded
-       cursor-pointer transition-all flex items-center gap-2 rounded-full
-        py-[6px] px-3 bg-breadgray-ultra-white dark:bg-breadgray-charcoal dark:bg-opacity-100"
-      >
+      <div className="hover:text-breadviolet-shaded dark:hover:text-breadpink-shaded cursor-pointer transition-all flex items-center gap-2 rounded-full py-[6px] px-3 bg-breadgray-ultra-white dark:bg-breadgray-charcoal">
         <ExternalLink href={href}>
           <div className="flex items-center gap-2">
             {icon}
             <span className="dark:text-white text-breadgray-grey100">
               {children}
             </span>
+            <LinkIcon />
           </div>
         </ExternalLink>
-        <span id="linkIcon" className="ml-auto">
-          <LinkIcon />
-        </span>
       </div>
     </GradientBorder>
   );
