@@ -15,7 +15,7 @@ export const ModalContainer = forwardRef(
     return (
       <div
         ref={ref}
-        className="h-screen fixed w-screen top-0 p-2 flex justify-center items-center z-40 pointer-events-none"
+        className="h-screen fixed w-screen top-0 p-2 flex justify-center items-center z-50 pointer-events-none"
         {...props}
       >
         <motion.section

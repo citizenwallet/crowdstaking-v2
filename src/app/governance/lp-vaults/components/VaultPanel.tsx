@@ -326,6 +326,11 @@ export function VaultPanel({ tokenAddress }: { tokenAddress: Hex }) {
                   }}
                   disabled={
                     (transactionType === "LOCK" && !(Number(inputValue) > 0)) ||
+                    (transactionType === "LOCK" &&
+                      !(
+                        Number(inputValue) <=
+                        Number(formatUnits(lpTokenBalance.data as bigint, 18))
+                      )) ||
                     (transactionType === "UNLOCK" &&
                       vaultTokenBalance?.butter.status === "success" &&
                       !(Number(vaultTokenBalance?.butter.value) > 0))
