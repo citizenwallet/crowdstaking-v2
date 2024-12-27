@@ -14,6 +14,7 @@ import {
   useModal,
 } from "@/app/core/context/ModalContext";
 import { getConfig } from "@/chainConfig";
+import { useIsMobile } from "@/app/core/hooks/useIsMobile";
 
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { withdrawReducer } from "./withdrawReducer";
@@ -37,6 +38,7 @@ export function WithdrawTransaction({
   const { transactionsState, transactionsDispatch } = useTransactions();
   const { setModal } = useModal();
   const [isWalletOpen, setIsWalletOpen] = useState(false);
+  const isMobile = useIsMobile();
   const chainConfig = getConfig(user.chain.id);
   const [withdrawState, withdrawDispatch] = useReducer(withdrawReducer, {
     status: "idle",
@@ -151,7 +153,7 @@ export function WithdrawTransaction({
                   onClick={() => {
                     setModal(null);
                   }}
-                  fullWidth
+                  fullWidth={isMobile}
                 >
                   Return to vault page
                 </Button>
@@ -159,7 +161,7 @@ export function WithdrawTransaction({
             );
           if (withdrawState.status === "submitted")
             return (
-              <Button onClick={() => {}} fullWidth disabled>
+              <Button onClick={() => {}} fullWidth={isMobile} disabled>
                 Unlocking...
               </Button>
             );
@@ -171,7 +173,7 @@ export function WithdrawTransaction({
                 contractWriteWrite();
               }}
               disabled={isWalletOpen}
-              fullWidth
+              fullWidth={isMobile}
             >
               Unlock LP tokens
             </Button>
@@ -192,11 +194,13 @@ function UnlockingSuccess({
   const tokenAmount = formatUnits(value, 18);
 
   return (
-    <div className="w-full rounded-xl border-2 border-status-success p-6 flex flex-col items-center gap-4">
-      <PillContainer>
-        <WXDaiBreadIcon />
-        <ValueText>{tokenAmount} LP TOKENS</ValueText>
-      </PillContainer>
+    <div className="w-full rounded-xl border-2 border-status-success md:mx-24 p-6 flex flex-col items-center gap-4">
+      <div className="w-auto">
+        <PillContainer>
+          <WXDaiBreadIcon />
+          <ValueText>{tokenAmount} LP TOKENS</ValueText>
+        </PillContainer>
+      </div>
       <p className="text-center">Successfully unlocked!</p>
       <ExternalLink href={explorerLink}>
         <div className="text-breadpink-shaded font-medium text-sm flex items-center gap-2">

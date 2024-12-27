@@ -23,7 +23,7 @@ export const ModalContainer = forwardRef(
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 8, opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="max-w-[28rem] flex flex-col items-center rounded-t-2xl dark:bg-opacity-100 p-6 bg-breadgray-ultra-white dark:bg-breadgray-charcoal relative pointer-events-auto"
+          className="max-w-[28rem] md:max-w-[40rem] flex flex-col items-center rounded-2xl dark:bg-opacity-100 p-6 bg-breadgray-ultra-white dark:bg-breadgray-charcoal relative pointer-events-auto"
         >
           <DialogPrimitiveClose className="absolute top-0 right-0 size-16 p-4 pt-5">
             <CloseIcon />
@@ -39,8 +39,8 @@ ModalContainer.displayName = "LPModalContainer";
 
 export function ModalHeading({ children }: { children: ReactNode }) {
   return (
-    <div className="w-full flex items-center">
-      <h2 className="pr-2 pb-3 leading-normal text-breadgray-burnt dark:text-breadgray-light-grey font-bold">
+    <div className="w-full md:w-auto flex items-center">
+      <h2 className="pr-2 pb-3 leading-normal text-breadgray-burnt dark:text-breadgray-light-grey font-bold text-left md:text-center">
         {children}
       </h2>
     </div>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useContractWrite, usePrepareContractWrite } from "wagmi";
 
 import Button from "@/app/core/components/Button";
+import { useIsMobile } from "@/app/core/hooks/useIsMobile";
 import { TUserConnected } from "@/app/core/hooks/useConnectedUser";
 import { LockingAllowance, LockingEvent } from "./lockingReducer";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
@@ -20,6 +21,7 @@ export function IncreaseAllowance({
   const { transactionsDispatch, transactionsState } = useTransactions();
   const [isWalletOpen, setIsWalletOpen] = useState(false);
   const chainConfig = getConfig(user.chain.id);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     transactionsDispatch({
@@ -89,7 +91,7 @@ export function IncreaseAllowance({
 
   if (lockingState.status === "allowance_transaction_submitted") {
     return (
-      <Button onClick={() => {}} fullWidth disabled>
+      <Button onClick={() => {}} fullWidth={isMobile} disabled>
         Confirming...
       </Button>
     );
@@ -107,7 +109,7 @@ export function IncreaseAllowance({
         setIsWalletOpen(true);
       }}
       disabled={isWalletOpen}
-      fullWidth
+      fullWidth={isMobile}
     >
       Confirm transaction
     </Button>
