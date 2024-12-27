@@ -89,7 +89,11 @@ export default function FAQ() {
               <ExternalLink href="https://breadchain.xyz">
                 home page
               </ExternalLink>{" "}
-              or public Notion.
+              or{" "}
+              <ExternalLink href="https://breadchain.notion.site/4d496b311b984bd9841ef9c192b9c1c7?v=2eb1762e6b83440f8b0556c9917f86ca&pvs=74">
+                public Notion
+              </ExternalLink>
+              .
             </p>
             <p>
               All you need is an Ethereum wallet with xDAI on{" "}
@@ -126,7 +130,11 @@ export default function FAQ() {
             </p>
             <p>
               To learn more about how we govern the disbursement of yield, check
-              out this page in our public Notion.
+              out{" "}
+              <ExternalLink href="https://breadchain.notion.site/Yield-Governance-d3ac44ac679c4756a18e27e5ec0696d5?pvs=74">
+                this page
+              </ExternalLink>{" "}
+              in our public Notion.
             </p>
           </AccordionContent>
         </AccordionItem>
