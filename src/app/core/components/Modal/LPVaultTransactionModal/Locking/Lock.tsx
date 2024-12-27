@@ -8,6 +8,7 @@ import { useContractWrite, usePrepareContractWrite } from "wagmi";
 import { BUTTERED_BREAD_ABI } from "@/abi";
 import { useModal } from "@/app/core/context/ModalContext";
 import { formatUnits } from "viem";
+import { useIsMobile } from "@/app/core/hooks/useIsMobile";
 
 import { LinkIcon } from "../../../Icons/LinkIcon";
 import { LockVPRate } from "../VPRate";
@@ -26,6 +27,7 @@ export function Lock({
   const [isWalletOpen, setIsWalletOpen] = useState(false);
   const chainConfig = getConfig(user.chain.id);
   const { setModal } = useModal();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     transactionsDispatch({
@@ -100,6 +102,7 @@ export function Lock({
       <>
         <LockSuccess
           value={lockingState.depositAmount}
+          status={contractWriteStatus}
           explorerLink={`${chainConfig.EXPLORER}/tx/${lockingState.txHash}`}
         />
         <Button
@@ -107,7 +110,7 @@ export function Lock({
             setModal(null);
           }}
           disabled={isWalletOpen}
-          fullWidth
+          fullWidth={isMobile}
         >
           Return to vault page
         </Button>
@@ -121,7 +124,7 @@ export function Lock({
 
   if (lockingState.status === "deposit_transaction_submitted") {
     return (
-      <Button onClick={() => {}} disabled fullWidth>
+      <Button onClick={() => {}} disabled fullWidth={isMobile}>
         Locking...
       </Button>
     );
@@ -135,7 +138,7 @@ export function Lock({
         contractWriteWrite();
       }}
       disabled={isWalletOpen}
-      fullWidth
+      fullWidth={isMobile}
     >
       Lock LP Tokens
     </Button>
@@ -144,22 +147,24 @@ export function Lock({
 
 function LockSuccess({
   value,
+  status,
   explorerLink,
 }: {
   value: bigint;
+  status: string;
   explorerLink: string;
 }) {
   const tokenAmount = formatUnits(value, 18);
   const vpAmount = tokenAmount;
 
   return (
-    <div className="rounded-xl border-2 border-status-success p-6 flex flex-col items-center gap-4">
+    <div className="rounded-xl md:mx-20 border-2 border-status-success p-[20px] flex flex-col items-center gap-4">
       <p className="text-center">
         You successfully locked <strong>{tokenAmount} LP tokens</strong>. In the
         next voting cycles you will have a{" "}
         <strong>voting power of {vpAmount}</strong>.
       </p>
-      <LockVPRate value={value} />
+      <LockVPRate value={value} status={status} />
       <p className="text-status-warning text-xs text-center">
         You can unlock your LP tokens anytime.
       </p>
