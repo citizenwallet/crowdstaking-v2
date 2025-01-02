@@ -78,4 +78,15 @@ export const projectsMeta: {
         "https://breadchain.notion.site/Breadchain-Core-208dcd81c6da49d1b1b00635f727d902",
     },
   },
+  "0x68060388C7D97B4bF779a2Ead46c86e5588F073f": {
+    name: "ReFi DAO",
+    order: 7,
+    description:
+      "Developing strategic services and public goods for the Regenerative Finance (ReFi) ecosystem.",
+    logoSrc: "project/refi_dao.png",
+    links: {
+      notion:
+        "https://breadchain.notion.site/ReFi-DAO-1540ad9b1279805bb54de4ffd0d5d52d",
+    },
+  },
 };
