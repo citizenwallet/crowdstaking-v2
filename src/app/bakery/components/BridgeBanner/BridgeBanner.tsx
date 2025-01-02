@@ -1,8 +1,7 @@
 import { GnosisIcon } from "@/app/core/components/Icons/TokenIcons";
 import Image from "next/image";
 
-const jumpLink =
-  "https://jumper.exchange/?fromChain=100&toChain=100&toToken=0x0000000000000000000000000000000000000000";
+const jumpLink = "https://app.debridge.finance/?outputChain=100";
 
 const renderGnosisLogo = () => {
   return (
