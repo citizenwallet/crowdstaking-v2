@@ -58,7 +58,7 @@ export const projectsMeta: {
   },
   "0x918dEf5d593F46735f74F9E2B280Fe51AF3A99ad": {
     name: "Breadchain Core",
-    order: 5,
+    order: 6,
     description:
       "The core team developing the tech and design used by Breadchain.",
     logoSrc: "project/core.png",
@@ -69,7 +69,7 @@ export const projectsMeta: {
   },
   "0x6A148b997e6651237F2fCfc9E30330a6480519f0": {
     name: "Breadchain Treasury",
-    order: 6,
+    order: 7,
     description:
       "A co-owned treasury in Breadchain used for grants and sponsorships.",
     logoSrc: "project/treasury.png",
@@ -80,7 +80,7 @@ export const projectsMeta: {
   },
   "0x68060388C7D97B4bF779a2Ead46c86e5588F073f": {
     name: "ReFi DAO",
-    order: 7,
+    order: 5,
     description:
       "Developing strategic services and public goods for the Regenerative Finance (ReFi) ecosystem.",
     logoSrc: "project/refi_dao.png",
