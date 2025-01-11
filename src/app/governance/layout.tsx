@@ -87,7 +87,7 @@ function NavLink({
       className={clsx(
         "flex flex-row items-center gap-2 dark:text-breadgray-ultra-white transition-all font-semibold",
         currentPath !== props.href &&
-          "opacity-50 dark:hover:text-breadpink-shaded hover:text-breadpink-500 hover:opacity-100"
+          "opacity-50 dark:hover:text-breadgray-ultra-white hover:text-breadpink-500 hover:opacity-100"
       )}
     >
       {children}
