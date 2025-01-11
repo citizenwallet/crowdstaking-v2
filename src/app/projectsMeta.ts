@@ -81,8 +81,7 @@ export const projectsMeta: {
   "0x68060388C7D97B4bF779a2Ead46c86e5588F073f": {
     name: "ReFi DAO",
     order: 5,
-    description:
-      "Developing strategic services and public goods for the Regenerative Finance (ReFi) ecosystem.",
+    description: "Global network driving the Regenerative Finance movement.",
     logoSrc: "project/refi_dao.png",
     links: {
       notion:
