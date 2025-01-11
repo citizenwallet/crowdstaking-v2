@@ -58,12 +58,29 @@ function TitleSection() {
       <h1 className="font-bold text-2xl text-breadgray-grey100 dark:text-breadgray-ultra-white">
         Voting Power LP Vaults
       </h1>
-      <p className="text-breadgray-rye dark:text-breadgray-grey max-w-xl">
-        Lock your LP tokens in the vault(s) below to receive voting power and
-        participate in Breadchain Cooperative governance voting cycles. When
-        locking your LP tokens you receive voting power for the next voting
-        cycle.
-      </p>
+      <div className="max-w-xl text-breadgray-rye dark:text-breadgray-grey">
+        <p className=" ">
+          This page lets you provide liquidity for BREAD while maintaining your
+          voting power for governing the monthly BREAD crowdstaking yield
+          distribution. By staking your LP tokens into a vault, you still get
+          your voting power as if you are holding BREAD normally.
+        </p>
+        <h4 className="mt-4 mb-2 font-bold">Get Started:</h4>
+        <ol className="list-decimal ml-4">
+          <li>
+            <b>Provide Liquidity:</b> Add liquidity for BREAD on the listed
+            liquidity pool of the vault to receive LP tokens.
+          </li>
+          <li>
+            <b>Stake Your LP Tokens:</b> Deposit your LP tokens into the vault
+            to retain your governance rights.
+          </li>
+          <li>
+            <b>Participate in Governance:</b> Share your preferences for the
+            monthly distribution on the vote page.
+          </li>
+        </ol>
+      </div>
     </div>
   );
 }
