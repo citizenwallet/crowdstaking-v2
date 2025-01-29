@@ -4,16 +4,31 @@ import { projectsMeta } from "@/app/projectsMeta";
 import { formatVotePercentage } from "@/app/core/util/formatter";
 import { CurrentVotingDistributionState } from "../useCurrentVotingDistribution";
 import { CardBox } from "@/app/core/components/CardBox";
+import { useMemo } from "react";
 
 export function ResultsPanel({
   distribution,
 }: {
   distribution: CurrentVotingDistributionState;
 }) {
-  const totalPoints =
-    distribution.status === "SUCCESS"
-      ? distribution.data[1].reduce((acc, points) => acc + points, 0)
-      : 0;
+  const distributionsSorted = useMemo(() => {
+    if (distribution.status !== "SUCCESS") return null;
+    const distributions = distribution.data[0]
+      .map((address, i) => {
+        return { [address]: distribution.data[1][i] };
+      })
+      .toSorted((a, b) => {
+        return (
+          projectsMeta[Object.keys(a)[0] as Hex].order -
+          projectsMeta[Object.keys(b)[0] as Hex].order
+        );
+      });
+    const totalPoints = distribution.data[1].reduce(
+      (acc, points) => acc + points,
+      0
+    );
+    return { distributions, totalPoints };
+  }, [distribution]);
 
   return (
     <section className="grid grid-cols-1 gap-4">
@@ -24,19 +39,15 @@ export function ResultsPanel({
               results
             </h3>
             <div className="grid grid-cols-1 gap-4">
-              {distribution.status === "SUCCESS" &&
-                distribution.data[0]
-                  .toSorted(
-                    (a, b) => projectsMeta[a].order - projectsMeta[b].order
-                  )
-                  .map((account, i) => (
-                    <ResultsProject
-                      key={`project_result_${account}`}
-                      address={account}
-                      projectPoints={distribution.data[1][i]}
-                      totalPoints={totalPoints}
-                    />
-                  ))}
+              {distributionsSorted &&
+                distributionsSorted.distributions.map((project) => (
+                  <ResultsProject
+                    key={`project_result_${Object.keys(project)[0]}`}
+                    address={Object.keys(project)[0] as Hex}
+                    projectPoints={project[Object.keys(project)[0]]}
+                    totalPoints={distributionsSorted.totalPoints}
+                  />
+                ))}
             </div>
           </div>
         </div>
