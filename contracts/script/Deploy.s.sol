@@ -28,11 +28,13 @@ contract Deploy is Script {
     uint256 _precision = 1000000000000000000;
     uint256 _yieldFixedSplitDivisor = 2;
     address[] projects = [
-        address(0x7E1367998e1fe8Fab8f0bbF41e97cD6E0C891B64),
-        address(0x5405e2D4D12AAdB57579E780458c9a1151b560F1),
-        address(0x5c22B3F03b3d8FFf56C9B2e90151512Cb3F3dE0F),
-        address(0x6A148b997e6651237F2fCfc9E30330a6480519f0),
-        address(0x918dEf5d593F46735f74F9E2B280Fe51AF3A99ad)
+        address(0x7E1367998e1fe8Fab8f0bbF41e97cD6E0C891B64), // labour dao
+        address(0x5405e2D4D12AAdB57579E780458c9a1151b560F1), // symbiota
+        address(0x5c22B3F03b3d8FFf56C9B2e90151512Cb3F3dE0F), // CCA
+        address(0x6A148b997e6651237F2fCfc9E30330a6480519f0), // Treasury
+        address(0x918dEf5d593F46735f74F9E2B280Fe51AF3A99ad), // Core
+        address(0x9c8C8513974d22E8eA9F74f2860833Db107111E6), // Citizen Wallet
+        address(0x68060388C7D97B4bF779a2Ead46c86e5588F073f) // Refi
     ];
 
     function run() external {
