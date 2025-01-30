@@ -147,6 +147,8 @@ export async function castVote(account: Hex = DEV_ACCOUNT) {
           BigInt(generateVote()),
           BigInt(generateVote()),
           BigInt(generateVote()),
+          BigInt(generateVote()),
+          BigInt(generateVote()),
         ],
       ],
     });
