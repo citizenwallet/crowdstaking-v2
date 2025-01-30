@@ -11,6 +11,8 @@ export function ResultsPanel({
 }: {
   distribution: CurrentVotingDistributionState;
 }) {
+  // contract returns addresses and points in 2 separate arrays
+  // this maps the values to the addresses before sorting them together
   const distributionsSorted = useMemo(() => {
     if (distribution.status !== "SUCCESS") return null;
     const distributions = distribution.data[0]
