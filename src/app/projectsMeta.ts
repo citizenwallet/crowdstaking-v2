@@ -46,7 +46,7 @@ export const projectsMeta: {
         "https://breadchain.notion.site/Crypto-Commons-Association-77818c4f425942479835e8bfec0b951b",
     },
   },
-  "0x9c8C8513974d22E8eA9F74f2860833Db107111E6": {
+  "0xA232F16aB37C9a646f91Ba901E92Ed1Ba4B7b544": {
     name: "Citizen Wallet",
     order: 4,
     description: "Open source tool stack to support Web3 community currencies.",
