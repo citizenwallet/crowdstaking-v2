@@ -3,6 +3,7 @@ import {
   injectedWallet,
   metaMaskWallet,
   walletConnectWallet,
+  rabbyWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { Chain } from "wagmi";
 
@@ -12,5 +13,6 @@ export function getWallets(chains: Chain[], projectId: string) {
     metaMaskWallet({ chains, projectId }),
     walletConnectWallet({ chains, projectId }),
     frameWallet({ chains, projectId }),
+    rabbyWallet({ chains }),
   ];
 }
