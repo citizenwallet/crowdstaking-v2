@@ -4,6 +4,7 @@ import {
   metaMaskWallet,
   walletConnectWallet,
   rabbyWallet,
+  coinbaseWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { Chain } from "wagmi";
 
@@ -14,5 +15,6 @@ export function getWallets(chains: Chain[], projectId: string) {
     walletConnectWallet({ chains, projectId }),
     frameWallet({ chains, projectId }),
     rabbyWallet({ chains }),
+    coinbaseWallet({ chains, appName: "Breadchain Crowdstaking" }),
   ];
 }
