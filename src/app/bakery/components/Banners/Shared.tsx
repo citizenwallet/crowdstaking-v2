@@ -2,12 +2,12 @@ import clsx from "clsx";
 import { ReactNode } from "react";
 
 export function BannerContainer({ children }: { children: ReactNode }) {
-  return <div className="max-w-[30rem] m-auto">{children}</div>;
+  return <div className="w-full m-auto">{children}</div>;
 }
 
 export function BannerCardLarge({ children }: { children: ReactNode }) {
   return (
-    <div className="hidden gap-4 px-7 py-4 w-full sm:flex max-w-[30rem] border-breadgray-light-grey dark:border-transparent border hover:border-breadviolet-shaded hover:dark:border-breadpink-300 rounded-xl bg-breadgray-ultra-white dark:bg-breadgray-charcoal transition-all group relative overflow-hidden">
+    <div className="hidden gap-4 px-7 py-4 w-full sm:flex border-breadgray-light-grey dark:border-transparent border hover:border-breadviolet-shaded hover:dark:border-breadpink-300 rounded-xl bg-breadgray-ultra-white dark:bg-breadgray-charcoal transition-all group relative overflow-hidden">
       <div className="flex items-center w-full gap-4">{children}</div>
     </div>
   );
@@ -15,7 +15,7 @@ export function BannerCardLarge({ children }: { children: ReactNode }) {
 
 export function BannerCardSmall({ children }: { children: ReactNode }) {
   return (
-    <div className="sm:hidden flex flex-col gap-2 p-4 w-full max-w-[30rem] m-auto rounded-xl bg-breadgray-ultra-white dark:bg-breadgray-charcoal border border-transparent hover:border-breadviolet-shaded hover:dark:border-breadpink-300 transition-all group relative overflow-hidden">
+    <div className="sm:hidden flex flex-col gap-2 p-4 w-full m-auto rounded-xl bg-breadgray-ultra-white dark:bg-breadgray-charcoal border border-transparent hover:border-breadviolet-shaded hover:dark:border-breadpink-300 transition-all group relative overflow-hidden">
       {children}
     </div>
   );

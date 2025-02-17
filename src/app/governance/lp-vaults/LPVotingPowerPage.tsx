@@ -7,6 +7,7 @@ import { Accordion } from "@radix-ui/react-accordion";
 import { getConfig } from "@/chainConfig";
 import useLocalStorage from "@/app/core/hooks/useLocalStorage";
 import { PageGrid } from "@/app/governance/components/PageGrid";
+import { LiquidityBanner } from "@/app/bakery/components/Banners/LiquidityBanner";
 
 export function LPVotingPowerPage() {
   const { user } = useConnectedUser();
@@ -58,7 +59,7 @@ function TitleSection() {
       <h1 className="font-bold text-3xl text-breadgray-grey100 dark:text-breadgray-ultra-white">
         Voting Power LP Vaults
       </h1>
-      <div className="max-w-xl text-lg text-breadgray-rye dark:text-breadgray-light-grey">
+      <div className="text-lg text-breadgray-rye dark:text-breadgray-light-grey md:pe-6">
         <p>
           This page lets you provide liquidity for BREAD while maintaining your
           voting power for governing the monthly BREAD crowdstaking yield
@@ -70,8 +71,8 @@ function TitleSection() {
         </h4>
         <ol className="list-decimal px-5">
           <li>
-            <b>Provide Liquidity:</b> Add liquidity for BREAD on the listed
-            liquidity pool of the vault to receive LP tokens.
+            <b>Provide Liquidity:</b> Add liquidity by depositing BREAD on Curve
+            and receive LP tokens.
           </li>
           <li>
             <b>Stake Your LP Tokens:</b> Deposit your LP tokens into the vault
@@ -82,6 +83,9 @@ function TitleSection() {
             monthly distribution on the vote page.
           </li>
         </ol>
+        <div className="pt-4">
+          <LiquidityBanner />
+        </div>
       </div>
     </div>
   );
