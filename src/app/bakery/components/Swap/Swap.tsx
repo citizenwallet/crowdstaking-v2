@@ -190,10 +190,10 @@ export function Swap() {
           </div>
         </div>
       </div>
-      <div className="px-4 pb-4">
+      <div className="pb-4 m-auto max-w-[30rem]">
         <BridgeBanner />
       </div>
-      <div className="px-4 pb-4">
+      <div className="pb-4 m-auto max-w-[30rem]">
         <LiquidityBanner />
       </div>
     </>
