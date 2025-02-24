@@ -1,7 +1,7 @@
-export function WalletIcon() {
+export function WalletIcon({ size = 3 }: { size?: 1 | 2 | 3 | 4 | 5 | 6 }) {
   return (
     <svg
-      className="fill-current"
+      className={`fill-current w-${size} h-${size}`}
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
     >
