@@ -29,7 +29,7 @@ export const ButtonVariants = {
   secondary:
     "bg-[#FFCCF1] dark:bg-[#402639] text-breadpink-400 dark:text-breadpink-shaded border-2 border-[#FFCCF1] dark:border-[#402639] hover:border-breadpink-400 dark:hover:border-breadpink-shaded hover:transition-[border]",
   danger:
-    "bg-status-danger-light dark:bg-status-danger text-breadgray-ultra-white dark:text-breadgray-grey100 bg-opacity-85 hover:bg-opacity-100",
+    "bg-status-danger-light dark:bg-status-danger hover:bg-status-danger-bright text-breadgray-ultra-white dark:text-breadgray-grey100 hover:dark:bg-status-danger-light",
   cancel:
     "text-status-danger-light  transition-all bg-status-danger-light-alpha \
       disabled:text-opacity-50 \

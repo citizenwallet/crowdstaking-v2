@@ -30,6 +30,7 @@ const colors = {
   status: {
     danger: "#D8745C",
     "danger-light": "#CF2800",
+    "danger-bright": "#E52C00",
     "danger-alpha": "rgba(214, 115, 91, 1)",
     "danger-light-alpha": "rgba(207, 40, 0, 0.1)",
     warning: "#F2D54E",

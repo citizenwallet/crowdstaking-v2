@@ -3,12 +3,11 @@ import Image from "next/image";
 import { Hex } from "viem";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { blo } from "blo";
-
 import { truncateAddress } from "@/app/core/util/formatter";
 import { TEnsNameState, useEnsName } from "@/app/core/hooks/useEnsName";
-import { WalletDisconnectButton } from "./WalletDisconnectButton";
-import { useWatchAsset } from "@/app/core/hooks/useWatchAsset";
-import { BreadIcon } from "../../Icons/TokenIcons";
+import { MenuDetails } from "@/app/core/components/Header/MenuDetails";
+import { WalletDisconnectButton } from "@/app/core/components/Header/WalletMenu/WalletDisconnectButton";
+import { AddTokenButton } from "@/app/core/components/Header/AddTokenButton";
 
 export function Row({ children }: { children: ReactNode }) {
   return (
@@ -49,21 +48,11 @@ export function WalletMenuContent({
   chainString: string;
   ensNameResult: TEnsNameState;
 }) {
-  function preventHover(event: any) {
-    event.preventDefault();
-  }
-
-  const { watchAsset } = useWatchAsset();
-
   return (
     <NavigationMenu.Root className="relative">
       <NavigationMenu.List>
         <NavigationMenu.Item>
-          <NavigationMenu.Trigger
-            onPointerMove={preventHover}
-            onPointerLeave={preventHover}
-            className="px-4 py-2 flex items-center gap-2 rounded-full bg-breadgray-ultra-white dark:bg-breadgray-charcoal text-breadgray-grey100 dark:text-breadgray-grey dark:hover:bg-breadgray-og-dark dark:hover:text-neutral-300"
-          >
+          <NavigationMenu.Trigger className="px-4 py-2 flex items-center gap-2 rounded-full bg-breadgray-ultra-white dark:bg-breadgray-charcoal text-breadgray-grey100 dark:text-breadgray-grey dark:hover:bg-breadgray-og-dark dark:hover:text-neutral-300">
             <span
               className={
                 "flex w-full gap-4 items-center justify-center truncate text-ellipsis md:justify-end"
@@ -93,42 +82,11 @@ export function WalletMenuContent({
               })()}
             </span>
           </NavigationMenu.Trigger>
-          <NavigationMenu.Content
-            onPointerEnter={preventHover}
-            onPointerLeave={preventHover}
-          >
-            <div className="bg-breadgray-ultra-white dark:bg-breadgray-charcoal border border-breadgray-grey dark:border-none rounded p-4 text-xs flex flex-col items-end gap-4">
-              <button
-                onClick={() => {
-                  navigator.clipboard
-                    .writeText(account.address)
-                    .catch((err): void => {
-                      console.error(err);
-                    });
-                }}
-                title="copy address"
-                className="text-neutral-400 hover:text-neutral-300 text-base font-bold tracking-wider flex gap-4 items-center active:underline"
-              >
-                <span>{truncateAddress(account.address)}</span>
-                <svg
-                  className="fill-current w-4 h-4"
-                  viewBox="0 0 16 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M0 0H11V2H2V15H0V0ZM4 4H16V20H4V4ZM6 6V18H14V6H6Z"
-                  />
-                </svg>
-              </button>
-              <button
-                className="flex items-center gap-2 whitespace-nowrap rounded-full full px-3 py-2  dark:bg-breadgray-og-dark text-base add-token-shadow"
-                onClick={watchAsset}
-              >
-                <BreadIcon />
-                <span>Add token to wallet</span>
-              </button>
+          <NavigationMenu.Content>
+            <div className="w-[380px] bg-breadgray-ultra-white dark:bg-breadgray-charcoal border border-breadgray-lightgrey dark:border-none rounded-[15px] px-6 py-4 text-xs flex flex-col gap-4">
+              <h3 className="text-[24px] mt-2 mb-4 font-semibold">Account</h3>
+              <MenuDetails address={account.address} />
+              <AddTokenButton />
               <WalletDisconnectButton handleDisconnect={handleDisconnect} />
             </div>
           </NavigationMenu.Content>
