@@ -2,7 +2,6 @@ import { useDisconnect } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 import { AddTokenButton } from "@/app/core/components/Header/AddTokenButton";
-
 import Button from "../Button";
 import { useEnsName } from "@/app/core/hooks/useEnsName";
 import { useWatchAsset } from "../../hooks/useWatchAsset";
