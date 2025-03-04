@@ -1,6 +1,6 @@
 // This is a generic wrapper for any custom modal UI. Will still get the presentation transition and backdrop.
 import { ModalContainer } from "./ModalUI";
-import { GenericModalState } from "../../context/ModalContext";
+import { GenericModalState } from "@/app/core/context/ModalContext";
 
 export function GenericModal({ 
     modalState
