@@ -34,9 +34,11 @@ export const ModalContainer = forwardRef(
           transition={{ duration: 0.2 }}
           className={"pointer-events-auto" + (includeContainerStyling ? " max-w-[30rem] flex flex-col items-center rounded dark:bg-opacity-100 p-4 bg-breadgray-ultra-white border border-breadgray-light-grey dark:border-none dark:bg-breadgray-charcoal relative" : "")}
         >
-          <DialogPrimitiveClose className="absolute top-0 right-0 w-10 h-10 p-3">
-            <CloseIcon />
-          </DialogPrimitiveClose>
+          {showCloseButton && (
+            <DialogPrimitiveClose className="absolute top-0 right-0 w-10 h-10 p-3">
+              <CloseIcon />
+            </DialogPrimitiveClose>
+          )}
           {children}
         </motion.section>
       </div>
