@@ -16,7 +16,6 @@ import { BreadIcon } from "../../Icons/TokenIcons";
 import { ExplorerLink } from "../../ExplorerLink";
 import { useTransactions } from "@/app/core/context/TransactionsContext/TransactionsContext";
 import { BakeryTransactionModalState } from "@/app/core/context/ModalContext";
-import { useContractRead } from "wagmi";
 import { BREAD_ADDRESS } from "@/constants";
 import { ERC20_ABI } from "@/abi";
 import { ReactNode } from "react";
@@ -39,15 +38,22 @@ function makeHeaderText(
   }
 }
 
-const modalAdviceText: {
-  [key in TTransactionStatus]: string;
-} & { PREPARED: string } = {
-  PREPARED: "Please confirm transaction in your wallet",
-  SUBMITTED: "Waiting for on-chain confimation",
-  SAFE_SUBMITTED: "Safe Transaction Submitted",
-  CONFIRMED: "You have successfully baked",
-  REVERTED: "Transaction Reverted",
-};
+function modalAdviceText(
+  modalType: "BAKE" | "BURN",
+  status: TTransactionStatus
+) {
+  const text = {
+    PREPARED: "Please confirm transaction in your wallet",
+    SUBMITTED: "Waiting for on-chain confimation",
+    SAFE_SUBMITTED: "Safe Transaction Submitted",
+    CONFIRMED:
+      modalType === "BAKE"
+        ? "You have successfully baked"
+        : "Transaction Confirmed",
+    REVERTED: "Transaction Reverted",
+  };
+  return text[status];
+}
 
 function ShareButtons({ newSupply }: { newSupply: number | null }) {
   function makeText(platform: "X" | "Warpcast") {
@@ -160,9 +166,14 @@ export function BakeryTransactionModal({
   let bottomContent: ReactNode;
   if (transaction.status === "PREPARED") {
     bottomContent = (
-      <ModalAdviceText>{modalAdviceText[transaction.status]}</ModalAdviceText>
+      <ModalAdviceText>
+        {modalAdviceText(transaction.data.type, transaction.status)}
+      </ModalAdviceText>
     );
-  } else if (transaction.status === "CONFIRMED") {
+  } else if (
+    transaction.status === "CONFIRMED" &&
+    transaction.data.type === "BAKE"
+  ) {
     bottomContent = (
       <>
         <ShareButtons newSupply={newSupply} />
@@ -172,7 +183,9 @@ export function BakeryTransactionModal({
   } else {
     bottomContent = (
       <>
-        <ModalAdviceText>{modalAdviceText[txStatus]}</ModalAdviceText>
+        <ModalAdviceText>
+          {modalAdviceText(transaction.data.type, txStatus)}
+        </ModalAdviceText>
         {transaction.status !== "SAFE_SUBMITTED" && (
           <ExplorerLink to={`https://gnosisscan.io/tx/${transaction.hash}`} />
         )}
@@ -188,7 +201,9 @@ export function BakeryTransactionModal({
       <ModalContent>
         {transactionIcons[txStatus]}
         {transaction.status === "CONFIRMED" && (
-          <ModalAdviceText>{modalAdviceText[txStatus]}</ModalAdviceText>
+          <ModalAdviceText>
+            {modalAdviceText(transaction.data.type, txStatus)}
+          </ModalAdviceText>
         )}
         <div
           className={`${
