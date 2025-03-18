@@ -22,7 +22,7 @@ import { ReactNode } from "react";
 import { formatSupply } from "@/app/core/util/formatter";
 import { formatUnits } from "viem";
 import { useRefetchOnBlockChange } from "@/app/core/hooks/useRefetchOnBlockChange";
-
+import { useBlockNumber } from "wagmi";
 function makeHeaderText(
   modalType: "BAKE" | "BURN",
   status: TTransactionStatus
@@ -129,7 +129,8 @@ export function BakeryTransactionModal({
   );
 
   const { transactionsState } = useTransactions();
-
+  const { data: currentBlockNumberData } = useBlockNumber({ watch: true });
+  const { data: startingBlockNumber } = useBlockNumber();
   const transaction = transactionsState.new
     ? {
         status: "PREPARED",
@@ -157,11 +158,22 @@ export function BakeryTransactionModal({
 
   const txStatus = transaction.status as TTransactionStatus;
 
-  const newSupply =
-    supply !== undefined && typeof supply === "bigint"
-      ? Number(Number(transaction.data.value).toFixed()) +
-        parseInt(formatUnits(supply, 18))
-      : null;
+  function newSupply(amount: string) {
+    if (
+      supply === undefined ||
+      startingBlockNumber === undefined ||
+      currentBlockNumberData === undefined ||
+      typeof supply !== "bigint"
+    ) {
+      return null;
+    }
+
+    if (startingBlockNumber < currentBlockNumberData) {
+      return parseInt(formatUnits(supply, 18));
+    }
+
+    return Number(Number(amount).toFixed()) + parseInt(formatUnits(supply, 18));
+  }
 
   let bottomContent: ReactNode;
   if (transaction.status === "PREPARED") {
@@ -176,16 +188,13 @@ export function BakeryTransactionModal({
   ) {
     bottomContent = (
       <>
-        <ShareButtons newSupply={newSupply} />
+        <ShareButtons newSupply={newSupply(transaction.data.value)} />
         <div className="mb-1 h-0"></div>
       </>
     );
   } else {
     bottomContent = (
       <>
-        <ModalAdviceText>
-          {modalAdviceText(transaction.data.type, txStatus)}
-        </ModalAdviceText>
         {transaction.status !== "SAFE_SUBMITTED" && (
           <ExplorerLink to={`https://gnosisscan.io/tx/${transaction.hash}`} />
         )}
