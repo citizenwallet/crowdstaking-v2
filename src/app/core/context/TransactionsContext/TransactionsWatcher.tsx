@@ -33,10 +33,6 @@ export function TransactionWatcher({
     if (waitData.status === "success") {
       transactionsDispatch({ type: "SET_SUCCESS", payload: { hash } });
       if (transaction.data.type === "BAKE") playSound();
-      toastDispatch({
-        type: "NEW",
-        payload: { toastType: "CONFIRMED", txHash: hash },
-      });
     }
     if (waitData.status === "reverted") {
       transactionsDispatch({ type: "SET_REVERTED", payload: { hash } });
