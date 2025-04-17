@@ -32,7 +32,7 @@ const gnosisChain = defineChain({
 const config = getDefaultConfig({
   appName: "Breadchain Crowdstaking",
   projectId: WALLET_CONNECT_PROJECT_ID,
-  chains: [gnosisChain, sepolia, foundryChain],
+  chains: [foundryChain, sepolia, gnosisChain],
   wallets: [
     {
       groupName: "Recommended",
