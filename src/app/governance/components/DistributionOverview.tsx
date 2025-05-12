@@ -168,7 +168,9 @@ export function DistributionOverview({
               <div className="flex w-full gap-2">
                 <p className="grow text-breadgray-rye dark:text-breadgray-grey">
                   Voting cycle #
-                  {distributions == undefined ? "--" : distributions.length + 1}
+                  {distributions == undefined
+                    ? "--"
+                    : distributions.length + 11}
                 </p>
                 {cycleDates.status === "LOADING" ? (
                   <span>--</span>
