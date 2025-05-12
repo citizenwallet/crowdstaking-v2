@@ -9,11 +9,27 @@ import GithubIcon from "../Icons/social/GithubIcon";
 import { LinkIcon } from "../Icons/LinkIcon";
 
 export function Footer() {
+  const renderLink = (href: string, children: ReactNode) => {
+    return (
+      <span className="flex items-center">
+        <a
+          className="flex items-center hover:text-breadpink-shaded transition-colors duration-300"
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {children}
+        </a>
+        <span className="text-breadpink-shaded">
+          <LinkIcon />
+        </span>
+      </span>
+    );
+  };
+
   return (
     <footer className="border-t-[0.16rem] border-breadviolet-shaded">
-      <div
-        className="w-full flex flex-col gap-8 lg:gap-0 lg:flex-row justify-between items-center pt-6 pb-8 px-8"
-      >
+      <div className="w-full flex flex-col gap-8 lg:gap-0 lg:flex-row justify-between items-center pt-6 pb-8 px-8">
         {/* branding */}
         <div className="flex flex-col gap-1">
           <div className="flex gap-2 items-center justify-center lg:justify-start">
@@ -80,48 +96,35 @@ export function Footer() {
               </FooterLink>
             </div>
           </nav>
-          <div className="text-breadgray-grey100 dark:text-breadgray-grey text-xs mt-3">
-            Creative Common 2025
+          <div className="text-breadgray-grey100 dark:text-breadgray-grey text-center text-xs pb-4 mt-3">
+            Creative Common {new Date().getFullYear()}
           </div>
         </div>
         {/* copyright */}
-        <div className="flex flex-row gap-4">
-          <a
-            href="https://opencollective.com/breadchain-cooperative"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex flex-row items-center"
-          >
-            <span className="pr-2">Open Collective</span>
-            <span className="text-breadpink-shaded">
-              <LinkIcon />
-            </span>
-          </a>
-          <a
-            href="https://breadchain.mailchimpsites.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex flex-row items-center"
-          >
-            <span className="pr-2">Newsletter</span>
-            <span className="text-breadpink-shaded">
-              <LinkIcon />
-            </span>
-          </a>
-          <a
-            href="https://dune.com/breadchain_cooperative/breadchain"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex flex-row items-center"
-          >
-            <span className="pr-2">Analytics</span>
-            <span className="text-breadpink-shaded">
-              <LinkIcon />
-            </span>
-          </a>
+        <div className="flex flex-col items-center md:items-end gap-2">
+          <div className="flex flex-row gap-4 md:justify-end">
+            {renderLink(
+              "https://breadchain.mailchimpsites.com/",
+              <span className="pr-2">Join our newsletter</span>
+            )}
+            {renderLink(
+              "https://dune.com/breadchain_cooperative/breadchain",
+              <span className="pr-2">Analytics</span>
+            )}
+          </div>
+          <div className="flex flex-row gap-4 md:justify-end">
+            {renderLink(
+              "https://giveth.io/project/breadchain-cooperative",
+              <span className="pr-2">Donate in crypto</span>
+            )}
+            {renderLink(
+              "https://opencollective.com/breadchain-cooperative",
+              <span className="pr-2">Donate in fiat</span>
+            )}
+          </div>
         </div>
       </div>
-    </footer >
+    </footer>
   );
 }
 
