@@ -144,9 +144,8 @@ export function BakeryTransactionModal({
       }
     : transactionsState.submitted.find(
         (transaction) =>
-          (transaction.hash === modalState.hash &&
-            transaction.data.type === "BAKE") ||
-          transaction.data.type === "BURN"
+          transaction.hash === modalState.hash &&
+          ["BAKE", "BURN"].includes(transaction.data.type)
       );
 
   if (!transaction)
