@@ -45,6 +45,7 @@ const config = getDefaultConfig({
   ],
   transports: {
     [foundry.id]: http("http://localhost:8545"), //not sure if needing to add the address
+    [gnosis.id]: http(),
     [sepolia.id]: http(),
   },
 });
