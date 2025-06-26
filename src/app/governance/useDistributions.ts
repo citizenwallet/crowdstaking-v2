@@ -72,7 +72,6 @@ export function useDistributions(index: number = 0) {
         const percent =
           Number(formatUnits(BigInt(projectDistribution), 18)) /
           Number(totalVotes);
-        console.log(percent);
         const governancePayment = baseYield * percent;
         projectDistributions.push({
           projectAddress: projectAddress as Hex,
@@ -87,9 +86,11 @@ export function useDistributions(index: number = 0) {
     cycleDistribution = {
       cycleNumber: data?.yieldDistributeds.length - index,
       totalYield: Number(totalYield),
-      distributionDate: new Date(Number(yieldDistribution.timestamp) * 1000).toLocaleDateString(),
-      projectDistributions
-    }
+      distributionDate: new Date(
+        Number(yieldDistribution.timestamp) * 1000
+      ).toLocaleDateString(),
+      projectDistributions,
+    };
   }
 
   return {

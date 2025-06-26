@@ -49,7 +49,6 @@ export function VotingHistory() {
   const [cycleIndex, setCycleIndex] = useState(0); // 0 returns the latest cycle
   const { cycleDistribution, totalDistributions } =
     useDistributions(cycleIndex);
-  console.log({ cycleIndex, totalDistributions });
 
   if (!cycleDistribution) {
     return <p>Loading...</p>;
@@ -57,7 +56,7 @@ export function VotingHistory() {
 
   const updateCycleIdex = (_index: number) => {
     setCycleIndex((prev) => {
-      // using banging sign cause totalDistributions is available at this point.
+      // Using non-null assertion (!) because totalDistributions is guaranteed to be available at this point.
       // The buttons are disabled if it's not available for whatever reason.
       const maxCycle = totalDistributions!;
       let newIndex = prev + _index;
@@ -104,8 +103,7 @@ export function VotingHistory() {
             <button
               onClick={() => updateCycleIdex(1)}
               disabled={
-                !totalDistributions ||
-                cycleIndex === totalDistributions - 1
+                !totalDistributions || cycleIndex === totalDistributions - 1
               }
               className="disabled:opacity-50"
             >
@@ -397,8 +395,8 @@ function LeftArrowIcon() {
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M28.5 4L28.5 6.66667L28.5 25.3333L28.5 28L4.5 28L4.5 25.3333L4.5 6.66667L7.16667 6.66667L7.16667 25.3333L25.8333 25.3333L25.8333 6.66667L4.5 6.66667L4.5 4L28.5 4ZM23.1667 14.6667L23.1667 17.3333L15.1667 17.3333L15.1667 20L12.5 20L12.5 17.3333L9.83333 17.3333L9.83333 14.6667L12.5 14.6667L12.5 12L15.1667 12L15.1667 14.6667L23.1667 14.6667ZM15.1667 12L15.1667 9.33333L17.8333 9.33333L17.8333 12L15.1667 12ZM15.1667 20L17.8333 20L17.8333 22.6667L15.1667 22.6667L15.1667 20Z"
         fill="#E873D3"
       />
@@ -416,8 +414,8 @@ function RightArrowIcon() {
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M4.5 28L4.5 25.3333L4.5 6.66667L4.5 4L28.5 4L28.5 6.66667L28.5 25.3333L28.5 28L4.5 28ZM25.8333 6.66667L7.16667 6.66667L7.16667 25.3333L25.8333 25.3333L25.8333 6.66667ZM9.83333 17.3333L9.83333 14.6667L17.8333 14.6667L17.8333 12L20.5 12L20.5 14.6667L23.1667 14.6667L23.1667 17.3333L20.5 17.3333L20.5 20L17.8333 20L17.8333 17.3333L9.83333 17.3333ZM15.1667 20L17.8333 20L17.8333 22.6667L15.1667 22.6667L15.1667 20ZM15.1667 9.33333L15.1667 12L17.8333 12L17.8333 9.33333L15.1667 9.33333Z"
         fill="#E873D3"
       />
