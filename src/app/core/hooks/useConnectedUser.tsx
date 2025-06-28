@@ -18,6 +18,15 @@ import {
 import { useAutoConnect } from "./useAutoConnect";
 import { Features } from "@/app/layout";
 import { Hex } from "viem";
+import {
+  CommunityConfig,
+  getProfileFromAddress,
+  Profile,
+  verifyConnectedUrl,
+} from "@citizenwallet/sdk";
+import communityConfig from "./cw/community.json";
+
+const community = new CommunityConfig(communityConfig);
 
 export type TUserLoading = { status: "LOADING"; features: Features };
 export type TUserNotConnected = { status: "NOT_CONNECTED"; features: Features };
@@ -27,6 +36,14 @@ export type TUserConnected = {
   config: ChainConfiguration;
   chain: Chain;
   features: Features;
+};
+export type TUserSignatureConnected = {
+  status: "SIGNATURE_CONNECTED";
+  address: Hex;
+  community: CommunityConfig;
+  features: Features;
+  profile?: Profile | null;
+  close?: () => void;
 };
 export type TUnsupportedChain = {
   status: "UNSUPPORTED_CHAIN";
@@ -39,6 +56,7 @@ export type TConnectedUserState =
   | TUserLoading
   | TUserNotConnected
   | TUserConnected
+  | TUserSignatureConnected
   | TUnsupportedChain;
 
 const ConnectedUserContext = createContext<{
@@ -61,12 +79,16 @@ const ConnectedUserContext = createContext<{
 interface IConnectedUserProviderProps {
   children: ReactNode;
   features: Features;
+  searchParams: URLSearchParams;
 }
 
 function ConnectedUserProvider({
   children,
   features,
+  searchParams,
 }: IConnectedUserProviderProps) {
+  console.log("searchParams", searchParams);
+
   const [user, setUser] = useState<TConnectedUserState>({
     status: "LOADING",
     features,
@@ -84,6 +106,39 @@ function ConnectedUserProvider({
       activeChain && isChainSupported(activeChain.id)
         ? getChain(activeChain.id)
         : false;
+
+    (async () => {
+      try {
+        const sigAuthRedirect = searchParams.get("sigAuthRedirect");
+
+        const account = await verifyConnectedUrl(community, {
+          params: searchParams,
+        });
+
+        if (account) {
+          const profile = await getProfileFromAddress(
+            "ipfs.internal.citizenwallet.xyz",
+            community,
+            account
+          );
+
+          setUser({
+            status: "SIGNATURE_CONNECTED",
+            address: account as Hex,
+            community,
+            features,
+            profile,
+            close: sigAuthRedirect
+              ? () => {
+                  window.location.href = `${sigAuthRedirect}/close`;
+                }
+              : undefined,
+          });
+        }
+      } catch (error) {
+        console.log("error", error);
+      }
+    })();
 
     if (activeConnector && activeChain && accountAddress && isConnected) {
       setUser(
@@ -112,6 +167,7 @@ function ConnectedUserProvider({
     activeChain,
     status,
     features,
+    searchParams,
   ]);
 
   const { isSafe } = useAutoConnect(activeConnector);

@@ -13,6 +13,7 @@ import {
 } from "@/app/core/hooks/useRefetchOnBlockChange";
 import {
   TUserConnected,
+  TUserSignatureConnected,
   useConnectedUser,
 } from "@/app/core/hooks/useConnectedUser";
 import { ERC20_ABI } from "@/abi";
@@ -52,6 +53,10 @@ function TokenBalancesProvider({ children }: { children: ReactNode }) {
     return <ProviderWithUser user={user}>{children}</ProviderWithUser>;
   }
 
+  if (user.status === "SIGNATURE_CONNECTED") {
+    return <ProviderWithUser connectedUser={user}>{children}</ProviderWithUser>;
+  }
+
   return (
     <TokenBalancesContext.Provider value={initialState}>
       {children}
@@ -61,9 +66,11 @@ function TokenBalancesProvider({ children }: { children: ReactNode }) {
 
 function ProviderWithUser({
   user,
+  connectedUser,
   children,
 }: {
-  user: TUserConnected;
+  user?: TUserConnected;
+  connectedUser?: TUserSignatureConnected;
   children: ReactNode;
 }) {
   const [breadBalanceState, setBreadBalanceState] =
@@ -78,15 +85,21 @@ function ProviderWithUser({
       status: "LOADING",
     });
 
-  const config = getChain(user.chain.id);
+  const config = getChain(
+    connectedUser?.community.primaryToken.chain_id ??
+      user?.chain?.id ??
+      "DEFAULT"
+  );
+  const userAddress = connectedUser?.address ?? user?.address ?? "0x";
+  console.log("userAddress", userAddress);
   // BREAD balance
   const { data: breadBalanceData, status: breadBalanceStatus } =
     useRefetchOnBlockChangeForUser(
-      user.address,
+      userAddress,
       config.BREAD.address,
       ERC20_ABI,
       "balanceOf",
-      [user.address]
+      [userAddress]
     );
 
   useEffect(() => {
@@ -112,7 +125,7 @@ function ProviderWithUser({
     data: xDAIBalanceData,
     status: xDAIBalanceStatus,
     error: xDAIBalanceError,
-  } = useRefetchBalanceOnBlockChange(user.address);
+  } = useRefetchBalanceOnBlockChange(userAddress);
 
   useEffect(() => {
     if (xDAIBalanceStatus === "success" && xDAIBalanceData) {
@@ -130,11 +143,11 @@ function ProviderWithUser({
   // BUTTER balance
   const { data: butterBalanceData, status: butterBalanceStatus } =
     useRefetchOnBlockChangeForUser(
-      user.address,
+      userAddress,
       config.BUTTER.address,
       ERC20_ABI,
       "balanceOf",
-      [user.address]
+      [userAddress]
     );
 
   useEffect(() => {

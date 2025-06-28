@@ -8,6 +8,7 @@ import { TEnsNameState, useEnsName } from "@/app/core/hooks/useEnsName";
 import { MenuDetails } from "@/app/core/components/Header/MenuDetails";
 import { WalletDisconnectButton } from "@/app/core/components/Header/WalletMenu/WalletDisconnectButton";
 import { AddTokenButton } from "@/app/core/components/Header/AddTokenButton";
+import { Profile } from "@citizenwallet/sdk";
 
 export function Row({ children }: { children: ReactNode }) {
   return (
@@ -22,15 +23,22 @@ interface IProps {
     address: string;
     displayName: string;
   };
+  profile?: Profile | null;
   chainString: string;
-  handleDisconnect: () => void;
+  handleDisconnect?: () => void;
 }
 
-export function WalletMenu({ account, handleDisconnect, chainString }: IProps) {
-  const ensNameResult = useEnsName(account.address);
+export function WalletMenu({
+  account,
+  profile,
+  handleDisconnect,
+  chainString,
+}: IProps) {
+  const ensNameResult = useEnsName(account?.address);
   return (
     <WalletMenuContent
       account={account}
+      profile={profile}
       chainString={chainString}
       handleDisconnect={handleDisconnect}
       ensNameResult={ensNameResult}
@@ -40,11 +48,13 @@ export function WalletMenu({ account, handleDisconnect, chainString }: IProps) {
 
 export function WalletMenuContent({
   account,
+  profile,
   handleDisconnect,
   ensNameResult,
 }: {
   account: { address: string; displayName: string };
-  handleDisconnect: () => void;
+  profile?: Profile | null;
+  handleDisconnect?: () => void;
   chainString: string;
   ensNameResult: TEnsNameState;
 }) {
@@ -59,6 +69,23 @@ export function WalletMenuContent({
               }
             >
               {(() => {
+                if (profile) {
+                  return (
+                    <>
+                      <div className="rounded-full overflow-clip w-6 h-6">
+                        <Image
+                          src={profile.image_small}
+                          alt="user profile image"
+                          width="24"
+                          height="24"
+                          className="transform scale-110"
+                        />
+                      </div>
+                      @{profile.username}
+                    </>
+                  );
+                }
+
                 switch (ensNameResult.status) {
                   case "LOADING":
                     return null;
@@ -85,9 +112,11 @@ export function WalletMenuContent({
           <NavigationMenu.Content>
             <div className="w-[380px] bg-breadgray-ultra-white dark:bg-breadgray-charcoal border border-breadgray-lightgrey dark:border-none rounded-[15px] px-6 py-4 text-xs flex flex-col gap-4">
               <h3 className="text-[24px] mt-2 mb-4 font-semibold">Account</h3>
-              <MenuDetails address={account.address} />
+              <MenuDetails address={account.address} profile={profile} />
               <AddTokenButton />
-              <WalletDisconnectButton handleDisconnect={handleDisconnect} />
+              {handleDisconnect && (
+                <WalletDisconnectButton handleDisconnect={handleDisconnect} />
+              )}
             </div>
           </NavigationMenu.Content>
         </NavigationMenu.Item>

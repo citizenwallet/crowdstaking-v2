@@ -12,15 +12,22 @@ import { formatBalance } from "@/app/core/util/formatter";
 import { HeartIcon } from "@/app/core/components/Icons/HeartIcon";
 import { renderFormattedDecimalNumber } from "@/app/core/util/formatter";
 import { formatUnits } from "viem";
+import { Profile } from "@citizenwallet/sdk";
+import Image from "next/image";
 
 interface MenuDetailsProps {
   address: string;
+  profile?: Profile | null;
 }
 
-export function MenuDetails({ address }: MenuDetailsProps) {
+export function MenuDetails({ address, profile }: MenuDetailsProps) {
   const [accountCopied, setAccountCopied] = useState(false);
   const { BREAD } = useTokenBalances();
-  const { data: apyData, error: apyError, status: apyStatus } = useVaultAPY();
+  const {
+    data: apyData = BigInt(0),
+    error: apyError,
+    status: apyStatus,
+  } = useVaultAPY();
   const gnosisLink = "https://gnosisscan.io/address/";
 
   return (
@@ -28,12 +35,24 @@ export function MenuDetails({ address }: MenuDetailsProps) {
       <div className="grid grid-cols-2 items-center gap-4 w-full">
         <div className="flex gap-2 text-base text-breadgray-rye dark:text-breadgray-grey">
           <span className="flex text-left text-breadpink-shaded">
-            <UserIcon size={6} />
+            {!profile && <UserIcon size={6} />}
+            {profile && (
+              <div className="rounded-full overflow-clip w-6 h-6">
+                <Image
+                  src={profile.image_small}
+                  alt="user profile image"
+                  width="24"
+                  height="24"
+                  className="transform scale-110"
+                />
+              </div>
+            )}
           </span>
           {accountCopied && (
             <span className="text-status-success">Copied!</span>
           )}
-          {!accountCopied && truncateAddress(address)}
+          {!accountCopied &&
+            (profile ? `@${profile.username}` : truncateAddress(address))}
         </div>
         <div className="flex justify-end text-breadgray-grey items-center gap-4">
           <button

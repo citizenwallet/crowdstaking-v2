@@ -1,5 +1,6 @@
 "use client";
 import { ReactNode } from "react";
+import { useSearchParams } from "next/navigation";
 
 import { WagmiProviderWrapper } from "@/app/core/hooks/WagmiProvider/WagmiProviderWrapper";
 import { TokenBalancesProvider } from "@/app/core/context/TokenBalanceContext/TokenBalanceContext";
@@ -23,9 +24,11 @@ export function AppProvider({
 }) {
   useSentry();
 
+  const searchParams = useSearchParams() as unknown as URLSearchParams;
+
   return (
     <WagmiProviderWrapper>
-      <ConnectedUserProvider features={features}>
+      <ConnectedUserProvider features={features} searchParams={searchParams}>
         <TokenBalancesProvider>
           <ToastProvider>
             <TransactionsProvider>
