@@ -14,7 +14,7 @@
     "find-deadcode": "ts-prune | grep -v '(used in module)'"
   },
   "dependencies": {
-    "@citizenwallet/sdk": "^2.0.97",
+    "@citizenwallet/sdk": "^2.0.98",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-navigation-menu": "^1.1.4",

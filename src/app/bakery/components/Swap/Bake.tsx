@@ -1,7 +1,10 @@
 import { useWriteContract, useSimulateContract } from "wagmi";
 import { parseEther } from "viem";
 
-import { TUserConnected } from "@/app/core/hooks/useConnectedUser";
+import {
+  TUserConnected,
+  TUserSignatureConnected,
+} from "@/app/core/hooks/useConnectedUser";
 import Button from "@/app/core/components/Button";
 import { getChain } from "@/chainConfig";
 import { BREAD_ABI } from "@/abi";
@@ -15,11 +18,13 @@ import { useModal } from "@/app/core/context/ModalContext";
 
 export default function Bake({
   user,
+  connectedUser,
   inputValue,
   clearInputValue,
   isSafe,
 }: {
-  user: TUserConnected;
+  user?: TUserConnected;
+  connectedUser?: TUserSignatureConnected;
   inputValue: string;
   clearInputValue: () => void;
   isSafe: boolean;
@@ -29,7 +34,13 @@ export default function Bake({
 
   const { setModal } = useModal();
 
-  const { BREAD } = getChain(user.chain.id);
+  const { BREAD } = getChain(
+    connectedUser?.community.primaryToken.chain_id ??
+      user?.chain?.id ??
+      "DEFAULT"
+  );
+
+  const userAddress = connectedUser?.address ?? user?.address ?? "0x";
 
   const debouncedValue = useDebounce(inputValue, 500);
 
@@ -45,7 +56,7 @@ export default function Bake({
     address: BREAD.address,
     abi: BREAD_ABI,
     functionName: "mint",
-    args: [user.address],
+    args: [userAddress],
     value: parsedValue,
     query: {
       enabled: parseFloat(debouncedValue) > 0,

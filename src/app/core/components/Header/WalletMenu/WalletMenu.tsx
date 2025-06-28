@@ -113,7 +113,7 @@ export function WalletMenuContent({
             <div className="w-[380px] bg-breadgray-ultra-white dark:bg-breadgray-charcoal border border-breadgray-lightgrey dark:border-none rounded-[15px] px-6 py-4 text-xs flex flex-col gap-4">
               <h3 className="text-[24px] mt-2 mb-4 font-semibold">Account</h3>
               <MenuDetails address={account.address} profile={profile} />
-              <AddTokenButton />
+              {!profile && <AddTokenButton />}
               {handleDisconnect && (
                 <WalletDisconnectButton handleDisconnect={handleDisconnect} />
               )}

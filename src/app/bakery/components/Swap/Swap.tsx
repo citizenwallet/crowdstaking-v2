@@ -157,7 +157,7 @@ export function Swap() {
                       Change network
                     </Button>
                   );
-                case "CONNECTED":
+                case "CONNECTED": {
                   const sourceToken = swapState.mode === "BAKE" ? xDAI : BREAD;
 
                   if (!sourceToken) return <ButtonShell />;
@@ -185,6 +185,36 @@ export function Swap() {
                     );
 
                   return <InsufficentBalance />;
+                }
+                case "SIGNATURE_CONNECTED": {
+                  const sourceToken = swapState.mode === "BAKE" ? xDAI : BREAD;
+
+                  if (!sourceToken) return <ButtonShell />;
+                  if (sourceToken.status !== "SUCCESS") return <ButtonShell />;
+
+                  const balanceIsSufficent =
+                    parseFloat(swapState.value || "0") <=
+                    parseFloat(sourceToken.value);
+
+                  if (balanceIsSufficent)
+                    return swapState.mode === "BAKE" ? (
+                      <Bake
+                        connectedUser={user}
+                        clearInputValue={clearInputValue}
+                        inputValue={swapState.value}
+                        isSafe={isSafe}
+                      />
+                    ) : (
+                      <Burn
+                        connectedUser={user}
+                        clearInputValue={clearInputValue}
+                        inputValue={swapState.value}
+                        isSafe={isSafe}
+                      />
+                    );
+
+                  return <InsufficentBalance />;
+                }
               }
             })()}
           </div>

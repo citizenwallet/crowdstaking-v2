@@ -43,6 +43,7 @@ export type TUserSignatureConnected = {
   community: CommunityConfig;
   features: Features;
   profile?: Profile | null;
+  redirectUrl?: string;
   close?: () => void;
 };
 export type TUnsupportedChain = {
@@ -128,6 +129,7 @@ function ConnectedUserProvider({
             community,
             features,
             profile,
+            redirectUrl: sigAuthRedirect ?? undefined,
             close: sigAuthRedirect
               ? () => {
                   window.location.href = `${sigAuthRedirect}/close`;
