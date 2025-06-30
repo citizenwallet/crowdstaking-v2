@@ -1,3 +1,5 @@
+"use client";
+
 import { useWriteContract, useSimulateContract } from "wagmi";
 import { parseEther, encodeFunctionData } from "viem";
 import {
@@ -16,6 +18,7 @@ import { useModal } from "@/app/core/context/ModalContext";
 import { ExternalLink } from "@/app/core/components/ExternalLink";
 import SwapBreadButton from "@/app/bakery/components/Swap/SwapBreadButton";
 import { generateCalldataLink } from "@citizenwallet/sdk";
+import { useRouter } from "next/navigation";
 
 export default function Burn({
   user,
@@ -23,13 +26,17 @@ export default function Burn({
   inputValue,
   clearInputValue,
   isSafe,
+  txHash,
 }: {
   user?: TUserConnected;
   connectedUser?: TUserSignatureConnected;
   inputValue: string;
   clearInputValue: () => void;
   isSafe: boolean;
+  txHash?: string | null;
 }) {
+  const router = useRouter();
+
   const { transactionsState, transactionsDispatch } = useTransactions();
   const [buttonIsEnabled, setButtonIsEnabled] = useState(false);
   const { BREAD } = getChain(
@@ -68,7 +75,6 @@ export default function Burn({
   }, [setButtonIsEnabled, connectedUser, debouncedValue]);
 
   useEffect(() => {
-    console.log("prepareStatus", prepareStatus);
     if (prepareStatus === "success") setButtonIsEnabled(true);
   }, [debouncedValue, prepareStatus, setButtonIsEnabled]);
 
@@ -127,6 +133,42 @@ export default function Burn({
     setModal(null);
   }, [writeIsError, writeError, setModal]);
 
+  useEffect(() => {
+    if (txHash && txHash !== "0x") {
+      if (transactionsState.submitted.find((tx) => tx.hash === txHash)) {
+        return;
+      }
+      transactionsDispatch({
+        type: "NEW",
+        payload: {
+          data: {
+            type: "BURN",
+            value: debouncedValue,
+          },
+        },
+      });
+      setModal({
+        type: "BAKERY_TRANSACTION",
+        hash: null,
+      });
+
+      transactionsDispatch({
+        type: "SET_SUBMITTED",
+        payload: { hash: txHash as `0x${string}` },
+      });
+      setModal({
+        type: "BAKERY_TRANSACTION",
+        hash: txHash,
+      });
+    }
+  }, [
+    txHash,
+    transactionsDispatch,
+    setModal,
+    transactionsState,
+    debouncedValue,
+  ]);
+
   const handleBurnRequest = () => {
     setModal({
       type: "CONFIRM_BURN",
@@ -154,23 +196,13 @@ export default function Burn({
           connectedUser.redirectUrl,
           connectedUser.community,
           BREAD.address,
-          parsedValue,
+          0,
           calldata
         );
 
-        console.log("calldataUrl", calldataUrl);
-        window.open(calldataUrl);
+        const successUrl = `${window.location.href}&action=BURN`;
 
-        // TODO: this should be called on the resulting success navigation by the app
-        // transactionsDispatch({
-        //   type: "SET_SUBMITTED",
-        //   payload: { hash: "0x" },
-        // });
-        // setModal({
-        //   type: "BAKERY_TRANSACTION",
-        //   hash: "0x",
-        // });
-        // clearInputValue();
+        router.push(`${calldataUrl}&success=${encodeURIComponent(successUrl)}`);
       },
     });
   };

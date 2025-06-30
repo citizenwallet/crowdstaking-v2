@@ -1,5 +1,5 @@
 import { useWriteContract, useSimulateContract } from "wagmi";
-import { parseEther } from "viem";
+import { encodeFunctionData, parseEther } from "viem";
 
 import {
   TUserConnected,
@@ -15,6 +15,8 @@ import { useTransactions } from "@/app/core/context/TransactionsContext/Transact
 import SafeAppsSDK from "@safe-global/safe-apps-sdk/dist/src/sdk";
 import { TransactionStatus } from "@safe-global/safe-apps-sdk/dist/src/types";
 import { useModal } from "@/app/core/context/ModalContext";
+import { useRouter } from "next/navigation";
+import { generateCalldataLink } from "@citizenwallet/sdk";
 
 export default function Bake({
   user,
@@ -22,13 +24,17 @@ export default function Bake({
   inputValue,
   clearInputValue,
   isSafe,
+  txHash,
 }: {
   user?: TUserConnected;
   connectedUser?: TUserSignatureConnected;
   inputValue: string;
   clearInputValue: () => void;
   isSafe: boolean;
+  txHash?: string | null;
 }) {
+  const router = useRouter();
+
   const { transactionsState, transactionsDispatch } = useTransactions();
   const [buttonIsEnabled, setButtonIsEnabled] = useState(false);
 
@@ -65,7 +71,10 @@ export default function Bake({
 
   useEffect(() => {
     setButtonIsEnabled(false);
-  }, [inputValue, setButtonIsEnabled]);
+    if (connectedUser && parseFloat(debouncedValue) > 0) {
+      setButtonIsEnabled(true);
+    }
+  }, [connectedUser, debouncedValue, setButtonIsEnabled]);
 
   useEffect(() => {
     if (prepareStatus === "success") setButtonIsEnabled(true);
@@ -122,26 +131,88 @@ export default function Bake({
     setModal(null);
   }, [writeIsError, writeError, setModal]);
 
+  useEffect(() => {
+    if (txHash && txHash !== "0x") {
+      if (transactionsState.submitted.find((tx) => tx.hash === txHash)) {
+        return;
+      }
+      transactionsDispatch({
+        type: "NEW",
+        payload: {
+          data: {
+            type: "BAKE",
+            value: debouncedValue,
+          },
+        },
+      });
+      setModal({
+        type: "BAKERY_TRANSACTION",
+        hash: null,
+      });
+
+      transactionsDispatch({
+        type: "SET_SUBMITTED",
+        payload: { hash: txHash as `0x${string}` },
+      });
+      setModal({
+        type: "BAKERY_TRANSACTION",
+        hash: txHash,
+      });
+    }
+  }, [
+    txHash,
+    transactionsDispatch,
+    setModal,
+    transactionsState,
+    debouncedValue,
+  ]);
+
+  const handleBakeRequest = () => {
+    if (!writeContract) return;
+    transactionsDispatch({
+      type: "NEW",
+      payload: {
+        data: { type: "BAKE", value: debouncedValue },
+      },
+    });
+    setModal({
+      type: "BAKERY_TRANSACTION",
+      hash: null,
+    });
+    writeContract(prepareConfig!.request);
+  };
+
+  const handleConnectedUserBurnRequest = () => {
+    if (!connectedUser?.redirectUrl) return;
+
+    const calldata = encodeFunctionData({
+      abi: BREAD_ABI,
+      functionName: "mint",
+      args: [userAddress],
+    });
+
+    const calldataUrl = generateCalldataLink(
+      connectedUser.redirectUrl,
+      connectedUser.community,
+      BREAD.address,
+      parsedValue,
+      calldata
+    );
+
+    const successUrl = `${window.location.href}&action=BAKE`;
+
+    router.push(`${calldataUrl}&success=${encodeURIComponent(successUrl)}`);
+  };
+
   return (
     <div className="relative">
       <Button
         fullWidth={true}
         size="xl"
         disabled={!buttonIsEnabled}
-        onClick={() => {
-          if (!writeContract) return;
-          transactionsDispatch({
-            type: "NEW",
-            payload: {
-              data: { type: "BAKE", value: debouncedValue },
-            },
-          });
-          setModal({
-            type: "BAKERY_TRANSACTION",
-            hash: null,
-          });
-          writeContract(prepareConfig!.request);
-        }}
+        onClick={
+          connectedUser ? handleConnectedUserBurnRequest : handleBakeRequest
+        }
       >
         Bake
       </Button>

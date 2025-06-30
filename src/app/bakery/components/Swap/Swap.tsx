@@ -17,6 +17,7 @@ import { LiquidityBanner } from "../Banners/LiquidityBanner";
 import { BridgeBanner } from "../Banners/BridgeBanner";
 import { TotalSupply } from "../TotalSupply";
 import { sanitizeInputValue } from "@/app/core/util/sanitizeInput";
+import { useSearchParams } from "next/navigation";
 
 export type TSwapMode = "BAKE" | "BURN";
 
@@ -31,10 +32,18 @@ const initialSwapState: TSwapState = {
 };
 
 export function Swap() {
+  const searchParams = useSearchParams();
+  const txHash = searchParams.get("tx");
+  const action: TSwapMode | null = searchParams.get(
+    "action"
+  ) as TSwapMode | null;
+
   const { user, isSafe } = useConnectedUser();
   const [connectedAccountAddress, setConnectedAccountAddress] =
     useState<null | Address>(null);
-  const [swapState, setSwapState] = useState<TSwapState>(initialSwapState);
+  const [swapState, setSwapState] = useState<TSwapState>(
+    action ? { mode: action, value: "" } : initialSwapState
+  );
 
   if (user.status === "CONNECTED" && user.address !== connectedAccountAddress) {
     setConnectedAccountAddress(user.address);
@@ -203,6 +212,7 @@ export function Swap() {
                         clearInputValue={clearInputValue}
                         inputValue={swapState.value}
                         isSafe={isSafe}
+                        txHash={txHash}
                       />
                     ) : (
                       <Burn
@@ -210,6 +220,7 @@ export function Swap() {
                         clearInputValue={clearInputValue}
                         inputValue={swapState.value}
                         isSafe={isSafe}
+                        txHash={txHash}
                       />
                     );
 

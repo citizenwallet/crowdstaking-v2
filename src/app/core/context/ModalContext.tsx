@@ -1,5 +1,11 @@
 import { TransactionType } from "@/app/governance/lp-vaults/components/VaultPanel";
-import { ReactElement, type ReactNode, createContext, useContext, useState } from "react";
+import {
+  ReactElement,
+  type ReactNode,
+  createContext,
+  useContext,
+  useState,
+} from "react";
 
 export type RecastModalState = {
   type: "CONFIRM_RECAST";
@@ -34,7 +40,7 @@ export type GenericModalState = {
   showCloseButton: Boolean;
   includeContainerStyling: Boolean;
   children: ReactElement;
-}
+};
 
 export type ModalState =
   | BakeryTransactionModalState
